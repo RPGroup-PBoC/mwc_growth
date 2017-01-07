@@ -1,0 +1,10 @@
+*.pdf
+*.eps
+data/
+*.fcs
+*.tif
+*.jpg
+*ipynb-checkpoints
+*.DS_store
+__pycache__
+
