@@ -1,0 +1,29 @@
+"NDInfoFile", Version 2.0
+"Description", 
+"StartTime1", 20170814 16:39:52
+"DoTimelapse", FALSE
+"NTimePoints", 1
+"DoStage", TRUE
+"NStagePositions", 8
+"Stage1", "Pos6"
+"Stage2", "Pos5"
+"Stage3", "Pos4"
+"Stage4", "Pos7"
+"Stage5", "Pos2"
+"Stage6", "Pos1"
+"Stage7", "Pos3"
+"Stage8", "Pos8"
+"DoWave", TRUE
+"NWavelengths", 4
+"WaveName1", "Brightfield"
+"WaveDoZ1", FALSE
+"WaveName2", "mCherry"
+"WaveDoZ2", TRUE
+"WaveName3", "YFPHQ"
+"WaveDoZ3", TRUE
+"WaveName4", "CFP"
+"WaveDoZ4", TRUE
+"DoZSeries", FALSE
+"WaveInFileName", TRUE
+"NEvents", 0
+"EndFile"
