@@ -2,16 +2,16 @@
 % in MATLAB
 
 % Define the experiment parameters.
-DATE = '20180110';
+DATE = '20180117';
 BASENAME = '37C_glucose_O2';
 
 % Get the snaps names. 
-snap_files = dir(['../../../../data/images/', DATE, '_', BASENAME,...
-    '_dilution/', DATE, '_snaps/'])
-snap_samples = {[DATE, '_snaps/'] snap_files.name};
-% samples = {[DATE, '_growth'], [DATE,'_growth/batch2']};
+snap_files = dir(['../../../data/images/', DATE, '_', BASENAME,...
+    '_dilution/', DATE, '*_snaps*']);
+snap_samples = {snap_files.name};
+samples = {[DATE, '_growth_1'], [DATE,'_growth_2'], [DATE, '_growth_3']};
 
-ignored = {'.', '..', '.DS_Store', [DATE, '_snaps'};
+ignored = {'.', '..', '.DS_Store'};
 for i=1:length(snap_samples)
     
     valid = 0;
@@ -19,15 +19,13 @@ for i=1:length(snap_samples)
         valid = valid + strcmp(snap_samples{i}, ignored{j});
     end
     if valid == 0
-        if i==1
-            samples = {snap_samples{i}};
-        else
         samples{end+1} = snap_samples{i};
         end
-    end
+   
 end
-
-CONST = loadConstants('60XCaulob');
+samples=dir(['../../../data/images/', DATE, '_', BASENAME, '_dilution/2018*']);
+samples = {samples.name}
+CONST = loadConstants('100XEc');
 CONST.parallel.PARALLEL_FLAG = 1;
 CONST.trackFoci.numSpots = 0;
 CONST.align.ALIGN_FLAG = 1;
@@ -39,7 +37,7 @@ for i=1:length(samples)
     disp(statement)
     
     % Define the data directory.
-    directory = ['../../../../data/images/', DATE, '_', BASENAME,...
+    directory = ['../../../data/images/', DATE, '_', BASENAME,...
         '_dilution/' samples{i}];
     
     % Perform the segmentation.
