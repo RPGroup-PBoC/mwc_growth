@@ -5,10 +5,10 @@ import skimage.io
 import warnings
 
 # Define the experiment paramters
-DATE = 20180119
+DATE = 20180123
 BASENAME = '37C_glucose_O2'
 missing_channel = 2
-num_timepoints = 24
+num_timepoints = 25
 num_positions = 30
 
 # ---------------------------------------------------------------------------

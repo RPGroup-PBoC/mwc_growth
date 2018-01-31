@@ -7,7 +7,7 @@ import skimage.io
 import numpy as np
 
 # Define the experiment parameters.
-DATE = 20180119
+DATE = 20180123
 BASENAME = '37C_glucose_O2'
 channels = ['Brightfield', 'TRITC', 'YFP']
 channel_dict = {c: i + 1 for i, c in enumerate(channels)}
@@ -37,22 +37,27 @@ else:
     for ch in channel_dict.keys():
         flatfield[ch] = False
 
-dark_files = glob.glob(
-    '{0}{1}_camera_noise*/Pos*/*.tif'.format(data_dir, DATE))
-dark_ims = skimage.io.ImageCollection(dark_files)
-dark_avg = pboc.image.projection(dark_ims, mode='mean', median_filt=True)
 
+dark_avg = {}
+for ch in channel_dict.keys():
+    if ch != 'Brightfield':
+        dark_files = glob.glob(
+            '{0}{1}_{2}_camera_noise*/Pos*/*.tif'.format(data_dir, DATE, ch))
+        dark_ims = skimage.io.ImageCollection(dark_files)
+        dark_avg[ch] = pboc.image.projection(
+            dark_ims, mode='mean', median_filt=True)
 
 # %%
 # Scrape positions.
-samples = ['growth*/', 'snaps/']
+samples = ['*snaps*/']
 for s in samples:
     if 'snaps' in s:
-        sub_samples = glob.glob('{0}{1}_*snaps*'.format(data_dir, DATE))
+        sub_samples = glob.glob('{0}{1}_{2}'.format(data_dir, DATE, s))
     else:
         sub_samples = glob.glob('{0}{1}_{2}'.format(data_dir, DATE, s))
     for j, sub in enumerate(sub_samples):
         positions = glob.glob('{0}/Pos*/'.format(sub, s))
+
         for p in positions:
             # Parse the position.
             folder = p.split('Pos')[0]
@@ -60,10 +65,8 @@ for s in samples:
 
             # Loop through provided channels and rename images.
             for ch in channels:
-
                 files = glob.glob(p + '*{0}*.tif'.format(ch))
                 files.sort()
-
                 for f in files:
                     # Parse the relevant info
                     _, t, c, _ = f.split('/')[-1].split('_')
@@ -75,7 +78,7 @@ for s in samples:
                         im = skimage.io.imread(f)
                         zero_im = np.zeros_like(im)
                         ff_im = pboc.image.generate_flatfield(
-                            im, dark_avg, field_ims[ch], median_filt=True)
+                            im, dark_avg[ch], field_ims[ch], median_filt=True)
                         skimage.io.imsave('{0}{1}'.format(
                             folder, new_name), ff_im)
                     else:
@@ -83,9 +86,10 @@ for s in samples:
 
         # Rename and save the metadata files.
         mfiles = glob.glob('{0}metadata.txt'.format(p))
-        for m in mfiles:
-            new_m_name = 'xy{0:03d}_metadata.txt'.format(int(xy))
-            shutil.copy(m, '{0}{1}'.format(data_dir, new_m_name))
+        if len(mfiles) != 0:
+            for m in mfiles:
+                new_m_name = 'xy{0:03d}_metadata.txt'.format(int(xy))
+                shutil.copy(m, '{0}{1}'.format(data_dir, new_m_name))
 
         # Move all original files into a separate folder.
         if os.path.isdir('{0}/originals'.format(data_dir)) is False:

@@ -5,11 +5,11 @@ import skimage.io
 import warnings
 
 # Define the experiment paramters
-DATE = 20180119
-BASENAME = '37C_glucose_O2'
-missing_channel = 2
-num_timepoints = 24
-num_positions = 30
+DATE = 20121115
+BASENAME = '37C_glucose_O1'
+missing_channel = 3
+num_timepoints = 21
+num_positions = 19
 
 # ---------------------------------------------------------------------------
 # Shouldn't need to change anything below here.
@@ -20,7 +20,7 @@ data_dir
 
 # Loop through each time point.
 for i in range(num_positions):
-    for j in range(num_timepoints):
+    for j in range(1, num_timepoints):
         im_files = glob.glob(
             '{0}/*t{1:05d}*xy{2:03d}*c*.tif'.format(data_dir, j, i))
         chan_files = glob.glob(
