@@ -3,7 +3,7 @@ import skimage.io
 import glob
 import os
 import shutil
-
+skimage.io.use_plugin('freeimage')
 data_dir = '../../../data/images/'
 DATE = 20180123
 BASE_NAME = '37C_glucose_O2'

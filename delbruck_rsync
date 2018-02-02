@@ -1,0 +1,1 @@
+rsync -rtz -e 'ssh -p 22415' --progress ./data gchure@delbruck.caltech.edu:git/mwc_growth/data
