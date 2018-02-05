@@ -3,9 +3,12 @@ import os
 import shutil
 import skimage.io
 import pboc.image
+import scipy.ndimage
+import skimage.morphology
 import skimage.io
 import numpy as np
 
+skimage.io.use_plugin('freeimage')
 # Define the experiment parameters.
 DATE = 20180123
 BASENAME = '37C_glucose_O2'
@@ -28,7 +31,8 @@ if generate_flatfield is True:
             slide_ims = glob.glob(
                 '{0}{1}_{2}_fluorescent_slide*/Pos*/*.tif'.format(data_dir, DATE, ch))
             ims = skimage.io.ImageCollection(slide_ims)
-            mean_im = pboc.image.projection(ims, mode='mean', median_filt=True)
+            mean_im = pboc.image.projection(
+                ims, mode='mean', median_filt=False)
             field_ims[ch] = mean_im
             flatfield[ch] = True
         else:
@@ -45,11 +49,12 @@ for ch in channel_dict.keys():
             '{0}{1}_{2}_camera_noise*/Pos*/*.tif'.format(data_dir, DATE, ch))
         dark_ims = skimage.io.ImageCollection(dark_files)
         dark_avg[ch] = pboc.image.projection(
-            dark_ims, mode='mean', median_filt=True)
+            dark_ims, mode='mean', median_filt=False)
+
 
 # %%
 # Scrape positions.
-samples = ['*snaps*/']
+samples = ['*snaps*/', '*growth_1/']
 for s in samples:
     if 'snaps' in s:
         sub_samples = glob.glob('{0}{1}_{2}'.format(data_dir, DATE, s))
@@ -76,11 +81,15 @@ for s in samples:
                         DATE, BASENAME, int(t), int(xy), channel_dict[ch])
                     if flatfield[ch] is True:
                         im = skimage.io.imread(f)
-                        zero_im = np.zeros_like(im)
-                        ff_im = pboc.image.generate_flatfield(
-                            im, dark_avg[ch], field_ims[ch], median_filt=True)
-                        skimage.io.imsave('{0}{1}'.format(
-                            folder, new_name), ff_im)
+                        ff_im = pboc.image.generate_flatfield(im, dark_avg[ch], field_ims[ch],
+                                                              median_filt=False)
+                        selem = skimage.morphology.square(3)
+                        ff_filt = scipy.ndimage.median_filter(
+                            ff_im, footprint=selem)
+                        ff_im = np.round(ff_filt).astype(np.uint16)
+                        skimage.io.imsave(
+                            '{0}{1}'.format(folder, new_name), ff_im)
+
                     else:
                         shutil.copy(f, '{0}{1}'.format(folder, new_name))
 
