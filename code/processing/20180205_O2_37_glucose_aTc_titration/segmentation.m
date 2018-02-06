@@ -1,6 +1,6 @@
 % Segment the autofluorescence and the original images using SuperSegger
 % in MATLAB
-
+addpath(genpath('../../../../SuperSegger'));
 % Define the experiment parameters.
 DATE = '20180205';
 BASENAME = '37C_glucose_O2';
@@ -9,7 +9,7 @@ BASENAME = '37C_glucose_O2';
 snap_files = dir(['../../../data/images/', DATE, '_', BASENAME,...
     '_dilution/', DATE, '*_snaps*']);
 snap_samples = {snap_files.name};
-samples = {[DATE, '_growth_1'], [DATE,'_growth_2']};
+samples = {[DATE, '_growth_1'], [DATE,'_growth_2'], [DATE, '_growth_3']};
 
 ignored = {'.', '..', '.DS_Store'};
 for i=1:length(snap_samples)
@@ -29,6 +29,7 @@ CONST.trackFoci.numSpots = 0;
 CONST.align.ALIGN_FLAG = 1;
 CONST.trackOpti.REMOVE_STRAY = 1;
 cleanFlag = 0;
+samples = snap_samples;
 for i=1:length(samples)
     disp(samples{i})
     statement = ['Beginning segmentaton ', num2str(i), ' out of ',...
@@ -43,3 +44,5 @@ for i=1:length(samples)
     BatchSuperSeggerOpti(directory, 1, cleanFlag, CONST);
 end
 disp('Finished!');
+
+exit;

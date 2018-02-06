@@ -11,7 +11,7 @@ import numpy as np
 # Define the experiment parameters.
 DATE = 20180205
 BASENAME = '37C_glucose_O2'
-channels = ['Brightfield', 'TRITC', 'YFP']
+channels = ['Brightfield', 'mCherry', 'YFP']
 channel_dict = {c: i + 1 for i, c in enumerate(channels)}
 keep_origs = True
 generate_flatfield = True

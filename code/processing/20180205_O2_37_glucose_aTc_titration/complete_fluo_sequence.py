@@ -8,8 +8,8 @@ import warnings
 DATE = 20180205
 BASENAME = '37C_glucose_O2'
 missing_channel = 2
-num_timepoints = 17
-num_positions = 30
+num_timepoints = 18
+num_positions = 31
 
 # ---------------------------------------------------------------------------
 # Shouldn't need to change anything below here.
