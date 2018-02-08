@@ -11,7 +11,7 @@ import numpy as np
 # Define the experiment parameters.
 DATE = 20180206
 BASENAME = 'sfGFP_mscL'
-channels = ['Brightfield', 'TRITC']
+channels = ['Brightfield', 'GFP']
 channel_dict = {c: i + 1 for i, c in enumerate(channels)}
 keep_origs = True
 generate_flatfield = True
