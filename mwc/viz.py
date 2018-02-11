@@ -11,20 +11,16 @@ import os
 import matplotlib.pyplot as plt
 from scipy.signal import gaussian, convolve
 
-# ---------------------------------------------------------------------------
-# Plotting styles
-# ---------------------------------------------------------------------------
 
-
-def set_plotting_style(return_colors=True):
+def pboc_style(return_colors=True):
     """
     Sets the plotting style.
 
     Parameters
     ----------
     return_colors: Bool
-        If True, this will also return a palette of eight color-blind safe
-        colors with the hideous yellow replaced by 'dusty purple.'
+        If True, this will also return a dictionary
+
     """
     rc = {'axes.facecolor': '#E3DCD0',
           'font.family': 'Lucida Sans Unicode',
@@ -41,8 +37,6 @@ def set_plotting_style(return_colors=True):
     plt.rc('text.latex', preamble=r'\usepackage{sfmath}')
     plt.rc('mathtext', fontset='stixsans', sf='sans')
     sns.set_style('darkgrid', rc=rc)
-    # colors = sns.color_palette('colorblind', n_colors=8)
-    # colors[4] = sns.xkcd_palette(['dusty purple'])[0]
     colors = {'green': '#7AA974', 'light_green': '#BFD598',
               'pale_green': '#DCECCB', 'yellow': '#EAC264',
               'light_yellow': '#F3DAA9', 'pale_yellow': '#FFEDCE',
@@ -53,6 +47,8 @@ def set_plotting_style(return_colors=True):
     if return_colors:
         return colors
 
+
+# Bokeh plotting utilities
 
 def boilerplate(**kwargs):
     """
