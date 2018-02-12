@@ -57,7 +57,8 @@ for ch in ff_channels:
 
 
 # %% Rename files to SuperSegger requirements.
-samples = ['snaps', 'growth']
+samples = ['growth']
+snap_groups = []
 for i, s in enumerate(tqdm.tqdm(samples)):
     samp_files = glob.glob('{0}*{1}*.TIF'.format(data_dir, s))
     samp_files
@@ -90,6 +91,11 @@ for i, s in enumerate(tqdm.tqdm(samples)):
             ch = 1
             strain = 'dilution'
             atc_conc = 'mixed'
+
+        if s == 'snaps':
+            snap_group = 'snaps_{0}_{1}ngmL'.format(strain, atc_conc)
+            if snap_group not in snap_groups:
+                snap_groups.append(snap_group)
 
         # Define the new name that's compatible with SuperSegger
         new_name = '{0}_{1}_{2}_{3}ngmL_t{4:05d}xy{5:03d}c{6}.tif'.format(
@@ -170,6 +176,16 @@ if num_groups > 1:
     # Rename the first growth folder.
     shutil.move('{0}growth'.format(data_dir), '{0}growth_0'.format(data_dir))
 
+# %% Make and move snap group folders.
+for i, s in enumerate(snap_groups):
+    if os.path.isdir('{0}{1}'.format(data_dir, s)) == False:
+        os.mkdir('{0}{1}'.format(data_dir, s))
+    files = glob.glob('{0}snaps/*{1}*.tif'.format(data_dir, s))
+    for f in files:
+        shutil.move(f, '{0}{1}'.format(data_dir, s))
+
+# Remove the snaps directory.
+os.rmdir('{0}snaps'.format(data_dir))
 
 print("""
 Finished! Thank you come again.

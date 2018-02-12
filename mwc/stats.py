@@ -191,3 +191,44 @@ def compute_hpd(trace, mass_frac):
 
     # Return interval
     return np.array([d[min_int], d[min_int + n_samples]])
+
+
+def bin_by_events(df, bin_size, sortby='summed', average=['summed', 'fluct']):
+    """
+    Bins a given data set by number of events rather than bin width and
+    computes the mean value of desired parameters.
+
+    Parameters
+    ----------
+    df : pandas DataFrame
+        Dataframe containing data to bin and average.
+    bin_size : int
+        Number of events to consider for one bin.
+    sortby : str
+        The name of the column to sort the values by. Default is 'summed'
+    average : list
+        The quantities over which to average. These will be returned in the
+        order they are provided.
+
+    Returns
+    -------
+    average_vals : list with shape of `average`.
+        The average of the quantities in each bin. This is a list of lists.
+    """
+    num_quantities = len(average)
+    averages = [[None] * num_quantities]
+
+    # Sort the dataframe.
+    sorted_df = df.sort_values(sortby)
+
+    # Set the bins.
+    bins = np.arange(0, len(sorted_df) + bin_size, bin_size)
+
+    # Iterate through each bin and compute the average quanities.
+    for i in range(1, len(bins)):
+        # Slice the data frame.
+        d = sorted_df.iloc[bins[i - 1]:bins[i]]
+
+        for j, quant in enumerate(average):
+            averages[j].append(d[quant].values().mean())
+    return averages

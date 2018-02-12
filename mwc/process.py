@@ -57,13 +57,15 @@ def clist_to_dataframe(clist_file, desired_props='default', added_props={},
 
     # Iterate through the clist and extrac the properties.
     for i, cell in enumerate(mat['data']):
-        # Extract the properties and add to DataFrame
-        cell_dict = {key: cell[value] for key, value in defs.items()}
+        if type(cell) != np.float64:
 
-        # Add any additional properties.
-        for k, v in added_props.items():
-            cell_dict[k] = v
-        df = df.append(cell_dict, ignore_index=True)
+            # Extract the properties and add to DataFrame
+            cell_dict = {key: cell[value] for key, value in defs.items()}
+
+            # Add any additional properties.
+            for k, v in added_props.items():
+                cell_dict[k] = v
+            df = df.append(cell_dict, ignore_index=True)
 
     # Rename the columns to accomodate pep8 style.
     if excluded_props is not None:
@@ -117,3 +119,51 @@ def parse_clists(clists, parse_position=True, added_props={},
         df = clist_to_dataframe(c, added_props=added_props, **kwargs)
         dfs.append(df)
     return pd.concat(dfs, ignore_index=True)
+
+
+def compute_fluctuations(dilution_df, auto_val, multi_xy=True):
+    """"
+    Generates a new DataFrame containing the indivudual sister intensities,
+    summed fluorescence, and square fluctuations.
+
+    Parameters
+    ----------
+    dilution_df : Pandas DataFrame
+        The dataframe containing all lineage information. At a minimum,
+        this must have the columns `mother_id`, `fluor1_mean_death`,
+        `death_area`. If multiple positions are to be processed, `position`
+        must also be provided.
+    auto_val : float
+        The mean autofluorescence pixel intensity.
+    multi_xy : Bool
+        If True, multiple positions in the provided DataFrame will be
+        processed.
+
+    Returns
+    -------
+    fluct_df : Pandas DataFrame
+        A DataFrame with the two intensity measurements, sum total, and square fluctuations.
+    """
+    # Set up the DataFrame.
+    fluct_df = pd.DataFrame([], columns=['I_1', 'I_2', 'summed', 'fluct'])
+
+    # Determine what to groupby.
+    if multi_xy == True:
+        groupby = ['position', 'mother_id']
+    else:
+        groupby = ['mother_id']
+
+    # Group the growth dataframe and iterate.
+    grouped = dilution_df.groupby(groupby)
+    for g, d in grouped:
+        if len(d) == 2:  # Ensure only single successful divisions.
+            ints = d['fluor1_mean_death'].values - auto_val
+            if (ints > 0).all() == True:
+                I_1, I_2 = ints
+                summed = np.sum(ints)
+                fluct = np.diff(ints)**2
+                family_dict = {'I_1': I_1, 'I_2': I_2, 'summed': summed,
+                               'fluct': fluct}
+                fluct_df = fluct_df.append(family_dict, ignore_index=True)
+
+    return fluct_df

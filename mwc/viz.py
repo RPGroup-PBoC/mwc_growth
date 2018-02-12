@@ -9,12 +9,13 @@ import numpy as np
 import cairosvg
 import os
 import matplotlib.pyplot as plt
+import matplotlib
 from scipy.signal import gaussian, convolve
 
 
-def pboc_style(return_colors=True):
+def pub_style(return_colors=True):
     """
-    Sets the plotting style.
+    Sets the style to the publication style
 
     Parameters
     ----------
@@ -48,7 +49,49 @@ def pboc_style(return_colors=True):
         return colors
 
 
+def personal_style():
+    """
+    Sets the plotting style to my personal preference.
+    """
+    rc = {'axes.facecolor': 'none',
+          'font.family': 'Inconsolata',
+          'axes.grid': True,
+          'axes.edgecolor': 'slategray',
+          'axes.spines.right': False,
+          'axes.spines.top': False,
+          'axes.axisbelow': True,
+          'axes.linewidth': 0.5,
+          'axes.titleweight': 'bold',
+          'axes.titlesize': 8,
+          'axes.grid': True,
+          'grid.linestyle': '-',
+          'grid.linewidth': 0.5,
+          'grid.alpha': 0.5,
+          'grid.color': 'slategray',
+          'axes.labelsize': 8,
+          'xtick.labelsize': 8,
+          'ytick.labelsize': 8,
+          'legend.facecolor': 'ffffff',
+          'legend.fontsize': 8,
+          'xtick.color': '#4b4b4b',
+          'ytick.color': '#4b4b4b',
+          'axes.xmargin': 0.01,
+          'axes.ymargin': 0.01,
+          'figure.dpi': 150}
+
+    plt.rc('mathtext', fontset='dejavuserif', sf='sans')
+    matplotlib.style.use(rc)
+    sns.set_palette('mako_r')
+
+
+def despine():
+    """
+    Executes a seaborn despining function with my prefered offset and trimming.
+    """
+    sns.despine(offset=10, trim=True)
+
 # Bokeh plotting utilities
+
 
 def boilerplate(**kwargs):
     """
