@@ -157,7 +157,8 @@ def compute_fluctuations(dilution_df, auto_val, multi_xy=True):
     grouped = dilution_df.groupby(groupby)
     for g, d in grouped:
         if len(d) == 2:  # Ensure only single successful divisions.
-            ints = d['fluor1_mean_death'].values - auto_val
+            ints = (d['fluor1_mean_death'].values -
+                    auto_val) * d['death_area'].values
             if (ints > 0).all() == True:
                 I_1, I_2 = ints
                 summed = np.sum(ints)

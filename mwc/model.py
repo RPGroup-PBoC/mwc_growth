@@ -9,7 +9,7 @@ import scipy.optimize
 
 class MWC(object):
     R"""
-    A base class for the Monod - Wyman - Changeaux model for
+    A base class for the Monod - Wyman - Changeux model for
     allostery.
     """
 

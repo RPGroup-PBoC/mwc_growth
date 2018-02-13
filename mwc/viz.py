@@ -60,10 +60,12 @@ def personal_style():
           'axes.spines.right': False,
           'axes.spines.top': False,
           'axes.axisbelow': True,
-          'axes.linewidth': 0.5,
+          'axes.linewidth': 0.75,
           'axes.titleweight': 'bold',
           'axes.titlesize': 8,
           'axes.grid': True,
+          'lines.linewidth': 1.2,
+          'lines.dash_capstyle': 'round',
           'grid.linestyle': '-',
           'grid.linewidth': 0.5,
           'grid.alpha': 0.5,
@@ -81,17 +83,19 @@ def personal_style():
 
     plt.rc('mathtext', fontset='dejavuserif', sf='sans')
     matplotlib.style.use(rc)
-    sns.set_palette('mako_r')
+    russian_flat = ['#303952', '#3dc1d3', '#e66767', '#f8a5c2', '#778beb']
+    sns.set_palette(russian_flat)
 
 
-def despine():
+def format_axes():
     """
     Executes a seaborn despining function with my prefered offset and trimming.
     """
-    sns.despine(offset=10, trim=True)
+    sns.despine(offset=7, trim=True)
+    plt.tight_layout()
+
 
 # Bokeh plotting utilities
-
 
 def boilerplate(**kwargs):
     """
