@@ -57,7 +57,7 @@ for ch in ff_channels:
 
 
 # %% Rename files to SuperSegger requirements.
-samples = ['growth', 'snaps']
+samples = ['growth']
 snap_groups = []
 for i, s in enumerate(tqdm.tqdm(samples)):
     samp_files = glob.glob('{0}*{1}*.TIF'.format(data_dir, s))
@@ -100,8 +100,6 @@ for i, s in enumerate(tqdm.tqdm(samples)):
         # Define the new name that's compatible with SuperSegger
         new_name = '{0}_{1}_{2}_{3}ngmL_t{4:05d}xy{5:03d}c{6}.tif'.format(
             DATE, ident, strain, atc_conc, time, pos, ch)
-
-        new_name
 
         # Peform the flatfield correction if necessary.
         if ch in ff_dict.keys():
@@ -156,9 +154,10 @@ for i, f in enumerate(growth_files):
     prefix = name[:-5]
     for ch in missing_channels:
         new_name = '{0}growth/{1}{2}.tif'.format(data_dir, prefix, ch)
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            skimage.io.imsave(new_name, zeros_im)
+        if os.path.exists(new_name) == False:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                skimage.io.imsave(new_name, zeros_im)
 
 # %% Partition growth groups into superseggable chunks.
 max_pos = int(np.sort(growth_files)
