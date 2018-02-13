@@ -25,14 +25,18 @@ ignored = {'.', '..', '.DS_Store'};
 
 CONST = loadConstants('100XEc');
 CONST.parallel.PARALLEL_FLAG = 1;
+CONST.parallel.xy_parallel = 1;
+CONST.parallel.parallel_pool_num = 48;
 CONST.trackFoci.numSpots = 0;
 CONST.align.ALIGN_FLAG = 1;
 CONST.trackOpti.REMOVE_STRAY = 1;
 cleanFlag = 0;
 
-samples = {'growth_0', 'growth_1','growth_2'};
+samples = {'growth_2', 'growth_0','growth_1'};
 
 for i=1:length(samples)
+	parpool(24);
+
     disp(samples{i})
     statement = ['Beginning segmentaton ', num2str(i), ' out of ',...
         num2str(length(samples))];
@@ -44,5 +48,6 @@ for i=1:length(samples)
 
     % Perform the segmentation.
     BatchSuperSeggerOpti(directory, 1, cleanFlag, CONST);
+delete(gcp('nocreate'));
 end
 disp('Finished!');

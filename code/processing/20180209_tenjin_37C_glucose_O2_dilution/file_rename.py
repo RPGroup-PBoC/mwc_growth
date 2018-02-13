@@ -57,7 +57,7 @@ for ch in ff_channels:
 
 
 # %% Rename files to SuperSegger requirements.
-samples = ['growth']
+samples = ['growth', 'snaps']
 snap_groups = []
 for i, s in enumerate(tqdm.tqdm(samples)):
     samp_files = glob.glob('{0}*{1}*.TIF'.format(data_dir, s))
