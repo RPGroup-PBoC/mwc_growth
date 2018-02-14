@@ -1,4 +1,6 @@
-<tag='REJECT'>
+---
+tag: rejected
+---
 
 # 2018-02-13 Dilution Experiment
 
