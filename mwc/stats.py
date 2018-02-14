@@ -216,19 +216,18 @@ def bin_by_events(df, bin_size, sortby='summed', average=['summed', 'fluct']):
         The average of the quantities in each bin. This is a list of lists.
     """
     num_quantities = len(average)
-    averages = [[None] * num_quantities]
 
     # Sort the dataframe.
     sorted_df = df.sort_values(sortby)
 
     # Set the bins.
     bins = np.arange(0, len(sorted_df) + bin_size, bin_size)
-
+    averages = {i: np.zeros(len(bins)) for _, i in enumerate(average)}
     # Iterate through each bin and compute the average quanities.
     for i in range(1, len(bins)):
         # Slice the data frame.
-        d = sorted_df.iloc[bins[i - 1]:bins[i]]
-
-        for j, quant in enumerate(average):
-            averages[j].append(d[quant].values().mean())
+        d = sorted_df.iloc[bins[i - 1]:bins[i]][average]
+        for k in d.keys():
+            val = np.mean(d[k].values)
+            averages[k][i] = val
     return averages

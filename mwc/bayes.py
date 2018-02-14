@@ -51,30 +51,29 @@ class DeterminsticCalibrationFactor(pm.Continuous):
     ----------
     """
 
-    def __init__(self, alpha=None, p=0.5, *args, **kwargs):
-        if alpha is None:
-            raise RuntimeError('variable alpha must be supplied')
+    def __init__(self, I_1=None, I_2=None, p=0.5, *args, **kwargs):
         super(DeterminsticCalibrationFactor, self).__init__(*args, **kwargs)
-        self.alpha = alpha = pm.theanof.floatX(tt.as_tensor_variable(alpha))
         self.p = p = pm.theanof.floatX(tt.as_tensor_variable(p))
+        self.I_1 = I_1
+        self.I_2 = I_2
 
     def logp(self, value):
-        I_1, I_2 = value
+        I_1 = self.I_1
+        I_2 = self.I_2
         p = self.p
-        alpha = self.alpha
         k = len(I_1)
 
         # Compute the copy numbers with the given alpha.
-        n1 = I_1 / alpha
-        n2 = I_2 / alpha
+        n1 = I_1 / value
+        n2 = I_2 / value
         ntot = n1 + n2
 
         # Compute the pieces of the posterior
         binom = tt.sum(tt.gammaln(ntot + 1)) - \
-            tt.sum(tt.gamaln(n1 + 1)) - tt.sum(tt.gammaln(n2 + 1))
-        prob = tt.sum(n1) * tt.log(p) + tt.sum(ntot) * tt.log(1 - p)
+            tt.sum(tt.gammaln(n1 + 1)) - tt.sum(tt.gammaln(n2 + 1))
+        prob = tt.sum(n1) * tt.log(p) + tt.sum(n2) * tt.log(1 - p)
 
-        return -k * tt.log(alpha) + binom + prob
+        return -k * tt.log(value) + binom + prob
 
 
 class Jeffreys(pm.Continuous):
@@ -254,7 +253,7 @@ def estimate_calibration_factor(I_1, I_2, p=0.5, return_eval=False):
 
     # Compute the hessian.
     hess = smnd.approx_hess([alpha_opt], deterministic_log_posterior,
-                            args=(I1, I2, p, False))
+                            args=(I_1, I_2, p, False))
     cov = -np.linalg.inv(hess)
     alpha_std = np.sqrt(cov[0])[0]
     if return_eval is True:
