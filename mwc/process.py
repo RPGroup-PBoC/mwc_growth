@@ -46,10 +46,10 @@ def clist_to_dataframe(clist_file, desired_props='default', added_props={},
         desired_props = ['Area birth', 'Area death', 'Cell ID',
                          'Cell birth time', 'Cell death time', 'Daughter1 ID',
                          'Daughter2 ID', 'Fluor1 mean death',
-                         'Fluor2 mean death', 'Mother ID']
+                         'Fluor2 mean death', 'Mother ID', 'Long axis (L) death',
+                         'Short axis death']
     defs = {key: value for value, key in enumerate(
         mat['def']) if key in desired_props}
-
     # Generate an empty DataFrame with the desired columns.
     for k, v in added_props.items():
         desired_props.append(k)
@@ -72,7 +72,11 @@ def clist_to_dataframe(clist_file, desired_props='default', added_props={},
         for x in excluded_props:
             df.drop(x, axis=1, inplace=True)
     new_cols = {nom: '_'.join(nom.split(' ')).lower() for nom in df.keys()}
+    new_cols['Long axis (L) death'] = 'long_axis_death'
     df.rename(columns=new_cols, inplace=True)
+
+    # Compute the aspect ratio.
+    df.loc[:, 'aspect_ratio'] = df['short_axis_death'] / df['long_axis_death']
     return df
 
 
@@ -121,6 +125,20 @@ def parse_clists(clists, parse_position=True, added_props={},
     return pd.concat(dfs, ignore_index=True)
 
 
+def morphological_filter(df, ip_dist, area_bounds=[1, 4], ar_bounds=[0.1, 0.5]):
+    """
+    """
+    # Calculate areas.
+    area_bounds = np.array(area_bounds) / ip_dist**2
+
+    _df = df.copy()
+    _df = _df[(_df['area_death'] >= area_bounds[0]) &
+              (_df['area_death'] <= area_bounds[1]) &
+              (_df['aspect_ratio'] >= ar_bounds[0]) &
+              (_df['aspect_ratio'] <= ar_bounds[1])]
+    return _df
+
+
 def compute_fluctuations(dilution_df, auto_val, multi_xy=True):
     """"
     Generates a new DataFrame containing the indivudual sister intensities,
@@ -131,7 +149,7 @@ def compute_fluctuations(dilution_df, auto_val, multi_xy=True):
     dilution_df : Pandas DataFrame
         The dataframe containing all lineage information. At a minimum,
         this must have the columns `mother_id`, `fluor1_mean_death`,
-        `death_area`. If multiple positions are to be processed, `position`
+        `area_death`. If multiple positions are to be processed, `position`
         must also be provided.
     auto_val : float
         The mean autofluorescence pixel intensity.
@@ -158,11 +176,11 @@ def compute_fluctuations(dilution_df, auto_val, multi_xy=True):
     for g, d in grouped:
         if len(d) == 2:  # Ensure only single successful divisions.
             ints = (d['fluor1_mean_death'].values -
-                    auto_val) * d['death_area'].values
-            if (ints > 0).all() == True:
+                    auto_val) * d['area_death'].values
+            if (ints >= 0).all() == True:
                 I_1, I_2 = ints
                 summed = np.sum(ints)
-                fluct = np.diff(ints)**2
+                fluct = (ints[0] - ints[1])**2
                 family_dict = {'I_1': I_1, 'I_2': I_2, 'summed': summed,
                                'fluct': fluct}
                 fluct_df = fluct_df.append(family_dict, ignore_index=True)

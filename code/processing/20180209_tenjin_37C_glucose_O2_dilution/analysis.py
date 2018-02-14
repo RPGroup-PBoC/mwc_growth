@@ -11,8 +11,13 @@ import mwc.process
 import mwc.stats
 import mwc.bayes
 import mwc.model
+import pymc3 as pm
+import os
 import seaborn as sns
 %matplotlib inline
+import imp
+imp.reload(mwc.process)
+imp.reload(mwc.bayes)
 
 # Define the experimental parameters.
 DATE = 20180209
@@ -24,8 +29,12 @@ MICROSCOPE = 'tenjin'
 # ############################
 # Nothing below here should change
 # ############################
+IP_DIST = 0.065
+if os.path.exists('./output') == False:
+    os.mkdir('./output')
 
 # %% Processing of data
+imp.reload(mwc.process)
 data_dir = '../../../data/images/{}_{}_{}C_{}_{}_dilution/'.format(
     DATE, MICROSCOPE, TEMP, CARBON, OPERATOR)
 
@@ -35,10 +44,14 @@ excluded_props = ['Fluor2 mean death']
 growth_df = mwc.process.parse_clists(
     growth_files, excluded_props=excluded_props)
 
-# %%
+# Apply a filter.
+growth_df = mwc.process.morphological_filter(growth_df, IP_DIST)
+
+# %% Look at the aspect ratio.
 imp.reload(mwc.process)
 snap_groups = glob.glob('{}/snaps*'.format(data_dir))
-excluded_props = ['Area death', 'Cell ID', 'Cell birth time', 'Cell death time',
+
+excluded_props = ['Area birth', 'Cell ID', 'Cell birth time', 'Cell death time',
                   'Daughter1 ID', 'Daughter2 ID', 'Mother ID']
 snap_groups
 snap_dfs = []
@@ -52,44 +65,45 @@ for i, s in enumerate(snap_groups):
     snap_dfs.append(_df)
 snap_df = pd.concat(snap_dfs, ignore_index=True)
 
-# %% Computation of fluctuations.
-mcherry_auto_val = np.mean(snap_df[snap_df['strain'] ==
-                                   'autofluorescence']['fluor1_mean_death'])
+# Apply area bounds.
+snap_df = mwc.process.morphological_filter(snap_df, IP_DIST)
 
+# %% Computation of fluctuations.
+imp.reload(mwc.process)
+auto_strain = snap_df[snap_df['strain'] == 'autofluorescence']
+mcherry_auto_val = np.mean(
+    auto_strain['fluor1_mean_death'])
 yfp_auto_val = np.mean(snap_df[snap_df['strain'] ==
                                'autofluorescence']['fluor2_mean_death'])
 fluct_df = mwc.process.compute_fluctuations(growth_df, mcherry_auto_val)
 fluct_df.to_csv('output/{}_{}_{}C_{}_{}_fluctuations.csv'.format(DATE,
-                                                                 MICROSCOPE, TEMP, CARBON, OPERATOR))
+                                                                 MICROSCOPE, TEMP,
+                                                                 CARBON, OPERATOR))
 
 # %% Estimate the calibration factor.
-alpha_opt, alpha_err = mwc.bayes.estimate_calibration_factor(growth_df['I_1'],
-                                                             growth_df['I_2'])
-
-
+with pm.Model() as model:
+    like = mwc.bayes.DeterminsticCalibrationFactor('alpha', I_1=fluct_df['I_1'].values,
+                                                   I_2=fluct_df['I_2'].values, testval=1)
+    trace = pm.sample(draws=5000, tune=5000, njobs=4)
+    trace_df = mwc.stats.trace_to_dataframe(trace, model)
+    stats = mwc.stats.compute_statistics(trace_df)
+alpha_opt = stats['mode'].values
+alpha_max = stats['hpd_max'].values
+alpha_min = stats['hpd_min'].values
+_ = pm.traceplot(trace)
+sns.despine(offset=5, trim=True)
 # %% Plot calibration factor summary statistic plot.
-
 # Set the ranges for the plots
-min_summed = growth_df['summed'].min()
-max_summed = growth_df['summed'].max()
+imp.reload(mwc.stats)
+min_summed = np.log10(fluct_df['summed'].min())
+max_summed = np.log10(fluct_df['summed'].max())
 summed_range = np.logspace(min_summed, max_summed, 500)
-min_alpha = alpha_opt - 0.75 * alpha_opt
-max_alpha = alpha_opt + 0.75 * alpha_opt
-alpha_range = np.linspace(min_alpha, max_alpha, 500)
-
-# Compute the gaussian approximation and normalize the log posterior
-approx_pdf = scipy.stats.norm.pdf(alpha_range, alpha_opt, alpha_err)
-
-# Evaluate the log posterior over the alpha range.
-log_post = np.zeros_like(alpha_range)
-for i, a in enumerate(alpha_range):
-    log_post[i] = mwc.bayes.deterministic_log_posterior(
-        a, growth_df['I_1'], growth_df['I_2'], neg=False)
-post = np.exp(log_post - np.sum(log_post))
+min_alpha = alpha_opt - alpha_opt * 0.5
+max_alpha = alpha_opt + alpha_opt * 0.5
 
 # Bin the growth data for a sanity check.
 bin_size = 50  # arbitrary choice.
-avg_sum, avg_fluc = mwc.stats.bin_by_events(growth_df, bin_size)
+avg = mwc.stats.bin_by_events(fluct_df, bin_size)
 
 # Set up the figure canvas.
 fig, ax = plt.subplots(1, 2, figsize=(6, 3))
@@ -98,26 +112,30 @@ ax[0].set_yscale('log')
 ax[0].set_xlabel(r'$I_1 + I_2$ [a.u.]')
 ax[0].set_ylabel(r'$(I_1 - I_2)^2$ [a.u.]')
 ax[1].set_xlabel(r'$\alpha$ [a.u.] / mol.')
-ax[1].set_ylabel(r'$\propto f(\alpha)$')
+ax[1].set_ylabel('frequency')
+ax[0].set_title(r'$\alpha = %d^{+%d}_{-%d}$ a.u. /mol' %
+                (alpha_opt[0], alpha_max[0] - alpha_opt[0], alpha_opt[0] - alpha_min[0]))
+ax[1].set_title('sampling frequency')
+
 
 # Plot the fluctuations
-_ = ax[0].plot(growth_df['summed'], growth_df['fluct'], '.', color='slategray',
-               alpha=0.4, label='data')
-_ = ax[0].plot(avg_sum, avg_fluct, 'o', label='binned data')
-_ = ax[0].plot(summed_range, alpha_opt * summed_range, color='dodgerblue',
-               label='$\alpha$ = {0:0f} $\pm$ {1:0f} a.u. / mol.'.format(alpha_opt, alpha_err))
-_ = ax[0].legend(loc='upper left')
+_ = ax[0].plot(fluct_df['summed'], fluct_df['fluct'],
+               '.', ms=1, alpha=0.4, label='data')
+_ = ax[0].plot(avg['summed'], avg['fluct'], '.', label='binned data')
+_ = ax[0].plot(summed_range, alpha_opt * summed_range, label='fit')
+_ = ax[0].legend()
 
 # Plot the posterior and approximation.
-_ = ax[1].plot(alpha_range, post, color='dodgerblue', label='posterior')
-_ = ax[1].fill_between(alpha_range, post, color='dodgerblue', alpha=0.4,
-                       label='__nolegend__')
-_ = ax[1].plot(alpha_range, approx_pdf, '--', lw=1,
-               color='tomato', label='Gaussian approx.')
-_ = ax[1].legend(loc='upper right')
+_ = ax[1].hist(trace_df['alpha'], bins=75, alpha=0.5,
+               normed=True)
+# Plot the mode and HPD ontop of the histogram
+ylim = ax[1].get_ylim()[1] / 2
+_ = ax[1].plot([alpha_min, alpha_max], [ylim, ylim], color='tomato')
+_ = ax[1].plot(alpha_opt, ylim, 'o', color='tomato')
 
 # Format and save
-sns.despine(offset=5, trim=True)
+ax[1].set_xlim([min_alpha, max_alpha])
+sns.despine(offset=5)
 plt.tight_layout()
 plt.savefig('output/{}_{}_{}C_{}_{}_calibration_factor.png'.format(DATE, MICROSCOPE, TEMP,
                                                                    CARBON, OPERATOR),
@@ -125,9 +143,10 @@ plt.savefig('output/{}_{}_{}C_{}_{}_calibration_factor.png'.format(DATE, MICROSC
 
 # %% Compute the fold-change for the other samples.
 # Subtract the autofluorescence from the snap dataframe.
-snap_df['fluor1_sub'] = snap_df['death_area'] * \
+snap_df['fluor1_sub'] = snap_df['area_death'] * \
     (snap_df['fluor1_mean_death'] - mcherry_auto_val)
-snap_df['fluor2_sub'] = snap_df['death_area'] * \
+
+snap_df['fluor2_sub'] = snap_df['area_death'] * \
     (snap_df['fluor2_mean_death'] - yfp_auto_val)
 
 # Compute the mean expression for ΔLacI.
@@ -135,7 +154,7 @@ mean_delta_yfp = snap_df[snap_df['strain'] == 'deltaLacI']['fluor2_sub'].mean()
 
 # Group the dilution strains by their atc concentration.
 dilution = snap_df[snap_df['strain'] == 'dilution']
-grouped = dilution.groupby('atc_conc_ngmL')
+grouped = dilution.groupby('atc_conc_ngml')
 
 # Set up the fold-change dataframe.
 fc_df = pd.DataFrame([], columns=['atc_conc_ngmL',
@@ -148,7 +167,7 @@ for g, d in grouped:
     fc = mean_yfp / mean_delta_yfp
     conc_dict = {'atc_conc_ngmL': g, 'mean_repressors': mean_rep, 'mean_yfp': mean_yfp,
                  'fold_change': fc}
-    fc_df = fc.append(conc_dict, ignore_index=True)
+    fc_df = fc_df.append(conc_dict, ignore_index=True)
 
 # Save the fold-change Dataframe to output.
 fc_df.to_csv('output/{}_{}_{}C_{}_{}_foldchange.csv'.format(DATE,
@@ -180,9 +199,11 @@ ax.set_ylabel('fold-change')
 ax.set_ylim([1E-4, 1.2])
 # Plot the theory and data.
 _ = ax.plot(rep_range, theo_fc, label='prediction')
-_ = ax.plot(fc_df['mean_repressors'], fc_df['fold_change'], 'o', label='data')
+_ = ax.plot(fc_df['mean_repressors'],
+            fc_df['fold_change'], '.', label='data')
 _ = ax.legend()
 mwc.viz.format_axes()
 plt.tight_layout()
 plt.savefig('output/{}_{}_{}C_{}_{}_foldchange.png'.format(DATE, MICROSCOPE,
-                                                           TEMP, CARBON, OPERATOR), bbox_inches='tight', transparent=True)
+                                                           TEMP, CARBON, OPERATOR),
+            bbox_inches='tight', transparent=True)
