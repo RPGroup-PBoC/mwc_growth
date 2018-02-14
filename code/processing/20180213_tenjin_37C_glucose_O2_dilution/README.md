@@ -5,7 +5,7 @@ tag: rejected
 # 2018-02-13 Dilution Experiment
 
 <div class='alert alert-warning'>
-**Status**: REJECTED <br/>
+**Status:**  REJECTED <br/>
 This dataset has considerable issues and should not used for any further analysis.</div>
 
 ## Purpose
