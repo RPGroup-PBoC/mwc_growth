@@ -20,12 +20,12 @@ DATE = 20180213
 TEMP = 37  # in °C
 CARBON = 'glucose'
 OPERATOR = 'O2'
-MICROSCOPE = 'tenjin'
+MICROSCOPE = 'hermes'
 
 # ############################
 # Nothing below here should change
 # ############################
-IP_DIST = 0.065
+IP_DIST = 0.063
 if os.path.exists('./output') == False:
     os.mkdir('./output')
 
@@ -34,7 +34,7 @@ data_dir = '../../../data/images/{}_{}_{}C_{}_{}_dilution/'.format(
     DATE, MICROSCOPE, TEMP, CARBON, OPERATOR)
 
 # Extract file names and parse.
-growth_files = glob.glob('{}growth*/xy*/clist.mat'.format(data_dir))
+growth_files = glob.glob('{}/*growth*/xy*/clist.mat'.format(data_dir))
 excluded_props = ['Fluor2 mean death']
 growth_df = mwc.process.parse_clists(
     growth_files, excluded_props=excluded_props)
@@ -43,21 +43,18 @@ growth_df = mwc.process.parse_clists(
 growth_df = mwc.process.morphological_filter(growth_df, IP_DIST)
 
 # %% Look at the aspect ratio.
-snap_groups = glob.glob('{}/snaps*'.format(data_dir))
+snap_groups = glob.glob('{}/*snaps*'.format(data_dir))
 excluded_props = ['Area birth', 'Cell ID', 'Cell birth time', 'Cell death time',
                   'Daughter1 ID', 'Daughter2 ID', 'Mother ID']
 snap_groups
 snap_dfs = []
 for i, s in enumerate(snap_groups):
-    _, strain, atc_conc = s.split('/')[-1].split('_')
+    _, _, strain, atc_conc, _ = s.split('/')[-1].split('_')
     atc_conc = float(atc_conc.split('ngmL')[0])
     added_props = {'strain': strain, 'atc_conc_ngmL': atc_conc}
     clists = glob.glob('{}/xy*/clist.mat'.format(s))
     _df = mwc.process.parse_clists(clists, added_props=added_props,
                                    excluded_props=excluded_props)
-
-    print(added_props, len(_df))
-
     snap_dfs.append(_df)
 snap_df = pd.concat(snap_dfs, ignore_index=True)
 

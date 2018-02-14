@@ -53,7 +53,7 @@ def personal_style():
     """
     Sets the plotting style to my personal preference.
     """
-    rc = {'axes.facecolor': 'none',
+    rc = {'axes.facecolor': '#EAECEE',
           'font.family': 'Inconsolata',
           'axes.grid': True,
           'axes.edgecolor': 'slategray',
@@ -69,7 +69,7 @@ def personal_style():
           'grid.linestyle': '-',
           'grid.linewidth': 0.5,
           'grid.alpha': 0.5,
-          'grid.color': 'slategray',
+          'grid.color': '#B9BBBC',
           'axes.labelsize': 8,
           'xtick.labelsize': 8,
           'ytick.labelsize': 8,
@@ -83,8 +83,8 @@ def personal_style():
 
     plt.rc('mathtext', fontset='dejavuserif', sf='sans')
     matplotlib.style.use(rc)
-    russian_flat = ['#303952', '#3dc1d3', '#e66767', '#f8a5c2', '#778beb']
-    sns.set_palette(russian_flat)
+    flat = ['#34495e', '#c0392b', '#3498db', '#27ae60', '#7B1FA2', '#d35400']
+    sns.set_palette(flat)
 
 
 def format_axes():
