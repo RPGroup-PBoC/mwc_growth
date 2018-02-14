@@ -14,8 +14,7 @@ import mwc.image
 skimage.io.use_plugin('freeimage')
 
 # Set the experiment parameters.
-DATE = 20180209
-incorr_DATE = 201802089  # to correct for a typo
+DATE = 20180213
 TEMP = 37  # in °C
 CARBON = 'glucose'
 MICROSCOPE = 'tenjin'
@@ -35,13 +34,13 @@ selem = skimage.morphology.square(3)
 #%% Create flatfield images.
 field_avgs = {}
 noise_avgs = {}
-ff_channels = []
+ff_channels = ['mCherry', 'YFP']
 ff_dict = {i + 2: ch for i, ch in enumerate(ff_channels)}
 for ch in ff_channels:
     # Grab all of the ff images.
-    noise_files = glob.glob('{0}{1}_camera_noise_w{2}*.TIF'.format(data_dir, incorr_DATE,
+    noise_files = glob.glob('{0}{1}_camera_noise_w{2}*.TIF'.format(data_dir, DATE,
                                                                    channel_dict[ch] - 1))
-    field_files = glob.glob('{0}{1}_fluorescent_slide_*{2}*.TIF'.format(data_dir, incorr_DATE,
+    field_files = glob.glob('{0}{1}_fluorescent_slide_*{2}*.TIF'.format(data_dir, DATE,
                                                                         ch))
     # Load the images.
     noise_ims = skimage.io.ImageCollection(noise_files, conserve_memory=False)
@@ -77,6 +76,9 @@ for i, s in enumerate(tqdm.tqdm(samples)):
                 _, ident, strain, atc_conc, ch, pos = f.split(
                     '/')[-1].split('_')
                 atc_conc = int(atc_conc.split('ngmL')[0])
+            elif 'growth_fluo' in f:
+                 _, ident, strain, ch, pos, _ = f.split('/')[-1].split('_')
+                 atc_conc = 'mixed'
             else:
                 _, ident, strain, ch, pos = f.split('/')[-1].split('_')
                 atc_conc = 'mixed'
