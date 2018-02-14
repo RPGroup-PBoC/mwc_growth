@@ -106,20 +106,28 @@ for i, s in enumerate(tqdm.tqdm(samples)):
         # Peform the flatfield correction if necessary.
         if ch in ff_dict.keys():
             im = skimage.io.imread(f)
+            im_shape = np.shape(im)
+            im_center = np.round([im_shape[0] / 2, im_shape[1] / 2])
             ff_im = mwc.image.generate_flatfield(im, noise_avgs[ch], field_avgs[ch],
                                                  median_filt=False)
             ff_filt = scipy.ndimage.median_filter(ff_im, footprint=selem)
 
             # Convert to 16 bit.
             ff_im = np.round(ff_filt).astype(np.uint16)
+            im_crop = ff_im[im_center[1]-250:im_center[1]+250, im_center[0]-250:im_center[0]+250]
 
             # Save image in correct folder.
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 skimage.io.imsave(
-                    '{0}{1}/{2}'.format(data_dir, s, new_name), ff_im)
+                    '{0}{1}/{2}'.format(data_dir, s, new_name), im_crop)
         else:
-            shutil.copy(f, '{0}{1}/{2}'.format(data_dir, s, new_name))
+           im = skimage.io.imread(f)
+           im_shape = np.shape(im)
+           im_center = np.round([im_shape[0] / 2, im_shape[1] / 2])
+           im_crop = im[im_center[1] - 250:im_center[1] + 250, im_center[0]-250:im_center[0]+250]
+           skimage.io.imsave('{0}{1}/{2}'.format(data_dir, s, new_name), im_crop)
+ 
 
 
 # Make a directory for the originals and move them there.
