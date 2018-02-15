@@ -1,9 +1,14 @@
 ---
-tag:
+tag: accepted
 ---
 
 # 2018-02-14 Dilution Experiment
 
+<div class='alert alert-info'>
+
+**Status:** ACCCEPTED
+
+</div>
 
 ## Purpose
 This experiment served as another diagnostic test of using an Hg lamp for illumination.
@@ -31,11 +36,11 @@ This experiment served as another diagnostic test of using an Hg lamp for illumi
 ## Analysis Files
 
 **Calibration Factor Determination**
-![](output/20180214_tenjin_37C_glucose_O2_calibration_factor.png)
+![](output/20180214_hermes_37C_glucose_O2_calibration_factor.png)
 
 
 **Fold-change**
-![](output/20180214_tenjin_37C_glucose_O2_foldchange.png)
+![](output/20180214_hermes_37C_glucose_O2_foldchange.png)
 
 
 ## Experimental Protocol
