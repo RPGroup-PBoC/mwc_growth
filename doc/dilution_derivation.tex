@@ -1,0 +1,209 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Derivation and estimation of a fluorescence calibration factor}
+
+\subsection*{Derivation of $\alpha$}
+
+Imagine that we have a cell that has a fixed number of fluorescent proteins.  As this cell divides, these proteins will be Binomially partitioned into the two daughter cells. By examining the difference in fluorescence between the two daughters, we can determine just how "bright" a single molecule should be.
+
+We can begin by positing that the fluorescence is conserved (production and degradation rates are 0). Mathematically, we can say that
+
+\begin{equation}
+I_\text{tot} = I_1 + I_2
+\end{equation}
+
+where $I_\text{tot}$ is the total fluorescence of the mother cell and $I_1$ and
+$I_2$ are the intensities of the two daugher cells. As we know this
+fluorescence comes from a mix of the background fluorescence and the
+fluorescence of the proteins themselves, we can write that the total intensitiy
+of the mother cell should be proportional to the total number of proteins
+$N_\text{tot}$,
+
+\begin{equation}
+I_\text{tot} = \alpha N_\text{tot},
+\end{equation}
+
+assuming (for now) that the background fluorescence and the error in our measurement is zero. Assuming that there is a single fluroescence calibration factor and that it has the same value from cell to cell, we can write Eq. 2 for the daughter cells as
+
+\begin{equation}
+I_1 = \alpha N_1\,\, ; \,\, I_2 = \alpha N_2
+\end{equation}
+
+which follows the assumption that the protein copy number is conserved as well,
+
+\begin{equation}
+N_\text{tot} = N_1 + N_2 \tag{5}.
+\end{equation}
+
+When a cell divides, the distribution of the proteins into the two daughter cells is binomial with a partitioning probability $p$,
+
+\begin{equation}
+P(n \, \vert \, N_\text{tot}) = {N_\text{tot}! \over n! (N_\text{tot} - n)!} p^{n}(1 - p)^{N_\text{tot} - n}, \tag{6}
+\end{equation}
+
+Where we've generalized $N_1$ or $N_2$ as $n$. To examine how the proteins were partitioned amongst the daughter cells, we can look at how different the intensities are between them and relate it to the total intensity of the mother as
+
+\begin{equation}
+\langle(I_1 - I_2)^2\rangle = \langle (2I_1 - I_\text{tot})^2 \tag{7}
+\end{equation}
+
+which we can translate to protein copy numbers as
+
+\begin{equation}
+\langle(I_1 - I_2)^2\rangle = \langle\left(2\alpha N_1 - \alpha N_\text{tot}\right)^2\rangle. \tag{8}
+\end{equation}
+
+As we are discussing averages in this context, we can examine this more generally as
+
+\begin{equation}
+\langle(I_1 - I_2)^2 \rangle = \alpha(2\langle n \rangle - N_\text{tot})^2 \tag{9}
+\end{equation}
+
+To finish our calculation, we will have to know the mean and variance of the protein copy number upon division.
+
+While these two moments of the Binomial distribution are well know, it's useful to derive them explicitly. The mean can be calculated as
+
+\begin{equation}
+\langle n \rangle = \sum\limits_{n = 0}^{N_\text{tot}}n{{N_\text{tot}}\choose{n}}p^{n}(1-p)^{N_\text{tot} - n}. \tag{10}
+\end{equation}
+
+This can be simplified by realizing that
+
+\begin{equation}
+n {N_\text{tot}! \over n!(N_\text{tot} - n)!} = {N_\text{tot}! \over (n-1)!(N_\text{tot} - n)!} = {N_\text{tot}(N_\text{tot} - 1)! \over (n - 1)!(N_\text{tot} - n)!} \tag{11}
+\end{equation}
+
+We can now rewrite Eq. 10 as
+
+\begin{equation}
+\langle n \rangle = N_\text{tot} p \sum\limits_{n= 1}^{N_\text{tot}}{{N_\text{tot} - 1}\choose{n - 1}}p^{n - 1}(1 - p)^{N_\text{tot} - n} \tag{12}
+\end{equation}
+
+By defining $\nu = N_\text{tot} - 1$ and $k = n - 1$, we yield.
+
+\begin{equation}
+\langle n \rangle = N_\text{tot} p \overbrace{\sum\limits_{k= 0}^{\nu}{{\nu}\choose{k}}p^k(1 - p)^{\nu - k}}^\text{1} = N_\text{tot} p \tag{13}
+\end{equation}
+
+which is what we would naïvely expect. With this in hand, we can naïvely solve for the variance. We can solve for $\langle n^2 \rangle$ as we did above by realizing
+
+\begin{equation}
+\langle n^2 \rangle = N_\text{tot}p\sum\limits_{n=1}^{N_\text{tot}}n{{N_\text{tot} - 1}\choose{n -1}}p^{n-1}(1 - p)^{N_\text{tot} - n} = N_\text{tot}p\sum\limits_{k=0}^\nu(k + 1){{\nu}\choose{k}}p^k(1-p)^{\nu - k}  \tag{14},
+\end{equation}
+
+where we pull the same trick of reparameterizing Eq. 13 for $\nu = N_\text{tot} - 1$ and $k = n - 1$. Simplifying Eq. 14 generates
+
+\begin{equation}
+\langle n^2 \rangle = (N_\text{tot}p)^2 + N_\text{tot}p(1 - p) \tag{15}
+\end{equation}
+
+allowing us to express the variance $\sigma^2$ as
+
+\begin{equation}
+\sigma^2 = \langle n^2 \rangle - \langle n \rangle^2 = N_\text{tot}p(1 - p). \tag{16}
+\end{equation}
+
+We can make our calculation a bit less verbose aby assuming that partitioning of the proteins is always fair such that $p = 0.5$. This means our mean and variance can be more simply written as
+
+\begin{equation}
+\langle n \rangle = {N_\text{tot} \over 2}\, ; \, \langle n^2 \rangle= {N_\text{tot}+ N_\text{tot}^2 \over 4}. \tag{17, 18}
+\end{equation}
+
+We can now return to Eq. 9 and include the mean copy number,
+
+
+\begin{align}
+\langle (I_1 - I_2)^2 \rangle &= 4\alpha^2(\langle n^2 \rangle - \langle n \rangle N_\text{tot}) + (\alpha N_\text{tot})^2\\
+& = 4\alpha^2\left({N_\text{tot} + N_\text{tot}^2 \over 4} - {2N_\text{tot}^2 \over 4}\right) + \alpha^2N_\text{tot}^2 \tag{19}.
+\end{align}
+
+
+Some simplification brings us to our result,
+
+\begin{equation}
+\langle (I_1 - I_2)^2 \rangle = \alpha^2 N_\text{tot} = \alpha I_\text{tot}. \tag{20}
+\end{equation}
+
+This result tells us that the squared difference in the intensity between any two daughter cells should be linearly related to the intensity of the mother cell with a slope of the calibration factor $\alpha$.
+
+
+\subsection*{Bayesian parameter estimation of $\alpha$}
+
+There is a way in which the parameter can be estimated without relying on bins, yet makes the same simplifying assumption of the previous approach that the error in measurement is negligible. In this approach, we will not compute any means. Rather, we will use our knowledge of the binomial partitioning to derive the posterior.
+
+Given the intensity measurements for the cell division events, we can write Bayes' theorem as
+
+\begin{equation}
+P(\alpha\, \vert \, I_1, I_2) \propto P(I_1, I_2 \,\vert\, \alpha) P(\alpha).
+\tag{19}
+\end{equation}
+
+As we know that $I_2$ is related to $I_1$ from Eq. 1, we can simplify the likelihood in Eq. 19 as
+
+\begin{equation}
+P(\alpha \, \vert \, I_1, I_2) \propto P(I_1\, \vert\, I_2, \alpha) P(I_2 \, \vert\, \alpha) P(\alpha).
+\tag{20}
+\end{equation}
+
+We can treat the priors $P(I_2 \,\vert\, \alpha)$ and $P(\alpha)$ as improper uniform (as they could be anything), our posterior becomes proportional to our likelihood. We now need to develop a statistical model that describes the intensity of one daughter cell given the other intensity and a calibration factor. While this is not necessarily obvious, we know the statistical model for the partitioning of the *proteins* should be binomial. Through change of variables, we can rewrite our likelihood in terms of protein copy number as
+
+\begin{equation}
+P(I_1\,\vert\, I_2, \alpha) = P(N_1\,\vert\, \alpha) \left\vert {dN_1 \over dI_1} \right\vert.
+\tag{21}
+\end{equation}
+
+Given Eq. 2, the derivative in Eq. 21 can be calculated as
+
+\begin{equation}
+{dN_1 \over dI_1} = {d \over dI_1} {I_1 \over \alpha} = {1 \over \alpha}.
+\tag{22}
+\end{equation}
+
+Our likelihood can now be written as
+
+\begin{equation}
+P(\alpha\,\vert\, I_1, I_2) = {1 \over \alpha} P(N_1\,\vert\, I_2, \alpha).
+\tag{23}
+\end{equation}
+
+As $N_1$ is Binomially distributed from a pool $N_\text{tot}$,  the likelihood becomes
+
+\begin{equation}
+P(N_1 \,\vert\, I_2, \alpha) = {1\over \alpha}{N_\text{tot}! \over N_1! N_2!}p^{N_1}(1 - p)^{N_2}
+\tag{24}.
+\end{equation}
+
+If we take the deterministic result that
+
+\begin{equation}
+N_1 = {I_1 \over \alpha},
+\tag{25}
+\end{equation}
+
+and taking partitioning to be fair ($p = 0.5$), the posterior becomes
+
+\begin{equation}
+P(\alpha\,\vert\,I_1, I_2) = {1 \over \alpha}{{I_1 + I_2 \over \alpha}! \over {I_1 \over \alpha}! {I_2 \over \alpha}!}2^{-{I_1 + I_2 \over \alpha}}.
+\tag{26}
+\end{equation}
+
+The factorials in Eq. 26 are a little weird as the intensity is not a discrete quantity. However, these factorials can be approximated through gamma functions as
+
+\begin{equation}
+n! \approx n\Gamma(n) = \Gamma(n + 1).
+\tag{27}
+\end{equation}
+
+Applying Eq. 27 to Eq. 26, our complete and final posterior for a full set of cell divisions is
+
+\begin{equation}
+P(\alpha\, \vert \, [I_1, I_2]) \propto \alpha^{-k}\prod\limits_i^k{\Gamma({I_{1,i} + I_{2,i} \over \alpha} + 1) \over \Gamma({I_{1,i} \over \alpha} + 1) \Gamma({I_{2, i} \over \alpha} + 1)}2^{-{I_{1, i} + I_{2, i} \over \alpha}}.
+\tag{28}
+\end{equation}
+
+Since we have an analytical solution for the posterior, we don't need to rely on MCMC or other sampling methods to estimate the best-fit parameter for $\alpha$. Even better, this approach requires no dependence on how we bin the data!
+
+Below, we write a function that will compute this posterior much in the spirit of the linear regression log posterior.
+
+\subsection*{Inclusion of measurement noise}
+
+\subsection*{Confounding factors}

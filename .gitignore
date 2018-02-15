@@ -9,4 +9,7 @@ data/
 *.out
 *.log
 __pycache__
-
+*.aux
+*.bbl
+*.xml
+*.blg
