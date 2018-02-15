@@ -14,19 +14,18 @@ import mwc.model
 import pymc3 as pm
 import os
 import seaborn as sns
-imp.reload(mwc.viz)
 mwc.viz.personal_style()
 # Define the experimental parameters.
-DATE = 20180213
+DATE = 20180214
 TEMP = 37  # in °C
 CARBON = 'glucose'
 OPERATOR = 'O2'
-MICROSCOPE = 'hermes'
+MICROSCOPE = 'tenjin'
 
 # ############################
 # Nothing below here should change
 # ############################
-IP_DIST = 0.063
+IP_DIST = 0.065
 if os.path.exists('./output') == False:
     os.mkdir('./output')
 
@@ -35,7 +34,7 @@ data_dir = '../../../data/images/{}_{}_{}C_{}_{}_dilution/'.format(
     DATE, MICROSCOPE, TEMP, CARBON, OPERATOR)
 
 # Extract file names and parse.
-growth_files = glob.glob('{}/*growth*/xy*/clist.mat'.format(data_dir))
+growth_files = glob.glob('{}growth*/xy*/clist.mat'.format(data_dir))
 excluded_props = ['Fluor2 mean death']
 growth_df = mwc.process.parse_clists(
     growth_files, excluded_props=excluded_props)
@@ -44,18 +43,21 @@ growth_df = mwc.process.parse_clists(
 growth_df = mwc.process.morphological_filter(growth_df, IP_DIST)
 
 # %% Look at the aspect ratio.
-snap_groups = glob.glob('{}/*snaps*'.format(data_dir))
+snap_groups = glob.glob('{}/snaps*'.format(data_dir))
 excluded_props = ['Area birth', 'Cell ID', 'Cell birth time', 'Cell death time',
                   'Daughter1 ID', 'Daughter2 ID', 'Mother ID']
 snap_groups
 snap_dfs = []
 for i, s in enumerate(snap_groups):
-    _, _, strain, atc_conc, _ = s.split('/')[-1].split('_')
+    _, strain, atc_conc = s.split('/')[-1].split('_')
     atc_conc = float(atc_conc.split('ngmL')[0])
     added_props = {'strain': strain, 'atc_conc_ngmL': atc_conc}
     clists = glob.glob('{}/xy*/clist.mat'.format(s))
     _df = mwc.process.parse_clists(clists, added_props=added_props,
                                    excluded_props=excluded_props)
+
+    print(added_props, len(_df))
+
     snap_dfs.append(_df)
 snap_df = pd.concat(snap_dfs, ignore_index=True)
 
@@ -112,7 +114,7 @@ ax[1].set_title('sampling frequency')
 # Plot the fluctuations
 _ = ax[0].plot(fluct_df['summed'], fluct_df['fluct'],
                '.', ms=1, alpha=0.4, label='data')
-_ = ax[0].plot(avg['summed'], avg['fluct'], '.', label='binned data', ms=3)
+_ = ax[0].plot(avg['summed'], avg['fluct'], '.', label='binned data')
 _ = ax[0].plot(summed_range, alpha_opt * summed_range, label='fit')
 _ = ax[0].legend()
 
@@ -121,16 +123,16 @@ _ = ax[1].hist(trace_df['alpha'], bins=75, alpha=0.5,
                normed=True)
 # Plot the mode and HPD ontop of the histogram
 ylim = ax[1].get_ylim()[1] / 2
-_ = ax[1].plot([alpha_min, alpha_max], [ylim, ylim], color='firebrick')
-_ = ax[1].plot(alpha_opt, ylim, 'o', color='firebrick')
+_ = ax[1].plot([alpha_min, alpha_max], [ylim, ylim], color='tomato')
+_ = ax[1].plot(alpha_opt, ylim, 'o', color='tomato')
 
 # Format and save
 ax[1].set_xlim([min_alpha, max_alpha])
-sns.despine(offset=10)
+sns.despine(offset=5)
 plt.tight_layout()
 plt.savefig('output/{}_{}_{}C_{}_{}_calibration_factor.png'.format(DATE, MICROSCOPE, TEMP,
                                                                    CARBON, OPERATOR),
-            bbox_inches='tight')
+            bbox_inches='tight', transparent=True)
 
 # %% Compute the fold-change for the other samples.
 # Subtract the autofluorescence from the snap dataframe.
@@ -197,4 +199,4 @@ mwc.viz.format_axes()
 plt.tight_layout()
 plt.savefig('output/{}_{}_{}C_{}_{}_foldchange.png'.format(DATE, MICROSCOPE,
                                                            TEMP, CARBON, OPERATOR),
-            bbox_inches='tight')
+            bbox_inches='tight', transparent=True)
