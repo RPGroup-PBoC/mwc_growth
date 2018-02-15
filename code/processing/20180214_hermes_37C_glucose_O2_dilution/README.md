@@ -2,12 +2,12 @@
 tag:
 ---
 
-# 2018-02-13 Dilution Experiment
+# 2018-02-14 Dilution Experiment
 
 
 ## Purpose
-This experiment served as another diagnostic test of using an LED illumination
-source for the dilution experiment.
+This experiment served as another diagnostic test of using an Hg lamp for illumination.
+
 
 ## Strain Information
 
@@ -25,6 +25,8 @@ source for the dilution experiment.
 
 ## Notes & Observations
 * Cells were harvested at OD<sub>600nm</sub> ~ 0.32.
+* These samples sat at room temperature on the imaging substrate for around 45 minutes while another experiment was being set up on Tenjin. That experiment ended up not working, frustratingly, because of the control software.
+* There was no obvious extended growth of the cells while imaging the positions, although some cells had obviously divided. This may be a factor that needs to be corrected.
 
 ## Analysis Files
 

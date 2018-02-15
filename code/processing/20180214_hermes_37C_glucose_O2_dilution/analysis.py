@@ -20,7 +20,7 @@ DATE = 20180214
 TEMP = 37  # in °C
 CARBON = 'glucose'
 OPERATOR = 'O2'
-MICROSCOPE = 'tenjin'
+MICROSCOPE = 'hermes'
 
 # ############################
 # Nothing below here should change
