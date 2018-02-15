@@ -25,7 +25,7 @@ MICROSCOPE = 'hermes'
 # ############################
 # Nothing below here should change
 # ############################
-IP_DIST = 0.065
+IP_DIST = 0.063
 if os.path.exists('./output') == False:
     os.mkdir('./output')
 
@@ -128,11 +128,12 @@ _ = ax[1].plot(alpha_opt, ylim, 'o', color='tomato')
 
 # Format and save
 ax[1].set_xlim([min_alpha, max_alpha])
-sns.despine(offset=5)
+ax[0].set_xlim([100, 10**max_summed])
 plt.tight_layout()
+mwc.viz.format_axes()
 plt.savefig('output/{}_{}_{}C_{}_{}_calibration_factor.png'.format(DATE, MICROSCOPE, TEMP,
                                                                    CARBON, OPERATOR),
-            bbox_inches='tight', transparent=True)
+            bbox_inches='tight')
 
 # %% Compute the fold-change for the other samples.
 # Subtract the autofluorescence from the snap dataframe.
@@ -199,4 +200,4 @@ mwc.viz.format_axes()
 plt.tight_layout()
 plt.savefig('output/{}_{}_{}C_{}_{}_foldchange.png'.format(DATE, MICROSCOPE,
                                                            TEMP, CARBON, OPERATOR),
-            bbox_inches='tight', transparent=True)
+            bbox_inches='tight')
