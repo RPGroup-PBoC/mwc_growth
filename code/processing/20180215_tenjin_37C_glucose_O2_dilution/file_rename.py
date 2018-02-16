@@ -14,10 +14,10 @@ import mwc.image
 skimage.io.use_plugin('freeimage')
 
 # Set the experiment parameters.
-DATE = 20180214
+DATE = 20180215
 TEMP = 37  # in °C
 CARBON = 'glucose'
-MICROSCOPE = 'hermes'
+MICROSCOPE = 'tenjin'
 OPERATOR = 'O2'
 
 # Define the channels of interest
@@ -34,13 +34,13 @@ selem = skimage.morphology.square(3)
 #%% Create flatfield images.
 field_avgs = {}
 noise_avgs = {}
-ff_channels = ['mCherry', 'YFP']
+ff_channels = []
 ff_dict = {i + 2: ch for i, ch in enumerate(ff_channels)}
 for ch in ff_channels:
     # Grab all of the ff images.
-    noise_files = glob.glob('{0}{1}_camera_noise_*/Pos*/*{2}*.tif'.format(data_dir, DATE,
-                                                                   ch))
-    field_files = glob.glob('{0}{1}_fluorescent_slide_*/Pos*/*{2}*.tif'.format(data_dir, DATE,
+    noise_files = glob.glob('{0}{1}_camera_noise_w{2}*.TIF'.format(data_dir, DATE,
+                                                                   channel_dict[ch] - 1))
+    field_files = glob.glob('{0}{1}_fluorescent_slide_*{2}*.TIF'.format(data_dir, DATE,
                                                                         ch))
     # Load the images.
     noise_ims = skimage.io.ImageCollection(noise_files, conserve_memory=False)
@@ -59,80 +59,84 @@ for ch in ff_channels:
 samples = ['snaps', 'growth']
 snap_groups = []
 for i, s in enumerate(tqdm.tqdm(samples)):
-    samp_files = glob.glob('{0}*{1}*'.format(data_dir, s))
+    samp_files = glob.glob('{0}*{1}*.TIF'.format(data_dir, s))
+    samp_files
+    # Make sample folders if necessary.
+    if os.path.isdir('{0}{1}'.format(data_dir, s)) == False:
+        os.mkdir('{0}{1}'.format(data_dir, s))
 
-    for j, samp in enumerate(tqdm.tqdm(samp_files)):
-        # Get all of the images. 
-        images = glob.glob('{0}/Pos*/*.tif'.format(samp))
-        for k, snap in enumerate(images):
-            pos = int(snap.split('/')[-2].split('Pos')[1])
-            ch = snap.split('/')[-1].split('_')[-2]
-            if 'snaps' in snap:    
-                # Get the particulars of the file.
-                _, _, strain, atc, _ = snap.split('/')[-3].split('_')
-                atc_conc = int(atc.split('ng')[0])
-                time = 0
-                ident = 'snaps'
-            elif 'growth_fluo' in snap:
-                strain = 'dilution'
-                atc_conc = 'mixed'
-                time = 0
-                ident = 'growth_fluo'
+    for j, f in enumerate(tqdm.tqdm(samp_files)):
+        # Check if there are multiple wavelengths.
+        multi_wave = np.sum(
+            [i in f for i in channels]).astype('bool')
+
+        # Get the particulars of the file.
+        if multi_wave == True:
+            if 'ngml' in f:
+                _, ident, strain, atc_conc, ch, pos = f.split(
+                    '/')[-1].split('_')
+                atc_conc = int(atc_conc.split('ngml')[0])
             else:
-                strain = 'dilution'
+                _, ident, strain, ch, pos = f.split('/')[-1].split('_')
                 atc_conc = 'mixed'
-                time = int(snap.split('/')[-1].split('_')[1])
-                ident = 'growth'
-            
-            if os.path.isdir('{0}{1}'.format(data_dir, s)) == False:
-               os.mkdir('{0}{1}'.format(data_dir, s))
+            ch = int(ch[1])
+            pos = int(pos.split('s')[1].split('.TIF')[0])
+            time = 0
 
-            if s == 'snaps':
-                snap_group = 'snaps_{0}_{1}ngmL'.format(strain, atc_conc)
-                if snap_group not in snap_groups:
-                    snap_groups.append(snap_group)
+        else:
+            _, ident, pos, time = f.split('/')[-1].split('_')
+            pos = int(pos.split('s')[1])
+            time = int(time.split('t')[1].split('.TIF')[0])
+            ch = 1
+            strain = 'dilution'
+            atc_conc = 'mixed'
 
-            # Define the new name that's compatible with SuperSegger
-            new_name = '{0}_{1}_{2}_{3}ngmL_t{4:05d}xy{5:03d}c{6}.tif'.format(
-            DATE, ident, strain, atc_conc, time, pos, channel_dict[ch])
+        if s == 'snaps':
+            snap_group = 'snaps_{0}_{1}ngmL'.format(strain, atc_conc)
+            if snap_group not in snap_groups:
+                snap_groups.append(snap_group)
 
-            # Peform the flatfield correction if necessary.
-            if ch in ff_dict.keys():
-                im = skimage.io.imread(snap)
-                ff_im = mwc.image.generate_flatfield(im, noise_avgs[ch], field_avgs[ch],
+        # Define the new name that's compatible with SuperSegger
+        new_name = '{0}_{1}_{2}_{3}ngmL_t{4:05d}xy{5:03d}c{6}.tif'.format(
+            DATE, ident, strain, atc_conc, time, pos, ch)
+
+        # Peform the flatfield correction if necessary.
+        if ch in ff_dict.keys():
+            im = skimage.io.imread(f)
+            ff_im = mwc.image.generate_flatfield(im, noise_avgs[ch], field_avgs[ch],
                                                  median_filt=False)
-                ff_filt = scipy.ndimage.median_filter(ff_im, footprint=selem)
+            ff_filt = scipy.ndimage.median_filter(ff_im, footprint=selem)
 
-                # Convert to 16 bit.
-                ff_im = np.round(ff_filt).astype(np.uint16)
+            # Convert to 16 bit.
+            ff_im = np.round(ff_filt).astype(np.uint16)
 
-                # Save image in correct folder.
-                with warnings.catch_warnings():
-                    warnings.simplefilter("ignore")
-                    skimage.io.imsave(
-                        '{0}{1}/{2}'.format(data_dir, s, new_name), ff_im)
-            else:
-                shutil.move(snap, '{0}{1}/{2}'.format(data_dir, s, new_name))
+            # Save image in correct folder.
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                skimage.io.imsave(
+                    '{0}{1}/{2}'.format(data_dir, s, new_name), ff_im)
+        else:
+            shutil.copy(f, '{0}{1}/{2}'.format(data_dir, s, new_name))
 
 
 # Make a directory for the originals and move them there.
 if os.path.isdir('{0}originals'.format(data_dir)) == False:
     os.mkdir('{0}originals'.format(data_dir))
-files = glob.glob('{0}{1}*'.format(data_dir, DATE))
+files = glob.glob('{0}*.TIF'.format(data_dir))
 for f in files:
     shutil.move(f, '{0}originals'.format(data_dir))
 
 # %% Adjust the growth_fluo timepoints to the correct time.
-growth_files = glob.glob('{0}growth/*growth_dilution*.tif'.format(data_dir))
+growth_files = glob.glob('{0}growth/*dilution*.tif'.format(data_dir))
 growth_fluo_files = glob.glob('{0}growth/*growth_fluo*.tif'.format(data_dir))
 
 # Find the maximum time point for the growth experiment.
-max_time = int(np.sort(growth_files)[-1].split('/')[-1].split('_t')[-1].split('xy')[0])
+max_time = int(np.sort(growth_files)
+               [-1].split('/')[-1].split('_t')[-1].split('xy')[0])
 
 # Iterate through each growth fluo file and change the time and strain.
 for i, f in enumerate(growth_fluo_files):
-    _, _, _, _, atc, seqinfo = f.split('/')[-1].split('_')
-    ident = 'growth'
+    _, ident, _, atc, seqinfo = f.split('/')[-1].split('_')
     pos = seqinfo.split('xy')[1]
     new_name = '_'.join([str(DATE), ident, 'dilution', atc,
                          't{0:05d}xy{1}'.format(max_time, pos)])
@@ -185,4 +189,3 @@ os.rmdir('{0}snaps'.format(data_dir))
 print("""
 Finished! Thank you come again.
       """)
-

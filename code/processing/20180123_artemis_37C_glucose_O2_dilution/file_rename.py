@@ -14,14 +14,14 @@ import mwc.image
 skimage.io.use_plugin('freeimage')
 
 # Set the experiment parameters.
-DATE = 20180214
+DATE = 20180123
 TEMP = 37  # in °C
 CARBON = 'glucose'
-MICROSCOPE = 'hermes'
+MICROSCOPE = 'artemis'
 OPERATOR = 'O2'
 
 # Define the channels of interest
-channels = ['Brightfield', 'mCherry', 'YFP']
+channels = ['Brightfield', 'TRITC', 'YFP']
 channel_dict = {c: i + 1 for i, c in enumerate(channels)}
 
 # ################
@@ -34,13 +34,13 @@ selem = skimage.morphology.square(3)
 #%% Create flatfield images.
 field_avgs = {}
 noise_avgs = {}
-ff_channels = ['mCherry', 'YFP']
+ff_channels = ['TRITC', 'YFP']
 ff_dict = {i + 2: ch for i, ch in enumerate(ff_channels)}
 for ch in ff_channels:
     # Grab all of the ff images.
-    noise_files = glob.glob('{0}{1}_camera_noise_*/Pos*/*{2}*.tif'.format(data_dir, DATE,
+    noise_files = glob.glob('{0}{1}_{2}_camera_noise_*/Pos*/*{2}*.tif'.format(data_dir, DATE,
                                                                    ch))
-    field_files = glob.glob('{0}{1}_fluorescent_slide_*/Pos*/*{2}*.tif'.format(data_dir, DATE,
+    field_files = glob.glob('{0}{1}_{2}_fluorescent_slide_*/Pos*/*{2}*.tif'.format(data_dir, DATE,
                                                                         ch))
     # Load the images.
     noise_ims = skimage.io.ImageCollection(noise_files, conserve_memory=False)
@@ -70,7 +70,7 @@ for i, s in enumerate(tqdm.tqdm(samples)):
             if 'snaps' in snap:    
                 # Get the particulars of the file.
                 _, _, strain, atc, _ = snap.split('/')[-3].split('_')
-                atc_conc = int(atc.split('ng')[0])
+                atc_conc = float(atc.split('ng')[0])
                 time = 0
                 ident = 'snaps'
             elif 'growth_fluo' in snap:
