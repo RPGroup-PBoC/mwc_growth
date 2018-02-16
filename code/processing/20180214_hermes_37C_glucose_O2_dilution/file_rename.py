@@ -17,7 +17,7 @@ skimage.io.use_plugin('freeimage')
 DATE = 20180214
 TEMP = 37  # in °C
 CARBON = 'glucose'
-MICROSCOPE = 'tenjin'
+MICROSCOPE = 'hermes'
 OPERATOR = 'O2'
 
 # Define the channels of interest
@@ -38,10 +38,10 @@ ff_channels = ['mCherry', 'YFP']
 ff_dict = {i + 2: ch for i, ch in enumerate(ff_channels)}
 for ch in ff_channels:
     # Grab all of the ff images.
-    noise_files = glob.glob('{0}{1}_camera_noise_w{2}*.TIF'.format(data_dir, DATE,
-                                                                   channel_dict[ch] - 1))
-    field_files = glob.glob('{0}{1}_fluorescent_slide_*{2}*.TIF'.format(data_dir, DATE,
-                                                                        ch))
+    noise_files = glob.glob('{0}{1}_camera_noise_*/Pos*/*{2}*.tif'.format(data_dir, DATE,
+                                                                          channel_dict[ch] - 1))
+    field_files = glob.glob('{0}{1}_fluorescent_slide_*/Pos*/*{2}*.tif'.format(data_dir, DATE,
+                                                                               ch))
     # Load the images.
     noise_ims = skimage.io.ImageCollection(noise_files, conserve_memory=False)
     field_ims = skimage.io.ImageCollection(field_files, conserve_memory=False)
@@ -59,80 +59,65 @@ for ch in ff_channels:
 samples = ['snaps', 'growth']
 snap_groups = []
 for i, s in enumerate(tqdm.tqdm(samples)):
-    samp_files = glob.glob('{0}*{1}*.TIF'.format(data_dir, s))
-    samp_files
+    samp_files = glob.glob('{0}*{1}*'.format(data_dir, s))
     # Make sample folders if necessary.
-    if os.path.isdir('{0}{1}'.format(data_dir, s)) == False:
-        os.mkdir('{0}{1}'.format(data_dir, s))
+    ident = s.split('/')[-1][9:]
+    if os.path.isdir('{0}{1}'.format(data_dir, ident)) == False:
+        os.mkdir('{0}{1}'.format(data_dir, ident))
 
-    for j, f in enumerate(tqdm.tqdm(samp_files)):
-        # Check if there are multiple wavelengths.
-        multi_wave = np.sum(
-            [i in f for i in channels]).astype('bool')
-
-        # Get the particulars of the file.
-        if multi_wave == True:
-            if 'ngmL' in f:
-                _, ident, strain, atc_conc, ch, pos = f.split(
-                    '/')[-1].split('_')
-                atc_conc = int(atc_conc.split('ngmL')[0])
-            else:
-                _, ident, strain, ch, pos = f.split('/')[-1].split('_')
+    for j, samp in enumerate(tqdm.tqdm(samp_files)):
+        # Get all of the images.
+        images = glob.glob('{0}{1}/Pos*/*.tif'.format(data_dir, samp))
+        for k, snap in images:
+            pos = int(snap.split('/')[-2].split('Pos')[1])
+            ch = snap.split('/')[-1].split('_')[-2]
+            if 'snaps' in snap:
+                # Get the particulars of the file.
+                _, _, strain, atc, _ = snap.split('/')[-3].split('_')
+                atc_conc = float(atc_conc.split('ng')[0])
+                time = 0
+            elif 'growth_fluo' in snap:
+                strain = 'growth_fluo'
                 atc_conc = 'mixed'
-            ch = int(ch[1])
-            pos = int(pos.split('s')[1].split('.TIF')[0])
-            time = 0
+                time = 0
+            else:
+                strain = 'dilution'
+                atc_conc = 'mixed'
+                time = int(samp.split('/')[-1].split('_')[-1].split('.tif')[0])
 
-        else:
-            _, ident, pos, time = f.split('/')[-1].split('_')
-            pos = int(pos.split('s')[1])
-            time = int(time.split('t')[1].split('.TIF')[0])
-            ch = 1
-            strain = 'dilution'
-            atc_conc = 'mixed'
+            if s == 'snaps':
+                snap_group = 'snaps_{0}_{1}ngmL'.format(strain, atc_conc)
+                if snap_group not in snap_groups:
+                    snap_groups.append(snap_group)
 
-        if s == 'snaps':
-            snap_group = 'snaps_{0}_{1}ngmL'.format(strain, atc_conc)
-            if snap_group not in snap_groups:
-                snap_groups.append(snap_group)
+            # Define the new name that's compatible with SuperSegger
+            new_name = '{0}_{1}_{2}_{3}ngmL_t{4:05d}xy{5:03d}c{6}.tif'.format(
+                DATE, ident, strain, atc_conc, time, pos, ch)
 
-        # Define the new name that's compatible with SuperSegger
-        new_name = '{0}_{1}_{2}_{3}ngmL_t{4:05d}xy{5:03d}c{6}.tif'.format(
-            DATE, ident, strain, atc_conc, time, pos, ch)
+            # Peform the flatfield correction if necessary.
+            if ch in ff_dict.keys():
+                im = skimage.io.imread(snap)
+                ff_im = mwc.image.generate_flatfield(im, noise_avgs[ch], field_avgs[ch],
+                                                     median_filt=False)
+                ff_filt = scipy.ndimage.median_filter(ff_im, footprint=selem)
 
-        # Peform the flatfield correction if necessary.
-        if ch in ff_dict.keys():
-            im = skimage.io.imread(f)
-            im_shape = np.shape(im)
-            im_center = np.round([im_shape[0] / 2, im_shape[1] / 2])
-            ff_im = mwc.image.generate_flatfield(im, noise_avgs[ch], field_avgs[ch],
-                                                 median_filt=False)
-            ff_filt = scipy.ndimage.median_filter(ff_im, footprint=selem)
+                # Convert to 16 bit.
+                ff_im = np.round(ff_filt).astype(np.uint16)
 
-            # Convert to 16 bit.
-            ff_im = np.round(ff_filt).astype(np.uint16)
-            im_crop = ff_im[im_center[1] - 250:im_center[1] +
-                            250, im_center[0] - 250:im_center[0] + 250]
-
-            # Save image in correct folder.
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                skimage.io.imsave(
-                    '{0}{1}/{2}'.format(data_dir, s, new_name), im_crop)
-        else:
-            im = skimage.io.imread(f)
-            im_shape = np.shape(im)
-            im_center = np.round([im_shape[0] / 2, im_shape[1] / 2])
-            im_crop = im[im_center[1] - 250:im_center[1] +
-                         250, im_center[0] - 250:im_center[0] + 250]
-            skimage.io.imsave(
-                '{0}{1}/{2}'.format(data_dir, s, new_name), im_crop)
+                # Save image in correct folder.
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    skimage.io.imsave(
+                        '{0}{1}/{2}'.format(data_dir, ident, new_name), ff_im)
+            else:
+                shutil.move(
+                    snap, '{0}{1}/{2}'.format(data_dir, ident, new_name))
 
 
 # Make a directory for the originals and move them there.
 if os.path.isdir('{0}originals'.format(data_dir)) == False:
     os.mkdir('{0}originals'.format(data_dir))
-files = glob.glob('{0}*.TIF'.format(data_dir))
+files = glob.glob('{0}{1}*'.format(DATE))
 for f in files:
     shutil.move(f, '{0}originals'.format(data_dir))
 

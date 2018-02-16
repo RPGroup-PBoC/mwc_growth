@@ -200,6 +200,9 @@ ax.set_ylim([1E-4, 1.2])
 _ = ax.plot(rep_range, theo_fc, label='prediction')
 _ = ax.plot(fc_df['mean_repressors'],
             fc_df['fold_change'], '.', label='data')
+
+_ = ax.plot(2 * fc_df['mean_repressors'],
+            fc_df['fold_change'], '.', label=r'data corrected $\times$ 2')
 _ = ax.legend()
 mwc.viz.format_axes()
 plt.tight_layout()
