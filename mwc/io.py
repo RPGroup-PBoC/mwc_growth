@@ -14,7 +14,7 @@ def fetch_status(dir, file='README.md'):
     return True
 
 
-def pull_clist(src, dest=None, username, port):
+def pull_clist(src, username, port, dest):
     """
     Pulls the clist files from a target directory on delbrück to local.
 

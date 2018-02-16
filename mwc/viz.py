@@ -54,34 +54,35 @@ def personal_style():
     Sets the plotting style to my personal preference.
     """
     rc = {'axes.facecolor': '#EAECEE',
-          'font.family': 'Inconsolata',
+          'font.family': 'Arial',
+          'font.style': 'italic',
           'axes.grid': True,
           'axes.edgecolor': 'slategray',
           'axes.spines.right': False,
           'axes.spines.top': False,
           'axes.axisbelow': True,
           'axes.linewidth': 0.75,
-          'axes.titleweight': 'bold',
           'axes.titlesize': 8,
           'axes.grid': True,
           'lines.linewidth': 1.2,
           'lines.dash_capstyle': 'round',
           'grid.linestyle': '-',
-          'grid.linewidth': 0.5,
+          'grid.linewidth': 0.75,
           'grid.alpha': 0.5,
           'grid.color': '#B9BBBC',
           'axes.labelsize': 8,
           'xtick.labelsize': 8,
           'ytick.labelsize': 8,
-          'legend.facecolor': 'ffffff',
           'legend.fontsize': 8,
+          'legend.frameon': False,
           'xtick.color': '#4b4b4b',
           'ytick.color': '#4b4b4b',
           'axes.xmargin': 0.01,
           'axes.ymargin': 0.01,
           'figure.dpi': 150}
 
-    plt.rc('mathtext', fontset='dejavuserif', sf='sans')
+    # plt.rc('mathtext', fontset='dejavuserif', sf='sans')
+    plt.rc('text.latex', preamble=r'\usepackage{mathpazo}')
     matplotlib.style.use(rc)
     flat = ['#34495e', '#c0392b', '#3498db', '#27ae60', '#7B1FA2', '#d35400']
     sns.set_palette(flat)

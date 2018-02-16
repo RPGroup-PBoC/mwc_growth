@@ -15,9 +15,8 @@ import pymc3 as pm
 import os
 import seaborn as sns
 %matplotlib inline
-import imp
-imp.reload(mwc.process)
-imp.reload(mwc.bayes)
+mwc.viz.personal_style()
+
 
 # Define the experimental parameters.
 DATE = 20180209
@@ -139,7 +138,7 @@ sns.despine(offset=5)
 plt.tight_layout()
 plt.savefig('output/{}_{}_{}C_{}_{}_calibration_factor.png'.format(DATE, MICROSCOPE, TEMP,
                                                                    CARBON, OPERATOR),
-            bbox_inches='tight', transparent=True)
+            bbox_inches='tight')
 
 # %% Compute the fold-change for the other samples.
 # Subtract the autofluorescence from the snap dataframe.
@@ -206,4 +205,4 @@ mwc.viz.format_axes()
 plt.tight_layout()
 plt.savefig('output/{}_{}_{}C_{}_{}_foldchange.png'.format(DATE, MICROSCOPE,
                                                            TEMP, CARBON, OPERATOR),
-            bbox_inches='tight', transparent=True)
+            bbox_inches='tight')
