@@ -1,5 +1,9 @@
 ---
-status:
+status: questionable
+reason:
+  The doubling time of ~100 minutes is considerably above the expected value of
+  around 60 min grown at this temperature in this growth medium. This
+  experiment will have to be repeated to determine this data sets trustworthiness.
 ---
 
 # 2018-02-16 Growth Measurement
@@ -12,7 +16,7 @@ strains of interest in M9 + 0.5% glucose at 37°C.
 ## Strain information
 | Location | Plasmid | Genotype | Host Strain | Shorthand |
 | :------  | :------ | :------- | ----------: | --------: |
-| dilutin 1 - pos. 5  | `pZS3*PN25-tetR` | `galK<>25O2+11-YFP`   | HG105 | `dilution`  |
+| dilution 1 - pos. 5  | `pZS3*PN25-tetR` | `galK<>25O2+11-YFP`   | HG105 | `dilution`  |
 
 
 ## Titration Series
@@ -22,8 +26,14 @@ strains of interest in M9 + 0.5% glucose at 37°C.
 
 ## Notes & Observations
 * Initial inoculum for growth measurements was at an OD<sub>600nm</sub> ~ 0.96.
+* The doubling time of ~100 min is larger than the expected ~60 min that is standard
+in this growth medium and temperature. It is possible that the ATC slows the growth
+rate of this strain. This experiment should be repeated and other growth curves
+with different concentrations of ATC and IPTG should be measured. 
 
 ## Analysis Files
+
+![](output/20180216_37C_glucose_O2_growth.png)
 
 ## Experimental Protocol
 
@@ -40,3 +50,12 @@ strains of interest in M9 + 0.5% glucose at 37°C.
 6. Growth measurements were performed by puncturing the nylon cover with a pipette and withdrawing 500 µL of culture. This aliquot was then transferred to a plastic cuvette (2 mL maximal volume) and measured using a table-top spectrophotometer. An M9 blank was measured at each time point and used as a reference.
 
 ## Analysis Protocol
+
+1. The elapsed time was calculated manually in the spreadsheet and was exported
+to a `.csv` file.
+
+2. The data was read and was trimmed only to the region of absorbance between
+0.1 and 1.0 a.u. I defined exponential growth to be in this region.
+
+3. The initial absorbance (A<sub>0</sub>), growth constant (λ), and likelihood
+scale parameter (γ from a Cauchy likelihood) was inferred via MCMC.
