@@ -21,15 +21,19 @@ strains of interest in M9 + 0.5% glucose at 37°C.
 
 ## Titration Series
 
-**Anhydrotetracycline HCl (ATC) concentration [ng / mL] :** 5
-**Isopropylthiogalactopyranoside (IPTG) [mM] :** None
+| Inducer | Concentration |
+| :-----  | ------------: |
+| Anhydrotetracycline HCl (ATC) | 5 ng / mL |
+| Isopropylthiogalactopyranoside (IPTG) | 0 mM |
+
+
 
 ## Notes & Observations
 * Initial inoculum for growth measurements was at an OD<sub>600nm</sub> ~ 0.96.
 * The doubling time of ~100 min is larger than the expected ~60 min that is standard
 in this growth medium and temperature. It is possible that the ATC slows the growth
 rate of this strain. This experiment should be repeated and other growth curves
-with different concentrations of ATC and IPTG should be measured. 
+with different concentrations of ATC and IPTG should be measured.
 
 ## Analysis Files
 
