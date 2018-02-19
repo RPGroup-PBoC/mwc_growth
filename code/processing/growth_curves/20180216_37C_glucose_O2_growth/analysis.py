@@ -70,8 +70,6 @@ t_double = np.log(2) / modes['lambda']
 t_double_hpd = mwc.stats.compute_hpd(np.log(2) / trace_df['lambda'],
                                      mass_frac=0.95)
 
-t_double
-t_double_hpd
 #%% Plot the fit.
 fig = plt.figure(figsize=(5, 3))
 gs = gridspec.GridSpec(2, 4)
