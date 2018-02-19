@@ -21,7 +21,7 @@ DATE = 20180215
 TEMP = 37  # in °C
 CARBON = 'glucose'
 OPERATOR = 'O2'
-MICROSCOPE = 'tenjin'
+MICROSCOPE = 'hermes'
 
 # ############################
 # Nothing below here should change
@@ -36,6 +36,7 @@ data_dir = '../../../data/images/{}_{}_{}C_{}_{}_dilution/'.format(
 
 # Extract file names and parse.
 growth_files = glob.glob('{}growth*/xy*/clist.mat'.format(data_dir))
+
 excluded_props = ['Fluor2 mean death']
 growth_df = mwc.process.parse_clists(
     growth_files, excluded_props=excluded_props)
@@ -133,7 +134,7 @@ sns.despine(offset=5)
 plt.tight_layout()
 plt.savefig('output/{}_{}_{}C_{}_{}_calibration_factor.png'.format(DATE, MICROSCOPE, TEMP,
                                                                    CARBON, OPERATOR),
-            bbox_inches='tight', transparent=True)
+            bbox_inches='tight')
 
 # %% Compute the fold-change for the other samples.
 # Subtract the autofluorescence from the snap dataframe.
@@ -200,4 +201,4 @@ mwc.viz.format_axes()
 plt.tight_layout()
 plt.savefig('output/{}_{}_{}C_{}_{}_foldchange.png'.format(DATE, MICROSCOPE,
                                                            TEMP, CARBON, OPERATOR),
-            bbox_inches='tight', transparent=True)
+            bbox_inches='tight')

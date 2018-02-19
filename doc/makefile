@@ -1,1 +1,1 @@
-pdflatex growth.tex && biblatex growth && pdflatex growth.tex
+pdflatex growth.tex && bibtex growth && pdflatex growth.tex
