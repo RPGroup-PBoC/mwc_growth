@@ -193,12 +193,12 @@ n! \approx n\Gamma(n) = \Gamma(n+1),
 $${#eq:gamma_approx}
 to write our likelihood as
 $$
-f(I_1\vert \alpha, I_2) = {1 \over \alpha}{\Gamma({I_1 + I_2 \over \alpha} + 1) \over \Gamma({I_1 \over \alpha} + 1)\Gamma({I_2 \over \alpha} + 1)}2^{-(I_1 + I_2) / \alpha}.
+f(I_1\vert \alpha, I_2) = {1 \over \alpha}{\Gamma\left({I_1 + I_2 \over \alpha} + 1\right) \over \Gamma\left({I_1 \over \alpha} + 1\right)\Gamma\left({I_2 \over \alpha} + 1\right)}2^{-(I_1 + I_2) / \alpha}.
 $${#eq:single_div_post}
 As we have neglected the prior distributions for $I_2$ and $\alpha$, [@eq:single_div_post] happens to be our posterior distribution for a single division event. To generalize this to a set of $k$ divisions, we
 can say
 $$
-g(\alpha\vert [I_1, I_2]) = {1 \over \alpha^k}\prod\limits_{i=0}^k{\Gamma({I_{1,i} + I_{2,i} \over \alpha} + 1) \over \Gamma({I_{1,i} \over \alpha} + 1)\Gamma({I_{2,i} \over \alpha} + 1)}{2^{-(I_{1,i} + I_{2, i} / \alpha)}}.
+g(\alpha\vert [I_1, I_2]) = {1 \over \alpha^k}\prod\limits_{i=0}^k{\Gamma\left({I_{1,i} + I_{2,i} \over \alpha} + 1\right) \over \Gamma\left({I_{1,i} \over \alpha} + 1\right)\Gamma\left({I_{2,i} \over \alpha} + 1 \right)}{2^{-(I_{1,i} + I_{2, i} / \alpha)}}.
 $${#eq:posterior}
 
 

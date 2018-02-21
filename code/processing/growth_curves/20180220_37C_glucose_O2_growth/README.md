@@ -1,6 +1,9 @@
 ---
-status:
+status: rejected
 reason:
+  This experiment reached an odd saturation point (OD ~ 0.7) and showed a
+  very long doubling time, far beyond what is expected indicating some other
+  issue.
 ---
 
 # 2018-02-20 Growth Measurement
@@ -28,15 +31,18 @@ strains of interest in M9 + 0.5% glucose at 37°C.
 ## Notes & Observations
 * Initial inoculum for growth measurements was at an OD<sub>600nm</sub> ~ 1.14.
 * 1:100 dilution was performed at 08h57m
+* The cultures grew a bit strangely with them saturating at OD<sub>600nm</sub>
+~ 0.7. The doubling time was also much longer than anticipated. For this reason
+the data set was ignored.
 
 
 ## Analysis Files
 
-![]()
+![](20180220_37C_glucose_O2_growth.png)
 
 ## Experimental Protocol
 
-1. Cells from an overnight saturated LB culture were diluted 1:1000 into 3 mL  of M9 + 0.5% glucose + 5 ng/mL ATC + chloramphenicol in a 15 mL Falcon tube. The inoculum was stored at room temperature for several hours prior to the inoculation.
+1. Cells from an overnight saturated LB culture were diluted 1:1000 into 3 mL  of M9 + 0.5% glucose + chloramphenicol in a 15 mL Falcon tube. The inoculum was stored at room temperature for several hours prior to the inoculation.
 
 2. Cells grew overnight (13h) at 37°C shaking at 225 RPM.
 
