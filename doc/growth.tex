@@ -9,6 +9,10 @@
 \usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{mathpazo}
+\usepackage{sectsty}
+\subsectionfont{\normalfont\sffamily\itshape}
+\subsubsectionfont{\smallfont\sffamily}
+\sectionfont{\normalfont\sffamily\bfseries}
 \usepackage[
 	backend=bibtex,
 	bibencoding=ascii,
@@ -32,7 +36,6 @@
 ]{caption}
 \newcommand{\letter}[1]{(#1)} % For main text. Ex: As shown in Fig. 12A
 \newcommand{\letterParen}[1]{(#1)} % For captions. Ex: (A) Low limit and (B) high limit
-\setlength\parindent{0pt}
 \begin{document}
 \include{dilution_derivation}
 \end{document}

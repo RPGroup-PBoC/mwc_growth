@@ -86,14 +86,15 @@ def personal_style():
     matplotlib.style.use(rc)
     flat = ['#34495e', '#c0392b', '#3498db', '#27ae60', '#7B1FA2', '#d35400']
     sns.set_palette(flat)
+    return flat
 
 
-def format_axes():
+def format_axes(pub_style=False):
     """
     Executes a seaborn despining function with my prefered offset and trimming.
     """
-    sns.despine(offset=7, trim=True)
-    plt.tight_layout()
+    if pub_style == False:
+        sns.despine(offset=7)
 
 
 # Bokeh plotting utilities

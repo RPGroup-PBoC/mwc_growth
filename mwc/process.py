@@ -47,7 +47,8 @@ def clist_to_dataframe(clist_file, desired_props='default', added_props={},
                          'Cell birth time', 'Cell death time', 'Daughter1 ID',
                          'Daughter2 ID', 'Fluor1 mean death',
                          'Fluor2 mean death', 'Mother ID', 'Long axis (L) death',
-                         'Short axis death']
+                         'Short axis death', 'Fluor1 bg death', 'Fluor2 bg death']
+
     defs = {key: value for value, key in enumerate(
         mat['def']) if key in desired_props}
     # Generate an empty DataFrame with the desired columns.
@@ -139,7 +140,8 @@ def morphological_filter(df, ip_dist, area_bounds=[1, 4], ar_bounds=[0.1, 0.5]):
     return _df
 
 
-def compute_fluctuations(dilution_df, auto_val, multi_xy=True):
+def compute_fluctuations(dilution_df, auto_val, multi_xy=True,
+                         fluo_key='fluor1_mean_death'):
     """"
     Generates a new DataFrame containing the indivudual sister intensities,
     summed fluorescence, and square fluctuations.
@@ -175,7 +177,7 @@ def compute_fluctuations(dilution_df, auto_val, multi_xy=True):
     grouped = dilution_df.groupby(groupby)
     for g, d in grouped:
         if len(d) == 2:  # Ensure only single successful divisions.
-            ints = (d['fluor1_mean_death'].values -
+            ints = (d[fluo_key].values -
                     auto_val) * d['area_death'].values
             if (ints >= 0).all() == True:
                 I_1, I_2 = ints

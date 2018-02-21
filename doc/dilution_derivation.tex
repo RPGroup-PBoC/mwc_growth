@@ -1,10 +1,12 @@
+% !TEX root = growth.tex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Derivation and estimation of a fluorescence calibration factor}
-\textit{Griffin Chure - \today}
+Griffin Chure - \today
 
 
 \subsection*{Derivation}
-Imagine that we have a cell that has a fixed number of fluorescent proteins.
+
+\hspace{10mm} Imagine that we have a cell that has a fixed number of fluorescent proteins.
 As this cell divides, these proteins will be Binomially partitioned into the
 two daughter cells with some probability $p$ dictating the proteins' likelihood
 to end up in one cell over the other. By examining the difference in
@@ -18,7 +20,6 @@ fluorophore are negligible. Mathematically, we can state this as
 I_\text{tot} = I_1 + I_2
 \label{eq:fluo_cons}
 \end{equation}
-
 where $I_\text{tot}$ is the total fluorescence of the mother cell and $I_1$ and
 $I_2$ are the intensities of the two daughter cells. If we assume that the
 measured fluorescence arises only from the fluorophores, we say that the
@@ -28,87 +29,77 @@ fluorescent proteins $N_\text{tot}$,
 I_\text{tot} = \alpha N_\text{tot}.
 \label{eq:antot}
 \end{equation}
-
 This can be similarly stated for each individual daughter cell,
 \begin{equation}
 I_1 = \alpha N_1\,\, ; \,\, I_2 = \alpha N_2
 \end{equation}
-
 which follows the assumption that the protein copy number is conserved as well,
 \begin{equation}
 N_\text{tot} = N_1 + N_2.
 \end{equation}
-
 When a cell divides, the probability distribution $g(n)$  of finding $n$ proteins
 in a daughter cells is Binomial with a partitioning probability $p$,
 \begin{equation}
 g(n \, \vert \, N_\text{tot}) = {N_\text{tot}! \over n! (N_\text{tot} - n)!} p^{n}(1 - p)^{N_\text{tot} - n}.
 \label{eq:binomial}
 \end{equation}
-
 To examine how the proteins were partitioned amongst the daughter cells, we can
 look at how different the intensities are between them and relate it to the
 total intensity of the mother as
 \begin{equation}
-\langle(I_1 - I_2)^2\rangle = \langle (2I_1 - I_\text{tot})^2
+\langle(I_1 - I_2)^2\rangle = \langle (2I_1 - I_\text{tot})^2 \rangle
 \end{equation}
-
 which we can translate to protein copy numbers as
 \begin{equation}
 \langle(I_1 - I_2)^2\rangle = \langle\left(2\alpha N_1 - \alpha N_\text{tot}\right)^2\rangle.
 \end{equation}
-
 As we are discussing averages in this context, we can examine this more generally as
 \begin{equation}
-\langle(I_1 - I_2)^2 \rangle = \alpha(2\langle n \rangle - N_\text{tot})^2.
+\langle(I_1 - I_2)^2 \rangle = (2\alpha\langle n \rangle - \alphaN_\text{tot})^2.
+\end{equation}
+Expanding this yields
+\begin{equation}
+  \langle (I_1 - I_2)^2 \rangle = 4\alpha^2\langle n^2 \rangle - 4\alpha\langle n \rangle N_\text{tot} + \alpha^2 N_\text{tot}^2.
 \end{equation}
 
-To finish our calculation, we will have to know the mean and variance of the
-protein copy number upon division.
-
-While these two moments of the Binomial distribution are likely committed to
-memory, it's a useful exercise to derive them explicitly. The mean can be
-calculated as
+To move forward, we must know the two moments of the Binomial distribution, $\langle n \rangle$ and $\langle n^2 \rangle$. While we likely have these committed to memory by now, it's always
+a useful exercise to be explicit and will derive them below. The mean number of proteins partitioned into one daughter $\langle n \rangle$ can be computed as
 \begin{equation}
 \langle n \rangle = \sum\limits_{n = 0}^{N_\text{tot}}n{{N_\text{tot}}\choose{n}}p^{n}(1-p)^{N_\text{tot} - n}.
 \label{eq:avg_n}
 \end{equation}
-
-This can be simplified by realizing that
+We can examine the product of $n$ and the Binomial coefficient and see that it can be simplified as
 \begin{equation}
-n {N_\text{tot}! \over n!(N_\text{tot} - n)!} = {N_\text{tot}! \over (n-1)!(N_\text{tot} - n)!} = {N_\text{tot}(N_\text{tot} - 1)! \over (n - 1)!(N_\text{tot} - n)!}
+n {N_\text{tot}! \over n!(N_\text{tot} - n)!} = {N_\text{tot}! \over (n-1)!(N_\text{tot} - n)!} = {N_\text{tot}(N_\text{tot} - 1)! \over (n - 1)!(N_\text{tot} - n)!}.
 \label{eq:expanded_binom}
 \end{equation}
-
-We can now rewrite Eq. \ref{eq:expanded_binom} as
+Plugging this back into Eq. \ref{eq:avg_n}, we have
 \begin{equation}
-\langle n \rangle = N_\text{tot} p \sum\limits_{n= 1}^{N_\text{tot}}{{N_\text{tot} - 1}\choose{n - 1}}p^{n - 1}(1 - p)^{N_\text{tot} - n}
+\langle n \rangle = N_\text{tot} p \sum\limits_{n= 1}^{N_\text{tot}}{{N_\text{tot} - 1}\choose{n - 1}}p^{n - 1}(1 - p)^{N_\text{tot} - n}.
 \end{equation}
-
 By defining $\nu = N_\text{tot} - 1$ and $k = n - 1$, we yield.
 \begin{equation}
 \langle n \rangle = N_\text{tot} p \overbrace{\sum\limits_{k= 0}^{\nu}{{\nu}\choose{k}}p^k(1 - p)^{\nu - k}}^\text{1} = N_\text{tot} p
 \label{eq:reparam_binom}
 \end{equation}
+which is what we would naïvely expect.
 
-which is what we would naïvely expect. With this in hand, we can naïvely solve
-for the variance. We can solve for $\langle n^2 \rangle$ as we did above by
+
+We will also need to know the sTo compute the second moment, $\langle n^2 \rangle$, it's easier to compute
+the variance
 realizing
 \begin{equation}
 \langle n^2 \rangle = N_\text{tot}p\sum\limits_{n=1}^{N_\text{tot}}n{{N_\text{tot} - 1}\choose{n -1}}p^{n-1}(1 - p)^{N_\text{tot} - n} = N_\text{tot}p\sum\limits_{k=0}^\nu(k + 1){{\nu}\choose{k}}p^k(1-p)^{\nu - k}  \tag{14},
 \label{eq:avg_nsq}
 \end{equation}
-
 where we pull the same trick of reparameterizing \ref{eq:reparam_binom} for $\nu = N_\text{tot} - 1$ and $k = n - 1$. Simplifying \ref{eq:avg_nsq} generates
 \begin{equation}
 \langle n^2 \rangle = (N_\text{tot}p)^2 + N_\text{tot}p(1 - p) \tag{15}
 \end{equation}
-
 allowing us to express the variance $\sigma^2$ as
 \begin{equation}
 \sigma^2 = \langle n^2 \rangle - \langle n \rangle^2 = N_\text{tot}p(1 - p).
 \end{equation}
-
 We can make our calculation a bit less verbose by assuming that partitioning
 of the proteins is always fair such that $p = 0.5$. This means our mean and
 variance can be more simply written as
@@ -122,13 +113,11 @@ We can now return to Eq. \ref{eq:avg_n} and include the mean copy number,
 \langle (I_1 - I_2)^2 \rangle &= 4\alpha^2(\langle n^2 \rangle - \langle n \rangle N_\text{tot}) + (\alpha N_\text{tot})^2\\
 & = 4\alpha^2\left({N_\text{tot} + N_\text{tot}^2 \over 4} - {2N_\text{tot}^2 \over 4}\right) + \alpha^2N_\text{tot}^2.
 \end{align}
-
 Some simplification brings us to our result,
 \begin{equation}
 \langle (I_1 - I_2)^2 \rangle = \alpha^2 N_\text{tot} = \alpha I_\text{tot}.
 \label{eq:golden_rule}
 \end{equation}
-
 This result tells us that the squared difference in the intensity between any
 two daughter cells should be linearly related to the intensity of the mother
 cell with a slope of the calibration factor $\alpha$, as is confirmed through
