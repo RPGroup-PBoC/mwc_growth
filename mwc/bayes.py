@@ -160,6 +160,13 @@ def ReparameterizedNormal(name=None, mu=None, sd=None, shape=1):
     return var
 
 
+def log_prior():
+    """
+    Computes the log prior for alpha and I_2 as needed in the model. These are taken to be uniform on the range of the camera bitdepth, 0 - 65535.
+    """
+    return -32 * np.log(2)
+
+
 def deterministic_log_posterior(alpha, I_1, I_2, p=0.5, neg=False):
     """
     Computes the log posterior of the deterministic model for the calibration
@@ -214,9 +221,12 @@ def deterministic_log_posterior(alpha, I_1, I_2, p=0.5, neg=False):
     prob = n_1.sum() * np.log(p) + n_2.sum() * np.log(1 - p)
     change_of_var = -k * np.log(alpha)
 
+    # Compute the log prior.
+    logprior = log_prior()
+
     # Assemble the log posterior.
-    logp = change_of_var + binom + prob
-    return prefactor * logp
+    logpost = change_of_var + binom + prob
+    return prefactor * (logpost + logprior)
 
 
 def estimate_calibration_factor(I_1, I_2, p=0.5, return_eval=False):

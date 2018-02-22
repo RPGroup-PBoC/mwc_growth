@@ -8,7 +8,7 @@ import yaml
 import os
 
 
-def scrape_frontmatter(dirname, file='README.md', as_dataframe=False):
+def scrape_frontmatter(dirname, file='README.md'):
     """
     Reads the status of a given experimental dataset. This status is embedded
     in the README.md file as a YAML metadata block.
@@ -19,13 +19,11 @@ def scrape_frontmatter(dirname, file='README.md', as_dataframe=False):
         Directory from which to parse.
     file: str
         Name of file containing YAML frontmatter. Default is 'README.md'
-    as_dataframe : bool
-        If True, yaml key and values will be returned as a pandas DataFrame.
 
     Returns
     -------
     info : dict or pandas DataFrame
-        A dictionary or DataFrame with all frontmatter keys and values.
+        A dictionary with all frontmatter keys and values.
 
     Raises
     ------
@@ -44,15 +42,14 @@ def scrape_frontmatter(dirname, file='README.md', as_dataframe=False):
     with open(filename) as f:
         info, _ = frontmatter.parse(f.read())
     if 'status' not in info.keys():
-        raise UserWarning("""key `status` not found in metadata keys.\n
-                          skipping {}""".format(f.split('/')[-2]))
+        raise UserWarning(
+            'key `status` not found in metadata keys. Skipping {}'.format(dirname))
+
         info = {}
     elif info['status'].lower() not in ['accepted', 'questionable', 'rejected']:
-        raise UserWarning("""Value `status: {}` not an acceptable flag. \n
-                          Skipping {}""".format(f.split('/')[-2]))
+        raise UserWarning('Value `status: {}` not an acceptable flag. Skipping {}'.format(
+            info['status'].lower(), dirname))
         info = {}
-    if as_dataframe == True:
-        info = pd.DataFrame(info, index={0})
     return info
 
 

@@ -1,9 +1,11 @@
 import fcsparser
 import pandas as pd
 import numpy as np
-from pboc.flow import *
 import pytest
 import scipy.stats
+import sys
+sys.path.insert(0, '../')
+from mwc.flow import *
 np.random.seed(42)
 test_path = fcsparser.test_sample_path
 metadata, data = fcsparser.parse(test_path)
