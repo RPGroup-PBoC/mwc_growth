@@ -1,14 +1,15 @@
 ---
-status:
-reason:
+status: rejected
+reason: Growth does not appear to be exponential and exceedingly long doubling time
 ---
 
-# 2018-02-21 Growth Measurement
+# 2018-02-21 Growth Measurement (Run 1)
 
 
 ## Purpose
 This experiment is the first pass at measuring the growth rate of the *E. coli*
-strains of interest in M9 + 0.5% glucose at 37°C.
+strains of interest in M9 + 0.5% glucose at 37°C. This experiment corresponds
+to the first run of growth, although the experiments were conducted concurrently.
 
 ## Strain information
 | Location | Plasmid | Genotype | Host Strain | Shorthand |
@@ -28,14 +29,17 @@ strains of interest in M9 + 0.5% glucose at 37°C.
 ## Notes & Observations
 * Two runs were conducted in this experiment. The protocol followed was the
 same as listed below for both samples.
-* For run 1, the OD<sub>600nm</sub> was ~ 0.3 and was diluted 1:50 into the
-prewarmed growth medium. For run 2, the OD<sub>600nm</sub> was ~ 0.5 and was
-diluted 1:100 into the growth medium.
-* Runs 1 and 2 were started at 07h52m and 07h56m, respectively.
+* Inoculum OD<sub>600nm</sub> was ~ 0.3 and was diluted 1:50 into the
+prewarmed growth medium.
+* The culture was inoculated at 07h52m.
+* The final growth curve appears far more linear than it does exponential!
+Because of this, we estimate a very large doubling time which we know is not
+correct for this kind of growth medium. Furthermore, this culture seemed to
+saturate at around OD<sub>600nm</sub> ~ 0.7.
 
 ## Analysis Files
 
-![]()
+![](output/20180221_r1_37C_glucose_O2_growth.png)
 
 ## Experimental Protocol
 
