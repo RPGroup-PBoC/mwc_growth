@@ -31,19 +31,19 @@ if os.path.exists('./output') == False:
     os.mkdir('./output')
 
 # %% Processing of data
-data_dir = '../../../data/images/{}_{}_{}C_{}_{}_dilution/'.format(
+data_dir = '../../../../data/images/{}_{}_{}C_{}_{}_dilution/'.format(
     DATE, MICROSCOPE, TEMP, CARBON, OPERATOR)
 data_dir
 # Extract file names and parse.
 growth_files = glob.glob('{}growth*/xy*/clist.mat'.format(data_dir))
-growth_files
+
 excluded_props = ['Fluor2 mean death']
 growth_df = mwc.process.parse_clists(
     growth_files, excluded_props=excluded_props)
 
 # Apply a filter.
 growth_df = mwc.process.morphological_filter(growth_df, IP_DIST)
-
+growth_df.fluor1_mean_death.unique()
 # %% Look at the aspect ratio.
 snap_groups = glob.glob('{}/snaps*'.format(data_dir))
 excluded_props = ['Area birth', 'Cell ID', 'Cell birth time', 'Cell death time',
@@ -57,9 +57,6 @@ for i, s in enumerate(snap_groups):
     clists = glob.glob('{}/xy*/clist.mat'.format(s))
     _df = mwc.process.parse_clists(clists, added_props=added_props,
                                    excluded_props=excluded_props)
-
-    print(added_props, len(_df))
-
     snap_dfs.append(_df)
 snap_df = pd.concat(snap_dfs, ignore_index=True)
 
@@ -134,7 +131,7 @@ sns.despine(offset=5)
 plt.tight_layout()
 plt.savefig('output/{}_{}_{}C_{}_{}_calibration_factor.png'.format(DATE, MICROSCOPE, TEMP,
                                                                    CARBON, OPERATOR),
-            bbox_inches='tight', transparent=True)
+            bbox_inches='tight')
 
 # %% Compute the fold-change for the other samples.
 # Subtract the autofluorescence from the snap dataframe.
