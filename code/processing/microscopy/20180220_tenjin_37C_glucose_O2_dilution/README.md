@@ -1,6 +1,8 @@
 ---
-status:
+status: rejected
 reason:
+  This experiment was an abject failure. There were very few division events
+  properly segmented courtesy of Z drift during acquisition of the growth movie.
 ---
 
 # 2018-02-20 Dilution Experiment
@@ -25,14 +27,19 @@ source for the dilution experiment.
 | Isopropylthiogalactopyranoside (IPTG) | 0 [mM] |
 
 ## Notes & Observations
+* The cells were harvested for imaging at an OD<sub>600nm</sub> of ~0.4.
+* There was considerable Z drift during the growth movie acquisition. This resulted
+in many out-of-focus fields where the lineage tracing could not be performed.
+* Position 4 of the growth movie was removed from consideration as it was a duplicated
+field of Position 3.
 
 ## Analysis Files
 
 **Calibration Factor Determination**
-![]()
+![](output/20180220_tenjin_37C_glucose_O2_calibration_factor)
 
 **Fold-change**
-
+Not Calculated
 
 ## Experimental Protocol
 

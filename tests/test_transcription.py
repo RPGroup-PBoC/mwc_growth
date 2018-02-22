@@ -1,6 +1,8 @@
 import numpy as np
-import mwc.transcription as trans
 import pytest
+import sys
+sys.path.insert(0, '../')
+import mwc.model as trans
 
 
 def test_MWC():
