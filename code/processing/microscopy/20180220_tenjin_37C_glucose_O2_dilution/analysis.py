@@ -5,7 +5,7 @@ import glob
 import matplotlib.pyplot as plt
 import scipy.stats
 import sys
-sys.path.insert(0, '../../../')
+sys.path.insert(0, '../../../../')
 import mwc.viz
 import mwc.process
 import mwc.stats
@@ -17,7 +17,7 @@ import seaborn as sns
 mwc.viz.personal_style()
 
 # Define the experimental parameters.
-DATE = 20180215
+DATE = 20180220
 TEMP = 37  # in °C
 CARBON = 'glucose'
 OPERATOR = 'O2'
@@ -33,9 +33,10 @@ if os.path.exists('./output') == False:
 # %% Processing of data
 data_dir = '../../../data/images/{}_{}_{}C_{}_{}_dilution/'.format(
     DATE, MICROSCOPE, TEMP, CARBON, OPERATOR)
-
+data_dir
 # Extract file names and parse.
 growth_files = glob.glob('{}growth*/xy*/clist.mat'.format(data_dir))
+growth_files
 excluded_props = ['Fluor2 mean death']
 growth_df = mwc.process.parse_clists(
     growth_files, excluded_props=excluded_props)
