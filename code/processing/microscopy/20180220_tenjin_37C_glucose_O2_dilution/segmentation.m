@@ -29,6 +29,7 @@ CONST.trackFoci.numSpots = 0;
 CONST.align.ALIGN_FLAG = 1;
 CONST.trackOpti.REMOVE_STRAY = 1;
 cleanFlag = 0;
+samples = snap_samples;
 for i=1:length(samples)
 	parpool(24);
 
