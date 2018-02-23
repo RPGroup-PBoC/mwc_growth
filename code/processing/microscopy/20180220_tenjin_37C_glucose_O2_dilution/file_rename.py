@@ -9,7 +9,7 @@ import shutil
 import sys
 import warnings
 import tqdm
-sys.path.insert(0, '../../../')
+sys.path.insert(0, '../../../../')
 import mwc.image
 skimage.io.use_plugin('freeimage')
 
@@ -27,7 +27,7 @@ channel_dict = {c: i + 1 for i, c in enumerate(channels)}
 # ################
 # Nothing below should change from experiment to experiment.
 # ################
-data_dir = '../../../data/images/{0}_{1}_{2}C_{3}_{4}_dilution/'.format(
+data_dir = '../../../../data/images/{0}_{1}_{2}C_{3}_{4}_dilution/'.format(
     DATE, MICROSCOPE, TEMP, CARBON, OPERATOR)
 selem = skimage.morphology.square(3)
 
