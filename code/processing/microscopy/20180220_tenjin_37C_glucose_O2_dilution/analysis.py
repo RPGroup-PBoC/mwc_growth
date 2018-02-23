@@ -43,8 +43,9 @@ growth_df = mwc.process.parse_clists(
 
 # Apply a filter.
 growth_df = mwc.process.morphological_filter(growth_df, IP_DIST)
-growth_df.fluor1_mean_death.unique()
-# %% Look at the aspect ratio.
+
+
+# %%
 snap_groups = glob.glob('{}/snaps*'.format(data_dir))
 excluded_props = ['Area birth', 'Cell ID', 'Cell birth time', 'Cell death time',
                   'Daughter1 ID', 'Daughter2 ID', 'Mother ID']
@@ -66,14 +67,21 @@ snap_df = mwc.process.morphological_filter(snap_df, IP_DIST)
 # %% Computation of fluctuations.
 auto_strain = snap_df[snap_df['strain'] == 'autofluorescence']
 mcherry_auto_val = np.mean(
-    auto_strain['fluor1_mean_death'])
-yfp_auto_val = np.mean(snap_df[snap_df['strain'] ==
-                               'autofluorescence']['fluor2_mean_death'])
+    auto_strain['fluor1_mean_death'] + auto_strain['fluor1_bg_death'])
+yfp_auto_val = np.mean(auto_strain['fluor2_mean_death'] +
+                       auto_strain['fluor2_bg_death'])
+
+# Uncorrect for background fluorescence.
+growth_df['fluor1_mean_death'] += growth_df['fluor1_bg_death']
+snap_df['fluor1_mean_death'] += snap_df['fluor1_bg_death']
+snap_df['fluor2_mean_death'] += snap_df['fluor2_bg_death']
 
 fluct_df = mwc.process.compute_fluctuations(growth_df, mcherry_auto_val)
 fluct_df.to_csv('output/{}_{}_{}C_{}_{}_fluctuations.csv'.format(DATE,
                                                                  MICROSCOPE, TEMP,
                                                                  CARBON, OPERATOR))
+
+auto_strain.fluor2_mean_death.unique()
 # %% Estimate the calibration factor.
 with pm.Model() as model:
     like = mwc.bayes.DeterminsticCalibrationFactor('alpha', I_1=fluct_df['I_1'].values,
@@ -133,7 +141,11 @@ plt.savefig('output/{}_{}_{}C_{}_{}_calibration_factor.png'.format(DATE, MICROSC
                                                                    CARBON, OPERATOR),
             bbox_inches='tight')
 
+
+# %%
+snap_df[snap_df['strain'] == 'deltaLacI']
 # %% Compute the fold-change for the other samples.
+
 # Subtract the autofluorescence from the snap dataframe.
 snap_df['fluor1_sub'] = snap_df['area_death'] * \
     (snap_df['fluor1_mean_death'] - mcherry_auto_val)
