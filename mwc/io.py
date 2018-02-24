@@ -53,24 +53,72 @@ def scrape_frontmatter(dirname, file='README.md'):
     return info
 
 
-def pull_clist(src, username, port, dest):
+def _create_SSHclient(username, port, server='delbruck'):
+    """
+    Establishes an SSH connection to one of the servers.
+
+    Parameters:
+    -----------
+    username : str
+        Username on the server
+    port : int
+        Super secret port number
+    server : str
+        First name of the beloved server.
+
+    Returns
+    -------
+    client : SSH Object
+        Client object connected to remote server.
+
+    Notes
+    -----
+    This function is not compatabile with password-only login. You must have
+    the proper system keys installed.
+
+    Acknowledgements
+    ----------------
+    This function taken from a StackOverflow anwer by Tom Shen.
+    https://stackoverflow.com/questions/250283/how-to-scp-in-python
+    """
+    client = paramiko.SSHClient()
+    client.load_system_host_keys()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect('{}@caltech.edu'.format(server), port, username)
+    return client
+
+
+def yank_clist(src, username, port, dest, server='delbruck'):
     """
     Pulls the clist files from a target directory on delbrück to local.
 
     Parameters
     ----------
     src: str
-        Source directory on Delbrück. This should be given as a relative path.
+        Relative path to the root diriectory for the experiment.
     dst: str
         Target directory on local. If None, the clists will be pulled into
         `data/images` with the same folder name.
     username: str
         Username to access the data.
     port : int
-        Super secret Delbrück port number.
+        Super secret port number.
     """
-    return True
+    prefix = 'git/mwc_growth/data/images/'
 
+    # Avoid very stupid errors with the provided source directory.
+    if src[-1] == '/'
+        src = src[:-1]
 
-def deoposit_data(src, dest, port, username):
-    return True
+    # Define the source pattern.
+    src = '{}{}xy\*/clist.mat'.format(prefix, src)
+    # Connect to the remote server.
+    client = _create_SSHclient(username, port, server=server)
+    scp_obj = scp.SCPClient(client.get_transport())
+
+    # Transfer the files.
+    scp_obj.get(src, dest)
+
+    # Kill the connection
+    client.close()
+    print("clist files successfully transferred.")
