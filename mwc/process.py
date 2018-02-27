@@ -169,8 +169,10 @@ def compute_fluctuations(dilution_df, auto_val, multi_xy=True,
 
     # Determine what to groupby.
     if multi_xy == True:
+        print('Grouping by position and mother ID....')
         groupby = ['position', 'mother_id']
     else:
+        print('Grouping only by mother ID...')
         groupby = ['mother_id']
 
     # Group the growth dataframe and iterate.

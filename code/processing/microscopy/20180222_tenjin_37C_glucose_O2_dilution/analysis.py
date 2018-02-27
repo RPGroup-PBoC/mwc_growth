@@ -66,8 +66,7 @@ snap_df = mwc.process.morphological_filter(snap_df, IP_DIST)
 
 # %% Computation of fluctuations.
 auto_strain = snap_df[snap_df['strain'] == 'autofluorescence']
-mcherry_auto_val = np.mean(
-    auto_strain['fluor1_mean_death'])
+mcherry_auto_val = np.mean(auto_strain['fluor1_mean_death'])
 yfp_auto_val = np.mean(auto_strain['fluor2_mean_death'])
 
 
@@ -76,6 +75,10 @@ fluct_df = mwc.process.compute_fluctuations(growth_df, mcherry_auto_val)
 fluct_df.to_csv('output/{}_{}_{}C_{}_{}_fluctuations.csv'.format(DATE,
                                                                  MICROSCOPE, TEMP,
                                                                  CARBON, OPERATOR))
+# Save the two dataframes.
+growth_df = growth_df.to_csv(
+    'output/20180222_tenjin_37C_glucose_O2_growth.csv')
+snap_df = snap_df.to_csv('output/20180222_tenjin_37C_glucose_O2_snaps.csv')
 # %% Estimate the calibration factor.
 with pm.Model() as model:
     like = mwc.bayes.DeterminsticCalibrationFactor('alpha', I_1=fluct_df['I_1'].values,

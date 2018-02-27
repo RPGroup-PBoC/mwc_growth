@@ -201,12 +201,14 @@ $$
 g(\alpha\vert [I_1, I_2]) = {1 \over \alpha^k}\prod\limits_{i=0}^k{\Gamma\left({I_{1,i} + I_{2,i} \over \alpha} + 1\right) \over \Gamma\left({I_{1,i} \over \alpha} + 1\right)\Gamma\left({I_{2,i} \over \alpha} + 1 \right)}{2^{-(I_{1,i} + I_{2, i} / \alpha)}}.
 $${#eq:posterior}
 
+This result allows us to estimate the best-fit value for $\alpha$ without relying on any binning procedure. As this is a distribution containing only one parameter, it is trivial to apply to even large data sets through your favorite
+optimization procedure. [@fig:param_estimation] shows the posterior distribution evaluated over a range of $\alpha$ values for the data shown in [@fig:dilution_sim]. The red dashed line is an approximation of the posterior as a Gaussian, allowing us to use the standard deviation as a measurement of the statistical error.
 
-![**Posterior probability distribution for $\alpha$**. (A) The improperly
+![**Posterior probability distribution for $\alpha$**. (A) The
   normalized posterior probability distribution $g(\alpha\, \vert\, [I_1, I_2])$
   from Eq. [@eq:posterior] for data shown in Fig. \ref{fig:dilution_sim}.
-  The mode and bounds of the 95$^\text{th}$ percentile of the credible region
-  is shown by a red circle and line respectively. (B) The steps of
-  the MCMC walker. MCMC was performed using NUTS sampler with
-  10000 tuning steps and 10000 draws. The best-fit parameter value for $\alpha$
-  is $153^{+3}_{-3}$ a.u. per molecule.](../figs/alpha_simple_mcmc.pdf){#fig:param_estimation}
+  The dark line and shaded region represent the actual value of the posterior
+  distribution. The dashed red line represents a Gaussian approximation of the
+  posterior. The true value of $\alpha$ is shown as a purple vertical line.
+  The best-fit value for $\alpha$ in this data set is $149 \pm 1$
+  a.u. per molecule.](../figs/alpha_simple_minimization.pdf){#fig:param_estimation}
