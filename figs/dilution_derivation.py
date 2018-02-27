@@ -11,7 +11,7 @@ import mwc.bayes
 import mwc.viz
 import imp
 imp.reload(mwc.viz)
-mwc.viz.personal_style()
+colors = mwc.viz.personal_style()
 %matplotlib inline
 
 
@@ -58,13 +58,35 @@ plt.savefig('simulated_dilution_simple.pdf', bbox_inches='tight')
 
 
 # %%
-with pm.Model() as model:
-    like = mwc.bayes.DeterminsticCalibrationFactor(
-        'alpha', alpha_true * df['n1'].values, alpha_true * df['n2'].values, testval=1)
-    trace = pm.sample(draws=10000, tune=10000)
-    trace_df = mwc.stats.trace_to_dataframe(trace, model)
-    stats = mwc.stats.compute_statistics(trace_df)
+# Estimate parameter through minimization, compute posterior and approximation.
+est, err = mwc.bayes.estimate_calibration_factor(
+    df['n1'] * alpha_true, df['n2'] * alpha_true)
+alpha_range = np.linspace(est - 20, est + 20, 500)
+log_post = np.zeros_like(alpha_range)
+for i, a in enumerate(alpha_range):
+    log_post[i] = mwc.bayes.deterministic_log_posterior(a, df['n1'] * alpha_true,
+                                                        df['n2'] * alpha_true)
 
+# Normalize the log posterior and compute.
+posterior = np.exp(log_post - scipy.special.logsumexp(log_post))
+approx = scipy.stats.norm.pdf(alpha_range, loc=est, scale=err)
+approx = approx / np.sum(approx)
+# %% Plot the posterior and approximation.
+fig, ax = plt.subplots(1, 1, figsize=(5, 4))
+ax.set_xlabel('calibration factor [a.u. / molecule]')
+ax.set_ylabel('probability')
+
+_ = ax.plot(alpha_range, posterior, label='posterior')
+_ = ax.fill_between(alpha_range, posterior, alpha=0.5, label='__nolegend__')
+_ = ax.plot(alpha_range, approx, ':', label='Gaussian approximation', lw=1.5)
+_ = ax.vlines(alpha_true, np.min(approx),
+              np.max(approx), label=r'true $\alpha')
+_ = ax.legend()
+mwc.viz.format_axes()
+plt.tight_layout()
+plt.savefig('alpha_simple_minimization.pdf', bbox_inches='tight')
+
+est, err
 # %%
 fig, ax = plt.subplots(2, 1, figsize=(4.7, 3))
 ax[0].set_ylabel(r'$\propto g(\alpha\, \vert \, [I_1, I_2])$')
