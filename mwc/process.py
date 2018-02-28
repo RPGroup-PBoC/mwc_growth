@@ -47,7 +47,8 @@ def clist_to_dataframe(clist_file, desired_props='default', added_props={},
                          'Cell birth time', 'Cell death time', 'Daughter1 ID',
                          'Daughter2 ID', 'Fluor1 mean death',
                          'Fluor2 mean death', 'Mother ID', 'Long axis (L) death',
-                         'Short axis death', 'Fluor1 bg death', 'Fluor2 bg death']
+                         'Short axis death', 'Fluor1 bg death', 'Fluor2 bg death',
+                         'Error frame']
 
     defs = {key: value for value, key in enumerate(
         mat['def']) if key in desired_props}
