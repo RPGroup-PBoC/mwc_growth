@@ -15,7 +15,8 @@ import pymc3 as pm
 import os
 import seaborn as sns
 mwc.viz.personal_style()
-
+import imp
+imp.reload(mwc.process)
 # Define the experimental parameters.
 DATE = 20180222
 TEMP = 37  # in °C
@@ -42,7 +43,7 @@ growth_df = mwc.process.parse_clists(
     growth_files, excluded_props=excluded_props)
 
 # Apply a filter.
-growth_df = mwc.process.morphological_filter(growth_df, IP_DIST)
+# growth_df = mwc.process.morphological_filter(growth_df, IP_DIST)
 
 
 # %%
@@ -62,7 +63,7 @@ for i, s in enumerate(snap_groups):
 snap_df = pd.concat(snap_dfs, ignore_index=True)
 
 # Apply area bounds.
-snap_df = mwc.process.morphological_filter(snap_df, IP_DIST)
+# snap_df = mwc.process.morphological_filter(snap_df, IP_DIST)
 
 # %% Computation of fluctuations.
 auto_strain = snap_df[snap_df['strain'] == 'autofluorescence']

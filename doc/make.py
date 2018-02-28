@@ -8,7 +8,7 @@ def main():
         m, _ = frontmatter.parse(f.read())
 
         code = """
-        pandoc default.yaml -i {} --filter=pandoc-eqnos --filter=pandoc-crossref -o {}.pdf
+        pandoc default.yaml -i {} --bibliography=mwc_growth.bib --filter=pandoc-eqnos --filter=pandoc-crossref -o {}.pdf
         """.format(m['include'], m['name'])
         os.system(code)
 

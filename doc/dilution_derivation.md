@@ -1,8 +1,11 @@
 ---
+  title: Sensitivity of fluorescent fluctuations to systematic noise
+  author: Griffin Chure
+  date: \today
   indent: true
+  bibliography: mwc_growth.bib
 ---
-# Derivation and estimation of a fluorescence calibration factor
-Griffin Chure - Feb. 20, 2018
+
 
 ## Derivation
 ### Relating cellular intensity to fluorophore copy number
@@ -149,7 +152,7 @@ the blue line is the prediction given in
 [@eq:golden_rule].)](../figs/simulated_dilution_simple.pdf){#fig:dilution_sim}
 
 
-## Practical estimation of $\alpha$
+## Practical estimation of $\alpha$ {#sec:bayesian_estimation}
 With [@eq:golden_rule] at our disposal, we must develop some scheme for estimating the value of $\alpha$ from a given data set. Unlike in our simulations, we cannot break down each cell into bins of a single copy number. One approach is to break the data set up into discrete bins of a certain number of events, compute the necessary statistics, and then perform a linear regression for $\alpha$ on the binned data. While this is a completely valid approach, it requires an arbitrary decision of how many events to choose per bin. To ensure the binning scheme is valid, you must perform the parameter estimation over a range of bin widths and choose one in which the estimation appears to converge on one value.
 
 Rather than binning, we have taken a Bayesian approach in which each individual division is treated as an individual experiment. This approach completely removes the requirement of binning in exchange for more complexity.
@@ -202,7 +205,7 @@ g(\alpha\vert [I_1, I_2]) = {1 \over \alpha^k}\prod\limits_{i=0}^k{\Gamma\left({
 $${#eq:posterior}
 
 This result allows us to estimate the best-fit value for $\alpha$ without relying on any binning procedure. As this is a distribution containing only one parameter, it is trivial to apply to even large data sets through your favorite
-optimization procedure. [@fig:param_estimation] shows the posterior distribution evaluated over a range of $\alpha$ values for the data shown in [@fig:dilution_sim]. The red dashed line is an approximation of the posterior as a Gaussian, allowing us to use the standard deviation as a measurement of the statistical error.
+optimization procedure. [@Fig:param_estimation] shows the posterior distribution evaluated over a range of $\alpha$ values for the data shown in [@fig:dilution_sim]. The red dashed line is an approximation of the posterior as a Gaussian, allowing us to use the standard deviation as a measurement of the statistical error.
 
 ![**Posterior probability distribution for $\alpha$**. (A) The
   normalized posterior probability distribution $g(\alpha\, \vert\, [I_1, I_2])$
@@ -212,3 +215,65 @@ optimization procedure. [@fig:param_estimation] shows the posterior distribution
   posterior. The true value of $\alpha$ is shown as a purple vertical line.
   The best-fit value for $\alpha$ in this data set is $149 \pm 1$
   a.u. per molecule.](../figs/alpha_simple_minimization.pdf){#fig:param_estimation}
+
+
+## Including various flavors of error
+
+Up to this point, we've imagined a scenario in which the protein partitioning
+is completely random, proteins are infinitely stable, and there is no error
+in the measurement of the cellular intensity. Reality, how, is often more lemon
+than lemonade. Our actual measurements of these experiments will be rife with
+error ranging from the stability of the light source to the biological
+peculiarities. In this section, we will thoroughly dissect several models of
+systematic measurement error. We will rely on numerical simulations of all
+of the coming models to get a handle on the type of error. The procedure for
+this approach is diagrammed in [@fig:simulation_schematic]. We will quantify
+the error in the measurement of $\alpha$ when [@eq:posterior] is applied to
+noisy data.
+
+![**Pipeline for numerical calculation of estimation error.** The following
+steps are implemented in the simulations for the forthcoming noise models.
+First, an appropriate range of noise is defined. For each value in this
+range, the complete simulation of the experiment is performed $N_{sim}$ times
+as is described in [@fig:dilution_sim], this time including the error. [@Eq:posterior]
+is then minimized given this simulated data and a best-fit estimate of $\alpha$
+is obtained. This value is compared with the true (seeded) value of $\alpha$
+and is stored in a vector for later analysis. This cycle is repeated for
+every value defined in the original noise range.
+ ](../figs/simulation_scheme.pdf){#fig:simulation_schematic}
+
+### Simple measurement error
+
+Perhaps the easiest type of noise to incorporate is the error in measurement
+due to random shot noise of the camera. This type of error (at least for the
+purposes of this work) can be considered to be independent of space, time,
+and all features of the cell. As this is independent, we can say that measured
+cellular intensity is
+$$
+I = \alpha N + \epsilon,
+$${#eq:model1_ian}
+where $\epsilon$ is normally distributed with zero mean and a variance $\sigma_1$.
+This type of measurement error has been thoroughly dissected using Bayesian
+methods similar to those discussed previously [@Rosenfeld2006]. Implementation
+of this inference method is computationally costly and chock-full of caveats
+that are beyond the point of this writing.
+
+![**Measurement noise for three illumination sources.** (A) Center 10 by 10 pixel
+region of a homogeneously fluorescent slide imaged under the three illumination
+sources. Blue and yellow pixels correspond to low and high intensities, respectively.
+(B) Empirical cumulative distributions (black points) for each illumination
+source and the Gaussian approximation (red line). The pixel values from the
+images above the distributions were rescaled to the raw value of the image mean
+and centered at zero. This allows for direct comparison of the three distributions.](../figs/shot_noise_measurement.pdf){#fig:shot_noise_measurement}
+
+
+![**Numerical error estimate from neglecting random measurement noise.**](../figs/error_est_model1.pdf){#fig:model1_sim}
+
+
+
+
+### Temporal variation
+
+![**Measurement of temporal variation for three illumination sources.**](../figs/temporal_noise_measurement.pdf){#fig:temporal_noise_measurement}
+
+# References
