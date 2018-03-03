@@ -152,7 +152,7 @@ the blue line is the prediction given in
 [@eq:golden_rule].)](../figs/simulated_dilution_simple.pdf){#fig:dilution_sim}
 
 
-## Practical estimation of $\alpha$ {#sec:bayesian_estimation}
+## Practical estimation of $\alpha${#sec:bayesian_estimation}
 With [@eq:golden_rule] at our disposal, we must develop some scheme for estimating the value of $\alpha$ from a given data set. Unlike in our simulations, we cannot break down each cell into bins of a single copy number. One approach is to break the data set up into discrete bins of a certain number of events, compute the necessary statistics, and then perform a linear regression for $\alpha$ on the binned data. While this is a completely valid approach, it requires an arbitrary decision of how many events to choose per bin. To ensure the binning scheme is valid, you must perform the parameter estimation over a range of bin widths and choose one in which the estimation appears to converge on one value.
 
 Rather than binning, we have taken a Bayesian approach in which each individual division is treated as an individual experiment. This approach completely removes the requirement of binning in exchange for more complexity.
@@ -205,7 +205,7 @@ g(\alpha\vert [I_1, I_2]) = {1 \over \alpha^k}\prod\limits_{i=0}^k{\Gamma\left({
 $${#eq:posterior}
 
 This result allows us to estimate the best-fit value for $\alpha$ without relying on any binning procedure. As this is a distribution containing only one parameter, it is trivial to apply to even large data sets through your favorite
-optimization procedure. [@Fig:param_estimation] shows the posterior distribution evaluated over a range of $\alpha$ values for the data shown in [@fig:dilution_sim]. The red dashed line is an approximation of the posterior as a Gaussian, allowing us to use the standard deviation as a measurement of the statistical error.
+optimization procedure.
 
 ![**Posterior probability distribution for $\alpha$**. (A) The
   normalized posterior probability distribution $g(\alpha\, \vert\, [I_1, I_2])$
@@ -216,6 +216,52 @@ optimization procedure. [@Fig:param_estimation] shows the posterior distribution
   The best-fit value for $\alpha$ in this data set is $149 \pm 1$
   a.u. per molecule.](../figs/alpha_simple_minimization.pdf){#fig:param_estimation}
 
+### Confirming the method
+While this all makes sense on paper, it's a wise idea to confirm that it works when applied to
+several datasets and perturbed in as many ways you can think of. In the sections that follow, we
+will turn to the simulation shown in [@fig:dilution_sim] and test various aspects of this approach.
+
+To test the validity of [@eq:posterior], we took the simulated data from [@fig:dilution_sim] and
+found the most-likely value of the calibration factor through minimization. [@Fig:param_estimation]
+shows the full posterior distribution evaluated over a broad range of calibration factor values,
+revealing a unimodal distribution peaked around the seeded value of $\alpha$, 150 a.u. per molecule.
+To get a measure of the statistical error in the determination of alpha, we can approximate
+the posterior as a Gaussian distribution by computing the Hessian of the posterior. The Gaussian
+approximation of this posterior is shown in [@fig:param_estimation] as a dashed red line. The final
+best estimate for the calibration factor from the data shown in [@fig:dilution_sim] is 149
+$\pm$  1 a.u., which agrees nicely with the true seeded value of 150 a.u..
+
+
+To confirm that this method works for experimental data (and all of the small errors that have thus
+far been neglected), we applied this method of estimation to data found in the literature where the
+calibration factor had been estimated through linear regression. [@Fig:brewster_method_agreement] (A)
+shows data taken from Brewster et al. [-@Brewster2014a] where they used this method to count
+the number of fluorescently labeled transcription factors.  They determined the best-fit calibration
+factor by binning the data arbitrarily and performing linear regression on the log of the
+fluctuations, yielding a calibration factor of 156 $\pm$ 8 a.u. per molecule. Applying [@eq:posterior]
+to this raw data results in a best-fit measurement of 169 $\pm$ 10 a.u. per molecule. The posterior
+distribution for this data set is shown in [@fig:brewster_method_agreement] (B) where the vertical
+line indicates the reported value. While the calibration factor determined via [@eq:posterior] is
+different than that reported by Brewster et al. [-@Brewster2014a], it is rather close. The author's
+estimation of this parameter showed to be dependent on the binning size used, varying by around 10 a.u. per molecule.
+
+
+![**Comparison of estimation methods on a standard data set.** (A) Data from Brewster et al. [-@Brewster2014a] .
+Black points are individual cell division events. Red points correspond to the mean value of 54
+separate events. These binned points were used for linear regression to estimate the calibration
+factor. [@Eq:golden_rule] evaluated using their calibration factor of 156 a.u. per molecule
+is shown as a red line. [@Eq:golden_rule] evaluated using the most likely value of $\alpha$ defined
+in [@eq:posterior] is shown as a dashed blue line. (B) The full posterior distribution for [@eq:posterior]
+is shown in gray. The black vertical line represents the best-fit value for the calibratoin factor
+presented in Brewster et al. [-@Brewster2014a].](../figs/brewster_method_agreement.pdf){#fig:brewster_method_agreement}
+
+
+
+
+![**Calibration factor estimation under three different illumination sources.**
+Representative examples of experimental measurements using the three different
+sources of excitation illumination. Top-left and top-right correspond to experiments performed
+with an Hg lamp source and a LED, respectivel. The bottom left corner was collected using a 589 nm laser source. The bottom right panel shows the fold-change in gene expression measurements from all three experiments shown in the other panels.](../figs/light_source_experiments.pdf){#fig:example_experiments}
 
 ## Including various flavors of error
 
@@ -256,7 +302,33 @@ where $\epsilon$ is normally distributed with zero mean and a variance $\sigma_1
 This type of measurement error has been thoroughly dissected using Bayesian
 methods similar to those discussed previously [@Rosenfeld2006]. Implementation
 of this inference method is computationally costly and chock-full of caveats
-that are beyond the point of this writing.
+that are beyond the task of this writing.
+
+There can be multiple sources for $\epsilon$ entering this model. For example,
+this could be the photon counting error in the camera, an autofluorescence
+distribution which is not a delta function, or even blinking fluorophores. The
+measurement error through the camera is the easiest to access experimentally.
+
+[@Fig:shot_noise_measurement] shows a measurement of random measurement error
+for three different sources of illumination. To make this measurement, a homogeneously
+fluorescent slide was imaged for a single exposure. A 100-by-100 pixel region
+directly in the center of the imaged was then selected and a distribution of
+the pixel intensities was generated. The center of the image was chosen as
+this should be the brightest region and the intensity distribution can be
+approximated to be uniform. As there is vignetting with all three sources
+of illumination, it would not be fair to use the total fluorescence of the
+entire image. Representative images are shown in [@fig:shot_noise_measurement] (A).
+The distribution of pixel intensities (normalized and centered at zero) are shown in
+panel (B). All three sources of illumination appear to be relatively tightly distributed
+about the mean with variation ranging from one to two percent variation, with
+the laser source having the largest variance.
+
+To examine the how important this error is in the measurement of the calibration
+factor, we performed the simulation described earlier, this time adding noise
+to the measurement of each sister cell pair. [@Fig:model1_sim] shows the result of
+this simulation. The measurement noise range was chosen to cover the extremes
+of the potential variation, ranging from $10^{-3} \times \alpha$ to $10^2 \times \alpha$.
+
 
 ![**Measurement noise for three illumination sources.** (A) Center 10 by 10 pixel
 region of a homogeneously fluorescent slide imaged under the three illumination
@@ -267,13 +339,23 @@ images above the distributions were rescaled to the raw value of the image mean
 and centered at zero. This allows for direct comparison of the three distributions.](../figs/shot_noise_measurement.pdf){#fig:shot_noise_measurement}
 
 
-![**Numerical error estimate from neglecting random measurement noise.**](../figs/error_est_model1.pdf){#fig:model1_sim}
+![**Numerical error estimate from neglecting random measurement noise.**
+Black points indicate estimated values of $\alpha$ from each simulated experiment.
+The inset shows the range of measurement noise relevant to the three described
+illumination sources.](../figs/error_est_model1.pdf){#fig:model1_sim}
 
 
 
 
 ### Temporal variation
 
-![**Measurement of temporal variation for three illumination sources.**](../figs/temporal_noise_measurement.pdf){#fig:temporal_noise_measurement}
+![**Measurement of temporal variation for three illumination sources.** (A)
+Measurement of total image intensity of a fluorescent slide over a 100 exposure
+experiment. Each "pixel" represents the sum total intensity of the image at
+that frame number. The rows correspond to exposures taken with an Hg lamp, LED,
+and 589 nm laser illumination, respectively. (B) Normalized intensity
+distributions of images summarized in (A) after normalization. Red curves are
+the Gaussian approximation of the measured distribution.
+](../figs/temporal_noise_measurement.pdf){#fig:temporal_noise_measurement}
 
 # References

@@ -5,7 +5,7 @@ import glob
 import matplotlib.pyplot as plt
 import scipy.stats
 import sys
-sys.path.insert(0, '../../../')
+sys.path.insert(0, '../../../../')
 import mwc.viz
 import mwc.process
 import mwc.stats
@@ -14,13 +14,13 @@ import mwc.model
 import pymc3 as pm
 import os
 import seaborn as sns
-mwc.viz.personal_style()
+colors = mwc.viz.personal_style()
 # Define the experimental parameters.
-DATE = 20180214
+DATE = 20180123
 TEMP = 37  # in °C
 CARBON = 'glucose'
 OPERATOR = 'O2'
-MICROSCOPE = 'hermes'
+MICROSCOPE = 'artemis'
 
 # ############################
 # Nothing below here should change
@@ -30,7 +30,7 @@ if os.path.exists('./output') == False:
     os.mkdir('./output')
 
 # %% Processing of data
-data_dir = '../../../data/images/{}_{}_{}C_{}_{}_dilution/'.format(
+data_dir = '../../../../data/images/{}_{}_{}C_{}_{}_dilution/'.format(
     DATE, MICROSCOPE, TEMP, CARBON, OPERATOR)
 
 # Extract file names and parse.
@@ -41,6 +41,8 @@ growth_df = mwc.process.parse_clists(
 
 # Apply a filter.
 growth_df = mwc.process.morphological_filter(growth_df, IP_DIST)
+growth_df['keep'] = growth_df['error_frame'].isnull()
+growth_df = growth_df[growth_df['keep'] == True]
 
 # %% Look at the aspect ratio.
 snap_groups = glob.glob('{}/snaps*'.format(data_dir))
@@ -71,31 +73,38 @@ mcherry_auto_val = np.mean(
 yfp_auto_val = np.mean(snap_df[snap_df['strain'] ==
                                'autofluorescence']['fluor2_mean_death'])
 
-fluct_df = mwc.process.compute_fluctuations(growth_df, mcherry_auto_val)
+fluct_df = mwc.process.compute_fluctuations(
+    growth_df, mcherry_auto_val)
 fluct_df.to_csv('output/{}_{}_{}C_{}_{}_fluctuations.csv'.format(DATE,
                                                                  MICROSCOPE, TEMP,
                                                                  CARBON, OPERATOR))
 # %% Estimate the calibration factor.
-with pm.Model() as model:
-    like = mwc.bayes.DeterminsticCalibrationFactor('alpha', I_1=fluct_df['I_1'].values,
-                                                   I_2=fluct_df['I_2'].values, testval=1)
-    trace = pm.sample(draws=5000, tune=5000, njobs=4)
-    trace_df = mwc.stats.trace_to_dataframe(trace, model)
-    stats = mwc.stats.compute_statistics(trace_df)
-alpha_opt = stats['mode'].values
-alpha_max = stats['hpd_max'].values
-alpha_min = stats['hpd_min'].values
+alpha_opt, alpha_err = mwc.bayes.estimate_calibration_factor(
+    fluct_df['I_1'], fluct_df['I_2'])
+min_alpha = alpha_opt - alpha_opt * 0.5
+max_alpha = alpha_opt + alpha_opt * 0.5
+alpha_range = np.linspace(min_alpha, max_alpha, 500)
+# Compute the log posterior.
+log_post = np.zeros_like(alpha_range)
+for i, a in enumerate(alpha_range):
+    log_post[i] = mwc.bayes.deterministic_log_posterior(a, fluct_df['I_1'],
+                                                        fluct_df['I_2'],
+                                                        neg=False)
+# Normalize the posterior.
+posterior = np.exp(log_post - scipy.special.logsumexp(log_post))
+
+# Compute the gaussian approximation.
+approx = scipy.stats.norm.pdf(alpha_range, loc=alpha_opt, scale=alpha_err)
+approx = approx / np.sum(approx)
 
 # %% Plot calibration factor summary statistic plot.
 # Set the ranges for the plots
 min_summed = np.log10(fluct_df['summed'].min())
 max_summed = np.log10(fluct_df['summed'].max())
 summed_range = np.logspace(min_summed, max_summed, 500)
-min_alpha = alpha_opt - alpha_opt * 0.5
-max_alpha = alpha_opt + alpha_opt * 0.5
 
 # Bin the growth data for a sanity check.
-bin_size = 50  # arbitrary choice.
+bin_size = 100  # arbitrary choice.
 avg = mwc.stats.bin_by_events(fluct_df, bin_size)
 
 # Set up the figure canvas.
@@ -104,12 +113,10 @@ ax[0].set_xscale('log')
 ax[0].set_yscale('log')
 ax[0].set_xlabel(r'$I_1 + I_2$ [a.u.]')
 ax[0].set_ylabel(r'$(I_1 - I_2)^2$ [a.u.]')
-ax[1].set_xlabel(r'$\alpha$ [a.u.] / mol.')
+ax[1].set_xlabel(r'$\alpha$ [a.u. / mol.]')
 ax[1].set_ylabel('frequency')
-ax[0].set_title(r'$\alpha = %d^{+%d}_{-%d}$ a.u. /mol' %
-                (alpha_opt[0], alpha_max[0] - alpha_opt[0], alpha_opt[0] - alpha_min[0]))
-ax[1].set_title('sampling frequency')
-
+ax[0].set_title(r'$\alpha = %d \pm %d$ a.u. /mol' %
+                (alpha_opt, alpha_err))
 
 # Plot the fluctuations
 _ = ax[0].plot(fluct_df['summed'], fluct_df['fluct'],
@@ -119,20 +126,19 @@ _ = ax[0].plot(summed_range, alpha_opt * summed_range, label='fit')
 _ = ax[0].legend()
 
 # Plot the posterior and approximation.
-_ = ax[1].hist(trace_df['alpha'], bins=75, alpha=0.5,
-               normed=True)
+_ = ax[1].plot(alpha_range, posterior, label='posterior')
+_ = ax[1].fill_between(alpha_range, posterior, color=colors[0], alpha=0.3,
+                       label='__nolegend__')
+_ = ax[1].plot(alpha_range, approx, ':', label='approx.')
+_ = ax[1].legend()
 # Plot the mode and HPD ontop of the histogram
-ylim = ax[1].get_ylim()[1] / 2
-_ = ax[1].plot([alpha_min, alpha_max], [ylim, ylim], color='tomato')
-_ = ax[1].plot(alpha_opt, ylim, 'o', color='tomato')
 
 # Format and save
-ax[1].set_xlim([min_alpha, max_alpha])
 sns.despine(offset=5)
 plt.tight_layout()
 plt.savefig('output/{}_{}_{}C_{}_{}_calibration_factor.png'.format(DATE, MICROSCOPE, TEMP,
                                                                    CARBON, OPERATOR),
-            bbox_inches='tight', transparent=True)
+            bbox_inches='tight')
 
 # %% Compute the fold-change for the other samples.
 # Subtract the autofluorescence from the snap dataframe.
