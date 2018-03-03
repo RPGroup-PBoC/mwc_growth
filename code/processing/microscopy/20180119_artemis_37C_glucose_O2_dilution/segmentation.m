@@ -2,8 +2,8 @@
 % in MATLAB
 addpath(genpath('../../../../../SuperSegger'));
 % Define the experiment parameters.
-DATE = '20180228';
-BASENAME = 'tenjin_37C_glucose_O2';
+DATE = '20180119';
+BASENAME = 'artemis_37C_glucose_O2';
 samples = {'growth_0', 'growth_1', 'growth_2'};
 
 % Get the snaps names.

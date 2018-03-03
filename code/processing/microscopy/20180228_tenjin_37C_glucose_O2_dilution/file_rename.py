@@ -34,7 +34,7 @@ selem = skimage.morphology.square(3)
 #%% Create flatfield images.
 field_avgs = {}
 noise_avgs = {}
-ff_channels = ['mCherry', 'YFP']
+ff_channels = ['mCherry']
 ff_dict = {i + 2: ch for i, ch in enumerate(ff_channels)}
 for ch in ff_channels:
     # Grab all of the ff images.
@@ -56,7 +56,7 @@ for ch in ff_channels:
 
 
 # %% Rename files to SuperSegger requirements.
-samples = ['growth', 'snaps']
+samples = ['snaps']
 
 snap_groups = []
 for i, s in enumerate(tqdm.tqdm(samples)):
@@ -124,66 +124,69 @@ for i, s in enumerate(tqdm.tqdm(samples)):
 # Make a directory for the originals and move them there.
 if os.path.isdir('{0}originals'.format(data_dir)) == False:
     os.mkdir('{0}originals'.format(data_dir))
+
 files = glob.glob('{0}*.TIF'.format(data_dir))
 for f in files:
     shutil.move(f, '{0}originals'.format(data_dir))
 
-# %% Adjust the growth_fluo timepoints to the correct time.
-growth_files = glob.glob('{0}growth/*dilution*.tif'.format(data_dir))
-growth_fluo_files = glob.glob('{0}growth/*growth_fluo*.tif'.format(data_dir))
+if 'growth' in samples:
+    # %% Adjust the growth_fluo timepoints to the correct time.
+    growth_files = glob.glob('{0}growth/*dilution*.tif'.format(data_dir))	
+    growth_fluo_files = glob.glob('{0}growth/*growth_fluo*.tif'.format(data_dir))
 
-# Find the maximum time point for the growth experiment.
-max_time = int(np.sort(growth_files)
+    # Find the maximum time point for the growth experiment.
+    max_time = int(np.sort(growth_files)
                [-1].split('/')[-1].split('_t')[-1].split('xy')[0])
 
-# Iterate through each growth fluo file and change the time and strain.
-for i, f in enumerate(growth_fluo_files):
-    _, ident, _, atc, seqinfo = f.split('/')[-1].split('_')
-    pos = seqinfo.split('xy')[1]
-    new_name = '_'.join([str(DATE), ident, 'dilution', atc,
-                         't{0:05d}xy{1}'.format(max_time, pos)])
+    # Iterate through each growth fluo file and change the time and strain.
+    for i, f in enumerate(growth_fluo_files):
+        _, ident, _, atc, seqinfo = f.split('/')[-1].split('_')
+        pos = seqinfo.split('xy')[1]
+        new_name = '_'.join([str(DATE), ident, 'dilution', atc,
+                             't{0:05d}xy{1}'.format(max_time, pos)])
+    
+        # Rename the file
+        os.rename(f, '{0}growth/{1}'.format(data_dir, new_name))
+    
+    #%% Complete the fluorescence sequence.
+    missing_channels = [2]
+    im = skimage.io.imread(growth_files[0])
+    zeros_im = np.zeros_like(im)
+    for i, f in enumerate(growth_files):
+        # Get the name of the file.
+        name = f.split('/')[-1]
+        prefix = name[:-5]
+        for ch in missing_channels:
+            new_name = '{0}growth/{1}{2}.tif'.format(data_dir, prefix, ch)
+            if os.path.exists(new_name) == False:
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    skimage.io.imsave(new_name, zeros_im)
+    
+    # %% Partition growth groups into superseggable chunks.
+    max_pos = int(np.sort(growth_files)
+                  [-1].split('/')[-1].split('xy')[1].split('c')[0])
+    num_groups = int(np.ceil(max_pos / 10))
+    if num_groups > 1:
+        for i in range(1, num_groups):
+            if os.path.isdir('{0}growth_{1}'.format(data_dir, i)) == False:
+                os.mkdir('{0}growth_{1}'.format(data_dir, i))
+            # Grab all of the files for the position chunks.
+            files = glob.glob('{0}growth/*xy0{1}*'.format(data_dir, i))
+            for f in files:
+                shutil.move(f, '{0}growth_{1}/'.format(data_dir, i))
+    
+        # Rename the first growth folder.
+        shutil.move('{0}growth'.format(data_dir), '{0}growth_0'.format(data_dir))
 
-    # Rename the file
-    os.rename(f, '{0}growth/{1}'.format(data_dir, new_name))
-
-#%% Complete the fluorescence sequence.
-missing_channels = [2]
-im = skimage.io.imread(growth_files[0])
-zeros_im = np.zeros_like(im)
-for i, f in enumerate(growth_files):
-    # Get the name of the file.
-    name = f.split('/')[-1]
-    prefix = name[:-5]
-    for ch in missing_channels:
-        new_name = '{0}growth/{1}{2}.tif'.format(data_dir, prefix, ch)
-        if os.path.exists(new_name) == False:
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                skimage.io.imsave(new_name, zeros_im)
-
-# %% Partition growth groups into superseggable chunks.
-max_pos = int(np.sort(growth_files)
-              [-1].split('/')[-1].split('xy')[1].split('c')[0])
-num_groups = int(np.ceil(max_pos / 10))
-if num_groups > 1:
-    for i in range(1, num_groups):
-        if os.path.isdir('{0}growth_{1}'.format(data_dir, i)) == False:
-            os.mkdir('{0}growth_{1}'.format(data_dir, i))
-        # Grab all of the files for the position chunks.
-        files = glob.glob('{0}growth/*xy0{1}*'.format(data_dir, i))
-        for f in files:
-            shutil.move(f, '{0}growth_{1}/'.format(data_dir, i))
-
-    # Rename the first growth folder.
-    shutil.move('{0}growth'.format(data_dir), '{0}growth_0'.format(data_dir))
-
-# %% Make and move snap group folders.
-for i, s in enumerate(snap_groups):
-    if os.path.isdir('{0}{1}'.format(data_dir, s)) == False:
-        os.mkdir('{0}{1}'.format(data_dir, s))
+if 'snaps' in samples: 
+    # %% Make and move snap group folders.
+    for i, s in enumerate(snap_groups):
+        if os.path.isdir('{0}{1}'.format(data_dir, s)) == False:
+            os.mkdir('{0}{1}'.format(data_dir, s))
     files = glob.glob('{0}snaps/*{1}*.tif'.format(data_dir, s))
-    for f in files:
-        shutil.move(f, '{0}{1}'.format(data_dir, s))
+    for f in files: 
+       shutil.move(f, '{0}{1}'.format(data_dir, s))
 
 # Remove the snaps directory.
 os.rmdir('{0}snaps'.format(data_dir))
