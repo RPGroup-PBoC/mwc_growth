@@ -43,7 +43,7 @@ growth_df = mwc.process.parse_clists(
     growth_files, excluded_props=excluded_props)
 
 # Apply a filter.
-# growth_df = mwc.process.morphological_filter(growth_df, IP_DIST)
+growth_df = mwc.process.morphological_filter(growth_df, IP_DIST)
 
 
 # %%
@@ -63,7 +63,7 @@ for i, s in enumerate(snap_groups):
 snap_df = pd.concat(snap_dfs, ignore_index=True)
 
 # Apply area bounds.
-# snap_df = mwc.process.morphological_filter(snap_df, IP_DIST)
+snap_df = mwc.process.morphological_filter(snap_df, IP_DIST)
 
 # %% Computation of fluctuations.
 auto_strain = snap_df[snap_df['strain'] == 'autofluorescence']
@@ -72,14 +72,15 @@ yfp_auto_val = np.mean(auto_strain['fluor2_mean_death'])
 
 
 # Uncorrect for background fluorescence.
-fluct_df = mwc.process.compute_fluctuations(growth_df, mcherry_auto_val)
+fluct_df = mwc.process.compute_fluctuations(
+    growth_df, growth_df['fluor1_bg_death'].mean())
 fluct_df.to_csv('output/{}_{}_{}C_{}_{}_fluctuations.csv'.format(DATE,
                                                                  MICROSCOPE, TEMP,
                                                                  CARBON, OPERATOR))
 # Save the two dataframes.
-growth_df = growth_df.to_csv(
+growth_df.to_csv(
     'output/20180222_tenjin_37C_glucose_O2_growth.csv')
-snap_df = snap_df.to_csv('output/20180222_tenjin_37C_glucose_O2_snaps.csv')
+snap_df.to_csv('output/20180222_tenjin_37C_glucose_O2_snaps.csv')
 # %% Estimate the calibration factor.
 with pm.Model() as model:
     like = mwc.bayes.DeterminsticCalibrationFactor('alpha', I_1=fluct_df['I_1'].values,
@@ -146,10 +147,10 @@ snap_df[snap_df['strain'] == 'deltaLacI']
 
 # Subtract the autofluorescence from the snap dataframe.
 snap_df['fluor1_sub'] = snap_df['area_death'] * \
-    (snap_df['fluor1_mean_death'] - mcherry_auto_val)
+    (snap_df['fluor1_mean_death'] - snap_df['fluor1_bg_death'].mean())
 
 snap_df['fluor2_sub'] = snap_df['area_death'] * \
-    (snap_df['fluor2_mean_death'] - yfp_auto_val)
+    (snap_df['fluor2_mean_death'] - snap_df['fluor2_bg_death'].mean())
 
 # Compute the mean expression for ΔLacI.
 mean_delta_yfp = snap_df[snap_df['strain'] == 'deltaLacI']['fluor2_sub'].mean()
@@ -176,6 +177,7 @@ fc_df.to_csv('output/{}_{}_{}C_{}_{}_foldchange.csv'.format(DATE,
                                                             MICROSCOPE, TEMP, CARBON, OPERATOR),
              index=False)
 
+fc_df
 # %% Plot the fold-change curve for a sanity check.
 OP_EN = {'O1': -15.0, 'O2': -13.9, 'O3': -9.3}  # in units of kBT.
 
