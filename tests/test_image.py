@@ -10,7 +10,7 @@ import pytest
 
 
 # Set up sample arrays
-zeros_im = np.ones((5, 5)).astype('uint16')
+ones_im = np.ones((5, 5)).astype('uint16')
 threes_im = (np.ones((5, 5)) * 3).astype('uint16')
 fives_im = (np.ones((5, 5)) * 5).astype('uint16')
 tens_im = (np.ones((5, 5)) * 10).astype('uint16')
