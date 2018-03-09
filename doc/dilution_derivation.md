@@ -256,12 +256,33 @@ is shown in gray. The black vertical line represents the best-fit value for the 
 presented in Brewster et al. [-@Brewster2014a].](../figs/brewster_method_agreement.pdf){#fig:brewster_method_agreement}
 
 
+The real test of this method is being able to faithfully reproduce results
+seen before in their entirety. This means growing the same batch of cells using
+the same growth conditions and methods. [@Fig:example_experiments] shows the
+results of such reproduced experiments using three different types of excitation
+wavelengths -- a mercury (Hg) lamp, white light emitting diode (LED), and a
+589 nm laser. The top two and bottom left-hand plots in [@fig:example_experiments]
+show the quantified fluctuations in intensity and the estimated calibration
+factors for each set. It's notable that for both the Hg lamp and the LED system,
+the fit agrees quite nicely with the means (indicated by red dots for arbitrary
+bins), but disagrees with the laser illumination. This is particularly obvious
+when using another method to test the accuracy of the counts. Without going
+into the gory details of the model, the bottom right-hand plot in [@fig:example_experiments]
+shows the predicted change in the expression of a reporter gene as the number
+of repressors (which are counted using the dilution method) is modulated. For
+both the LED and Hg lamp derived calibration factors, the data agrees with the
+prediction. However, the repressor copy number measurements are shifted by an
+ factor of approximately five to six. This is a factor that has been high repeatable
+ when using a laser excitation source, even when a different fluorophore is used.
 
+ To determine why this particular illumination method does not work, we examined
+ various sources of experimental error and measured their resulting bias on
+ the calibration factor estimation *in silico*.
 
 ![**Calibration factor estimation under three different illumination sources.**
 Representative examples of experimental measurements using the three different
 sources of excitation illumination. Top-left and top-right correspond to experiments performed
-with an Hg lamp source and a LED, respectivel. The bottom left corner was collected using a 589 nm laser source. The bottom right panel shows the fold-change in gene expression measurements from all three experiments shown in the other panels.](../figs/light_source_experiments.pdf){#fig:example_experiments}
+with an Hg lamp source and a LED, respectively. The bottom left corner was collected using a 589 nm laser source. The bottom right panel shows the fold-change in gene expression measurements from all three experiments shown in the other panels.](../figs/light_source_experiments.pdf){#fig:example_experiments}
 
 ## Including various flavors of error
 
@@ -325,9 +346,18 @@ the laser source having the largest variance.
 
 To examine the how important this error is in the measurement of the calibration
 factor, we performed the simulation described earlier, this time adding noise
-to the measurement of each sister cell pair. [@Fig:model1_sim] shows the result of
+to the measurement of each sister cell pair. [@Fig:err_est_model1] shows the result of
 this simulation. The measurement noise range was chosen to cover the extremes
-of the potential variation, ranging from $10^{-3} \times \alpha$ to $10^2 \times \alpha$.
+of the potential variation, ranging from $10^{-3} \alpha$ to $10^2 \alpha$.
+These results indicate that the effect of random measurement error does not
+strongly affect the resulting calculation of the calibration factor, at least
+until the relative value of the error becomes large (> 1\%). Past this point,
+the noise very strongly influences the measurement. Experimental measurement
+of the random noise of the three illumination systems shown in [@fig:shot_noise_measurement]
+are shown in the inset of [@fig:err_est_model1]. In this range, the measured calibration
+factor is nearly identical to the true value. This is perhaps not surprising,
+but is a satisfying confirmation that this is not the source of the repeatable
+factor of five error when using a laser.
 
 
 ![**Measurement noise for three illumination sources.** (A) Center 10 by 10 pixel
@@ -342,20 +372,156 @@ and centered at zero. This allows for direct comparison of the three distributio
 ![**Numerical error estimate from neglecting random measurement noise.**
 Black points indicate estimated values of $\alpha$ from each simulated experiment.
 The inset shows the range of measurement noise relevant to the three described
-illumination sources.](../figs/error_est_model1.pdf){#fig:model1_sim}
-
-
-
+illumination sources.](../figs/error_est_model1.pdf){#fig:err_est_model1}
 
 ### Temporal variation
+
+Another potential source of noise is variation in illumination intensity from
+snapshot to snapshot. We often think of these light sources as static, unwavering
+beams of light. In reality, there is constant and fairly predictable variations
+in intensity over many time scales. As the intensity of the emitted light from
+the fluorophore is dependent on the intensity of the excitation light, it's
+plausible that slight changes in the illumination could skew the cellular measurements.
+
+We can, for the purposes of this document, assume that the intensity of the
+emitted light $I$ is proportional to the intensity of the excitation light $\Phi$,
+$$
+I = \Phi\tau,
+$${#eq:temporal_i_phi_tau}
+where $\tau$ is the exposure time. With this assumption, we can rephrase
+[@eq:antot] to be depending on the intensity of the excitation light as
+$$
+I = \phi(\sigma_2)\alpha N,
+$${#eq:temporal_ian}
+where $\phi$ is a rescaled parameterization of $\Phi$ which is normally
+distributed with a mean of one and a variance $\sigma_2^2$. If the intensity
+is fixed across time, $\phi$ should be a delta function at 1, meaning all
+imaged sister cells obey as is presented in the perfect case. However, as
+the variation in the intensity increases, some sister cells will be exposed
+to more or less excitation light, making their measured fluorescence to be
+
+To get a handle on the degree of variation for the three illumination schemes
+in question, we imaged a single field of a homogeneously fluorescent slide
+for one hundred consecutive frames at intervals of 100 ms. [@Fig:temporal_noise_measurement]
+shows the results of these experiments. [@Fig:temporal_noise_measurement] (A) gives a qualtitative
+comparison of the measured intensity over the course of the acquisition. Each
+"pixel" represents the sum total intensity of the image at that frame number.
+(B) shows the distribution of the sum total intensities (black points) along
+with a Gaussian approximation (red lines) which describes the distributions
+reasonably well.
+
+We then simulated the impact of temporal variation in intensity by using [@eq:temporal_ian]
+to determine the single-cell intensities. In our simulations, we treated each
+sister cell pair as it's own position and therefore had it's own value of $\phi$.
+[@Fig:temporal_sim] summarizes the error in the estimation of the calibration
+factor when this noise source is neglected. As was seen for random measurement
+noise, the influence of temporal variation only becomes pronounced when the
+variation becomes large. The $x$-axis of [@fig:temporal_sim] shows the standard
+deviation $\sigma_2$ used to determine the intensity. The error only becomes
+large when the intensity is changing by a factor of two or more for each snapshot.
+The inset shows the region of parameter space where the errors measured in
+[@fig:temporal_noise_measurement] are of interest. It appears that all three
+methods do not introduce appreciable noise to the measurement and can thus likely
+be neglected.
 
 ![**Measurement of temporal variation for three illumination sources.** (A)
 Measurement of total image intensity of a fluorescent slide over a 100 exposure
 experiment. Each "pixel" represents the sum total intensity of the image at
 that frame number. The rows correspond to exposures taken with an Hg lamp, LED,
-and 589 nm laser illumination, respectively. (B) Normalized intensity
+and 589 nm laser illumination source, respectively. (B) Normalized intensity
 distributions of images summarized in (A) after normalization. Red curves are
 the Gaussian approximation of the measured distribution.
 ](../figs/temporal_noise_measurement.pdf){#fig:temporal_noise_measurement}
 
-# References
+
+![**Numerical error estimate from neglecting temporal variation.** Each black point represents the the most likely parameter value for the calibration factor when temporal variation in intensity is neglected. The inset shows the region of parameter space that is appropriate for the errors measured in [@fig:temporal_noise_measurement].](../figs/err_temporal_variation.pdf)
+
+
+### Spatial variation
+Much as we imagine these light sources to be stable over time, we unfortunately
+often think of them as completely uniform across their width. While we are
+probably all comfortable thinking of a laser beam as Gaussian in profile, it's
+important to remember that there are fringes caused by interference. These
+fringes can be thought of as spatially localized variations in intensity, as
+we worked through in the previous section. For large objects or averaged measurements,
+this is not too much of a concern. However, these fringes can be on the length
+scale of a few bacterial cells, which can be very important for our system of
+interest.
+
+Incorporating this noise in to our model now becomes a little more tricky.
+Rather than saying we can draw the values of our noise from a tidy distribution,
+the position of these fringes will depend strongly on the collimation of the beam
+and its alignment with the chip of the camera. This means that any given
+sister cell pair has a probability $p$ of being in a position that rests on
+one of these fringes. We can modify [@eq:antot] as
+$$
+I = \theta_{pos}\alpha N,
+$${#eq:spatial_ian}
+where $\theta_{pos}$ is on the intensity of the excitation beam at that
+position and is on the range $[0, 1]$, with $0$ being completely dark and $1$
+being maximally bright. Unlike the previous models of noise we've wrestled with,
+there are two parameters here to consider -- the degree of intensity variation
+as well as the fraction of cells affected.
+
+The error estimates for this model can be seen in [@fig:err_spatial_variation].
+Here, we've simulated the experiment varying both the fraction of the
+sister cell pairs affected ($x$-axis) as well as the magnitude of the
+intensity variation of the fringe (colored lines). This effect is rather striking
+and, as expected, can introduce considerable error into the experiment. It
+appears that  even with 10\% variation in intensity from fringe to fringe,
+errors in the estimation of $\alpha$ can be off several fold, even when only
+1\% of the sisters are affected. This, so far, appears to be the largest
+contributor to potential measurement error.
+
+
+![**Numerical error estimate from neglecting spatial intensity variation.** Each point indicates the most likely parameter value for the calibration factor when all sources of spatial variation are ignored. The two independent parameters (number of lineages affected and fractional intensity difference) were calculated in tandem.](../figs/err_spatial_variation.pdf){#fig:err_spatial_variation}
+
+Unlike the other two sources of error, the degree of spatial variation for
+our three light sources is a bit trickier to measure. To get a sense for what
+the illumination field looks like, it is no longer sufficient to look at a
+homogeneously fluorescent slide as the features of the illumination can be
+overwhelmed from out-of-plane fluorescence. To image the illumination field,
+we took a sample of highly dilute fluorescent beads and slowly but surely rastered
+a single bead across the field of view. By scanning a point source across the
+illumination field, we can accurately measure the degree of intensity variation
+on a length scale comparable to a single cell. A maximum projection of such
+an experiment can be seen in [@fig:max_projection]. This image has been flatted
+to correct for large-scale non-uniformity of the laser beam profile. This means
+that any small variations in intensity that are left are non-static fringes
+that could be present in our experimental data sets.
+
+![**Map of spatial variation in laser illumination.** Maximum projection of a 0.1 $\mu$m fluorescent bead scanned across the field of view using a 589nm laser excitation source. This image has been flattened using an average image of the illumination profile from a fluorescent Indium Tin Oxide coated slide. Scalebar is 10 $\mu$m.](../figs/max_projection.pdf){#fig:max_projection}
+
+As a first pass at quantifying these variations, we examined each row of imaged
+positions by calculating the total intensity of each bead and measuring the
+fractional difference from it's neighbor,
+$$
+\delta I = {I_n - I_{n+1} \over I_n},
+$${#eq:fractional_difference}
+for all $n$ images in a given row or column. This approach can been seen in
+[@fig:laser_spatial_variation] where we examined only the $x$-dimensional spatial
+variations. Each faint blue line corresponds to a single row of beads. The
+dark blue line highlights a representative trace whose  images can be seen
+at the top of the plot. The variation in intensity is larger than one would have initially suspected {\text{color{red} I am still suspicious of the magnitude here -- up to a factor of 2?!}},
+suggesting that the small-scale spatial fluctuations in intensity may be in
+the range of plausibility for this experiment.
+
+![**Percent variation in intensity between adjacent particles.**  Individual rows
+of the bead shown in[@fig:max_projection] were isolated and the fractional difference in bead intensity was calculated between adjacent neighbors. Each row is plotted as a thin blue line. The dark line is a representative trace highlighted for clarity. The beads shown in the top panel is the row highlighted in the plot.](../figs/laser_spatial_fluctuations.pdf){#fig:laser_spatial_variation}
+
+
+
+## The state of the union
+It seems like temporal and measurement noise can be neglected, so long as they
+aren't enormous. Measurement of the errors for the three different types of
+illumination schemes used in this work show that we are operating far below the
+these extreme limits. Spatial variation in intensity, however, can lead to
+very large errors in the estimated calibration factor value. Our cursory
+measurement of the spatial variation of a 589 nm laser illumination source
+shows that the percent variation in intensity on the length scale of a typical
+cell can result in these large overestimations of the calibration factor.
+
+For experiments in which the absolute intensity of a given cell is of
+quantitative interest, it may be worthwhile to take the hit in the signal to
+noise ratio and photobleaching effects to ensure spatial uniformity.
+

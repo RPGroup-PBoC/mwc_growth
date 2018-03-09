@@ -107,7 +107,7 @@ def yank_clist(src, username, port, dest, server='delbruck'):
     prefix = 'git/mwc_growth/data/images/'
 
     # Avoid very stupid errors with the provided source directory.
-    if src[-1] == '/'
+    if src[-1] == '/':
         src = src[:-1]
 
     # Define the source pattern.
