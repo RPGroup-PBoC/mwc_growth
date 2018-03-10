@@ -9,7 +9,7 @@ pymc3==3.3
 scikit_image==0.13.0
 CairoSVG==2.0.3
 tqdm==4.19.4
-Theano==1.0.1+2.gcd195ed
+Theano==1.0.1
 scp==0.10.2
 matplotlib==2.1.2
 fcsparser==0.1.3
