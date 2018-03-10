@@ -5,7 +5,7 @@ import skimage.filters
 import skimage.segmentation
 import scipy.ndimage
 import pandas as pd
-from pboc.image import projection, generate_flatfield
+from mwc.image import projection, generate_flatfield
 import pytest
 
 
