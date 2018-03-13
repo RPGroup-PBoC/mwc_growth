@@ -6,11 +6,10 @@
 # from . import mcmc
 from . import viz
 from . import flow
-# from . import image
+from . import image
 from . import stats
 from . import model
-
-
+from . import validation
 from . import process
 
 
