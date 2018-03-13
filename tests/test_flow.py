@@ -33,6 +33,7 @@ def test_gaussian_gate():
         for alpha in alpha_range:
             fn_gated = gaussian_gate(rnd_df, alpha,  x_val='x', y_val='y',
                                      log=log_bool)
+            fn_gated = fn_gated[fn_gated['gate'] == 1]
             frac = len(fn_gated) / n_samples
             assert alpha == pytest.approx(frac, 0.1)
 

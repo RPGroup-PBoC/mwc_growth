@@ -150,20 +150,22 @@ def gaussian_gate(df, alpha, x_val='FSC-A', y_val='SSC-A', log=True,
 
     # Find which data points fall inside the interval
     idx = interval_array <= scipy.stats.chi2.ppf(alpha, 2)
+    df['gate'] = 0
 
     # print the percentage of data kept
     if verbose:
         print('''
         with parameter alpha={0:0.2f}, percentage of data kept = {1:0.2f}
         '''.format(alpha, np.sum(idx) / len(df)))
-    return df[idx]
+    df.iloc[idx]['gate'] = 1
+    return df
 
 
 # #######################
 # File Parsing Utilities
 # #######################
 
-def fcs_to_csv(path, file_name, save_metadata=True):
+def fcs_to_csv(path, file_name, save_metadata=False, gate=True, alpha=0.4):
     R"""
     Reads in a Flow Cytometry Standard (FCS) file and exports all content
     directly to an easily parseable csv fie.
@@ -177,14 +179,26 @@ def fcs_to_csv(path, file_name, save_metadata=True):
     save_metadata : bool
         If True, a metadata file will also be saved. It will have the name of
         `path` with `_metadata.csv`
+    gate : bool
+        If True, the provided data will be gated.
+    mass_frac : float [0, 1]
+        The highest-density fraction of the data desired.
     """
 
     # Ensure provided file is actually .fcs
-    if path.split('.')[-1] is not '.fcs':
+    if path.split('.')[-1] != 'fcs':
         raise RuntimeError("`path` is not an FCS file.")
 
     meta, data = fcsparser.parse(path)
-    data.to_csv(file_name, index=False)
+    if gate == True:
+        gated = gaussian_gate(data, alpha=alpha)
+    else:
+        data['gate'] = 0
+        gated = data.copy()
+
+    gated = gated.loc[:, ['FSC-A', 'FSC-H', 'SSC-A',
+                          'SSC-H', 'FITC-A', 'FITC-H', 'gate']]
+    gated.to_csv(file_name, index=False)
 
     if save_metadata:
         meta_df = pd.DataFrame(meta)
