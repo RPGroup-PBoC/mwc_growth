@@ -1,6 +1,9 @@
 ---
-status:
+status: rejected
 reason:
+  Drift in the final frames of the growth movie prevented faithful segmentation
+  and lead to erroneous fluctuations. As it would be too laborious to correct
+  each segmentation failure by hand, this data set was rejected.
 ---
 
 # 2018-03-12 O2 Dilution
@@ -26,13 +29,22 @@ strains in glucose at 37°C.
 
 ## Notes & Observations
 * The cells were diluted into ATC and IPTG media at 9h08m.
+* Cells were harvested at OD<sub>600nm</sub> ~ 0.35.
+* The growth movies drifted over time, resulting in messed up lineages. For
+this reason, the data set was rejected.
+* The flow cytometry analysis look pretty good and I believe the protocol can
+be trusted.
 
 ## Analysis Files
 
-**Calibration Factor Determination**
+**Flow Cytometry Measurements**
+![](output/flow_summary.png)
 
+**Calibration Factor Determination**
+![](output/20180312_tenjin_37C_glucose_O2_calibration_factor.png)
 
 **Fold-change**
+![](output/20180312_tenjin_37C_glucose_O2_foldchange.png)
 
 ## Experimental Protocol
 
@@ -104,4 +116,4 @@ off as necessary.
 3. Blank images were created and saved for the growth series for all time points except the
 terminal fluorescence image. This was performed such that SuperSegger would properly extract the fluorescence information from the final image. Fluorescence images are needed at all time steps for this to work.
 
-4. After segmentation was complete, All `clist.mat` files were transferred to a local computer to analyze. These files were loaded and filtered based on size and aspect ratio. The fluctuations were computed and the best-fit for the calibration factor was determined via MCMC.
+4. After segmentation was complete, All `clist.mat` files were transferred to a local computer to analyze. These files were loaded and filtered based on size and aspect ratio. The fluctuations were computed and the best-fit for the calibration factor was determined via optimization.
