@@ -8,7 +8,7 @@ import scipy.stats
 # #######################
 # Automated Gating
 # #######################
-def fit_2D_gaussian(df, x_val='FSC-H', y_val='SSC-H', log=False):
+def fit_2D_gaussian(df, x_val='FSC-A', y_val='SSC-A', log=False):
     '''
     This function hacks astroML fit_bivariate_normal to return the mean
     and covariance matrix when fitting a 2D gaussian fuction to the data
@@ -58,7 +58,7 @@ def fit_2D_gaussian(df, x_val='FSC-H', y_val='SSC-H', log=False):
 
 
 # #################
-def gauss_interval(df, mu, cov, x_val='FSC-H', y_val='SSC-H', log=False):
+def gauss_interval(df, mu, cov, x_val='FSC-A', y_val='SSC-A', log=False):
     '''
     Computes the of the statistic
 
@@ -157,7 +157,7 @@ def gaussian_gate(df, alpha, x_val='FSC-A', y_val='SSC-A', log=True,
         print('''
         with parameter alpha={0:0.2f}, percentage of data kept = {1:0.2f}
         '''.format(alpha, np.sum(idx) / len(df)))
-    df.iloc[idx]['gate'] = 1
+    df['gate'] = idx.astype(int)
     return df
 
 
@@ -196,8 +196,8 @@ def fcs_to_csv(path, file_name, save_metadata=False, gate=True, alpha=0.4):
         data['gate'] = 0
         gated = data.copy()
 
-    gated = gated.loc[:, ['FSC-A', 'FSC-H', 'SSC-A',
-                          'SSC-H', 'FITC-A', 'FITC-H', 'gate']]
+    gated = gated.loc[:, ['FSC-A', 'SSC-A',
+                          'FITC-A', 'gate']]
     gated.to_csv(file_name, index=False)
 
     if save_metadata:

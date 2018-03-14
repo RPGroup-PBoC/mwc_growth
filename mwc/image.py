@@ -7,7 +7,6 @@ import skimage.measure
 import scipy.ndimage
 import numpy as np
 import pandas as pd
-from .viz import imshow
 import bokeh.io
 
 
