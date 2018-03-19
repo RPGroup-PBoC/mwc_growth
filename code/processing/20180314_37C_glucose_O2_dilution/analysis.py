@@ -5,7 +5,7 @@ import glob
 import matplotlib.pyplot as plt
 import scipy.stats
 import sys
-sys.path.insert(0, '../../../../')
+sys.path.insert(0, '../../../')
 import mwc.viz
 import mwc.process
 import mwc.stats
@@ -18,7 +18,7 @@ colors = mwc.viz.personal_style()
 import imp
 imp.reload(mwc.process)
 # Define the experimental parameters.
-DATE = 20180312
+DATE = 20180314
 TEMP = 37  # in °C
 CARBON = 'glucose'
 OPERATOR = 'O2'
@@ -183,7 +183,11 @@ fc_df.to_csv('output/{}_{}_{}C_{}_{}_microscopy_foldchange.csv'.format(DATE,
                                                                        MICROSCOPE, TEMP, CARBON, OPERATOR),
              index=False)
 
+rep_dict = {i: j for i, j in fc_df[[
+    'atc_conc_ngmL', 'mean_repressors']].values}
+
 fc_df
+
 # %% Plot the fold-change curve for a sanity check.
 OP_EN = {'O1': -15.0, 'O2': -13.9, 'O3': -9.3}  # in units of kBT.
 
@@ -217,3 +221,28 @@ plt.tight_layout()
 plt.savefig('output/{}_{}_{}C_{}_{}_foldchange.png'.format(DATE, MICROSCOPE,
                                                            TEMP, CARBON, OPERATOR),
             bbox_inches='tight')
+
+
+#%% Load the flow data
+flow_data = pd.read_csv(
+    'output/{}_{}C_{}_{}_flow_events.csv'.format(DATE, TEMP, CARBON, OPERATOR))
+flow_data = flow_data[(flow_data['strain'] != 'auto') &
+                      (flow_data['strain'] != 'delta')]
+grouped = flow_data.groupby(['atc_ngml'])
+
+fig, ax = plt.subplots(1, 1, figsize=(6, 4))
+ax.set_xscale('log')
+ax.set_yscale('log')
+c_range = np.logspace(-8, -2, 500)
+color_list = sns.color_palette('deep')
+i = 0
+for g, d in grouped:
+    c = color_list[i]
+    ax.plot(d['iptg_um'] / 1E6, d['fold_change'],
+            '.', label=rep_dict[g], color=c)
+    theo = mwc.model.SimpleRepression(effector_conc=c_range, R=rep_dict[g], ep_r=-13.9,
+                                      ka=ka / 1E6, ki=ki / 1e6, ep_ai=ep_ai, n_sites=2).fold_change()
+    ax.plot(c_range, theo, '-', color=c)
+    i += 1
+
+ax.legend()

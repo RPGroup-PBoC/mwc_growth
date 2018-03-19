@@ -1,12 +1,9 @@
 ---
-status: rejected
+status:
 reason:
-  Drift in the final frames of the growth movie prevented faithful segmentation
-  and lead to erroneous fluctuations. As it would be too laborious to correct
-  each segmentation failure by hand, this data set was rejected.
 ---
 
-# 2018-03-12 O2 Dilution
+# 2018-03-14 O2 Dilution
 
 ## Purpose
 This experiment preforms a full IPTG and ATC titration of the O2 dilution
@@ -28,12 +25,7 @@ strains in glucose at 37°C.
 | Isopropylthiogalactopyranoside (IPTG) | 0, 0.1, 5, 10, 25, 50, 75, 100, 250, 500, 1000, 5000  [mM] |
 
 ## Notes & Observations
-* The cells were diluted into ATC and IPTG media at 9h08m.
-* Cells were harvested at OD<sub>600nm</sub> ~ 0.35.
-* The growth movies drifted over time, resulting in messed up lineages. For
-this reason, the data set was rejected.
-* The flow cytometry analysis look pretty good and I believe the protocol can
-be trusted.
+* The cells were diluted into ATC and IPTG media at 7h30m.
 
 ## Analysis Files
 
@@ -41,10 +33,10 @@ be trusted.
 ![](output/flow_summary.png)
 
 **Calibration Factor Determination**
-![](output/20180312_tenjin_37C_glucose_O2_calibration_factor.png)
+![]()
 
 **Fold-change**
-![](output/20180312_tenjin_37C_glucose_O2_foldchange.png)
+![]()
 
 ## Experimental Protocol
 
