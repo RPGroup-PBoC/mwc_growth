@@ -14,7 +14,7 @@ import scipy.stats
 colors = mwc.viz.personal_style()
 
 # Define the details fo the expriment.
-DATE = 20180312
+DATE = 20180314
 CARBON = 'glucose'
 TEMP = 37  # in C
 OPERATOR = 'O2'
@@ -145,4 +145,3 @@ _ = ax[1].set_yticklabels(['auto | 0', 'ΔlacI | 0 ', 'dilution | 1', '2', '3', 
                            '10'], fontsize=8)
 plt.tight_layout()
 plt.savefig('output/flow_summary.png', bbox_inches='tight')
-A
