@@ -2,9 +2,9 @@
 % in MATLAB
 addpath(genpath('../../../../SuperSegger'));
 % Define the experiment parameters.
-DATE = '20180215';
+DATE = '20180404';
 BASENAME = 'tenjin_37C_glucose_O2';
-samples = {'growth_0', 'growth_1', 'growth_2'};
+samples = {'growth_0', 'growth_1'};
 
 % Get the snaps names.
 snap_files = dir(['../../../data/images/', DATE, '_', BASENAME,...
@@ -30,8 +30,7 @@ CONST.align.ALIGN_FLAG = 1;
 CONST.trackOpti.REMOVE_STRAY = 1;
 cleanFlag = 0;
 for i=1:length(samples)
-	parpool(24);
-
+ parpool(24, 'IdleTimeout', 1000000)	
     disp(samples{i})
     statement = ['Beginning segmentaton ', num2str(i), ' out of ',...
         num2str(length(samples))];
