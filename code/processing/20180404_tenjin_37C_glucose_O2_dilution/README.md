@@ -1,6 +1,6 @@
 ---
-status:
-reason:
+status: accepted
+reason: Despite a large calibration factor, the fold-change agrees well with the theory. A difference for this set is that the images were acquired in 12-bit rather than 16, resulting in a calibration factor that is not directly comparable. 
 ---
 
 # 2018-04-04 Dilution Experiment
@@ -18,29 +18,24 @@ This experiment was performed as a test of microscope operation via MicroManager
 
 ## Titration Series
 
-**Anhydrotetracycline HCl (ATC) concentrations [ng / mL] :** 0, 1, 2, 3, 4, 6, 8
 
-**Isopropylthiogalactopyranoside (IPTG) [mM] :** None
+| Inducer | Concentration |
+| :------ | ------------:
+| Anhydrotetracycline HCl (ATC) | 0, 1, 2, 3, 4, 7, 10  [ng / mL] |
+| Isopropylthiogalactopyranoside (IPTG) | 0 [mM] |
 
 ## Notes & Observations
 * Cells were harvested at OD<sub>600nm</sub> ~ 0.36.
-* The movie was run for two hours and had some considerable drift in Z. When
-trying to refocus the positions for the fluorescence acquisition, some positions
-were accidentally overwritten, resulting in double exposures
 
-* The `deltaLacI` strain  could not be segmented through `SuperSegger` due to
-multiple bright objects in the field of view, meaning that the fold-change
-can not be computed
 
 ## Analysis Files
 
 **Calibration Factor Determination**
-![](output/20180213_tenjin_37C_glucose_O2_calibration_factor.png)
+![](output/20180404_tenjin_37C_glucose_O2_calibration_factor.png)
 
 
 **Fold-change**
-
-Not calculated
+![](output/20180404_tenjin_37C_glucose_O2_foldchange.png)
 
 
 ## Experimental Protocol
