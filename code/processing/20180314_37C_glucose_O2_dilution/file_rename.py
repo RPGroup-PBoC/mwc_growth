@@ -34,7 +34,7 @@ selem = skimage.morphology.square(3)
 #%% Create flatfield images.
 field_avgs = {}
 noise_avgs = {}
-ff_channels = ['mCherry']
+ff_channels = []
 ff_dict = {i + 2: ch for i, ch in enumerate(ff_channels)}
 for ch in ff_channels:
     # Grab all of the ff images.
@@ -47,8 +47,8 @@ for ch in ff_channels:
     field_ims = skimage.io.ImageCollection(field_files, conserve_memory=False)
 
     # Create a mean projection of both.
-    noise_avg = mwc.image.projection(noise_ims, mode='mean', median_filt=False)
-    field_avg = mwc.image.projection(field_ims, mode='mean', median_filt=False)
+    noise_avg = mwc.image.projection(noise_ims, mode='mean', median_filt=True)
+    field_avg = mwc.image.projection(field_ims, mode='mean', median_filt=True)
 
     # Add them to the dictionary.
     noise_avgs[channel_dict[ch]] = noise_avg
@@ -106,17 +106,14 @@ for i, s in enumerate(tqdm.tqdm(samples)):
         if ch in ff_dict.keys():
             im = skimage.io.imread(f)
             ff_im = mwc.image.generate_flatfield(im, noise_avgs[ch], field_avgs[ch],
-                                                 median_filt=False)
-            ff_filt = scipy.ndimage.median_filter(ff_im, footprint=selem)
+                                                 median_filt=True)
 
-            # Convert to 16 bit.
-            ff_im = np.round(ff_filt).astype(np.uint16)
 
             # Save image in correct folder.
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
-                skimage.io.imsave(
-                    '{0}{1}/{2}'.format(data_dir, s, new_name), ff_im)
+                skimage.external.tifffile.imsave('{}{}/{}'.format(data_dir, s, new_name), ff_im.astype(np.float32), imagej=True)
+
         else:
             shutil.copy(f, '{0}{1}/{2}'.format(data_dir, s, new_name))
 

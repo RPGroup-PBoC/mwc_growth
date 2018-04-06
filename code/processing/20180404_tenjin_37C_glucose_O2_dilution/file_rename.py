@@ -44,7 +44,7 @@ for i, ch in enumerate(ff_channels):
 
     # Load the images.
     noise_ims = [skimage.io.ImageCollection(f, conserve_memory=True)[i] for f in noise_files]
-    field_ims = [skimage.io.ImageCollection(field_files, conserve_memory=True)[i] for f in field_files]
+    field_ims = [skimage.io.ImageCollection(f, conserve_memory=True)[i] for f in field_files]
 
     # Create a mean projection of both.
     noise_avg = mwc.image.projection(noise_ims, mode='mean', median_filt=False)
@@ -59,7 +59,8 @@ for i, ch in enumerate(ff_channels):
 samples = ['autofluorescence', 'deltaLacI', 'dilution', 'growth']
 snap_groups = []
 for i, s in enumerate(tqdm.tqdm(samples)):
-    samp_files = glob.glob('{0}*{1}*/*.ome.tif'.format(data_dir, s))
+    print(s)
+    samp_files = glob.glob('{0}*{1}*{2}*/*.ome.tif'.format(data_dir, DATE, s))
 
     # Make sample folders if necessary.
     if os.path.isdir('{0}{1}'.format(data_dir, s)) == False:
@@ -69,16 +70,16 @@ for i, s in enumerate(tqdm.tqdm(samples)):
         if (s == 'growth'):
             try:
                 _, strain, _, _, pos =  f.split('/')[-1].split('_')
-                pos = int(pos.split('.')[0])
+                pos = int(pos.split('.')[0].split('Pos')[-1])
                 atc_conc = 'mixed'
             except:
                 _, _, _, _, _, pos = f.split('/')[-1].split('_')
-                pos = int(pos.split('.')[0])
+                pos = int(pos.split('.')[0].split('Pos')[-1])
                 strain = 'growth_fluo'
                 atc_conc = 'mixed'
         else:
             _, _, _, _, strain, atc_conc, _, _, pos = f.split('/')[-1].split('_')    
-            pos = int(pos.split('.')[0])
+            pos = int(pos.split('.')[0].split('Pos')[-1])
             atc_conc = float(atc_conc.split('ngml')[0])
 
         if 'growth' not in s.lower():
@@ -87,25 +88,25 @@ for i, s in enumerate(tqdm.tqdm(samples)):
                 snap_groups.append(snap_group)
 
         # load the images.
-        ims = skimage.io.ImageCollection(s)
+        ims = skimage.io.ImageCollection(f)
         if strain == 'growth': 
             time = np.shape(ims)[0]
             for j in range(time):
                 new_name = '{}_{}_{}_{}ngmL_t{:05d}xy{:03d}c{}.tif'.format(DATE, strain, 'dilution', atc_conc,
-                                                                    j, pos, 1)
+                                                                    j, int(pos), 1)
                 skimage.io.imsave('{}{}/{}'.format(data_dir, s, new_name), ims[j])
         else:
             time = 0
             n_chans = np.shape(ims)[0]
             for j in range(n_chans):
                 if strain =='growth_fluo':
-                    new_name = '{}_{}_{}ngmL_t{:05d}xy{:03d}c{}.tif'.format(DATE, strain, atc_conc, time, acq_dict[j])
+                    new_name = '{}_{}_{}ngmL_t{:05d}xy{:03d}c{}.tif'.format(DATE, strain, atc_conc, int(time), int(pos), acq_dict[j])
                 else:
-                    new_name = '{}_{}_{}ngmL_t{:05d}xy{:03d}c{}.tif'.format(DATE, 'snaps', strain, atc_conc, time, acq_dict[j])
+                    new_name = '{}_{}_{}_{}ngmL_t{:05d}xy{:03d}c{}.tif'.format(DATE, 'snaps', strain, atc_conc, int(time), int(pos), acq_dict[j])
 
                 if j == 1:
-                    ff_im = mwc.image.generate_flatfield(im, noise_avgs['mCherry'], field_avgs['mCherry'],
-                                                median_filt=false)
+                    ff_im = mwc.image.generate_flatfield(ims[j], noise_avg, field_avg,
+                                                median_filt=False)
                     ff_filt = scipy.ndimage.median_filter(ff_im, footprint=selem)
             
                     # Save teh images.
