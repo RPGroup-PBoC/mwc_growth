@@ -4,7 +4,7 @@ addpath(genpath('../../../../SuperSegger'));
 % Define the experiment parameters.
 DATE = '20180419';
 BASENAME = '37C_glycerol_O2';
-samples = {'growth_1', 'growth_2', 'growth_0'};
+samples = {'growth_3'};
 
 % Get the snaps names.
 snap_files = dir(['../../../data/images/', DATE, '_', BASENAME,...
@@ -29,8 +29,9 @@ CONST.trackFoci.numSpots = 0;
 CONST.align.ALIGN_FLAG = 1;
 CONST.trackOpti.REMOVE_STRAY = 1;
 cleanFlag = 0;
+samples = snap_samples;
 for i=1:length(samples)
-	parpool(24);
+	parpool(24, 'IdleTimeout', 1000000)
 
     disp(samples{i})
     statement = ['Beginning segmentaton ', num2str(i), ' out of ',...

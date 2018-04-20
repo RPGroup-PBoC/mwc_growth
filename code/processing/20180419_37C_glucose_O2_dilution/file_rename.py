@@ -12,7 +12,6 @@ import tqdm
 sys.path.insert(0, '../../../')
 import mwc.image
 skimage.io.use_plugin('freeimage')
-
 # Set the experiment parameters.
 DATE = 20180419
 TEMP = 37  # in °C
@@ -26,7 +25,7 @@ channel_dict = {c: i + 1 for i, c in enumerate(channels)}
 # ################
 # Nothing below should change from experiment to experiment.
 # ################
-data_dir = '../../../data/images/{0}_{2}C_{3}_{4}_dilution/'.format(
+data_dir = '../../../data/images/{}_{}C_{}_{}_dilution/'.format(
     DATE, TEMP, CARBON, OPERATOR)
 selem = skimage.morphology.square(3)
 
@@ -72,11 +71,11 @@ for i, s in enumerate(tqdm.tqdm(samples)):
 
         # Get the particulars of the file.
         if multi_wave == True:
-            if 'ngml' in f:
+            if 'ngmL' in f:
                 _, ident, strain, atc_conc, ch, pos = f.split(
                     '/')[-1].split('_')
                 pos = int(pos.split('s')[1].split('.TIF')[0])
-                atc_conc = int(atc_conc.split('ngml')[0])
+                atc_conc = int(atc_conc.split('ngmL')[0])
                 time = 0
                 ch = channel_dict[ch.split('w')[1][1:]] 
             elif 'growth_fluo' in f:
@@ -85,13 +84,6 @@ for i, s in enumerate(tqdm.tqdm(samples)):
                 ch = channel_dict[ch.split('w')[1][1:]] 
                 pos = int(pos.split('s')[1].split('.TIF')[0])
                 time = 0
-
-            else:
-                _, ident, strain, _, pos, time = f.split('/')[-1].split('_')
-                pos = int(pos.split('s')[1])
-                time = int(time.split('t')[1].split('.TIF')[0])
-                ch = 1
-                atc_conc = 'mixed'
         else:
             _, ident, pos, time = f.split('/')[-1].split('_')
             pos = int(pos.split('s')[1])
@@ -153,7 +145,7 @@ if 'growth' in samples:
         os.rename(f, '{0}growth/{1}'.format(data_dir, new_name))
     
     #%% Complete the fluorescence sequence.
-    missing_channels = [2]
+    missing_channels = [2, 3]
     im = skimage.io.imread(growth_files[0])
     zeros_im = np.zeros_like(im)
     for i, f in enumerate(growth_files):
