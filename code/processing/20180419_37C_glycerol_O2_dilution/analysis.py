@@ -18,11 +18,10 @@ colors = mwc.viz.personal_style()
 import imp
 imp.reload(mwc.process)
 # Define the experimental parameters.
-DATE = 20180314
+DATE = 20180419
 TEMP = 37  # in °C
-CARBON = 'glucose'
+CARBON = 'glycerol'
 OPERATOR = 'O2'
-MICROSCOPE = 'tenjin'
 
 # ############################
 # Nothing below here should change
@@ -32,15 +31,13 @@ if os.path.exists('./output') == False:
     os.mkdir('./output')
 
 # %% Processing of data
-data_dir = '../../../data/images/{}_{}_{}C_{}_{}_dilution/'.format(
-    DATE, MICROSCOPE, TEMP, CARBON, OPERATOR)
+data_dir = '../../../data/images/{}_{}C_{}_{}_dilution/'.format(
+    DATE,  TEMP, CARBON, OPERATOR)
 data_dir
 # Extract file names and parse.
 growth_files = glob.glob('{}growth*/xy*/clist.mat'.format(data_dir))
-
-excluded_props = ['Fluor2 mean death']
 growth_df = mwc.process.parse_clists(
-    growth_files, excluded_props=excluded_props)
+    growth_files)
 
 # Apply a filter.
 growth_df = mwc.process.morphological_filter(growth_df, IP_DIST)
@@ -71,20 +68,16 @@ snap_df = snap_df[snap_df['err'] == 1]
 
 # %% Computation of fluctuations.
 auto_strain = snap_df[snap_df['strain'] == 'autofluorescence']
-mcherry_auto_val = np.mean(auto_strain['fluor1_bg_death'])
-yfp_auto_val = np.mean(auto_strain['fluor2_bg_death'])
-
+mcherry_auto_val = np.mean(auto_strain['fluor2_mean_death'] + auto_strain['fluor2_bg_death'])
+yfp_auto_val = np.mean(auto_strain['fluor1_mean_death'] + auto_strain['fluor1_bg_death'])
 
 # Uncorrect for background fluorescence.
 fluct_df = mwc.process.compute_fluctuations(
-    growth_df, mcherry_auto_val)
-fluct_df.to_csv('output/{}_{}_{}C_{}_{}_fluctuations.csv'.format(DATE,
-                                                                 MICROSCOPE, TEMP,
+    growth_df, mcherry_auto_val, fluo_key='fluor2_mean_death')
+fluct_df.to_csv('output/{}_{}C_{}_{}_fluctuations.csv'.format(DATE, TEMP,
                                                                  CARBON, OPERATOR))
 # Save the two dataframes.
-# growth_df.to_csv(
-# 'output/20180228_tenjin_37C_glucose_O2_growth.csv')
-# snap_df.to_csv('output/20180228_tenjin_37C_glucose_O2_snaps.csv')
+
 # %% Estimate the calibration factor.
 alpha_opt, alpha_err = mwc.bayes.estimate_calibration_factor(
     fluct_df['I_1'], fluct_df['I_2'])
@@ -143,7 +136,7 @@ _ = ax[1].legend()
 # Format and save
 sns.despine(offset=5)
 plt.tight_layout()
-plt.savefig('output/{}_{}_{}C_{}_{}_calibration_factor.png'.format(DATE, MICROSCOPE, TEMP,
+plt.savefig('output/{}_{}C_{}_{}_calibration_factor.png'.format(DATE, TEMP,
                                                                    CARBON, OPERATOR),
             bbox_inches='tight')
 
@@ -151,14 +144,14 @@ plt.savefig('output/{}_{}_{}C_{}_{}_calibration_factor.png'.format(DATE, MICROSC
 # %% Compute the fold-change for the other samples.
 
 # Subtract the autofluorescence from the snap dataframe.
-snap_df['fluor1_sub'] = snap_df['area_death'] * \
-    (snap_df['fluor1_mean_death'] - snap_df['fluor1_bg_death'])
+snap_df['fluor2_sub'] = snap_df['area_death'] * \
+    (snap_df['fluor2_mean_death'] - mcherry_auto_val - snap_df['fluor2_bg_death'])
 
-snap_df['fluor2_sub'] = snap_df['area_death'] *\
-    (snap_df['fluor2_mean_death'] - snap_df['fluor2_bg_death'])
+snap_df['fluor1_sub'] = snap_df['area_death'] *\
+    (snap_df['fluor1_mean_death'] - yfp_auto_val - snap_df['fluor2_bg_death'])
 
 # Compute the mean expression for ΔLacI.
-mean_delta_yfp = snap_df[snap_df['strain'] == 'deltaLacI']['fluor2_sub'].mean()
+mean_delta_yfp = snap_df[snap_df['strain'] == 'deltaLacI']['fluor1_sub'].mean()
 
 
 # Group the dilution strains by their atc concentration.
@@ -171,16 +164,15 @@ fc_df = pd.DataFrame([], columns=['atc_conc_ngmL',
 
 # Loop through each concentration and compute the fold-change.
 for g, d in grouped:
-    mean_rep = np.mean(d['fluor1_sub'] / alpha_opt)
-    mean_yfp = np.mean(d['fluor2_sub'])
+    mean_rep = np.mean(d['fluor2_sub'] / alpha_opt)
+    mean_yfp = np.mean(d['fluor1_sub'])
     fc = mean_yfp / mean_delta_yfp
     conc_dict = {'atc_conc_ngmL': g, 'mean_repressors': mean_rep, 'mean_yfp': mean_yfp,
                  'fold_change': fc}
     fc_df = fc_df.append(conc_dict, ignore_index=True)
 
 # Save the fold-change Dataframe to output.
-fc_df.to_csv('output/{}_{}_{}C_{}_{}_microscopy_foldchange.csv'.format(DATE,
-                                                                       MICROSCOPE, TEMP, CARBON, OPERATOR),
+fc_df.to_csv('output/{}_{}C_{}_{}_microscopy_foldchange.csv'.format(DATE, TEMP, CARBON, OPERATOR),
              index=False)
 
 rep_dict = {i: j for i, j in fc_df[[
@@ -218,8 +210,7 @@ _ = ax.plot(fc_df['mean_repressors'],
 _ = ax.legend()
 mwc.viz.format_axes()
 plt.tight_layout()
-plt.savefig('output/{}_{}_{}C_{}_{}_foldchange.png'.format(DATE, MICROSCOPE,
-                                                           TEMP, CARBON, OPERATOR),
+plt.savefig('output/{}_{}C_{}_{}_foldchange.png'.format(DATE, TEMP, CARBON, OPERATOR),
             bbox_inches='tight')
 
 
