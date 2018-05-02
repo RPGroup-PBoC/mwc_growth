@@ -26,7 +26,5 @@ model = pystan.StanModel('complete_mcmc.stan')
 
 #%% Set up the data dictionary.
 data_dict = {'N': len(n1), 'I1':I1, 'I2':I2, 'p':0.5}
-samples = model.sampling(data_dict, iter=10000, chains=4)
-
-
+samples = model.sampling(data_dict, iter=10000, chains=2, thin=10)
 samples
