@@ -14,8 +14,8 @@ import scipy.stats
 colors = mwc.viz.personal_style()
 
 # Define the details fo the expriment.
-DATE = 20180419
-CARBON = 'glycerol'
+DATE = 20180426
+CARBON = 'glucose'
 TEMP = 37  # in C
 OPERATOR = 'O2'
 
