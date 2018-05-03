@@ -1,0 +1,240 @@
+
+*****************************************************************************
+                Test suite for flow cytometry measurements
+*****************************************************************************
+
+Test: `test_flow_cols` (0 of 96 passed)
+=============================================================================
+The following files are in error:
+
+20180426_37C_glucose_O2_dilution_4ngmL_atc_75uM_iptg.csv
+20180426_37C_glucose_O2_dilution_10ngmL_atc_5000uM_iptg.csv
+20180426_37C_glucose_O2_dilution_10ngmL_atc_50uM_iptg.csv
+20180426_37C_glucose_O2_dilution_3ngmL_atc_250uM_iptg.csv
+20180426_37C_glucose_O2_dilution_2ngmL_atc_10uM_iptg.csv
+20180426_37C_glucose_O2_dilution_10ngmL_atc_5uM_iptg.csv
+20180426_37C_glucose_O2_dilution_3ngmL_atc_5uM_iptg.csv
+20180426_37C_glucose_O2_auto_0ngmL_atc_10uM_iptg.csv
+20180426_37C_glucose_O2_dilution_10ngmL_atc_1000uM_iptg.csv
+20180426_37C_glucose_O2_dilution_4ngmL_atc_250uM_iptg.csv
+20180426_37C_glucose_O2_dilution_7ngmL_atc_500uM_iptg.csv
+20180426_37C_glucose_O2_dilution_3ngmL_atc_1000uM_iptg.csv
+20180426_37C_glucose_O2_dilution_10ngmL_atc_0.1uM_iptg.csv
+20180426_37C_glucose_O2_dilution_3ngmL_atc_5000uM_iptg.csv
+20180426_37C_glucose_O2_dilution_3ngmL_atc_50uM_iptg.csv
+20180426_37C_glucose_O2_dilution_4ngmL_atc_500uM_iptg.csv
+20180426_37C_glucose_O2_dilution_7ngmL_atc_250uM_iptg.csv
+20180426_37C_glucose_O2_dilution_10ngmL_atc_100uM_iptg.csv
+20180426_37C_glucose_O2_dilution_3ngmL_atc_500uM_iptg.csv
+20180426_37C_glucose_O2_dilution_10ngmL_atc_0uM_iptg.csv
+20180426_37C_glucose_O2_dilution_3ngmL_atc_0uM_iptg.csv
+20180426_37C_glucose_O2_dilution_1ngmL_atc_50uM_iptg.csv
+20180426_37C_glucose_O2_dilution_7ngmL_atc_5000uM_iptg.csv
+20180426_37C_glucose_O2_dilution_4ngmL_atc_25uM_iptg.csv
+20180426_37C_glucose_O2_dilution_7ngmL_atc_1000uM_iptg.csv
+20180426_37C_glucose_O2_delta_0ngmL_atc_250uM_iptg.csv
+20180426_37C_glucose_O2_auto_0ngmL_atc_25uM_iptg.csv
+20180426_37C_glucose_O2_dilution_4ngmL_atc_5000uM_iptg.csv
+20180426_37C_glucose_O2_dilution_2ngmL_atc_500uM_iptg.csv
+20180426_37C_glucose_O2_dilution_2ngmL_atc_25uM_iptg.csv
+20180426_37C_glucose_O2_dilution_1ngmL_atc_250uM_iptg.csv
+20180426_37C_glucose_O2_dilution_7ngmL_atc_50uM_iptg.csv
+20180426_37C_glucose_O2_dilution_4ngmL_atc_1000uM_iptg.csv
+20180426_37C_glucose_O2_dilution_2ngmL_atc_5uM_iptg.csv
+20180426_37C_glucose_O2_auto_0ngmL_atc_500uM_iptg.csv
+20180426_37C_glucose_O2_delta_0ngmL_atc_0uM_iptg.csv
+20180426_37C_glucose_O2_dilution_7ngmL_atc_5uM_iptg.csv
+20180426_37C_glucose_O2_auto_0ngmL_atc_250uM_iptg.csv
+20180426_37C_glucose_O2_dilution_2ngmL_atc_0uM_iptg.csv
+20180426_37C_glucose_O2_dilution_7ngmL_atc_0uM_iptg.csv
+20180426_37C_glucose_O2_delta_0ngmL_atc_5uM_iptg.csv
+20180426_37C_glucose_O2_delta_0ngmL_atc_50uM_iptg.csv
+20180426_37C_glucose_O2_delta_0ngmL_atc_500uM_iptg.csv
+20180426_37C_glucose_O2_auto_0ngmL_atc_75uM_iptg.csv
+20180426_37C_glucose_O2_dilution_2ngmL_atc_250uM_iptg.csv
+20180426_37C_glucose_O2_dilution_2ngmL_atc_75uM_iptg.csv
+20180426_37C_glucose_O2_dilution_1ngmL_atc_500uM_iptg.csv
+20180426_37C_glucose_O2_dilution_4ngmL_atc_10uM_iptg.csv
+20180426_37C_glucose_O2_auto_0ngmL_atc_1000uM_iptg.csv
+20180426_37C_glucose_O2_dilution_2ngmL_atc_100uM_iptg.csv
+20180426_37C_glucose_O2_delta_0ngmL_atc_75uM_iptg.csv
+20180426_37C_glucose_O2_delta_0ngmL_atc_0.1uM_iptg.csv
+20180426_37C_glucose_O2_auto_0ngmL_atc_50uM_iptg.csv
+20180426_37C_glucose_O2_dilution_10ngmL_atc_10uM_iptg.csv
+20180426_37C_glucose_O2_dilution_1ngmL_atc_0.1uM_iptg.csv
+20180426_37C_glucose_O2_dilution_2ngmL_atc_50uM_iptg.csv
+20180426_37C_glucose_O2_auto_0ngmL_atc_5000uM_iptg.csv
+20180426_37C_glucose_O2_dilution_7ngmL_atc_25uM_iptg.csv
+20180426_37C_glucose_O2_dilution_3ngmL_atc_10uM_iptg.csv
+20180426_37C_glucose_O2_auto_0ngmL_atc_5uM_iptg.csv
+20180426_37C_glucose_O2_dilution_4ngmL_atc_0uM_iptg.csv
+20180426_37C_glucose_O2_auto_0ngmL_atc_100uM_iptg.csv
+20180426_37C_glucose_O2_dilution_1ngmL_atc_0uM_iptg.csv
+20180426_37C_glucose_O2_dilution_2ngmL_atc_5000uM_iptg.csv
+20180426_37C_glucose_O2_dilution_4ngmL_atc_5uM_iptg.csv
+20180426_37C_glucose_O2_auto_0ngmL_atc_0.1uM_iptg.csv
+20180426_37C_glucose_O2_auto_0ngmL_atc_0uM_iptg.csv
+20180426_37C_glucose_O2_dilution_1ngmL_atc_5uM_iptg.csv
+20180426_37C_glucose_O2_dilution_2ngmL_atc_1000uM_iptg.csv
+20180426_37C_glucose_O2_delta_0ngmL_atc_25uM_iptg.csv
+20180426_37C_glucose_O2_dilution_1ngmL_atc_100uM_iptg.csv
+20180426_37C_glucose_O2_dilution_1ngmL_atc_10uM_iptg.csv
+20180426_37C_glucose_O2_delta_0ngmL_atc_100uM_iptg.csv
+20180426_37C_glucose_O2_dilution_7ngmL_atc_75uM_iptg.csv
+20180426_37C_glucose_O2_dilution_2ngmL_atc_0.1uM_iptg.csv
+20180426_37C_glucose_O2_dilution_10ngmL_atc_25uM_iptg.csv
+20180426_37C_glucose_O2_dilution_7ngmL_atc_10uM_iptg.csv
+20180426_37C_glucose_O2_dilution_3ngmL_atc_0.1uM_iptg.csv
+20180426_37C_glucose_O2_dilution_1ngmL_atc_75uM_iptg.csv
+20180426_37C_glucose_O2_dilution_1ngmL_atc_5000uM_iptg.csv
+20180426_37C_glucose_O2_dilution_4ngmL_atc_0.1uM_iptg.csv
+20180426_37C_glucose_O2_dilution_7ngmL_atc_100uM_iptg.csv
+20180426_37C_glucose_O2_dilution_3ngmL_atc_25uM_iptg.csv
+20180426_37C_glucose_O2_dilution_1ngmL_atc_1000uM_iptg.csv
+20180426_37C_glucose_O2_dilution_10ngmL_atc_250uM_iptg.csv
+20180426_37C_glucose_O2_dilution_7ngmL_atc_0.1uM_iptg.csv
+20180426_37C_glucose_O2_dilution_10ngmL_atc_500uM_iptg.csv
+20180426_37C_glucose_O2_dilution_3ngmL_atc_75uM_iptg.csv
+20180426_37C_glucose_O2_dilution_4ngmL_atc_100uM_iptg.csv
+20180426_37C_glucose_O2_dilution_1ngmL_atc_25uM_iptg.csv
+20180426_37C_glucose_O2_dilution_4ngmL_atc_50uM_iptg.csv
+20180426_37C_glucose_O2_delta_0ngmL_atc_5000uM_iptg.csv
+20180426_37C_glucose_O2_dilution_10ngmL_atc_75uM_iptg.csv
+20180426_37C_glucose_O2_delta_0ngmL_atc_10uM_iptg.csv
+20180426_37C_glucose_O2_dilution_3ngmL_atc_100uM_iptg.csv
+20180426_37C_glucose_O2_delta_0ngmL_atc_1000uM_iptg.csv
+
+-----------------------------------------------------------------------------
+
+Test: `test_gate` (96 of 96 passed)
+=============================================================================
+The following files are in error:
+
+None
+
+-----------------------------------------------------------------------------
+
+Test: `test_positivity` (79 of 96 passed)
+=============================================================================
+The following files are in error:
+
+20180426_37C_glucose_O2_auto_0ngmL_atc_10uM_iptg.csv -> 1.3783701908512571 %
+20180426_37C_glucose_O2_dilution_10ngmL_atc_0.1uM_iptg.csv -> 1.4740795861238085 %
+20180426_37C_glucose_O2_dilution_10ngmL_atc_0uM_iptg.csv -> 1.5290246031923704 %
+20180426_37C_glucose_O2_dilution_3ngmL_atc_0uM_iptg.csv -> 1.0769689737470167 %
+20180426_37C_glucose_O2_auto_0ngmL_atc_25uM_iptg.csv -> 1.075449504284994 %
+20180426_37C_glucose_O2_dilution_2ngmL_atc_5uM_iptg.csv -> 2.212051868802441 %
+20180426_37C_glucose_O2_auto_0ngmL_atc_500uM_iptg.csv -> 3.1446540880503147 %
+20180426_37C_glucose_O2_auto_0ngmL_atc_250uM_iptg.csv -> 2.546583850931677 %
+20180426_37C_glucose_O2_dilution_7ngmL_atc_0uM_iptg.csv -> 1.4405497415206154 %
+20180426_37C_glucose_O2_auto_0ngmL_atc_75uM_iptg.csv -> 1.8184506209343583 %
+20180426_37C_glucose_O2_auto_0ngmL_atc_50uM_iptg.csv -> 1.2544404973357017 %
+20180426_37C_glucose_O2_auto_0ngmL_atc_5uM_iptg.csv -> 1.47775746496039 %
+20180426_37C_glucose_O2_dilution_4ngmL_atc_0uM_iptg.csv -> 1.1655011655011656 %
+20180426_37C_glucose_O2_auto_0ngmL_atc_100uM_iptg.csv -> 1.037542662116041 %
+20180426_37C_glucose_O2_dilution_3ngmL_atc_0.1uM_iptg.csv -> 1.2042035327562526 %
+20180426_37C_glucose_O2_dilution_4ngmL_atc_0.1uM_iptg.csv -> 1.4252935618841949 %
+20180426_37C_glucose_O2_dilution_7ngmL_atc_0.1uM_iptg.csv -> 1.504060391170079 %
+
+-----------------------------------------------------------------------------
+
+Test: `test_event_count` (0 of 96 passed)
+=============================================================================
+The following files are in error:
+
+20180426_37C_glucose_O2_dilution_4ngmL_atc_75uM_iptg.csv -> 15.9% of desired
+20180426_37C_glucose_O2_dilution_10ngmL_atc_5000uM_iptg.csv -> 36.4% of desired
+20180426_37C_glucose_O2_dilution_10ngmL_atc_50uM_iptg.csv -> 16.2% of desired
+20180426_37C_glucose_O2_dilution_3ngmL_atc_250uM_iptg.csv -> 13.4% of desired
+20180426_37C_glucose_O2_dilution_2ngmL_atc_10uM_iptg.csv -> 19.4% of desired
+20180426_37C_glucose_O2_dilution_10ngmL_atc_5uM_iptg.csv -> 27.7% of desired
+20180426_37C_glucose_O2_dilution_3ngmL_atc_5uM_iptg.csv -> 24.9% of desired
+20180426_37C_glucose_O2_auto_0ngmL_atc_10uM_iptg.csv -> 6.6% of desired
+20180426_37C_glucose_O2_dilution_10ngmL_atc_1000uM_iptg.csv -> 18.0% of desired
+20180426_37C_glucose_O2_dilution_4ngmL_atc_250uM_iptg.csv -> 16.0% of desired
+20180426_37C_glucose_O2_dilution_7ngmL_atc_500uM_iptg.csv -> 14.4% of desired
+20180426_37C_glucose_O2_dilution_3ngmL_atc_1000uM_iptg.csv -> 11.1% of desired
+20180426_37C_glucose_O2_dilution_10ngmL_atc_0.1uM_iptg.csv -> 28.2% of desired
+20180426_37C_glucose_O2_dilution_3ngmL_atc_5000uM_iptg.csv -> 21.2% of desired
+20180426_37C_glucose_O2_dilution_3ngmL_atc_50uM_iptg.csv -> 19.5% of desired
+20180426_37C_glucose_O2_dilution_4ngmL_atc_500uM_iptg.csv -> 15.7% of desired
+20180426_37C_glucose_O2_dilution_7ngmL_atc_250uM_iptg.csv -> 18.1% of desired
+20180426_37C_glucose_O2_dilution_10ngmL_atc_100uM_iptg.csv -> 18.1% of desired
+20180426_37C_glucose_O2_dilution_3ngmL_atc_500uM_iptg.csv -> 14.6% of desired
+20180426_37C_glucose_O2_dilution_10ngmL_atc_0uM_iptg.csv -> 44.7% of desired
+20180426_37C_glucose_O2_dilution_3ngmL_atc_0uM_iptg.csv -> 33.5% of desired
+20180426_37C_glucose_O2_dilution_1ngmL_atc_50uM_iptg.csv -> 16.7% of desired
+20180426_37C_glucose_O2_dilution_7ngmL_atc_5000uM_iptg.csv -> 29.9% of desired
+20180426_37C_glucose_O2_dilution_4ngmL_atc_25uM_iptg.csv -> 25.9% of desired
+20180426_37C_glucose_O2_dilution_7ngmL_atc_1000uM_iptg.csv -> 15.6% of desired
+20180426_37C_glucose_O2_delta_0ngmL_atc_250uM_iptg.csv -> 55.8% of desired
+20180426_37C_glucose_O2_auto_0ngmL_atc_25uM_iptg.csv -> 6.0% of desired
+20180426_37C_glucose_O2_dilution_4ngmL_atc_5000uM_iptg.csv -> 16.3% of desired
+20180426_37C_glucose_O2_dilution_2ngmL_atc_500uM_iptg.csv -> 11.3% of desired
+20180426_37C_glucose_O2_dilution_2ngmL_atc_25uM_iptg.csv -> 17.0% of desired
+20180426_37C_glucose_O2_dilution_1ngmL_atc_250uM_iptg.csv -> 13.8% of desired
+20180426_37C_glucose_O2_dilution_7ngmL_atc_50uM_iptg.csv -> 17.4% of desired
+20180426_37C_glucose_O2_dilution_4ngmL_atc_1000uM_iptg.csv -> 15.4% of desired
+20180426_37C_glucose_O2_dilution_2ngmL_atc_5uM_iptg.csv -> 1.3% of desired
+20180426_37C_glucose_O2_auto_0ngmL_atc_500uM_iptg.csv -> 3.7% of desired
+20180426_37C_glucose_O2_dilution_7ngmL_atc_5uM_iptg.csv -> 24.5% of desired
+20180426_37C_glucose_O2_auto_0ngmL_atc_250uM_iptg.csv -> 4.8% of desired
+20180426_37C_glucose_O2_dilution_2ngmL_atc_0uM_iptg.csv -> 34.9% of desired
+20180426_37C_glucose_O2_dilution_7ngmL_atc_0uM_iptg.csv -> 31.7% of desired
+20180426_37C_glucose_O2_delta_0ngmL_atc_5uM_iptg.csv -> 53.7% of desired
+20180426_37C_glucose_O2_delta_0ngmL_atc_50uM_iptg.csv -> 49.7% of desired
+20180426_37C_glucose_O2_delta_0ngmL_atc_500uM_iptg.csv -> 55.8% of desired
+20180426_37C_glucose_O2_auto_0ngmL_atc_75uM_iptg.csv -> 6.8% of desired
+20180426_37C_glucose_O2_dilution_2ngmL_atc_250uM_iptg.csv -> 12.3% of desired
+20180426_37C_glucose_O2_dilution_2ngmL_atc_75uM_iptg.csv -> 17.7% of desired
+20180426_37C_glucose_O2_dilution_1ngmL_atc_500uM_iptg.csv -> 11.4% of desired
+20180426_37C_glucose_O2_dilution_4ngmL_atc_10uM_iptg.csv -> 22.0% of desired
+20180426_37C_glucose_O2_auto_0ngmL_atc_1000uM_iptg.csv -> 6.8% of desired
+20180426_37C_glucose_O2_dilution_2ngmL_atc_100uM_iptg.csv -> 14.7% of desired
+20180426_37C_glucose_O2_delta_0ngmL_atc_75uM_iptg.csv -> 69.9% of desired
+20180426_37C_glucose_O2_auto_0ngmL_atc_50uM_iptg.csv -> 9.0% of desired
+20180426_37C_glucose_O2_dilution_10ngmL_atc_10uM_iptg.csv -> 48.2% of desired
+20180426_37C_glucose_O2_dilution_1ngmL_atc_0.1uM_iptg.csv -> 38.0% of desired
+20180426_37C_glucose_O2_dilution_2ngmL_atc_50uM_iptg.csv -> 15.7% of desired
+20180426_37C_glucose_O2_auto_0ngmL_atc_5000uM_iptg.csv -> 10.2% of desired
+20180426_37C_glucose_O2_dilution_7ngmL_atc_25uM_iptg.csv -> 8.9% of desired
+20180426_37C_glucose_O2_dilution_3ngmL_atc_10uM_iptg.csv -> 21.4% of desired
+20180426_37C_glucose_O2_auto_0ngmL_atc_5uM_iptg.csv -> 6.6% of desired
+20180426_37C_glucose_O2_dilution_4ngmL_atc_0uM_iptg.csv -> 30.5% of desired
+20180426_37C_glucose_O2_auto_0ngmL_atc_100uM_iptg.csv -> 7.3% of desired
+20180426_37C_glucose_O2_dilution_1ngmL_atc_0uM_iptg.csv -> 39.6% of desired
+20180426_37C_glucose_O2_dilution_2ngmL_atc_5000uM_iptg.csv -> 14.0% of desired
+20180426_37C_glucose_O2_dilution_4ngmL_atc_5uM_iptg.csv -> 21.8% of desired
+20180426_37C_glucose_O2_auto_0ngmL_atc_0.1uM_iptg.csv -> 17.1% of desired
+20180426_37C_glucose_O2_auto_0ngmL_atc_0uM_iptg.csv -> 11.5% of desired
+20180426_37C_glucose_O2_dilution_1ngmL_atc_5uM_iptg.csv -> 22.0% of desired
+20180426_37C_glucose_O2_dilution_2ngmL_atc_1000uM_iptg.csv -> 10.3% of desired
+20180426_37C_glucose_O2_delta_0ngmL_atc_25uM_iptg.csv -> 41.5% of desired
+20180426_37C_glucose_O2_dilution_1ngmL_atc_100uM_iptg.csv -> 14.9% of desired
+20180426_37C_glucose_O2_dilution_1ngmL_atc_10uM_iptg.csv -> 18.8% of desired
+20180426_37C_glucose_O2_delta_0ngmL_atc_100uM_iptg.csv -> 62.9% of desired
+20180426_37C_glucose_O2_dilution_7ngmL_atc_75uM_iptg.csv -> 18.7% of desired
+20180426_37C_glucose_O2_dilution_2ngmL_atc_0.1uM_iptg.csv -> 40.4% of desired
+20180426_37C_glucose_O2_dilution_10ngmL_atc_25uM_iptg.csv -> 9.9% of desired
+20180426_37C_glucose_O2_dilution_7ngmL_atc_10uM_iptg.csv -> 81.3% of desired
+20180426_37C_glucose_O2_dilution_3ngmL_atc_0.1uM_iptg.csv -> 31.3% of desired
+20180426_37C_glucose_O2_dilution_1ngmL_atc_75uM_iptg.csv -> 15.9% of desired
+20180426_37C_glucose_O2_dilution_1ngmL_atc_5000uM_iptg.csv -> 20.0% of desired
+20180426_37C_glucose_O2_dilution_4ngmL_atc_0.1uM_iptg.csv -> 37.0% of desired
+20180426_37C_glucose_O2_dilution_7ngmL_atc_100uM_iptg.csv -> 19.1% of desired
+20180426_37C_glucose_O2_dilution_3ngmL_atc_25uM_iptg.csv -> 17.9% of desired
+20180426_37C_glucose_O2_dilution_1ngmL_atc_1000uM_iptg.csv -> 14.7% of desired
+20180426_37C_glucose_O2_dilution_10ngmL_atc_250uM_iptg.csv -> 16.1% of desired
+20180426_37C_glucose_O2_dilution_7ngmL_atc_0.1uM_iptg.csv -> 35.0% of desired
+20180426_37C_glucose_O2_dilution_10ngmL_atc_500uM_iptg.csv -> 17.6% of desired
+20180426_37C_glucose_O2_dilution_3ngmL_atc_75uM_iptg.csv -> 16.2% of desired
+20180426_37C_glucose_O2_dilution_4ngmL_atc_100uM_iptg.csv -> 15.2% of desired
+20180426_37C_glucose_O2_dilution_1ngmL_atc_25uM_iptg.csv -> 21.3% of desired
+20180426_37C_glucose_O2_dilution_4ngmL_atc_50uM_iptg.csv -> 16.1% of desired
+20180426_37C_glucose_O2_delta_0ngmL_atc_5000uM_iptg.csv -> 93.7% of desired
+20180426_37C_glucose_O2_dilution_10ngmL_atc_75uM_iptg.csv -> 16.6% of desired
+20180426_37C_glucose_O2_delta_0ngmL_atc_10uM_iptg.csv -> 49.5% of desired
+20180426_37C_glucose_O2_dilution_3ngmL_atc_100uM_iptg.csv -> 14.4% of desired
+20180426_37C_glucose_O2_delta_0ngmL_atc_1000uM_iptg.csv -> 53.7% of desired
+
+-----------------------------------------------------------------------------

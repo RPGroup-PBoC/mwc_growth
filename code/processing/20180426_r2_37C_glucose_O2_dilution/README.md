@@ -3,11 +3,11 @@ status:
 reason:
 ---
 
-# 2018-04-19 O2 Dilution
+# 2018-04-26 O2 Dilution
 
 ## Purpose
-This experiment preforms a full IPTG and ATC titration of the O2 dilution
-strains in glycerol at 37°C.
+This experiment performs a full IPTG and ATC titration of the O2 dilution
+strains in glucose at 37°C.
 
 ## Strain Information
 
@@ -25,8 +25,7 @@ strains in glycerol at 37°C.
 | Isopropylthiogalactopyranoside (IPTG) | 0, 0.1, 5, 10, 25, 50, 75, 100, 250, 500, 1000, 5000  [mM] |
 
 ## Notes & Observations
-* The cells were diluted into ATC and IPTG media at 01h15m.
-* Cells were at an OD<sub>600nm</sub> of approximately 0.35 upon preparation for microscopy and flow cytometry.
+* Strains grew from 8am to 4:30pm in glucose at 37C.
 
 ## Analysis Files
 
@@ -82,7 +81,7 @@ off as necessary.
 4. Agarose pads spotted with cells were allowed to dry for 10 - 15 min and were then placed onto UV sterilized glass bottom dishes.
 
 5. After mounting, the sample dish was affixed to the microscope using double stick tape. Between five and ten positions were marked per snapshot sample. Exposures were as follows:
-    - Brightfield - 80ms
+    - Brightfield - 100ms
     - mCherry - 4000ms
     - YFP - 500ms
 
@@ -91,8 +90,8 @@ off as necessary.
 7. These were positions were imaged every five minutes for two hours using only the Brightfield channel. After two hours, these positions were imaged once more using a Brightfield, mCherry, and YFP channels.
 
 8. Between 15 and 20 positions were marked on a homogeneously fluorescent slide. These positions were imaged in both YFP and mCherry with the following exposures:
-    - mCherry - 100ms
-    - YFP - 5ms
+    - mCherry - 50ms
+    - YFP - 1ms
 
 9. Using the same positions marked on the  fluorescent slide, between 15 and 20 positions were imaged in mCherry and YFP with no illumination reaching the camera. These exposures were
     - mCherry - 4000ms
