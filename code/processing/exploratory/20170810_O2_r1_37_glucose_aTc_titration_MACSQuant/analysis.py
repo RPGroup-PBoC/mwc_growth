@@ -48,7 +48,7 @@ with open(target, 'a') as f:
     _data.to_csv(f)
 
 
-# Generate a plot of auto and delta values as a function of IPTG.
+# Generate a plot of auto and delta YFP values as a function of IPTG.
 plt.figure()
 data_slc = _data[(_data['strain']=='auto') | (_data['strain']=='delta')]
 grouped = data_slc.groupby('strain')
@@ -59,7 +59,7 @@ plt.ylabel('mean YFP')
 plt.legend(loc='upper left')
 plt.savefig('output/{0}_{1}_auto_delta_consistency.png'.format(DATE, RUN_NO), bbox_inches='tight')
 
-
+# Generate a plot of fold-change values as a function of IPTG.
 data_slc = _data[(_data['strain']!='auto') & (_data['strain']!='delta')]
 
 plt.figure()
