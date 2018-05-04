@@ -13,17 +13,17 @@ import mwc.validation
 import scipy.stats
 colors = mwc.viz.personal_style()
 
-# Define the details fo the expriment.
-DATE = 20180426
+# Define the details of the experiment.
+DATE = 20180430
 CARBON = 'glycerol'
 TEMP = 37  # in C
 OPERATOR = 'O2'
+RUN = 'r1' #empty string if missing from file names
 
-
-# -----------------
+# ------------------
 # %% Renaming
 # ------------------
-FCS_PATTERN = 'RP{}-{}-{}'.format(str(DATE)[:4], str(DATE)[4:6], str(DATE)[6:])
+FCS_PATTERN = 'RP{}-{}-{}_{}'.format(str(DATE)[:4], str(DATE)[4:6], str(DATE)[6:], RUN)
 ATC_CONC = [0, 0, 1, 2, 3, 4, 7, 10]  # in ng/mL
 IPTG_CONC = [0, 0.1, 5, 10, 25, 50, 75, 100, 250, 500, 1000, 5000]  # in µM
 
@@ -34,7 +34,7 @@ ROWS = ('auto', 'delta', 'dilution', 'dilution',
         'dilution', 'dilution', 'dilution', 'dilution')
 
 # Get the names of the files.
-files = glob.glob('../../../data/flow/{}*.fcs'.format(FCS_PATTERN))
+files = glob.glob('../../../data/flow/{}.0*.fcs'.format(FCS_PATTERN))
 files = np.sort(files)
 
 # Break the list up into columns.
@@ -73,6 +73,7 @@ for i, f in enumerate(csv_files):
                    ignore_index=True)
 
 # Compute the fold-change
+    # .mean() is needed to convert it from series to float. It's not redundant.
 mean_auto = df[df['strain'] == 'auto'].groupby(
     ['iptg_um'])['mean_fitc'].mean()
 denom = df[df['strain'] == 'delta'].groupby(
@@ -89,7 +90,7 @@ df.to_csv('./output/{}_{}C_{}_{}_flow_events.csv'.format(DATE, TEMP, CARBON, OPE
           index=False)
 
 # ---------------
-# %% Generate figure with fold-change. 
+# %% Generate figure with fold-change
 # ---------------
 indices = {'auto': 0, 'delta': 1, 'dilution': None}
 ones = np.ones((8, 12))
