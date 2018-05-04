@@ -13,14 +13,14 @@ import mwc.validation
 import scipy.stats
 colors = mwc.viz.personal_style()
 
-# Define the details fo the expriment.
+# Define the details of the experiment.
 DATE = 20180426
 CARBON = 'glucose'
 TEMP = 37  # in C
 OPERATOR = 'O2'
 
 
-# -----------------
+# ------------------
 # %% Renaming
 # ------------------
 FCS_PATTERN = 'RP{}-{}-{}'.format(str(DATE)[:4], str(DATE)[4:6], str(DATE)[6:])
