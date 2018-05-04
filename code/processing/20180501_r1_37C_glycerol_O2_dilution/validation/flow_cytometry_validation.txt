@@ -1,0 +1,241 @@
+
+*****************************************************************************
+                Test suite for flow cytometry measurements
+*****************************************************************************
+
+Test: `test_flow_cols` (0 of 96 passed)
+=============================================================================
+The following files are in error:
+
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_1000uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_0.1uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_10uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_25uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_5000uM_iptg.csv
+20180501_37C_glycerol_O2_delta_0ngmL_atc_5uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_0.1uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_0uM_iptg.csv
+20180501_37C_glycerol_O2_auto_0ngmL_atc_75uM_iptg.csv
+20180501_37C_glycerol_O2_auto_0ngmL_atc_500uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_25uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_0uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_50uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_100uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_100uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_5000uM_iptg.csv
+20180501_37C_glycerol_O2_auto_0ngmL_atc_250uM_iptg.csv
+20180501_37C_glycerol_O2_auto_0ngmL_atc_25uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_0.1uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_0.1uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_5uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_1000uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_10uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_5uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_100uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_75uM_iptg.csv
+20180501_37C_glycerol_O2_delta_0ngmL_atc_50uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_75uM_iptg.csv
+20180501_37C_glycerol_O2_delta_0ngmL_atc_0uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_100uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_100uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_25uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_10uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_0.1uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_10uM_iptg.csv
+20180501_37C_glycerol_O2_delta_0ngmL_atc_250uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_75uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_50uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_1000uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_25uM_iptg.csv
+20180501_37C_glycerol_O2_delta_0ngmL_atc_500uM_iptg.csv
+20180501_37C_glycerol_O2_auto_0ngmL_atc_10uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_5000uM_iptg.csv
+20180501_37C_glycerol_O2_delta_0ngmL_atc_1000uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_1000uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_100uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_5000uM_iptg.csv
+20180501_37C_glycerol_O2_delta_0ngmL_atc_5000uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_75uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_0.1uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_5uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_250uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_500uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_50uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_75uM_iptg.csv
+20180501_37C_glycerol_O2_auto_0ngmL_atc_1000uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_1000uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_5uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_10uM_iptg.csv
+20180501_37C_glycerol_O2_delta_0ngmL_atc_0.1uM_iptg.csv
+20180501_37C_glycerol_O2_auto_0ngmL_atc_5000uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_5000uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_0uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_25uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_50uM_iptg.csv
+20180501_37C_glycerol_O2_delta_0ngmL_atc_100uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_500uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_250uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_0uM_iptg.csv
+20180501_37C_glycerol_O2_delta_0ngmL_atc_10uM_iptg.csv
+20180501_37C_glycerol_O2_delta_0ngmL_atc_75uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_250uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_50uM_iptg.csv
+20180501_37C_glycerol_O2_auto_0ngmL_atc_0uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_500uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_5uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_500uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_250uM_iptg.csv
+20180501_37C_glycerol_O2_auto_0ngmL_atc_100uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_50uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_5uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_25uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_250uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_250uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_0uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_500uM_iptg.csv
+20180501_37C_glycerol_O2_auto_0ngmL_atc_0.1uM_iptg.csv
+20180501_37C_glycerol_O2_auto_0ngmL_atc_50uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_1000uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_75uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_0uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_10uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_5000uM_iptg.csv
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_500uM_iptg.csv
+20180501_37C_glycerol_O2_delta_0ngmL_atc_25uM_iptg.csv
+20180501_37C_glycerol_O2_auto_0ngmL_atc_5uM_iptg.csv
+
+-----------------------------------------------------------------------------
+
+Test: `test_gate` (96 of 96 passed)
+=============================================================================
+The following files are in error:
+
+None
+
+-----------------------------------------------------------------------------
+
+Test: `test_positivity` (77 of 96 passed)
+=============================================================================
+The following files are in error:
+
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_0.1uM_iptg.csv -> 2.5978336300274565 %
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_0.1uM_iptg.csv -> 2.4581653841455964 %
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_0uM_iptg.csv -> 1.8929016189290164 %
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_0uM_iptg.csv -> 2.5959924982726283 %
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_0.1uM_iptg.csv -> 3.1770705500559058 %
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_0.1uM_iptg.csv -> 2.954178226273589 %
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_5uM_iptg.csv -> 1.3014237051270854 %
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_0.1uM_iptg.csv -> 1.237495127971937 %
+20180501_37C_glycerol_O2_auto_0ngmL_atc_10uM_iptg.csv -> 1.0295582862836268 %
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_0.1uM_iptg.csv -> 2.2650290124002237 %
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_5uM_iptg.csv -> 1.1518560179977502 %
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_5uM_iptg.csv -> 1.7429377341809456 %
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_0uM_iptg.csv -> 3.145043138531662 %
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_0uM_iptg.csv -> 2.6770684966981744 %
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_5uM_iptg.csv -> 1.732036650056261 %
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_5uM_iptg.csv -> 1.0726564290625715 %
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_0uM_iptg.csv -> 2.6665203555360475 %
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_0uM_iptg.csv -> 2.327070879590094 %
+20180501_37C_glycerol_O2_auto_0ngmL_atc_5uM_iptg.csv -> 1.1969021356489087 %
+
+-----------------------------------------------------------------------------
+
+Test: `test_event_count` (0 of 96 passed)
+=============================================================================
+The following files are in error:
+
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_1000uM_iptg.csv -> 25.1% of desired
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_0.1uM_iptg.csv -> 33.1% of desired
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_10uM_iptg.csv -> 18.2% of desired
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_25uM_iptg.csv -> 20.7% of desired
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_5000uM_iptg.csv -> 40.0% of desired
+20180501_37C_glycerol_O2_delta_0ngmL_atc_5uM_iptg.csv -> 80.3% of desired
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_0.1uM_iptg.csv -> 32.7% of desired
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_0uM_iptg.csv -> 20.1% of desired
+20180501_37C_glycerol_O2_auto_0ngmL_atc_75uM_iptg.csv -> 6.9% of desired
+20180501_37C_glycerol_O2_auto_0ngmL_atc_500uM_iptg.csv -> 7.4% of desired
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_25uM_iptg.csv -> 18.2% of desired
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_0uM_iptg.csv -> 30.4% of desired
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_50uM_iptg.csv -> 18.0% of desired
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_100uM_iptg.csv -> 25.6% of desired
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_100uM_iptg.csv -> 22.0% of desired
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_5000uM_iptg.csv -> 38.7% of desired
+20180501_37C_glycerol_O2_auto_0ngmL_atc_250uM_iptg.csv -> 6.7% of desired
+20180501_37C_glycerol_O2_auto_0ngmL_atc_25uM_iptg.csv -> 8.4% of desired
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_0.1uM_iptg.csv -> 36.7% of desired
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_0.1uM_iptg.csv -> 32.8% of desired
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_5uM_iptg.csv -> 17.9% of desired
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_1000uM_iptg.csv -> 21.8% of desired
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_10uM_iptg.csv -> 15.7% of desired
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_5uM_iptg.csv -> 22.9% of desired
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_100uM_iptg.csv -> 18.3% of desired
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_75uM_iptg.csv -> 19.6% of desired
+20180501_37C_glycerol_O2_delta_0ngmL_atc_50uM_iptg.csv -> 80.7% of desired
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_75uM_iptg.csv -> 25.9% of desired
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_100uM_iptg.csv -> 10.5% of desired
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_100uM_iptg.csv -> 15.2% of desired
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_25uM_iptg.csv -> 19.9% of desired
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_10uM_iptg.csv -> 24.4% of desired
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_0.1uM_iptg.csv -> 30.8% of desired
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_10uM_iptg.csv -> 25.6% of desired
+20180501_37C_glycerol_O2_delta_0ngmL_atc_250uM_iptg.csv -> 83.8% of desired
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_75uM_iptg.csv -> 19.6% of desired
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_50uM_iptg.csv -> 17.6% of desired
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_1000uM_iptg.csv -> 27.3% of desired
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_25uM_iptg.csv -> 19.3% of desired
+20180501_37C_glycerol_O2_delta_0ngmL_atc_500uM_iptg.csv -> 68.6% of desired
+20180501_37C_glycerol_O2_auto_0ngmL_atc_10uM_iptg.csv -> 9.0% of desired
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_5000uM_iptg.csv -> 51.7% of desired
+20180501_37C_glycerol_O2_delta_0ngmL_atc_1000uM_iptg.csv -> 87.1% of desired
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_1000uM_iptg.csv -> 22.6% of desired
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_100uM_iptg.csv -> 12.8% of desired
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_5000uM_iptg.csv -> 45.5% of desired
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_75uM_iptg.csv -> 11.7% of desired
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_0.1uM_iptg.csv -> 34.0% of desired
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_5uM_iptg.csv -> 22.2% of desired
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_250uM_iptg.csv -> 16.6% of desired
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_500uM_iptg.csv -> 19.7% of desired
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_50uM_iptg.csv -> 19.3% of desired
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_75uM_iptg.csv -> 17.6% of desired
+20180501_37C_glycerol_O2_auto_0ngmL_atc_1000uM_iptg.csv -> 7.2% of desired
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_1000uM_iptg.csv -> 24.0% of desired
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_5uM_iptg.csv -> 23.8% of desired
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_10uM_iptg.csv -> 18.6% of desired
+20180501_37C_glycerol_O2_auto_0ngmL_atc_5000uM_iptg.csv -> 11.3% of desired
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_5000uM_iptg.csv -> 40.8% of desired
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_0uM_iptg.csv -> 30.7% of desired
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_25uM_iptg.csv -> 21.8% of desired
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_50uM_iptg.csv -> 16.1% of desired
+20180501_37C_glycerol_O2_delta_0ngmL_atc_100uM_iptg.csv -> 72.6% of desired
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_500uM_iptg.csv -> 18.9% of desired
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_250uM_iptg.csv -> 19.3% of desired
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_0uM_iptg.csv -> 30.9% of desired
+20180501_37C_glycerol_O2_delta_0ngmL_atc_10uM_iptg.csv -> 78.6% of desired
+20180501_37C_glycerol_O2_delta_0ngmL_atc_75uM_iptg.csv -> 80.2% of desired
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_250uM_iptg.csv -> 16.7% of desired
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_50uM_iptg.csv -> 25.2% of desired
+20180501_37C_glycerol_O2_auto_0ngmL_atc_0uM_iptg.csv -> 29.2% of desired
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_500uM_iptg.csv -> 30.9% of desired
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_5uM_iptg.csv -> 24.9% of desired
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_500uM_iptg.csv -> 25.2% of desired
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_250uM_iptg.csv -> 16.8% of desired
+20180501_37C_glycerol_O2_auto_0ngmL_atc_100uM_iptg.csv -> 6.2% of desired
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_50uM_iptg.csv -> 23.8% of desired
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_5uM_iptg.csv -> 21.8% of desired
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_25uM_iptg.csv -> 17.0% of desired
+20180501_37C_glycerol_O2_dilution_10ngmL_atc_250uM_iptg.csv -> 22.2% of desired
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_250uM_iptg.csv -> 26.3% of desired
+20180501_37C_glycerol_O2_dilution_7ngmL_atc_0uM_iptg.csv -> 27.3% of desired
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_500uM_iptg.csv -> 19.6% of desired
+20180501_37C_glycerol_O2_auto_0ngmL_atc_0.1uM_iptg.csv -> 17.7% of desired
+20180501_37C_glycerol_O2_auto_0ngmL_atc_50uM_iptg.csv -> 6.5% of desired
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_1000uM_iptg.csv -> 25.0% of desired
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_75uM_iptg.csv -> 17.6% of desired
+20180501_37C_glycerol_O2_dilution_2ngmL_atc_0uM_iptg.csv -> 18.7% of desired
+20180501_37C_glycerol_O2_dilution_4ngmL_atc_10uM_iptg.csv -> 23.5% of desired
+20180501_37C_glycerol_O2_dilution_1ngmL_atc_5000uM_iptg.csv -> 37.7% of desired
+20180501_37C_glycerol_O2_dilution_3ngmL_atc_500uM_iptg.csv -> 26.0% of desired
+20180501_37C_glycerol_O2_delta_0ngmL_atc_25uM_iptg.csv -> 78.9% of desired
+20180501_37C_glycerol_O2_auto_0ngmL_atc_5uM_iptg.csv -> 8.5% of desired
+
+-----------------------------------------------------------------------------
