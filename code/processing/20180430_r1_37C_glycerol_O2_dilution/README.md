@@ -3,11 +3,11 @@ status:
 reason:
 ---
 
-# 2018-04-26 O2 Dilution
+# 2018-04-30 O2 Dilution
 
 ## Purpose
 This experiment performs a full IPTG and ATC titration of the O2 dilution
-strains in glucose at 37°C.
+strains in glycerol at 37°C.
 
 ## Strain Information
 
@@ -25,7 +25,7 @@ strains in glucose at 37°C.
 | Isopropylthiogalactopyranoside (IPTG) | 0, 0.1, 5, 10, 25, 50, 75, 100, 250, 500, 1000, 5000  [mM] |
 
 ## Notes & Observations
-* Strains grew from 8am to 4:30pm in glucose at 37C.
+* Strains grew from 8pm to 9am in glycerol at 37C.
 
 ## Analysis Files
 
