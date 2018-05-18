@@ -36,10 +36,9 @@ if os.path.exists('./output') == False:
 # %% Processing of data
 data_dir = '../../../data/images/{}_dilution/'.format(BASE_NAME)
 data_dir
-# Extract file names and parse.
+# Extract growth file names and parse.
 growth_files = glob.glob('{}growth*/xy*/clist.mat'.format(data_dir))
-growth_df = mwc.process.parse_clists(
-    growth_files)
+growth_df = mwc.process.parse_clists(growth_files)
 
 # Apply a filter.
 growth_df = mwc.process.morphological_filter(growth_df, IP_DIST)
@@ -47,6 +46,7 @@ growth_df['err'] = growth_df['error_frame'].isnull()
 growth_df = growth_df[growth_df['err'] == 1]
 
 # %%
+# Extract snaps file names and parse.
 snap_groups = glob.glob('{}/snaps*'.format(data_dir))
 excluded_props = ['Area birth', 'Cell ID', 'Cell birth time', 'Cell death time',
                   'Daughter1 ID', 'Daughter2 ID', 'Mother ID']
@@ -77,7 +77,7 @@ yfp_auto_val = np.mean(auto_strain['fluor1_mean_death'] + auto_strain['fluor1_bg
 fluct_df = mwc.process.compute_fluctuations(
     growth_df, mcherry_auto_val, fluo_key='fluor2_mean_death')
 fluct_df.to_csv('output/{}_fluctuations.csv'.format(BASE_NAME))
-# Save the two dataframes.
+# Save the dataframe.
 
 # %% Estimate the calibration factor.
 alpha_opt, alpha_err = mwc.bayes.estimate_calibration_factor(
@@ -88,9 +88,8 @@ alpha_range = np.linspace(min_alpha, max_alpha, 500)
 # Compute the log posterior.
 log_post = np.zeros_like(alpha_range)
 for i, a in enumerate(alpha_range):
-    log_post[i] = mwc.bayes.deterministic_log_posterior(a, fluct_df['I_1'],
-                                                        fluct_df['I_2'],
-                                                        neg=False)
+    log_post[i] = mwc.bayes.deterministic_log_posterior(
+                                a, fluct_df['I_1'], fluct_df['I_2'], neg=False)
 # Normalize the posterior.
 posterior = np.exp(log_post - scipy.special.logsumexp(log_post))
 
@@ -141,7 +140,6 @@ plt.savefig('output/{}_calibration_factor.png'.format(BASE_NAME), bbox_inches='t
 
 
 # %% Compute the fold-change for the other samples.
-
 # Subtract the autofluorescence from the snap dataframe.
 snap_df['fluor2_sub'] = snap_df['area_death'] * \
     (snap_df['fluor2_mean_death'] - mcherry_auto_val - snap_df['fluor2_bg_death'])
@@ -166,19 +164,18 @@ for g, d in grouped:
     mean_rep = np.mean(d['fluor2_sub'] / alpha_opt)
     mean_yfp = np.mean(d['fluor1_sub'])
     fc = mean_yfp / mean_delta_yfp
-    conc_dict = {'atc_conc_ngmL': g, 'mean_repressors': mean_rep, 'mean_yfp': mean_yfp,
-                 'fold_change': fc}
+    conc_dict = {'atc_conc_ngmL': g, 'mean_repressors': mean_rep, 
+                 'mean_yfp': mean_yfp, 'fold_change': fc}
     fc_df = fc_df.append(conc_dict, ignore_index=True)
 
 # Save the fold-change Dataframe to output.
-fc_df.to_csv('output/{}_microscopy_foldchange.csv'.format(BASE_NAME), index=False)
+fc_df.to_csv('output/{}_microscopy_foldchange.csv'.format(BASE_NAME), 
+                index=False)
 
 rep_dict = {i: j for i, j in fc_df[[
     'atc_conc_ngmL', 'mean_repressors']].values}
 
-fc_df
-
-# %% Plot the fold-change curve for a sanity check.
+# %% Plot the fold-change curve as a function of repressors for a sanity check.
 OP_EN = {'O1': -15.0, 'O2': -13.9, 'O3': -9.3}  # in units of kBT.
 
 # Set up the architectural parameters.
@@ -203,34 +200,49 @@ ax.set_ylabel('fold-change')
 ax.set_ylim([1E-4, 1.2])
 # Plot the theory and data.
 _ = ax.plot(rep_range, theo_fc, label='prediction')
-_ = ax.plot(fc_df['mean_repressors'],
-            fc_df['fold_change'], '.', label='data')
+_ = ax.plot(fc_df['mean_repressors'], fc_df['fold_change'], '.', label='data')
 _ = ax.legend()
 mwc.viz.format_axes()
 plt.tight_layout()
-plt.savefig('output/{}_foldchange.png'.format(BASE_NAME), bbox_inches='tight')
+plt.savefig('output/{}_foldchange_vs_repressors.png'.format(BASE_NAME), 
+            bbox_inches='tight')
 
 
-#%% Load the flow data
+#%% Plot the fold-change curve as a function of IPTG.
+# Load the flow data
 flow_data = pd.read_csv(
     'output/{}_flow_events.csv'.format(BASE_NAME))
-flow_data = flow_data[(flow_data['strain'] != 'auto') &
-                      (flow_data['strain'] != 'delta')]
-grouped = flow_data.groupby(['atc_ngml'])
+flow_dil = flow_data[(flow_data['strain'] == 'dilution')]
+grouped = flow_dil.groupby(['atc_ngml'])
 
+# Set up axes and plot.
 fig, ax = plt.subplots(1, 1, figsize=(6, 4))
 ax.set_xscale('log')
-ax.set_yscale('log')
+
 c_range = np.logspace(-8, -2, 500)
 color_list = sns.color_palette('deep')
 i = 0
 for g, d in grouped:
     c = color_list[i]
-    ax.plot(d['iptg_um'] / 1E6, d['fold_change'],
+    ax.plot(d['iptg_um'] / 1E6, d['fold_change'], 
             '.', label=rep_dict[g], color=c)
-    theo = mwc.model.SimpleRepression(effector_conc=c_range, R=rep_dict[g], ep_r=-13.9,
-                                      ka=ka / 1E6, ki=ki / 1e6, ep_ai=ep_ai, n_sites=2).fold_change()
+    theo = mwc.model.SimpleRepression(effector_conc=c_range, R=rep_dict[g],
+                                      ep_r=-13.9, ka=ka / 1E6, ki=ki / 1e6,
+                                      ep_ai=ep_ai, n_sites=2).fold_change()
     ax.plot(c_range, theo, '-', color=c)
     i += 1
 
-ax.legend()
+# Untested beyond this point (maybe above as well)
+ax.legend(loc='upper left', title='repressors')
+
+plt.tight_layout()
+
+plt.savefig('output/{}_foldchange_vs_iptg.png'.format(BASE_NAME, bbox_inches='tight'))
+
+#%% Update flow_events csv to include column with repressor number.
+rep_dict[0] = 'NaN'
+rep = [rep_dict[z] for z in flow_data['atc_ngml'].values]
+flow_data['repressor'] = rep
+
+# Save to overwrite original dataframe.
+flow_data.to_csv('./output/{}_flow_events.csv'.format(BASE_NAME), index=False)
