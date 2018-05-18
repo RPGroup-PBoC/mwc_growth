@@ -90,8 +90,10 @@ df.to_csv('./output/{}_{}C_{}_{}_flow_events.csv'.format(DATE, TEMP, CARBON, OPE
           index=False)
 
 # ---------------
-# %% Generate figure with fold-change
+# %% Generate summary figures
 # ---------------
+
+# Make map of the plate.
 indices = {'auto': 0, 'delta': 1, 'dilution': None}
 ones = np.ones((8, 12))
 for i, k in enumerate(indices.keys()):
@@ -107,7 +109,7 @@ for i, k in enumerate(indices.keys()):
                     df['atc_ngml'] == a) & (df['iptg_um'] == p)]
                 ones[j + 2, l] *= slc['fold_change']
 
-
+# Get probability estimates at data points.
 ex_df = pd.read_csv(csv_files[2])
 nogate = ex_df[ex_df['gate'] == 0]
 gate = ex_df[ex_df['gate'] == 1]
@@ -125,27 +127,53 @@ a, b, c = ex_df['FSC-A'].values[idx], ex_df['SSC-A'].values[idx], z[idx]
 zi = scipy.interpolate.griddata(
     (a, b), c, (xi[None, :], yi[:, None]), method='cubic')
 
-# %%
-# Generate map of the plate. 
-fig, ax = plt.subplots(1, 2, figsize=(8, 3))
-ax[0].set_xscale('log')
-ax[0].set_yscale('log')
-ax[0].set_xlabel('forward scatter [a.u.]')
-ax[0].set_ylabel('side scatter [a.u.]')
-ax[1].set_xlabel('IPTG [µM]')
-ax[1].set_ylabel('ATC [ng/mL]')
+# Sort dataframe to avoid horizontal lines in fold-change plot.
+df = df.sort_values(['date','carbon','atc_ngml','strain','iptg_um'])
 
-_ = ax[0].scatter(a, b, c=c, s=0.5, edgecolor='', marker='.', cmap='viridis')
-_ = ax[0].plot(gate['FSC-A'], gate['SSC-A'], ',', color='w', alpha=0.4)
+# Select dilution data and group by aTc.
+dil = df[df['strain']=='dilution'].groupby('atc_ngml')
+
+# Select auto and delta data and group by IPTG.
+control = df[(df['strain']=='auto')|(df['strain']=='delta')].groupby('strain')
+
+# %%
+# Generate summary figure. 
+fig, ax = plt.subplots(2, 2, figsize=(10, 7))
+ax[0,0].set_xscale('log')
+ax[0,0].set_yscale('log')
+ax[0,0].set_xlabel('forward scatter [a.u.]')
+ax[0,0].set_ylabel('side scatter [a.u.]')
+ax[0,1].set_xlabel('IPTG [µM]')
+ax[0,1].set_ylabel('ATC [ng/mL]')
+ax[1,0].set_xlabel('IPTG [µM]')
+ax[1,0].set_ylabel('Fold-Change')
+ax[1,1].set_xscale('log')
+ax[1,1].set_xlabel('IPTG [µM]')
+ax[1,1].set_ylabel('FITC')
+
+_ = ax[0,0].scatter(a, b, c=c, s=0.5, edgecolor='', marker='.', cmap='viridis')
+_ = ax[0,0].plot(gate['FSC-A'], gate['SSC-A'], ',', color='w', alpha=0.4)
 mwc.viz.format_axes()
-plate = ax[1].imshow(ones, cmap='viridis', aspect='auto')
-_ = plt.colorbar(plate, ax=ax[1], label='fold-change')
-ax[1].grid(False)
-ax[1].set_xticks(np.arange(0, 12, 1))
-ax[1].set_yticks(np.arange(0, 8, 1))
-_ = ax[1].set_xticklabels(iptg_concs, fontsize=8, rotation=45)
-_ = ax[1].set_yticklabels(['auto | 0', 'ΔlacI | 0 ', 'dilution | 1', '2', '3', '4', '7',
+
+plate = ax[0,1].imshow(ones, cmap='viridis', aspect='auto')
+_ = plt.colorbar(plate, ax=ax[0,1], label='fold-change')
+ax[0,1].grid(False)
+ax[0,1].set_xticks(np.arange(0, 12, 1))
+ax[0,1].set_yticks(np.arange(0, 8, 1))
+_ = ax[0,1].set_xticklabels(iptg_concs, fontsize=8, rotation=45)
+_ = ax[0,1].set_yticklabels(['auto | 0', 'ΔlacI | 0 ', 'dilution | 1', '2', '3', '4', '7',
                            '10'], fontsize=8)
+
+for group, data in dil:
+    ax[1,0].semilogx(data['iptg_um'], data['fold_change'], '-o', lw=1, label=group)#ax=ax[1,0],
+ax[1,0].legend(loc='upper left', title='aTc (ng/mL)')
+
+for group, data in control:
+    ax[1,1].plot(data['iptg_um'], data['mean_fitc'], marker='o', lw=1, label=group)
+ax[1,1].legend(loc='upper left', title='strain')
+_ = ax[1,1].set_ybound(lower = -.1)
+
 plt.tight_layout()
+
 plt.savefig('output/{}_{}C_{}_{}_flow_summary.png'.format(DATE,
-            TEMP, CARBON, OPERATOR, bbox_inches='tight'))
+             TEMP, CARBON, OPERATOR, bbox_inches='tight'))
