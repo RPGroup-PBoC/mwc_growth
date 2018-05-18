@@ -165,7 +165,7 @@ _ = ax[0,1].set_yticklabels(['auto | 0', 'ΔlacI | 0 ', 'dilution | 1', '2', '3'
                            '10'], fontsize=8)
 
 for group, data in dil:
-    ax[1,0].semilogx(data['iptg_um'], data['fold_change'], '-o', lw=1, label=group)#ax=ax[1,0],
+    ax[1,0].semilogx(data['iptg_um'], data['fold_change'], '-o', lw=1, label=group)
 ax[1,0].legend(loc='upper left', title='aTc (ng/mL)')
 
 for group, data in control:
