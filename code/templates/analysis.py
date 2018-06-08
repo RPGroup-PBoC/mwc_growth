@@ -29,28 +29,28 @@ OPERATOR =
 # ############################
 BASE_NAME = '{}_{}_{}C_{}_{}'.format(DATE, RUN, TEMP, CARBON, OPERATOR)
 
-IP_DIST = 0.065
+IP_DIST = 0.065 # interpixel distance
 if os.path.exists('./output') == False:
     os.mkdir('./output')
 
 # %% Processing of data
 data_dir = '../../../data/images/{}_dilution/'.format(BASE_NAME)
-data_dir
-# Extract growth file names and parse.
+
+# Extract growth (timelapse) file names and parse.
 growth_files = glob.glob('{}growth*/xy*/clist.mat'.format(data_dir))
 growth_df = mwc.process.parse_clists(growth_files)
 
-# Apply a filter.
+# Apply area bounds filter.
 growth_df = mwc.process.morphological_filter(growth_df, IP_DIST)
-growth_df['err'] = growth_df['error_frame'].isnull()
-growth_df = growth_df[growth_df['err'] == 1]
+growth_df['no_err'] = growth_df['error_frame'].isnull() # returns a bool (1 or 0)
+growth_df = growth_df[growth_df['no_err'] == 1]
 
 # %%
-# Extract snaps file names and parse.
-snap_groups = glob.glob('{}/snaps*'.format(data_dir))
+# Extract snaps (single timepoint) file names and parse.
+snap_groups = glob.glob('{}snaps*'.format(data_dir))
 excluded_props = ['Area birth', 'Cell ID', 'Cell birth time', 'Cell death time',
                   'Daughter1 ID', 'Daughter2 ID', 'Mother ID']
-snap_groups
+
 snap_dfs = []
 for i, s in enumerate(snap_groups):
     _, strain, atc_conc = s.split('/')[-1].split('_')
@@ -62,18 +62,18 @@ for i, s in enumerate(snap_groups):
     snap_dfs.append(_df)
 snap_df = pd.concat(snap_dfs, ignore_index=True)
 
-# Apply area bounds.
+# Apply area bounds filter.
 snap_df = mwc.process.morphological_filter(snap_df, IP_DIST)
-snap_df['err'] = snap_df['error_frame'].isnull()
-snap_df = snap_df[snap_df['err'] == 1]
+snap_df['no_err'] = snap_df['error_frame'].isnull()
+snap_df = snap_df[snap_df['no_err'] == 1]
 
 
 # %% Computation of fluctuations.
 auto_strain = snap_df[snap_df['strain'] == 'autofluorescence']
-mcherry_auto_val = np.mean(auto_strain['fluor2_mean_death'] + auto_strain['fluor2_bg_death'])
-yfp_auto_val = np.mean(auto_strain['fluor1_mean_death'] + auto_strain['fluor1_bg_death'])
+mcherry_auto_val = np.mean(auto_strain['fluor2_mean_death'] - auto_strain['fluor2_bg_death'])
+yfp_auto_val = np.mean(auto_strain['fluor1_mean_death'] - auto_strain['fluor1_bg_death'])
 
-# Uncorrect for background fluorescence.
+# Correct for background fluorescence.
 fluct_df = mwc.process.compute_fluctuations(
     growth_df, mcherry_auto_val, fluo_key='fluor2_mean_death')
 fluct_df.to_csv('output/{}_fluctuations.csv'.format(BASE_NAME))
@@ -97,6 +97,7 @@ posterior = np.exp(log_post - scipy.special.logsumexp(log_post))
 approx = scipy.stats.norm.pdf(alpha_range, loc=alpha_opt, scale=alpha_err)
 approx = approx / np.sum(approx)
 
+
 # %% Plot calibration factor summary statistic plot.
 # Set the ranges for the plots
 min_summed = np.log10(fluct_df['summed'].min())
@@ -115,7 +116,7 @@ ax[0].set_xlabel(r'$I_1 + I_2$ [a.u.]')
 ax[0].set_ylabel(r'$(I_1 - I_2)^2$ [a.u.]')
 ax[1].set_xlabel(r'$\alpha$ [a.u. / mol.]')
 ax[1].set_ylabel('frequency')
-ax[0].set_title(r'$\alpha = %d \pm %d$ a.u. /mol' %
+ax[0].set_title(r'$\alpha = %d \pm %d$ [a.u. /mol]' %
                 (alpha_opt, alpha_err))
 
 # Plot the fluctuations
@@ -139,17 +140,16 @@ plt.tight_layout()
 plt.savefig('output/{}_calibration_factor.png'.format(BASE_NAME), bbox_inches='tight')
 
 
-# %% Compute the fold-change for the other samples.
+# %% Compute the fold-change for the snap samples.
 # Subtract the autofluorescence from the snap dataframe.
 snap_df['fluor2_sub'] = snap_df['area_death'] * \
     (snap_df['fluor2_mean_death'] - mcherry_auto_val - snap_df['fluor2_bg_death'])
 
-snap_df['fluor1_sub'] = snap_df['area_death'] *\
+snap_df['fluor1_sub'] = snap_df['area_death'] * \
     (snap_df['fluor1_mean_death'] - yfp_auto_val - snap_df['fluor2_bg_death'])
 
 # Compute the mean expression for ΔLacI.
 mean_delta_yfp = snap_df[snap_df['strain'] == 'deltaLacI']['fluor1_sub'].mean()
-
 
 # Group the dilution strains by their atc concentration.
 dilution = snap_df[snap_df['strain'] == 'dilution']
@@ -169,13 +169,13 @@ for g, d in grouped:
     fc_df = fc_df.append(conc_dict, ignore_index=True)
 
 # Save the fold-change Dataframe to output.
-fc_df.to_csv('output/{}_microscopy_foldchange.csv'.format(BASE_NAME), 
-                index=False)
+fc_df.to_csv('output/{}_microscopy_foldchange.csv'.format(BASE_NAME), index=False)
 
 rep_dict = {i: j for i, j in fc_df[[
     'atc_conc_ngmL', 'mean_repressors']].values}
 
-# %% Plot the fold-change curve as a function of repressors for a sanity check.
+
+# %% Plot the fold-change curve as a function of repressors.
 OP_EN = {'O1': -15.0, 'O2': -13.9, 'O3': -9.3}  # in units of kBT.
 
 # Set up the architectural parameters.
@@ -210,8 +210,7 @@ plt.savefig('output/{}_foldchange_vs_repressors.png'.format(BASE_NAME),
 
 #%% Plot the fold-change curve as a function of IPTG.
 # Load the flow data
-flow_data = pd.read_csv(
-    'output/{}_flow_events.csv'.format(BASE_NAME))
+flow_data = pd.read_csv('output/{}_flow_events.csv'.format(BASE_NAME))
 flow_dil = flow_data[(flow_data['strain'] == 'dilution')]
 grouped = flow_dil.groupby(['atc_ngml'])
 
@@ -234,12 +233,11 @@ for g, d in grouped:
 
 # Untested beyond this point (maybe above as well)
 ax.legend(loc='upper left', title='repressors')
-
 plt.tight_layout()
-
 plt.savefig('output/{}_foldchange_vs_iptg.png'.format(BASE_NAME, bbox_inches='tight'))
 
-#%% Update flow_events csv to include column with repressor number.
+
+#%% Update flow_events csv to include a column with repressor number.
 rep_dict[0] = 'NaN'
 rep = [rep_dict[z] for z in flow_data['atc_ngml'].values]
 flow_data['repressor'] = rep
