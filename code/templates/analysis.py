@@ -218,7 +218,7 @@ grouped = flow_dil.groupby(['atc_ngml'])
 fig, ax = plt.subplots(1, 1, figsize=(6, 4))
 ax.set_xscale('log')
 
-c_range = np.logspace(-8, -2, 500)
+c_range = np.logspace(-8, -2, 500) # in molar. we convert iptg, ka, ki to molar below
 color_list = sns.color_palette('deep')
 i = 0
 for g, d in grouped:
