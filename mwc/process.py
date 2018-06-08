@@ -97,10 +97,10 @@ def parse_clists(clists, parse_position=True, added_props={},
         splitting at 'xy'.
     added_props: dict
         A dictionary of additional props to add to the DataFrame. Default is an
-        empty dict. If `parse_psotion` is True, the position will be passed as
+        empty dict. If `parse_position` is True, the position will be passed as
         an added property.
     verbose: bool
-        If True, a progressbar will be displayed for the clist iteration.
+        If True, a progress bar will be displayed for the clist iteration.
 
     Returns
     -------
