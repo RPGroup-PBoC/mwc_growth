@@ -229,5 +229,5 @@ def bin_by_events(df, bin_size, sortby='summed', average=['summed', 'fluct']):
         d = sorted_df.iloc[bins[i - 1]:bins[i]][average]
         for k in d.keys():
             val = np.mean(d[k].values)
-            averages[k][i] = val
+            averages[k][i-1] = val
     return averages

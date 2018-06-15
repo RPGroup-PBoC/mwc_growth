@@ -162,7 +162,8 @@ def ReparameterizedNormal(name=None, mu=None, sd=None, shape=1):
 
 def log_prior():
     """
-    Computes the log prior for alpha and I_2 as needed in the model. These are taken to be uniform on the range of the camera bitdepth, 0 - 65535.
+    Computes the log prior for alpha and I_2 as needed in the model. These are
+    taken to be uniform on the range of the camera bitdepth, 0 - 65535.
     """
     return -32 * np.log(2)
 
@@ -246,7 +247,7 @@ def estimate_calibration_factor(I_1, I_2, p=0.5, return_eval=False):
     Returns
     -------
     alpha_opt, alpha_std : float
-        The best-fit value for alpha
+        The best-fit value for alpha and standard devation.
     """
 
     # Perform data validation checks.
