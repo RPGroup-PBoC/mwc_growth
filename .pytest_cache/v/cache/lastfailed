@@ -1,0 +1,3 @@
+{
+  "tests/test_image.py::test_correct_drift": true
+}

@@ -6,10 +6,11 @@ import skimage.io
 import skimage.measure
 import seaborn as sns
 import numpy as np
-
 import os
 import matplotlib.pyplot as plt
 import matplotlib
+from matplotlib.animation import FuncAnimation
+
 from scipy.signal import gaussian, convolve
 
 
@@ -92,26 +93,62 @@ def format_axes(pub_style=False):
         sns.despine(offset=7)
 
 
-# Data specific plotting functions.
-def generate_flow_summary(df, file, savedir='./output', pub_style='False'):
+# Generate the movie.
+def growth_animation(images, fname, contours=None, descriptors={'bar_length':10,
+    'ip_dist':0.07, 'temperature':'', 'carbon':'', 'time_interval':0}):
     """
-    Generates a summary plot for flow cytometry experiments.
+    Generates and saves a growth movie from supplied images and segmentation information.
 
     Parameters
     ----------
-    df : pandas DataFrame
-        DataFrame containing all measured events after gating.
-    file : str
-        Converted .csv file of raw flow cytometry measurement with gating
-        identifier. This will be used to make the example flow cloud.
-    savedir : str
-        Target directory for saved figure.
-    pub_style : bool
-        If true, the axes will not be formatted to match the publication
-        style.
-
-    Returns
-    -------
-    fig : matplotlib Figure canvas
-        The generated figure canvas.
+    images : list
+        Image sequence to be animated
+    fname: str
+        Desired filename of animation.
+    contours: list of arrays
+        Detected contours in segemented image to be plotted over the images. If None,
+        no contours will be generated.
+    descriptors: dict
+        List of sample descriptors to be printed on the image. Allowed descriptors are
+            bar_length : float [µm]
+                Length of scale bar in units of µm.
+            ip_dist : float [µm per pixel]
+                Interpixel distance of the image.
+            temperature: float or str [C]
+                Temperature of the experiment in degrees C.
+            carbon: string
+                Carbon source of the experiment.
+            time_interval: float
+                Interval between frames in units of minutes.
     """
+
+    # Instantiate the figure.
+    fig, ax = plt.subplots(1,1)
+    def update(it):
+        ax.clear()
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.set_frame_on(False)
+
+        # Set the appropriate labels.
+        bar = ax.hlines(-30, 10, 10 + descriptors['bar_length']/descriptors['ip_dist'],
+                        lw=3, color='k')
+        bar_label = ax.text(10, -60, '{} µm'.format(descriptors['bar_length']), color='k',
+                        fontsize=8)
+        title = ax.set_title('{}° C {}'.format(descriptors['temperature'], descriptors['carbon']),
+                        color='k', fontsize=8, y=0.97)
+        time = ax.text(0.8, 0.99, '{} min'.format(it * descriptors['time_interval']),
+                    transform=ax.transAxes, fontsize=8)
+        # Plot the image.
+        _ = ax.imshow(images[it], cmap=plt.cm.magma)
+
+        # Determine if contours should be plotted.
+        if contours != None:
+            for c in contours:
+                _ = ax.plot(c[:, 1], c[:, 0], color='lightskyblue', lw=1)
+        plt.tight_layout()
+
+    # Set the animator and save.
+    anim = FuncAnimation(fig, update, frames=np.arange(0, len(images), 1),
+                        interval=100)
+    anim.save(fname, dpi=200, savefig_kwargs={'transparent':True, 'bbox_inches':'tight'})

@@ -231,3 +231,18 @@ def bin_by_events(df, bin_size, sortby='summed', average=['summed', 'fluct']):
             val = np.mean(d[k].values)
             averages[k][i-1] = val
     return averages
+
+
+
+def compute_mean_sem(df, key='fold_change'):
+    """
+    Computes the mean and standard error of the fold-change given a
+    grouped pandas Series.
+    """
+    # Compute the properties
+    mean_val = df[key].mean()
+    sem_val = df[key].std() / np.sqrt(len(df))
+
+    # Assemble the new pandas series and return.
+    samp_dict = {'mean': mean_val, 'sem': sem_val}
+    return pd.Series(samp_dict)
