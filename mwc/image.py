@@ -4,10 +4,13 @@ import skimage.io
 import skimage.morphology
 import skimage.filters
 import skimage.measure
+import skimage.feature
 import scipy.ndimage
 import numpy as np
 import pandas as pd
 import bokeh.io
+import tqdm
+
 
 
 def projection(im, mode='mean', median_filt=True):
@@ -92,3 +95,62 @@ def generate_flatfield(im, im_dark, im_field, median_filt=True):
     # Compute and return the flattened image.
     im_flat = (im_filt - im_dark) / (im_field - im_dark) * mean_diff
     return im_flat
+
+def correct_drift(images, verbose=True, crop=True):
+    R"""
+    Corrects xy drift between a set of images. 
+
+    Parameters
+    ----------
+    images: list, array, or ImageCollection object
+        List of images that are to be corrected. 
+    verbose: bool
+        If True, a progress par will be printed to screen during reistration.
+    crop: bool
+        If True, the interpolated regions will be cropped from the image.
+    
+    Returns
+    -------
+    shifted: list
+        List of images with corrected positioning. Shifted images will be
+        larger than those supplied
+    """
+    shifted = []
+    if verbose == True:
+        iterator = tqdm.tqdm(range(1, len(images)), desc='performing image regsitration...')
+    else:
+        iterator = range(1, len(images))
+
+    # Set up counters for the maximjum magnitude shift.
+    max_x = 0
+    max_y = 0
+    for i in iterator:
+
+        # Complete the registration
+        drift, _, _ = skimage.feature.register_translation(images[0], images[i])
+        shift = scipy.ndimage.interpolation.shift(images[i], drift, mode='nearest')
+
+        # Store the maximum magnitude shift
+        y, x = drift
+        if np.abs(x) > np.abs(max_x):
+            max_x = x
+        if np.abs(y) > np.abs(max_y):
+            max_y = y
+        shifted.append(shift)
+    max_x = int(max_x)
+    max_y = int(max_y)
+    # Determine if the shifted images should be cropped
+    if crop == True:
+        if  (max_x < 0) & (max_y < 0):
+            restriction = np.s_[0:max_y+1, 0:max_x+1]
+        elif  (max_x < 0) & (max_y >= 0):
+            restriction = np.s_[max_y:-1, 0:max_x+1]
+        elif (max_x >=0 ) & (max_y < 0):
+            restriction = np.s_[0:max_y+1, max_x:-1]
+        elif (max_x >=0) & (max_y >=0):
+            restriction = np.s_[max_y:-1, max_x:-1]
+
+        _shifted = [im[restriction] for im in shifted]
+        shifted = _shifted
+    return shifted 
+
