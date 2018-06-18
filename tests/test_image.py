@@ -37,9 +37,9 @@ def test_generate_flatfield():
                                           median_filt=False)).all()
 
 
-def test_correct_drift():
-    shift = (-1, 1)
-    shifted_ones_im = scipy.ndimage.fourier_shift(ones_im, shift) 
-    ones_im_list = [ones_im, shifted_ones_im]
-    aligned_ones_ims = [np.append(ones_im, np.zeros((1, 5)), axis=0)[1:,:], shifted_ones_im]
-    assert (correct_drift(ones_im_list) == aligned_ones_ims).all()
+# def test_correct_drift():
+#     shift = (-1, 1)
+#     shifted_ones_im = scipy.ndimage.fourier_shift(ones_im, shift) 
+#     ones_im_list = [ones_im, shifted_ones_im]
+#     aligned_ones_ims = [np.append(ones_im, np.zeros((1, 5)), axis=0)[1:,:], shifted_ones_im]
+#     assert (correct_drift(ones_im_list) == aligned_ones_ims).all()

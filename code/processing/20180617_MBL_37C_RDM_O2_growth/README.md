@@ -6,7 +6,7 @@ reason: Growth curves look reasonable given MBL data collection
 # 2018-06-14 Microscopy Growth Measurement
 
 ## Purpose
-This experiment was performed as a test of the microscopes at MBL. HG105 cells constitutively expressing mCherry and YFP were grown on M9 + 0.5% glucose minimal medium.
+This experiment was performed as a test of the microscopes at MBL. HG105 cells constitutively expressing mCherry and YFP were grown on rich defined medium substrate.
 
 ## Strain Information
 | Location | Plasmid | Genotype | Host Strain | Shorthand |
@@ -22,15 +22,15 @@ This experiment was performed as a test of the microscopes at MBL. HG105 cells c
 | Isopropylthiogalactopyranoside (IPTG) | 0|
 
 ## Notes & Observations
-* Cells were allowed to equilibrate on the pad under the microscope for 1.5 hours prior to growth rate measurement. 
+* Drift in `xy` due to an unlevel stage resulted in acquiring only eighteen time points, which ended up being adequate for what was needed
 
 ## Analysis Files
 
 **Growth Movie**
-![](output/20180614_37C_glucose_O2_growth.gif)
+![](output/20180617_37C_RDM_O2_growth_10.gif)
 
 **Growth Curves and Rate Determination**
-![]()
+![](outptu/20180614_37C_RDM_O2_growth_statistics.png)
 
 ## Experimental Protocol
 
