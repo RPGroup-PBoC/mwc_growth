@@ -146,7 +146,7 @@ snap_df['fluor2_sub'] = snap_df['area_death'] * \
     (snap_df['fluor2_mean_death'] - mcherry_auto_val - snap_df['fluor2_bg_death'])
 
 snap_df['fluor1_sub'] = snap_df['area_death'] * \
-    (snap_df['fluor1_mean_death'] - yfp_auto_val - snap_df['fluor2_bg_death'])
+    (snap_df['fluor1_mean_death'] - yfp_auto_val - snap_df['fluor1_bg_death'])
 
 # Compute the mean expression for ΔLacI.
 mean_delta_yfp = snap_df[snap_df['strain'] == 'deltaLacI']['fluor1_sub'].mean()
