@@ -14,7 +14,7 @@ import mwc.image
 skimage.io.use_plugin('freeimage')
 # Set the experiment parameters.
 DATE = 
-RUN = 
+RUN = # e.g. 'r1'
 TEMP =   # in °C
 CARBON = 
 OPERATOR = 

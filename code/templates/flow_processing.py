@@ -15,7 +15,7 @@ colors = mwc.viz.personal_style()
 
 # Define the details of the experiment.
 DATE = 
-RUN = # if missing from flow file names, remove from FCS_PATTERN definiton, but still define here
+RUN = # e.g. 'r1'. If missing from flow file names, remove from FCS_PATTERN definiton, but still define here
 TEMP =   # in C
 CARBON = 
 OPERATOR = 

@@ -19,7 +19,7 @@ import imp
 imp.reload(mwc.process)
 # Define the experimental parameters.
 DATE = 
-RUN = 
+RUN = # e.g. 'r1'
 TEMP =   # in °C
 CARBON = 
 OPERATOR = 
