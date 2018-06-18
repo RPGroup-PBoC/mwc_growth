@@ -2,7 +2,7 @@
 status: questionable
 reason:
   While the growth does appear to be exponential, the  doubling time
-  estimate is still far above what we would expect fro this growth medium.
+  estimate is still far above what we would expect for this growth medium.
 ---
 
 # 2018-02-21 Growth Measurement (Run 2)
