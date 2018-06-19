@@ -1,17 +1,17 @@
 ---
-status: accepted
-reason: Growth curves look reasonable given MBL data collection
+status: rejected
+reason: Only one viable position resulted in non exponential growth.
 ---
 
 # 2018-06-17 Microscopy Growth Measurement
 
 ## Purpose
-This experiment was performed as a test of the microscopes at MBL. HG105 cells constitutively expressing mCherry and YFP were grown on rich defined medium substrate.
+HG105 cells constitutively expressing mCherry and YFP were grown on acetate substrate.
 
 ## Strain Information
 | Location | Plasmid | Genotype | Host Strain | Shorthand |
 | :------- | :------ | :------- | ----------: | --------: |
-| Manuel 1 - XX | pZS4\*1-mCherry | ΔlacIZYA | HG105 | delta |
+| Dilution 1 - 9| - | galK<>2*O2+11-YFP, ybcN<>1-lacI-mCherry, gspI<>NoO1v1-CFP| delta |
 
 
 ## Titration Series
@@ -22,15 +22,14 @@ This experiment was performed as a test of the microscopes at MBL. HG105 cells c
 | Isopropylthiogalactopyranoside (IPTG) | 0|
 
 ## Notes & Observations
-* Drift in `xy` due to an unlevel stage resulted in acquiring only eighteen time points, which ended up being adequate for what was needed
-
+* Serious drift was present in the samples, preventing use of most positions. This experiment should be repeated.
 ## Analysis Files
 
 **Growth Movie**
-![](output/20180617_37C_RDM_O2_growth_0.gif)
+![](output/20180617_37C_acetate_O2_growth_0.gif)
 
 **Growth Curves and Rate Determination**
-![](output/20180617_MBL_37C_RDM_O2_growth_curves.png)
+![](output/20180617_MBL_37C_acetate_O2_growth_curves.png)
 
 ## Experimental Protocol
 

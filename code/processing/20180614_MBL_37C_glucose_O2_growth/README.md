@@ -27,10 +27,10 @@ This experiment was performed as a test of the microscopes at MBL. HG105 cells c
 ## Analysis Files
 
 **Growth Movie**
-![](output/20180614_37C_glucose_O2_growth_0.gif)
+![](output/20180614_37C_glucose_O2_growth_9.gif)
 
 **Growth Curves and Rate Determination**
-![](output/20180614_37C_glucose_O2_growth_curves.png)
+![](output/20180614_MBL_37C_glucose_O2_growth_curves.png)
 
 ## Experimental Protocol
 

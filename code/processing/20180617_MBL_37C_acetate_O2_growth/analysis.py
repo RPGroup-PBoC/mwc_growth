@@ -11,10 +11,10 @@ import mwc.viz
 import mwc.bayes
 colors = mwc.viz.personal_style()
 
-DATE = '20180614'
+DATE = 20180617
 RUN_NO = 'MBL'
 TEMPERATURE = 37 # in C
-CARBON = 'glucose'
+CARBON = 'acetate'
 OPERATOR = 'O2'
 
 # load the data.
@@ -55,12 +55,11 @@ ax[1].set_ylabel(r'$\propto$ probability')
 
 
 # Plot the best-fit
-_ = ax[0].plot(time_range, best_fit, lw=1, color=colors[1], label='fit')
+_ = ax[0].semilogy(time_range, best_fit, lw=1, color=colors[1], label='fit')
 _ = ax[0].fill_between(time_range, lower, upper,  color=colors[1], alpha=0.5, label='__nolegend__')
 
 # Plot the data.
-
-_ = ax[0].plot(data['time_min'], data['fractional_area'], '.', ms=1, color=colors[0], label='microcolonies')
+_ = ax[0].semilogy(data['time_min'], data['fractional_area'], '.', ms=1, color=colors[0], label='microcolonies')
 grouped = pd.DataFrame(data.groupby('time_min').apply(mwc.stats.compute_mean_sem, key='fractional_area')).reset_index()
 _ = ax[0].errorbar(grouped['time_min'], grouped['mean'], grouped['sem'], lw=1, fmt='.', color=colors[2], label='mean $\pm$ sem', 
 markersize=4, zorder=1000)
@@ -85,8 +84,8 @@ leg = ax[1].legend(title=r'$t_\mathrm{double} = %0.0f^{+%.0f}_{-%.0f}$ min' %(t_
                     t_double_mode - t_double_min))
 leg.get_title().set_fontsize(8)
 plt.tight_layout()
-plt.savefig('output/{}_{}_{}C_{}_{}_growth_curves.png'.format(DATE, RUN_NO, TEMPERATURE, CARBON,
-OPERATOR))
+plt.savefig('output/{}_{}_{}C_{}_{}_growth_curves.png'.format(DATE, RUN_NO, TEMPERATURE,
+CARBON, OPERATOR))
 
 
 
