@@ -1,16 +1,16 @@
 ---
-status: questionable
+status: 
 reason: 
-    While the growth does appear to be exponential, the  doubling time
-    estimate is still far above what we would expect for this growth medium.
+    
 ---
 
-# 2018-06-16 Growth Measurement
+# 2018-06-18 Growth Measurement (Run 1)
 
 
 ## Purpose
 This experiment aims to measure the growth rate of the *E. coli*
-strains of interest in M9 + 0.5% glucose at 37°C.
+strains of interest in M9 + 0.5% glucose at 37°C. This file corresponds to the
+first run, although both experimens were conducted concurrently.
 
 ## Strain information
 | Location | Plasmid | Genotype | Host Strain | Shorthand |
@@ -28,18 +28,18 @@ strains of interest in M9 + 0.5% glucose at 37°C.
 
 
 ## Notes & Observations
-* Inoculum OD<sub>600nm</sub> was ~ 0.68 and was diluted 1:10 into the growth medium.
-* The run was started at 10h50m.
+* Inoculum OD<sub>600nm</sub> was ~ 0.42 and was diluted 1:10 into the growth medium.
+* The run was started at 10h30m.
 
 ## Analysis Files
 
-![](output/20180616_r1_37C_glucose_O2_growth.png)
+![](output/20180618_r1_37C_glucose_O2_growth.png)
 
 ## Experimental Protocol
 
-1. Cells from a 4-hour nearly saturated LB culture were diluted 1:10000 into 6 mL of M9 + 0.5% glucose in a 15 mL Falcon tube. The inoculum was stored at room temperature for several hours prior to the inoculation.
+1. Cells from a 4-hour saturated LB culture were diluted 1:10000 into 6 mL of M9 + 0.5% glucose in a 15 mL Falcon tube. The inoculum was stored at room temperature for several hours prior to the inoculation.
 
-2. Cells grew overnight (14.5h) at 37°C shaking at 225 RPM.
+2. Cells grew overnight (13.25h) at 37°C shaking at 225 RPM.
 
 3. The OD<sub>600nm</sub> of these cells were measured and 5mL were diluted into 50 mL of prewarmed M9 + 0.5% glucose and was thoroughly mixed.
 
