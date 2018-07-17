@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 import pymc3 as pm
+import tqdm
 import glob
 
 
@@ -246,3 +247,41 @@ def compute_mean_sem(df, key='fold_change'):
     # Assemble the new pandas series and return.
     samp_dict = {'mean': mean_val, 'sem': sem_val}
     return pd.Series(samp_dict)
+
+def fast_bootstrap(df, n_bins, iter=1E3, verbose=True):
+    # Convert the cell list into a matrix
+    n_cells = len(df['cell_id'].unique())
+    time = len(df['time'].unique())
+    resid_matrix = np.zeros((n_cells, time))
+    frac_matrix = np.zeros((n_cells, time))
+    bins = np.linspace(0, 1, n_bins)
+    
+    # Group the dataframe by cell id and import data into the matrices.
+
+    grouped = df.groupby(['cell_id'])
+    it = 0
+    for g, d in grouped:
+        d = d.copy()
+        d.sort_values('time', inplace=True)
+        resid_matrix[it, :] = d['resid']
+        frac_matrix[it, :] = d['norm']
+        it += 1
+    means = np.empty(int(iter))
+    
+    if verbose == True:
+        iterator = tqdm.tqdm(range(int(iter)))
+    else:
+        iterator = range(int(iter))
+    # Begin the bootstrap
+    for i in iterator:
+        # Select the cells
+        choices = np.random.choice(np.arange(0, n_cells), replace=True, size=n_cells)
+        resid_bs = resid_matrix[choices, :]
+        frac_bs = frac_matrix[choices, :]
+        
+        # Bin the fractioned data by the bins
+        binned = np.digitize(frac_bs, bins)
+        mean_resid = [resid_bs[binned == i].mean() for i in range(1, len(bins)) if len(resid_bs[binned==i]) > 0] 
+        mean_frac = [frac_bs[binned == i].mean() for i in range(1, len(bins)) if len(frac_bs[binned==i]) > 0]
+        means[i] = 6 * np.trapz(mean_resid, mean_frac)
+    return means
