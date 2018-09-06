@@ -54,8 +54,8 @@ excluded_props = ['Area birth', 'Cell ID', 'Cell birth time', 'Cell death time',
 snap_dfs = []
 for i, s in enumerate(snap_groups):
     _, strain, atc_conc = s.split('/')[-1].split('_')
-    atc_conc = float(atc_conc.split('ngmL')[0])
-    added_props = {'strain': strain, 'atc_conc_ngmL': atc_conc}
+    atc_conc = float(atc_conc.split('ngml')[0])
+    added_props = {'strain': strain, 'atc_conc_ngml': atc_conc}
     clists = glob.glob('{}/xy*/clist.mat'.format(s))
     _df = mwc.process.parse_clists(clists, added_props=added_props,
                                    excluded_props=excluded_props)
@@ -156,7 +156,7 @@ dilution = snap_df[snap_df['strain'] == 'dilution']
 grouped = dilution.groupby('atc_conc_ngml')
 
 # Set up the fold-change dataframe.
-fc_df = pd.DataFrame([], columns=['atc_conc_ngmL',
+fc_df = pd.DataFrame([], columns=['atc_conc_ngml',
                                   'mean_repressors', 'mean_yfp', 'fold_change'])
 
 # Loop through each concentration and compute the fold-change.
@@ -164,7 +164,7 @@ for g, d in grouped:
     mean_rep = np.mean(d['fluor2_sub'] / alpha_opt)
     mean_yfp = np.mean(d['fluor1_sub'])
     fc = mean_yfp / mean_delta_yfp
-    conc_dict = {'atc_conc_ngmL': g, 'mean_repressors': mean_rep, 
+    conc_dict = {'atc_conc_ngml': g, 'mean_repressors': mean_rep, 
                  'mean_yfp': mean_yfp, 'fold_change': fc}
     fc_df = fc_df.append(conc_dict, ignore_index=True)
 
@@ -172,7 +172,7 @@ for g, d in grouped:
 fc_df.to_csv('output/{}_microscopy_foldchange.csv'.format(BASE_NAME), index=False)
 
 rep_dict = {i: j for i, j in fc_df[[
-    'atc_conc_ngmL', 'mean_repressors']].values}
+    'atc_conc_ngml', 'mean_repressors']].values}
 
 
 # %% Plot the fold-change curve as a function of repressors.
