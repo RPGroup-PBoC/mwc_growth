@@ -43,7 +43,7 @@ saturate at around OD<sub>600nm</sub> ~ 0.7.
 
 ## Experimental Protocol
 
-1. Cells from an overnight saturated LB culture were diluted 1:3000 into 3 mL  of M9 + 0.5% glucose + chloramphenicol in a 15 mL Falcon tube. The inoculum was stored at room temperature for several hours prior to the inoculation.
+1. Cells from an overnight saturated LB culture were diluted 1:3000 into 3 mL of M9 + 0.5% glucose + chloramphenicol in a 15 mL Falcon tube. The inoculum was stored at room temperature for several hours prior to the inoculation.
 
 2. Cells grew overnight (12h) at 37°C shaking at 225 RPM.
 
