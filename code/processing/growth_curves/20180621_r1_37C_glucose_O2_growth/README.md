@@ -9,8 +9,8 @@ reason:
 
 ## Purpose
 This experiment aims to measure the growth rate of the *E. coli*
-strains of interest in M9 + 0.5% glycerol at 37°C. This file corresponds to the
-first run, although both experimens were conducted concurrently.
+strains of interest in M9 + 0.5% glucose at 37°C. This file corresponds to the
+first run, although both experiments were conducted concurrently.
 
 
 ## Strain information
@@ -38,11 +38,11 @@ first run, although both experimens were conducted concurrently.
 
 ## Experimental Protocol
 
-1. Cells from a 4.5-hour saturated LB culture were diluted 1:1000 into 6 mL of M9 + 0.5% glycerol in a 15 mL Falcon tube. The inoculum was stored at room temperature for several hours prior to the inoculation.
+1. Cells from a 4.5-hour saturated LB culture were diluted 1:10000 into 6 mL of M9 + 0.5% glucose in a 15 mL Falcon tube. The inoculum was stored at room temperature for several hours prior to the inoculation.
 
 2. Cells grew overnight (13h) at 37°C shaking at 225 RPM.
 
-3. The OD<sub>600nm</sub> of these cells were measured and 5mL were diluted into 50 mL of prewarmed M9 + 0.5% glycerol and was thoroughly mixed.
+3. The OD<sub>600nm</sub> of these cells were measured and 5mL were diluted into 50 mL of prewarmed M9 + 0.5% glucose and was thoroughly mixed.
 
 4. Aliquots of 500 µL were serially pipetted to fill one 96-well plates (2 mL maximal volume). This plate was covered with a breathable nylon cover.
 

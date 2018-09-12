@@ -11,7 +11,7 @@ reason:
 ## Purpose
 This experiment is the first pass at measuring the growth rate of the *E. coli*
 strains of interest in M9 + 0.5% glucose at 37°C. This file corresponds to the
-second run, although both experimens were conducted concurrently.
+second run, although both experiments were conducted concurrently.
 
 ## Strain information
 | Location | Plasmid | Genotype | Host Strain | Shorthand |
@@ -40,7 +40,7 @@ for this particular growth medium.
 
 ## Experimental Protocol
 
-1. Cells from an overnight saturated LB culture were diluted 1:3000 into 3 mL  of M9 + 0.5% glucose + chloramphenicol in a 15 mL Falcon tube. The inoculum was stored at room temperature for several hours prior to the inoculation.
+1. Cells from an overnight saturated LB culture were diluted 1:3000 into 3 mL of M9 + 0.5% glucose + chloramphenicol in a 15 mL Falcon tube. The inoculum was stored at room temperature for several hours prior to the inoculation.
 
 2. Cells grew overnight (12h) at 37°C shaking at 225 RPM.
 
