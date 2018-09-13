@@ -4,13 +4,13 @@ reason:
     
 ---
 
-# 2018-06-21 Growth Measurement (Run 2)
+# 2018-09-12 Growth Measurement (Run 2)
 
 
 ## Purpose
 This experiment aims to measure the growth rate of the *E. coli*
 strains of interest in M9 + 0.5% glucose at 37°C. This file corresponds to the
-second run, although both experimens were conducted concurrently.
+second run, although all three experiments were conducted concurrently.
 
 
 ## Strain information
