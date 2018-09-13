@@ -4,13 +4,13 @@ reason:
     
 ---
 
-# 2018-09-11 Growth Measurement (Run 2)
+# 2018-09-13 Growth Measurement (Run 1)
 
 
 ## Purpose
 This experiment aims to measure the growth rate of the *E. coli*
 strains of interest in M9 + 0.5% glucose at 37°C. This file corresponds to the
-second run, although both experiments were conducted concurrently.
+first run, although both experiments were conducted concurrently.
 
 
 ## Strain information
@@ -29,16 +29,16 @@ second run, although both experiments were conducted concurrently.
 
 
 ## Notes & Observations
-* Inoculum OD<sub>600nm</sub> was ~ 0.27 and was diluted 1:10 into the growth medium.
-* The run was started at 08h50m.
+* Inoculum OD<sub>600nm</sub> was ~ 0.49 and was diluted 1:10 into the growth medium.
+* The run was started at 08h55m.
 
 ## Analysis Files
 
-![](output/20180911_r2_37C_glycerol_O2_growth.png)
+![](output/20180913_r1_37C_glucose_O2_growth.png)
 
 ## Experimental Protocol
 
-1. Cells from a 5-hour saturated LB culture were diluted 1:10000 into 6 mL of M9 + 0.5% glucose in a 15 mL Falcon tube. The inoculum was stored at room temperature for several hours prior to the inoculation.
+1. Cells from a 4-hour saturated LB culture were diluted 1:10000 into 6 mL of M9 + 0.5% glucose in a 15 mL Falcon tube. The inoculum was stored at room temperature for several hours prior to the inoculation.
 
 2. Cells grew overnight (13h) at 37°C shaking at 225 RPM.
 

@@ -10,7 +10,7 @@ reason:
 ## Purpose
 This experiment aims to measure the growth rate of the *E. coli*
 strains of interest in M9 + 0.5% glucose at 37°C. This file corresponds to the
-first run, although both experimens were conducted concurrently.
+first run, although both experiments were conducted concurrently.
 
 
 ## Strain information
