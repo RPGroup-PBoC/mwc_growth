@@ -231,10 +231,9 @@ for g, d in grouped:
     ax.plot(c_range, theo, '-', color=c)
     i += 1
 
-# Untested beyond this point (maybe above as well)
 ax.legend(loc='upper left', title='repressors')
 plt.tight_layout()
-plt.savefig('output/{}_foldchange_vs_iptg.png'.format(BASE_NAME, bbox_inches='tight'))
+plt.savefig('output/{}_foldchange_vs_iptg_rep.png'.format(BASE_NAME, bbox_inches='tight'))
 
 
 #%% Update flow_events csv to include a column with repressor number.
