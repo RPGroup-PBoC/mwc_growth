@@ -42,12 +42,14 @@ def scrape_frontmatter(dirname, file='README.md'):
     with open(filename) as f:
         info, _ = frontmatter.parse(f.read())
     if 'status' not in info.keys():
-        raise UserWarning(
-            'key `status` not found in metadata keys. Skipping {}'.format(dirname))
-
+        print(
+            'Key `status` not found in metadata keys. Skipping {}'.format(dirname))
+        info = {}
+    elif info['status'] is None:
+        print('Key `status` is missing. Skipping {}'.format(dirname))
         info = {}
     elif info['status'].lower() not in ['accepted', 'questionable', 'rejected']:
-        raise UserWarning('Value `status: {}` not an acceptable flag. Skipping {}'.format(
+        print('Value `status: {}` not an acceptable flag. Skipping {}'.format(
             info['status'].lower(), dirname))
         info = {}
     return info
