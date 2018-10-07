@@ -1,6 +1,6 @@
 ---
-status:
-reason:
+status: accepted 
+reason: Though fold-change is low, nothing is suspect.
 ---
 
 # 2018-10-02 O2 Glucose Dilution
@@ -29,10 +29,10 @@ This experiment was a replicate of a LacI titration experiment for cells grown i
 ## Analysis Files
 
 **Calibration Factor Determination**
-![]()
+![](output/20181002_r1_37C_glucose_O2_dilution.png)
 
 **Fold-change**
-![]()
+![](output/20181002_r1_37C_glucose_O2_foldchange.png)
 
 ## Experimental Protocol
 

@@ -12,7 +12,9 @@ import mwc.bayes
 import mwc.stats
 import mwc.io
 import mwc.process
+import mwc.model
 mwc.viz.personal_style()
+constants = mwc.model.load_constants()
 
 # Define the experimental constants
 DATE = 20181002
@@ -114,6 +116,9 @@ fc_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_foldchange.cs
 # #############################################################
 # FIGURES
 # ############################################################
+
+# Calibration Factor Plots
+# -------------------------------
 # Compute the hpd of alpha. 
 hpd = mwc.stats.compute_hpd(samples_df['alpha'], 0.95)
 
@@ -121,7 +126,7 @@ hpd = mwc.stats.compute_hpd(samples_df['alpha'], 0.95)
 binned = mwc.stats.bin_by_events(fluct_df, 50)
 
 # Set up the figure canvas. 
-fig, ax = plt.subplots(1, 2, figsize=(4, 2))
+fig, ax = plt.subplots(1, 2, figsize=(5.5, 3))
 
 # Add appropriate labels and formatting. 
 ax[0].set_xlabel('$I_1 + I_2$', fontsize=8)
@@ -134,7 +139,7 @@ ax[0].set_xlim([1E0, 5E5])
 
 # Plot the fluctuations.
 _ = ax[0].plot(fluct_df['summed'], fluct_df['fluct'], 'k.', ms=0.5, alpha=0.75, label='raw data')
-_ = ax[0].plot(binned['summed'], binned['fluct'], '.', color='dodgerblue', ms=3, label='average')
+_ = ax[0].plot(binned['summed'], binned['fluct'], '.', color='firebrick', ms=3, label='average')
 
 # Plot the credible region
 summed_range = np.logspace(0, 6, 200) 
@@ -151,4 +156,49 @@ ax[0].legend(fontsize=6)
 mwc.viz.format_axes()
 plt.tight_layout() 
 plt.savefig(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_dilution.png', bbox_inches='tight')
+
+
+# Fold Change Plots 
+# ------------------------------------------------------
+# Instantiate the architecture
+rep_range = np.logspace(0, 4, 200)
+arch = mwc.model.SimpleRepression(rep_range, ep_r=constants['O2'], 
+                                  n_ns=constants['n_ns'], ka=constants['ka'], 
+                                  ki=constants['ki'], 
+                                  n_sites=constants['n_sites'],
+                                  effector_conc=0, ep_ai=constants['ep_ai']).fold_change()
+
+# Set up the figure canvas and add appropriate labels. 
+fig, ax = plt.subplots(1, 2, figsize=(4, 2))
+ax[0].set_xscale('log')
+ax[0].set_yscale('log')
+ax[0].set_ylabel('fold-change')
+ax[0].set_xlabel('repressors per cell')
+ax[1].set_xlabel('atc [ng/mL]')
+ax[1].set_ylabel('repressors per cell')
+ax[1].set_xticks(fc_df['atc_ngml'].unique())
+# Plot the wild-type curve. 
+_ = ax[0].plot(rep_range, arch, '-', color='firebrick', lw=1, label='prediction')
+
+# Bin the data into 10 ranges
+bins = np.logspace(0, 4, 8)
+bins = pd.cut(fc_df['repressors'], bins)
+fc_df['bin'] = bins
+
+# Plot all points in a cloud
+_ = ax[0].plot(fc_df['repressors'], fc_df['fold_change'], 'k,',label='raw data', alpha=0.5)
+
+# Group by bin and plot. 
+for g, d in fc_df.groupby('bin'):
+    mean_fc = d['fold_change'].mean()
+    mean_rep = d['repressors'].mean()
+    _ = ax[0].plot(mean_rep, mean_fc, 'o', color='tomato', ms=2)
+    
+# Group by concentration. 
+grouped = fc_df.groupby('atc_ngml').mean()
+_ = ax[1].plot(grouped['repressors'], '-o', color='firebrick')
+mwc.viz.format_axes()
+plt.tight_layout()
+plt.savefig(f'output/{DATE}_r{RUN_NO}_{CARBON}_{OPERATOR}_fold_change.png',
+            bbox_inches='tight')
 
