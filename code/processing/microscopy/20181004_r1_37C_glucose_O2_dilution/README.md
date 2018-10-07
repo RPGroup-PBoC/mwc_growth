@@ -1,6 +1,6 @@
 ---
-status:
-reason:
+status: accepted
+reason: Narrow range of expression, yet data falls clcse to prediction
 ---
 
 # 2018-10-04 O2 Glucose Dilution
@@ -29,12 +29,11 @@ This experiment was a replicate of a LacI titration experiment for cells grown i
 * The cells used for snapshots were flooded with Kanamycin at a concentration of 100µg/mL  in an attempt to cease protein translation. However, we forgot that these strains have a kanamycin resistance casette, so it didn't make any real difference. 
 
 ## Analysis Files
-
 **Calibration Factor Determination**
-![]()
+![](output/20181004_r1_37C_glucose_O2_dilution.png)
 
 **Fold-change**
-![]()
+![](output/20181004_r1_37C_glucose_O2_fold_change.png)
 
 ## Experimental Protocol
 

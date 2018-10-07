@@ -135,7 +135,9 @@ ax[1].set_xlabel('calibration factor [a.u. / molecule]', fontsize=8)
 ax[1].set_ylabel('probability')
 ax[0].set_xscale('log')
 ax[0].set_yscale('log')
-ax[0].set_xlim([1E0, 5E5])
+min_sum = np.min(fluct_df['summed'])
+max_sum = np.max(fluct_df['summed'])
+ax[0].set_xlim([0.5 * min_sum, 5 * max_sum])
 
 # Plot the fluctuations.
 _ = ax[0].plot(fluct_df['summed'], fluct_df['fluct'], 'k.', ms=0.5, alpha=0.75, label='raw data')
@@ -177,6 +179,7 @@ ax[0].set_xlabel('repressors per cell')
 ax[1].set_xlabel('atc [ng/mL]')
 ax[1].set_ylabel('repressors per cell')
 ax[1].set_xticks(fc_df['atc_ngml'].unique())
+ax[0].set_xlim([0, 1E4])
 # Plot the wild-type curve. 
 _ = ax[0].plot(rep_range, arch, '-', color='firebrick', lw=1, label='prediction')
 
@@ -189,14 +192,14 @@ fc_df['bin'] = bins
 _ = ax[0].plot(fc_df['repressors'], fc_df['fold_change'], 'k,',label='raw data', alpha=0.5)
 
 # Group by bin and plot. 
-for g, d in fc_df.groupby('bin'):
+for g, d in fc_df.groupby('atc_ngml'):
     mean_fc = d['fold_change'].mean()
     mean_rep = d['repressors'].mean()
     _ = ax[0].plot(mean_rep, mean_fc, 'o', color='tomato', ms=2)
     
 # Group by concentration. 
 grouped = fc_df.groupby('atc_ngml').mean()
-_ = ax[1].plot(grouped['repressors'], '-o', color='firebrick')
+_ = ax[1].plot(grouped['repressors'], '-o', color='firebrick', ms=2)
 mwc.viz.format_axes()
 plt.tight_layout()
 plt.savefig(f'output/{DATE}_r{RUN_NO}_{CARBON}_{OPERATOR}_fold_change.png',
