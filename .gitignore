@@ -4,7 +4,7 @@ data/
 *.fcs
 *.tif
 *.jpg
-*ipynb-checkpoints
+*ipynb_checkpoints
 *.DS_store
 *.out
 *.log
