@@ -1,10 +1,33 @@
 # -*- coding: utf-8 -*-
+import os
 import numpy as np
 import pandas as pd
+import pickle
+import pystan
 import scipy.special
 import scipy.optimize
 import statsmodels.tools.numdiff as smnd
 
+
+def loadStanModel(fname, force=False):
+    """Loads a precompiled Stan model. If no compiled model is found, one will be saved."""
+    # Identify the model name and directory structure
+    rel, sm_dir = fname.split('/stan/')
+    sm_name = sm_dir.split('.stan')[0]
+    pkl_name = f'{rel}/stan/{sm_name}.pkl' 
+    # Check if the model is precompiled
+    if (os.path.exists(pkl_name)==True) and (force != True):
+        print('Found precompiled model. Loading...')
+        model = pickle.load(open(pkl_name, 'rb'))
+        print('finished!')
+    else:
+        print('Precompiled model not found. Compiling model...')
+        model = pystan.StanModel(fname)
+        print('finished!')
+        with open(pkl_name, 'wb') as f:
+            pickle.dump(model, f)      
+    return model
+    
 
 
 def log_prior():
