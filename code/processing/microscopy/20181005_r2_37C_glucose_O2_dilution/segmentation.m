@@ -2,11 +2,11 @@
 % in MATLAB
 % Define the experiment parameters.
 DATE = '20181005';
-BASENAME = 'r1_37C_glucose_O2';
+BASENAME = 'r2_37C_glucose_O2';
 samples = {'snaps'};
 
 % Get the snaps names.
-dirpath = ['/Volumes/GDC_DATA_2/20181005_nikon/snaps/']
+dirpath = ['/Volumes/GDC_DATA_2/20181005/snaps/']
 snap_files = dir(dirpath);
 snap_samples = {snap_files.name};
 ignored = {'.', '..', '.DS_Store', 'snaps'};
@@ -35,7 +35,7 @@ for i=2:length(samples)
     disp(statement)
 
     % Define the data directory.
-    directory = ['/Volumes/GDC_DATA_2/20181005_nikon/snaps/', samples{i}]
+    directory = ['/Volumes/GDC_DATA_2/20181005/snaps/', samples{i}]
 
 
     % Perform the segmentation.
