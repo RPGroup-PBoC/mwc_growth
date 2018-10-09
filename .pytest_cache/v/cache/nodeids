@@ -3,7 +3,6 @@
   "tests/test_flow.py::test_gaussian_gate",
   "tests/test_image.py::test_projection",
   "tests/test_image.py::test_generate_flatfield",
-  "tests/test_image.py::test_correct_drift",
   "tests/test_io.py::test_scrape_frontmatter",
   "tests/test_process.py::test_clist_to_df",
   "tests/test_transcription.py::test_MWC"

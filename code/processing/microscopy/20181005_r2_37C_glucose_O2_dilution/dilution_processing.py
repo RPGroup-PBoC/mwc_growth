@@ -78,7 +78,7 @@ samples_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_cal_fact
 # Compute the fold-change. 
 # --------------------------
 # Load delta data.
-delta_df = mwc.process.parse_clists(glob.glob(f'{data_dir}snaps/delta_00ngml/xy*/clist.mat'))
+delta_df = mwc.process.parse_clists(glob.glob(f'../../../../data/images/20181004_r1_37C_glucose_O2_dilution/snaps/delta_00ngml/xy*/clist.mat'))
 delta_df = mwc.process.morphological_filter(delta_df, ip_dist=IP_DIST)
 
 # Compute the mean YFP value for autofluorescence and delta LacI
@@ -150,7 +150,7 @@ _ = ax[0].fill_between(summed_range, hpd[0] * summed_range, hpd[1] * summed_rang
 
 
 # Plot the samples. 
-_ = ax[1].hist(samples_df['alpha'], bins=100, color='slategray', edgecolor='k', lw=0.05)
+_ = ax[1].hist(samples_df['alpha'], bins=100, color='slategray', edgecolor='k', lw=0.05, density=True)
 _ = ax[1].fill_betweenx(np.linspace(0, ax[1].get_ylim()[1]), hpd[0], hpd[1], color='tomato', alpha=0.25, zorder=100)
 
 # Add legend, format axes, and save. 
@@ -171,7 +171,7 @@ arch = mwc.model.SimpleRepression(rep_range, ep_r=constants['O2'],
                                   effector_conc=0, ep_ai=constants['ep_ai']).fold_change()
 
 # Set up the figure canvas and add appropriate labels. 
-fig, ax = plt.subplots(1, 2, figsize=(4, 2))
+fig, ax = plt.subplots(1, 2, figsize=(5.5, 3))
 ax[0].set_xscale('log')
 ax[0].set_yscale('log')
 ax[0].set_ylabel('fold-change')

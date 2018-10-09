@@ -49,7 +49,7 @@ def scrape_frontmatter(dirname, file='README.md'):
         print('Key `status` is missing. Skipping {}'.format(dirname))
         info = {}
     elif info['status'].lower() not in ['accepted', 'questionable', 'rejected']:
-        print('Value `status: {}` not an acceptable flag. Skipping {}'.format(
+        raise UserWarning('Value `status: {}` not an acceptable flag. Skipping {}'.format(
             info['status'].lower(), dirname))
         info = {}
     return info
