@@ -1,6 +1,6 @@
 ---
-status:
-reason:
+status: Accepted
+reason: Nothing out of the ordinary
 ---
 
 # 2018-10-05 O2 Glucose Dilution

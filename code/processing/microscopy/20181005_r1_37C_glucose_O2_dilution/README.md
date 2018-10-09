@@ -1,6 +1,6 @@
 ---
-status:
-reason:
+status: Accepted
+reason: Low fold-change observed on low repressor copy number.
 ---
 
 # 2018-10-05 O2 Glucose Dilution
