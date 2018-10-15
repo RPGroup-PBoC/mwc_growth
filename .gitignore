@@ -14,3 +14,6 @@ __pycache__
 *.xml
 *.blg
 *.json
+*.pkl
+*.out
+*.txt
