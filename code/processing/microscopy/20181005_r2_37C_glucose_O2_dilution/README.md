@@ -1,6 +1,6 @@
 ---
-status: Accepted
-reason: Nothing out of the ordinary
+status: Rejected
+reason: Something happened with the delta LacI strain and I was not able to properly measure fold-change
 ---
 
 # 2018-10-05 O2 Glucose Dilution

@@ -141,8 +141,7 @@ def morphological_filter(df, ip_dist, area_bounds=[1, 4], ar_bounds=[0.1, 0.5]):
     return _df
 
 
-def compute_fluctuations(dilution_df, auto_val, multi_xy=True,
-                         fluo_key='fluor1_mean_death'):
+def family_reunion(dilution_df, multi_xy=True, fluo_channel=2):
     """"
     Generates a new DataFrame containing the indivudual sister intensities,
     summed fluorescence, and square fluctuations.
@@ -154,8 +153,7 @@ def compute_fluctuations(dilution_df, auto_val, multi_xy=True,
         this must have the columns `mother_id`, `fluor1_mean_death`,
         `area_death`. If multiple positions are to be processed, `position`
         must also be provided.
-    auto_val : float
-        The mean autofluorescence pixel intensity.
+
     multi_xy : Bool
         If True, multiple positions in the provided DataFrame will be
         processed.
@@ -166,7 +164,7 @@ def compute_fluctuations(dilution_df, auto_val, multi_xy=True,
         A DataFrame with the two intensity measurements, sum total, and square fluctuations.
     """
     # Set up the DataFrame.
-    fluct_df = pd.DataFrame([], columns=['I_1', 'I_2', 'summed', 'fluct'])
+    family_df = pd.DataFrame([], columns=['I_1', 'I_2', 'area_1', 'area_2', 'bg_val'])
 
     # Determine what to groupby.
     if multi_xy == True:
@@ -180,14 +178,14 @@ def compute_fluctuations(dilution_df, auto_val, multi_xy=True,
     grouped = dilution_df.groupby(groupby)
     for g, d in grouped:
         if len(d) == 2:  # Ensure only single successful divisions.
-            ints = (d[fluo_key].values -
-                    auto_val) * d['area_death'].values
+            ints = (d[f'fluor{fluo_channel}_mean_death'].values) * d['area_death'].values
             if (ints >= 0).all() == True:
                 I_1, I_2 = ints
-                summed = np.sum(ints)
-                fluct = (ints[0] - ints[1])**2
-                family_dict = {'I_1': I_1, 'I_2': I_2, 'summed': summed,
-                               'fluct': fluct}
-                fluct_df = fluct_df.append(family_dict, ignore_index=True)
+                family_dict = {'I_1': I_1, 'I_2': I_2, 
+                               'area_1':d['area_death'].values[0], 
+                               'area_2':d['area_death'].values[1],
+                               'bg_val': d[f'fluor{fluo_channel}_bg_death'].unique()[0],
+                               'fractional_birth_area':d['area_birth'].values[0] / np.sum(d['area_birth'].values)}
+                family_df = family_df.append(family_dict, ignore_index=True)
 
-    return fluct_df
+    return family_df
