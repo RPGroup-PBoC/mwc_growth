@@ -17,7 +17,7 @@ functions{
     **/
     real GammaApproxBinom_lpdf(real I1, real I2, real alpha, real p) { 
             return -log(alpha) + lgamma(((I1 + I2) / alpha) + 1) - lgamma((I1 / alpha) + 1)
-                        - lgamma((I2 / alpha) + 1) + (I1 / alpha) * log(p) + (I2 / alpha) * log(1-p)
+                        - lgamma((I2 / alpha) + 1) + (I1 / alpha) * log(p) + (I2 / alpha) * log(1-p);
         }
     }
 
