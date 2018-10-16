@@ -15,9 +15,9 @@ functions{
     * @param alpha: Fluorescenc calibration factor in units of a.u. / molecule
     * @param N: Total number of measurements 
     **/
-    real GammaApproxBinom_lpdf(real I1, real I2, real alpha, real p) { 
+    real GammaApproxBinom_lpdf(real I1, real I2, real alpha) { 
             return -log(alpha) + lgamma(((I1 + I2) / alpha) + 1) - lgamma((I1 / alpha) + 1)
-                        - lgamma((I2 / alpha) + 1) + (I1 / alpha) * log(p) + (I2 / alpha) * log(1-p);
+                        - lgamma((I2 / alpha) + 1) - ((I1 + I2) / alpha) * log(2)
         }
     }
 
@@ -34,7 +34,6 @@ data {
     real<lower=0> A_1[N]; // Area of cell 1 in square pixels
     real<lower=0> I_2[N]; // Observed mean pixel intensity of daughter cell 2 
     real<lower=0> A_2[N]; // Area of cell 2 in square pixels
-    real<lower=0, upper=1> frac_area[N];
     
 }
    
@@ -51,7 +50,6 @@ parameters {
     real<lower=0> I1_sigma[N];
     real<lower=0> I2_tot[N];
     real<lower=0> I2_sigma[N];
-    real<lower=0, upper=1> prob[N];
     real<lower=0, upper=1> sigma_prob[N];
 }
 
@@ -76,10 +74,7 @@ model {
         I1_tot[i] ~ normal(I_1[i] * A_1[i], I1_sigma[i]);
         I2_tot[i] ~ normal(I_2[i] * A_2[i], I2_sigma[i]);
 
-        // Define prior for partitioning probability
-        prob[i] ~ normal(frac_area[i], sigma_prob[i]);
-
         // Evaluate likelihood.
-        I1_tot[i] ~ GammaApproxBinom(I2_tot[i],alpha_run[run_idx[i]], prob[i]);
+        I1_tot[i] ~ GammaApproxBinom(I2_tot[i],alpha_run[run_idx[i]]);
     } 
 }
