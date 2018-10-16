@@ -17,7 +17,7 @@ mwc.viz.personal_style()
 constants = mwc.model.load_constants()
 
 # Define the experimental constants
-DATE = 20181002
+DATE = 20181011
 RUN_NO = 1
 TEMP = 37
 CARBON = 'glucose'

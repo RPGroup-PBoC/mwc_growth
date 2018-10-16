@@ -1,6 +1,6 @@
 ---
-status: 
-reason: 
+status: Rejected 
+reason: analysis not finished
 ---
 
 # 2018-10-11 O2 Glucose Dilution
