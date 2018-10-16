@@ -25,13 +25,18 @@ data {
     //Dimensional parameters
     int<lower=1> J_media; // Number of unique growth media
     int<lower=1> J_run; // Number of unique experimental across entire data set
-    int<lower=1> N; // total number of measurements
+    int<lower=1> N; // total number of measurements for fluctuations
+    int<lower=1> M; // Total number of mCherry measurements
     int<lower=1, upper=J_media> media_idx[N];
+    int<lower=1, upper=J_media> mch_media_idx[M];
     int<lower=1, upper=J_run>  run_idx[N];
     
     // Experimental parameters
     real<lower=0> I_1[N]; // Observed intensity of daughter cell 1
     real<lower=0> I_2[N]; // Observed intensity of daughter cell 2 
+    
+    // Data for counting repressors
+    real<lower=0> mCh[M];
 }
    
 parameters {
@@ -56,4 +61,12 @@ model {
     for (i in 1:N) {
         I_1[i] ~ GammaApproxBinom(I_2[i],alpha_run[run_idx[i]]);
     } 
+}
+
+generated quantities {
+    // Calculate the repressor copy number for each iteration. 
+    vector[M] R;
+    for (i in 1:M) {
+        R[i] = mCh[i] / alpha_mu[mch_media_idx[i]];
+    }
 }
