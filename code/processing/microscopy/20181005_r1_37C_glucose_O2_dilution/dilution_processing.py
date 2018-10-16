@@ -99,12 +99,13 @@ for i, c in enumerate(concs):
     _df['fold_change'] = _df['mean_yfp'] / mean_delta_yfp
     _df['repressors'] = _df['mean_mCherry'] * _df['area_death'] / np.mean(samples_df['alpha'])
     _df['atc_ngml'] = float(c.split('dilution_')[1].split('ngml')[0])
+    _df['area_pix'] = _df['area_death'] 
     _df['date'] = DATE
     _df['carbon'] = CARBON
     _df['temp'] = TEMP
     _df['operator'] = OPERATOR
     _df['run_number'] = RUN_NO
-    dfs.append(_df[['mean_yfp', 'mean_mCherry', 'fold_change', 'repressors',
+    dfs.append(_df[['area_pix', 'mean_yfp', 'mean_mCherry', 'fold_change', 'repressors',
                    'atc_ngml', 'date', 'carbon', 'temp', 'operator', 'run_number']])
 fc_df = pd.concat(dfs)
 
