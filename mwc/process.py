@@ -178,7 +178,7 @@ def family_reunion(dilution_df, multi_xy=True, fluo_channel=2):
     grouped = dilution_df.groupby(groupby)
     for g, d in grouped:
         if len(d) == 2:  # Ensure only single successful divisions.
-            ints = (d[f'fluor{fluo_channel}_mean_death'].values) * d['area_death'].values
+            ints = d[f'fluor{fluo_channel}_mean_death'].values
             if (ints >= 0).all() == True:
                 I_1, I_2 = ints
                 family_dict = {'I_1': I_1, 'I_2': I_2, 
@@ -186,6 +186,7 @@ def family_reunion(dilution_df, multi_xy=True, fluo_channel=2):
                                'area_2':d['area_death'].values[1],
                                'bg_val': d[f'fluor{fluo_channel}_bg_death'].unique()[0],
                                'fractional_birth_area':d['area_birth'].values[0] / np.sum(d['area_birth'].values)}
+
                 family_df = family_df.append(family_dict, ignore_index=True)
 
     return family_df
