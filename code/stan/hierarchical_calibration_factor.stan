@@ -31,10 +31,7 @@ data {
     
     // Experimental parameters
     real<lower=0> I_1[N]; // Observed mean pixel intensity of daughter cell 1
-    real<lower=0> A_1[N]; // Area of cell 1 in square pixels
     real<lower=0> I_2[N]; // Observed mean pixel intensity of daughter cell 2 
-    real<lower=0> A_2[N]; // Area of cell 2 in square pixels
-    
 }
    
 parameters {
@@ -44,13 +41,6 @@ parameters {
     // Low-level parameters
     real<lower=0, upper=2^12>  alpha_run[J_run]; // Low-level parameter for experimental alpha 
     real<lower=0> sigma[J_media]; // Hyperparameter for variance
-
-    // Single-cell parameters
-    real<lower=0> I1_tot[N];
-    real<lower=0> I1_sigma[N];
-    real<lower=0> I2_tot[N];
-    real<lower=0> I2_sigma[N];
-    real<lower=0, upper=1> sigma_prob[N];
 }
 
 model {
@@ -70,11 +60,7 @@ model {
     
     // Iterate through each measurement and compute the likelihood
     for (i in 1:N) {
-        // Define prior for Intensity. 
-        I1_tot[i] ~ normal(I_1[i] * A_1[i], I1_sigma[i]);
-        I2_tot[i] ~ normal(I_2[i] * A_2[i], I2_sigma[i]);
-
         // Evaluate likelihood.
-        I1_tot[i] ~ GammaApproxBinom(I2_tot[i],alpha_run[run_idx[i]]);
+        I_1[i] ~ GammaApproxBinom(I_2[i],alpha_run[run_idx[i]]);
     } 
 }
