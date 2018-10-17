@@ -17,7 +17,7 @@ functions{
     **/
     real GammaApproxBinom_lpdf(real I1, real I2, real alpha) { 
             return -log(alpha) + lgamma(((I1 + I2) / alpha) + 1) - lgamma((I1 / alpha) + 1)
-                        - lgamma((I2 / alpha) + 1) - ((I1 + I2) / alpha) * log(2)
+                        - lgamma((I2 / alpha) + 1) - ((I1 + I2) / alpha) * log(2);
         }
     }
 
@@ -49,9 +49,6 @@ model {
     sigma ~ normal(0, 100);
 
     // Define low-level priors
-    I1_sigma ~ lognormal(0, 3);
-    I2_sigma ~ lognormal(0, 3);
-    
     for (i in 1:J_media) {
         for (j in 1:J_run) {
             alpha_run[j] ~ normal(alpha_mu[i], sigma[i]);

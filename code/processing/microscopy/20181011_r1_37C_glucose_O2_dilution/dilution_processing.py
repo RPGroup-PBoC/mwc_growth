@@ -109,8 +109,12 @@ for i, c in enumerate(concs):
     _df['temp'] = TEMP
     _df['operator'] = OPERATOR
     _df['run_number'] = RUN_NO
+    _df['yfp_bg_val'] = _df['fluor1_bg_death']
+    _df['mCherry_bg_val'] = _df['fluor2_bg_death']
     dfs.append(_df[['strain', 'area_pix', 'mean_yfp', 'mean_mCherry', 'fold_change',
-                   'atc_ngml', 'date', 'carbon', 'temp', 'operator', 'run_number']])
+                   'atc_ngml', 'date', 'carbon', 'temp', 'operator', 'run_number',
+                   'yfp_bg_val', 'mCherry_bg_val']])
+
 fc_df = pd.concat(dfs)
 
 # Save to disk. 
