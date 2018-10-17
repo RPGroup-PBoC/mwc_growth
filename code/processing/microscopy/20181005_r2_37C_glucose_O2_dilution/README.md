@@ -1,5 +1,5 @@
 ---
-status: Rejected
+status: Accepted
 reason: Something happened with the delta LacI strain and I was not able to properly measure fold-change
 ---
 
