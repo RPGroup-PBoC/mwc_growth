@@ -55,41 +55,6 @@ def scrape_frontmatter(dirname, file='README.md'):
     return info
 
 
-def _create_SSHclient(username, port, server='delbruck'):
-    """
-    Establishes an SSH connection to one of the servers.
-
-    Parameters:
-    -----------
-    username : str
-        Username on the server
-    port : int
-        Super secret port number
-    server : str
-        First name of the beloved server.
-
-    Returns
-    -------
-    client : SSH Object
-        Client object connected to remote server.
-
-    Notes
-    -----
-    This function is not compatabile with password-only login. You must have
-    the proper system keys installed.
-
-    Acknowledgements
-    ----------------
-    This function taken from a StackOverflow anwer by Tom Shen.
-    https://stackoverflow.com/questions/250283/how-to-scp-in-python
-    """
-    client = paramiko.SSHClient()
-    client.load_system_host_keys()
-    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect('{}@caltech.edu'.format(server), port, username)
-    return client
-
-
 def yank_clist(src, username, port, dest, server='delbruck'):
     """
     Pulls the clist files from a target directory on delbrück to local.

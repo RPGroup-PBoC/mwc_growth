@@ -87,27 +87,30 @@ mean_auto_yfp = auto_df['fluor1_mean_death'].mean()
 mean_delta_yfp = delta_df['fluor1_mean_death'].mean() - mean_auto_yfp
 
 # Iterate through all concentrations. 
-concs = glob.glob(f'{data_dir}snaps/dilution*')
+concs = glob.glob(f'{data_dir}snaps/*')
 dfs = []
 for i, c in enumerate(concs):
     clists = glob.glob(f'{c}/xy*/clist.mat')
     _df = mwc.process.parse_clists(clists)
     _df = mwc.process.morphological_filter(_df, ip_dist=IP_DIST)
-    
+    strain, atc= c.split('/')[-1].split('_')
+    atc = float(atc.split('ngml')[0])
+
     # Extract the important data
+    _df['strain'] = strain
     _df['mean_bg_yfp'] = _df['fluor1_bg_death']
     _df['mean_bg_mCherry'] = _df['fluor2_bg_death']
     _df['mean_yfp'] = _df['fluor1_mean_death'] 
     _df['mean_mCherry'] = _df['fluor2_mean_death'] 
     _df['fold_change'] = (_df['mean_yfp'] - mean_auto_yfp) / mean_delta_yfp
-    _df['atc_ngml'] = float(c.split('dilution_')[1].split('ngml')[0])
+    _df['atc_ngml'] = atc
     _df['date'] = DATE
     _df['area_pix'] = _df['area_death']
     _df['carbon'] = CARBON
     _df['temp'] = TEMP
     _df['operator'] = OPERATOR
     _df['run_number'] = RUN_NO
-    dfs.append(_df[['area_pix', 'mean_yfp', 'mean_mCherry', 'fold_change',
+    dfs.append(_df[['strain', 'area_pix', 'mean_yfp', 'mean_mCherry', 'fold_change',
                    'atc_ngml', 'date', 'carbon', 'temp', 'operator', 'run_number']])
 fc_df = pd.concat(dfs)
 
@@ -188,6 +191,7 @@ ax[0].set_xlim([0, 1E4])
 _ = ax[0].plot(rep_range, arch, '-', color='firebrick', lw=1, label='prediction')
 
 # Bin the data into 
+fc_df[fc_df['strain'] == 'dilution']
 fc_df['repressors'] = (fc_df['mean_mCherry'] -  mean_auto) * fc_df['area_pix'] / np.median(samples_df['alpha'])
 bins = np.logspace(0, 4, 8)
 bins = pd.cut(fc_df['repressors'], bins)
