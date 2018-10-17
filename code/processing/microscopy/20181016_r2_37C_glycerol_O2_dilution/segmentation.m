@@ -1,6 +1,7 @@
 % Segment the autofluorescence and the original images using SuperSegger
 % in MATLAB
 % Define the experiment parameters.
+addpath(genpath('../../../../../SuperSegger'));
 DATE = '20181016';
 BASENAME = 'r2_37C_glycerol_O2';
 samples = {'growth'};
