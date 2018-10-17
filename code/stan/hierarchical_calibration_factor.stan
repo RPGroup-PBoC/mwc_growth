@@ -49,14 +49,10 @@ model {
     sigma ~ normal(0, 100);
 
     // Define low-level priors
-    for (i in 1:J_media) {
-        for (j in 1:J_run) {
-            alpha_run[j] ~ normal(alpha_mu[i], sigma[i]);
-        }
-    }
     
     // Iterate through each measurement and compute the likelihood
     for (i in 1:N) {
+        alpha_run[run_idx[i]] ~ normal(alpha_mu[media_idx[i]], sigma[media_idx[i]]);
         // Evaluate likelihood.
         I_1[i] ~ GammaApproxBinom(I_2[i],alpha_run[run_idx[i]]);
     } 
