@@ -151,4 +151,4 @@ def growth_animation(images, fname, contours=None, descriptors={'bar_length':10,
     # Set the animator and save.
     anim = FuncAnimation(fig, update, frames=np.arange(0, len(images), 1),
                         interval=100)
-    anim.save(fname, dpi=200, savefig_kwargs={'transparent':True, 'bbox_inches':'tight'})
+    anim.save(fname, dpi=200, writer='imagemagick')
