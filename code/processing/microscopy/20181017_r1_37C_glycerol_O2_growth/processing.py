@@ -39,7 +39,7 @@ df = pd.DataFrame([], columns=['date', 'carbon', 'temp_C', 'operator', 'colony_i
 col_no = 1
 for i in range(NUM_POS): 
     files = glob.glob(
-        '../../../../data/images/{}_r{}_{}C_{}_{}_growth/*xy{}*c2*.tif'.format(DATE, RUN_NO,
+        '../../../../data/images/{}_r{}_{}C_{}_{}_growth/*xy{}c2*.tif'.format(DATE, RUN_NO,
                                                                 TEMP, CARBON, 
                                                                 OPERATOR, i+1))
     files = np.sort(files)
