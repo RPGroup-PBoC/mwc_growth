@@ -17,7 +17,7 @@ import mwc.image
 colors = mwc.viz.personal_style()
 
 # Define the constants
-DATE = 20181016
+DATE = 20181017
 RUN_NO = 1
 CARBON = 'glycerol'
 TEMP = 37  # in C
