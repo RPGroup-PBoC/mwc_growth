@@ -58,8 +58,8 @@ model {
 
     // Aissign static level-1 and 2 priors.
     sigma_1 ~ normal(0, 10);
-    area_0 ~ normal(0,  10);
-    sigma ~ normal(0, 10);
+    area_0 ~ lognormal(0, 2);
+    sigma ~ normal(0, 1);
 
     // Assign level-1 and level-2 priors 
     for (i in 1:M) { 
