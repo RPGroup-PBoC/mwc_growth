@@ -2,6 +2,8 @@ import bokeh.io
 import bokeh.plotting
 import bokeh.layouts
 import bokeh.palettes
+import bokeh.themes.theme
+import holoviews as hv
 import skimage.io
 import skimage.measure
 import seaborn as sns
@@ -10,8 +12,26 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib
 from matplotlib.animation import FuncAnimation
-
 from scipy.signal import gaussian, convolve
+
+def set_style(theme=''):
+    theme = bokeh.themes.theme.Theme(
+        json={
+        'attrs': {
+            'Figure': {
+                'background_fill_color': '#EEEEEE'},
+            'Grid': {
+                'grid_line_width': 1,
+                'grid_line_color': '#ffffff'},
+        'Text' : {
+            'text_font': "Open Sans"},
+        'Axis': {
+            'axis_label_text_font': "Helvetica",
+            'axis_label_text_font_style': "normal",
+            'major_label_text_font': "Helvetica"}
+        }
+        })
+    hv.renderer('bokeh').theme = theme
 
 
 def pub_style(return_colors=True):
