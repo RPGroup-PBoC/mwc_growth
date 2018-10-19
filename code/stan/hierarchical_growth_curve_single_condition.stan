@@ -53,11 +53,11 @@ parameters {
 model {
     real theo;
     // Assign level-0 prior
-    lambda_0 ~ normal(0, 100);
-    sigma_0 ~ normal(0, 1);
+    lambda_0 ~ normal(0, 10);
+    sigma_0 ~ normal(0, 10);
 
     // Aissign static level-1 and 2 priors.
-    sigma_1 ~ normal(0, 1);
+    sigma_1 ~ normal(0, 10);
     area_0 ~ normal(0,  10);
     sigma ~ normal(0, 10);
 

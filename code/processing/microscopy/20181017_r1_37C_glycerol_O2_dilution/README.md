@@ -3,7 +3,7 @@ status: Rejected
 reason: analysis not finished
 ---
 
-# 2018-10-11 O2 Glycerol Dilution
+# 2018-10-17 O2 Glycerol Dilution
 
 ## Purpose
 This experiment was the flagship dilution experiment for cells grown in glycerol
