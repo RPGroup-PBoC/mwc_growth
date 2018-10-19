@@ -1,51 +1,77 @@
+/* 
+* Hierarchical Model for Growth Rate Determination
+* ------------------------------------------------
+* Author: Griffin Chure
+* License: MIT
+*
+* Description
+* -------------------------------------------------
+* Defines a hierarchical model for growth rate determined
+* via microscopy for J different media, each taken on D 
+* different days, with R individual colonies
+*/
+
 data {
-    // Dimensional parameters
-    int<lower=1> J; // Number of unique colonies
-    int<lower=1> N; // Total number of data points
-    int<lower=1, upper=J> colony[N]; // Colony identifier
-    
-    // measured parameters 
-    vector<lower=0>[N] fractional_area; // A(t) / A(t=0)
-    vector[N] time; // In meaningful units
-    }
+    //Dimensional parameters
+    int<lower=1> J; // Number of unique growth media
+    int<lower=1> D; // Total number of days 
+    int<lower=1> R; // Total number of microcolonies
+    int<lower=1> N; // Number of individual measurements
+    int<lower=1> M; // Number of unique parameters
 
-parameters { 
-    // Hyperparameters for lambda
-    real<lower=0> lambda_mu;
-    real<lower=0> lambda_sigma;
+    // Identifier arrays for measurements
+    int<lower=1, upper=J> media_idx[N];
+    int<lower=1, upper=D> date_idx[N];
+    int<lower=1, upper=R> rep_idx[N]; 
 
-    // Hyperparameters for sigma
-    real<lower=0> sigma_mu;
-    real<lower=0> sigma_sigma;
+    // Identifier arrays for parameters
+    int<lower=1, upper=J> unique_media_idx[M];
+    int<lower=1, upper=D> unique_date_idx[M];
+    int<lower=1, upper=R> unique_rep_idx[M];
 
-    // Low-level parameters
-    vector<lower=0>[J] lambda;
-    vector<lower=0>[J] sigma;
-    }
+    // Observed parameters
+    int<lower=0> time[N]; // in minutes
+    int<lower=0> area[N]; // in square pixels
+}
 
-transformed parameters {
-    // Convert to log for more effective sampling
-    vector[N] log_area;
-    log_area = log(fractional_area);
+
+parameters {
+    // Level-0 parameters (per medium)
+    real<lower=0> lambda_0[J]; 
+    real<lower=0> sigma_0[J];
+
+    // Level-1 parameters (per day)
+    real<lower=0> lambda_1[D];
+    real<lower=0> sigma_1[D];
+
+    // Level-2 parameters (per cell)
+    real<lower=0> lambda_2[R];
+    real<lower=0> sigma[R]; // Homoscedastic error
+    real<lower=0> area_0[R];
 }
 
 model {
-    // Define a vector to compute the mean of the likelihood
-    vector[N] mu;
+    real theo;
+    // Assign level-0 prior
+    lambda_0 ~ normal(0, 100);
+    sigma_0 ~ normal(0, 1);
 
-    // Define hyperpriors
-    lambda_mu ~ normal(0, 100);
-    lambda_sigma ~ normal(0, 1);
-    sigma_mu ~ normal(0, 1);
-    sigma_sigma ~ normal(0, 1);
+    // Aissign static level-1 and 2 priors.
+    sigma_1 ~ normal(0, 1);
+    area_0 ~ normal(0,  10);
+    sigma ~ normal(0, 10);
 
-    // Define low level priors.
-    lambda ~ cauchy(lambda_mu, lambda_sigma);
-    sigma ~ normal(sigma_mu, sigma_sigma);
+    // Assign level-1 and level-2 priors 
+    for (i in 1:M) { 
+        lambda_1[unique_date_idx[i]] ~ normal(lambda_0[unique_media_idx[i]], sigma_0[unique_media_idx[i]]);
+        lambda_2[unique_rep_idx[i]] ~ normal(lambda_1[unique_date_idx[i]], sigma_1[unique_date_idx[i]]);
+    }
 
     // Evaluate the likelihood
     for (i in 1:N) {
-        mu[i] = time[i] * lambda[colony[i]];
-        log_area[i] ~ normal(mu[i], sigma[colony[i]]);
+        theo = time[i] / lambda_2[rep_idx[i]];
+        log(area[i] / area_0[rep_idx[i]]) ~ normal(theo, sigma[rep_idx[i]]);
     }
 }
+
+
