@@ -47,7 +47,7 @@ parameters {
 transformed parameters {
     vector[J2] lambda_2 = lambda[idx_1] + tau_2 * lambda_2_raw[idx_1];
     vector[J3] lambda_3 = lambda_2[idx_2] + tau_3 * lambda_3_raw[idx_2];
-    vector[J3] area_0 = area_tau * area_0_raw[idx_3];
+    vector[J3] area_0 = area_tau * area_0_raw[idx_2];
 }
 
 model {
