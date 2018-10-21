@@ -29,10 +29,10 @@ This experiment was the flagship dilution experiment for cells grown in glycerol
 ## Analysis Files
 
 **Calibration Factor Determination**
-![]()
+[![dilution summary](output/dilution_summary.png)](output/dilution_summary.html)
 
 **Fold-change**
-![]()
+[![](output/foldchange_summary.png)](https://github.com/gchure/mwc_growth/output/foldchange_summary.html)
 
 ## Experimental Protocol
 
