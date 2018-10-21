@@ -3,18 +3,15 @@ import sys
 import os
 import numpy as np 
 import pandas as pd 
-import matplotlib.pyplot as plt
 import pystan 
 import glob
 sys.path.insert(0, '../../../../')
-import mwc.viz
 import mwc.bayes
 import mwc.stats
 import mwc.io
 import mwc.process
 import mwc.model
 import mwc.validation
-mwc.viz.personal_style()
 constants = mwc.model.load_constants()
 
 # Define the experimental constants
@@ -78,8 +75,8 @@ samples_df.rename(columns={'lp__':'log_prob'}, inplace=True)
 samples_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_cal_factor_samples.csv', index=False)
 
 # Generate the dilution summary figure. 
-_ = mwc.validation.dilution_summary(family_df, samples_df['alpha'], ip_dist=IP_DIST,
-                                    fname=f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_dilution_summary')
+_ = mwc.validation.dilution_summary(family_df, samples_df['alpha'], ip_dist=IP_DIST, fname='dilution_summary',
+                                    title=f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}')
 
 # Compute the fold-change. 
 # --------------------------
@@ -126,7 +123,7 @@ fc_df = pd.concat(dfs)
 fc_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_foldchange.csv', index=False)
 
 # Generate the fold-change summary figure
-_ = mwc.validation.fc_summary_microscopy(fc_df, samples_df, operator='O2', constants=constants, 
-                                         fname=f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_foldchange')
+_ = mwc.validation.fc_summary_microscopy(fc_df, samples_df, operator='O2', constants=constants, fname='foldchange_summary', 
+                                         title=f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}')
 #
 

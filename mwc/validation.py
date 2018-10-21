@@ -8,7 +8,8 @@ import bokeh.io
 import bokeh.plotting
 import bokeh.layouts
 
-def dilution_summary(fluct_df, alpha_samples, fname=None, ip_dist=0.065):
+def dilution_summary(fluct_df, alpha_samples, fname=None, ip_dist=0.065,
+                    title=None):
     """Generates a Bokeh plot summarzing the dilution data."""
     # Compute necessary properties.
     fluct_df['I_1_sub'] = fluct_df['I_1'] - fluct_df['bg_val']
@@ -54,6 +55,10 @@ def dilution_summary(fluct_df, alpha_samples, fname=None, ip_dist=0.065):
                               x_axis_label='α [a.u. / molecule]',
                               y_axis_label='~ probability')
     
+    # Determine if the title should be added
+    if title != None:
+        p1.title.text = title
+
     # Plot the fluctuation glyphs
     p1.circle(fluct_df['summed'], fluct_df['fluct'], size=1, color='black', legend='divisions')
     p1.circle(binned['summed'], binned['fluct'], size=4, color='tomato', legend='binned data (50 events)')
@@ -80,7 +85,8 @@ def dilution_summary(fluct_df, alpha_samples, fname=None, ip_dist=0.065):
                     title=fname.split('.')[0])
     return _layout
 
-def fc_summary_microscopy(fc_data, alpha_samples, fname=None, constants=None, operator='O2'):
+def fc_summary_microscopy(fc_data, alpha_samples, fname=None, constants=None, 
+                          operator='O2', title=None):
     """Generates a summary plot of measured fold-change"""    
     # Compute the credible regions and median for repressors per cell
     hpd = compute_hpd(alpha_samples['alpha'], 0.95)
@@ -111,6 +117,9 @@ def fc_summary_microscopy(fc_data, alpha_samples, fname=None, constants=None, op
     p4 = bokeh.plotting.figure(width=350, height=250, x_axis_type='log', y_axis_type='log',
                            x_axis_label='rep. per cell', y_axis_label='fold-change')
 
+    # Add title if desired
+    if title != None:
+        p1.title.text = title
 
     for g, d in fc_data.groupby(['atc_ngml']):
         # Compute the ECDF of mCherry intensity
@@ -166,9 +175,8 @@ class MCMCValidation():
 
 
 class FlowValidation():
-
-    """Validation test suite for flow cytometry data sets.
-
+    """
+    Validation test suite for flow cytometry data sets.
     """
 
     def __init__(self, fnames=None):
@@ -312,13 +320,11 @@ class ImageValidation():
 
 
 class DilutionDataValidator():
-
     """
     Data validation suite for the various data sets involved in the dilution
     experiment.
 
     """
-
     def __init__(self, dirs=None, clist_file=None, fluct_file=None):
         return True
 
