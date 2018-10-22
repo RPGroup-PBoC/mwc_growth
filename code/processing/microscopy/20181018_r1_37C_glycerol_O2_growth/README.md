@@ -31,7 +31,7 @@ This experiment was performed to measure the growth rate of our cells on glycero
 ![growth movie](output/growth_movie.gif)
 
 **Growth Curves and Rate Determination**
-![]()
+[![growth curve](output/growth_rate.png)]
 
 ## Experimental Protocol
 
