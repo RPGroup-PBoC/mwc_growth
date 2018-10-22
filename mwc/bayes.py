@@ -16,7 +16,7 @@ class StanModel(object):
     Custom StanModel class for crafting and sampling from Stan
     models.
     """
-    def __init__(self, model, data_dict, force_compile=False):
+    def __init__(self, model, data_dict, samples=None, force_compile=False):
         """
         Parameters
         ----------
@@ -32,22 +32,93 @@ class StanModel(object):
         """
         self.model = loadStanModel(model, force=force_compile)
         self.data = data_dict
+        self.samples = samples
+        self.df = None
         
-    def sample(self, chains=4, iter=2000, **kwargs):
+    def sample(self, iter=2000, chains=4, return_df=True, **kwargs):
         """
         Samples the assembled model given the supplied data dictionary
         and returns output as a dataframe.
         """
+        self.chains = chains
+        self.iter = iter
         self.samples = self.model.sampling(self.data, 
                         chains=chains, iter=iter, **kwargs)
-        return self.samples.to_dataframe()
+        if return_df:
+            self.df = self.samples.to_dataframe(diagnostics=True)
+            return [self.samples, self.df]
+        else:
+            return self.samples
+    
+    def check_divergence(self, thresh=0.0005, return_values=True, quiet=False):
+        """
+        Computes the fraction of diverging samples
+        """
+        if self.samples == None:
+            raise RuntimeError('Divergence is not defined without sampling. Please sample your model first')
+        if self.df == None:
+            self.df = self.samples.to_datframe(diagnostics=True)
 
+        n_div = np.sum(self.df['divergent__']) 
+        div_frac = n_div / len(self.df) * 100
+        if div_frac == 0:
+            statement = "No diverging samples found. Nicely done."
+        if div_frac < thresh:
+            statement = "Diverging samples below {} % ({} of {} samples diverging).".format(thresh * 100, n_div, len(self.df)) 
+        else:
+            statement = "Warning, {} % of samples are diverging. Reparameterize your model or adjust adapt_delta above 0.8.".format(div_frac)
+        
+        if quiet is not False:
+            print(statement)
+        if return_values:
+            return {'statement':statement, 'n_diverging':n_div, 'n_samples': len(self.df), 'diverging_fraction':div_frac}
+        else:
+            return statement
+
+    def check_rhat(self, return_values=True, quiet=False):
+        """
+        Determines the Gelman-Rubin statistic (R-hat). If 0.9 < r-hat < 1.1, the sampler has converged. 
+        """
+        if self.samples == None:
+            raise RuntimeError('R-hat not defined without sampling. Please sample your model first.')
+        if self.df == None:
+            self.df = self.samples.to_dataframe(diagnostics=True)
+        raise RuntimeError('Not yet implemented!')
+
+    def check_n_effective(self, thresh=0.001, return_values=True, quiet=False):
+        if self.samples == None: 
+           raise RuntimeError('n_effective / N not defined without sampling. Please sample your model first.')
+        if self.df == None:
+            self.df = self.samples.to_dataframe(diagnostics=True)
+        raise RuntimeError('Not yet implemented!')
+
+    def check_diagnostics(self, save_summary=False, fname=None, return_values=True, quiet=False):
+        """
+        Checks all sampling diagnostics. 
+
+        Parameters
+        ----------
+        save_summary: bool
+            If True, a summary file will be saved. fname is required. 
+        fname: str
+            Desired filename of summary file. Only required if save_summary is True.
+        return_values: bool
+            If True, a dictionary of diagnostics is returned.
+        quiet: bool
+            If True, summary will not be printed to screen. Default is False.
+        """
+        raise RuntimeError('Not yet implemented!')
+        
     def traceplot(self, varnames=None):
         """
         Shows the sampling trace and distributions for desired varnames
         See documentation for mwc.viz.bokeh_traceplot for more details.
         """
         return bokeh_traceplot(self.samples, varnames=varnames)
+
+    
+
+    
     
 
 def loadStanModel(fname, force=False):
