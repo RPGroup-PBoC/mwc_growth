@@ -57,7 +57,7 @@ family_df['carbon'] = CARBON
 family_df['operator'] = OPERATOR
 
 # Remove cells which do not have any mesured intensity
-family_df = family_df[(family_df['I_1'] > 0) & (family_df['I_2'] > 0)]
+family_df = family_df[((family_df['I_1'] - family_df['bg_val']) * family_df['area_1'] > 0) & ((family_df['I_2'] - family_df['bg_val']) * family_df['area_2'] > 0)]
 
 # Save the fluctuations to output. 
 family_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_fluctuations.csv', index=False) 

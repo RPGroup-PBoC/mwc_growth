@@ -7,7 +7,47 @@ import pystan
 import scipy.special
 import scipy.optimize
 import statsmodels.tools.numdiff as smnd
+from .viz import bokeh_traceplot
 
+
+class StanModel(object):
+    R"""
+    Custom StanModel class for crafting and sampling from Stan
+    models.
+    """
+    def __init__(self, model, data_dict, force_compile=False):
+        """
+        Parameters
+        ----------
+        model: str
+            Relative path to saved Stan model code. To deter bad habits,
+            this class does not accept a string as the model code. Save 
+            your Stan models. 
+        data_dict: dictionary
+            Dictonary of all data block parameters for the model.
+        force_compile: bool
+            If True, model will be forced to compile. If False, 
+            a precompiled file will be loaded if present. 
+        """
+        self.model = loadStanModel(model, force=force_compile)
+        self.data = data_dict
+        
+    def sample(self, chains=4, iter=2000, **kwargs):
+        """
+        Samples the assembled model given the supplied data dictionary
+        and returns output as a dataframe.
+        """
+        self.samples = self.model.sampling(self.data, 
+                        chains=chains, iter=iter, **kwargs)
+        return self.samples.to_dataframe()
+
+    def traceplot(self, varnames=None):
+        """
+        Shows the sampling trace and distributions for desired varnames
+        See documentation for mwc.viz.bokeh_traceplot for more details.
+        """
+        return bokeh_traceplot(self.samples, varnames=varnames)
+    
 
 def loadStanModel(fname, force=False):
     """Loads a precompiled Stan model. If no compiled model is found, one will be saved."""
@@ -28,15 +68,6 @@ def loadStanModel(fname, force=False):
             pickle.dump(model, f)      
     return model
     
-
-
-def log_prior():
-    """
-    Computes the log prior for alpha and I_2 as needed in the model. These are
-    taken to be uniform on the range of the camera bitdepth, 0 - 65535.
-    """
-    return -32 * np.log(2)
-
 
 def deterministic_log_posterior(alpha, I_1, I_2, p=0.5, neg=False):
     """
@@ -92,12 +123,9 @@ def deterministic_log_posterior(alpha, I_1, I_2, p=0.5, neg=False):
     prob = n_1.sum() * np.log(p) + n_2.sum() * np.log(1 - p)
     change_of_var = -k * np.log(alpha)
 
-    # Compute the log prior.
-    logprior = log_prior()
-
     # Assemble the log posterior.
     logpost = change_of_var + binom + prob
-    return prefactor * (logpost + logprior)
+    return prefactor * (logpost)
 
 
 def estimate_calibration_factor(I_1, I_2, p=0.5, return_eval=False):
@@ -143,42 +171,4 @@ def estimate_calibration_factor(I_1, I_2, p=0.5, return_eval=False):
     else:
         return [alpha_opt, alpha_std]
 
-def chains_to_dataframe(fit, varnames=None):
-    """
-    Converts the generated traces from MCMC sampling to a tidy
-    pandas DataFrame.
-
-    Parameters
-    ----------
-    fit : pystan sampling output
-        The raw MCMC output.
-    var_names : list of str
-        Names of desired parameters. If `None`, all parameters will be
-        returned.
-
-    Returns
-    -------
-    df : pandas DataFrame
-        Pandas DataFrame containing all samples from the MCMC.
-    """
-
-    data = fit.extract()
-    keys = list(data.keys())
-    if varnames == None:
-        varnames = [k for k in keys if 'lp__' not in k]
-    else:
-        varnames = fit.unconstrained_param_names()
-
-    samples = {}
-    for i, key in enumerate(varnames):
-        # Get the shape.
-        dim = np.shape(data[key])
-        if len(dim) == 2:
-            for j in range(dim[-1]):
-                samples['{}.{}'.format(key, j+1)] = data[key][:, j]
-    
-        else:
-            samples[key] = data[key]
-    samples['logp'] = data['lp__']
-    return pd.DataFrame(samples)
-    
+   

@@ -1,12 +1,12 @@
 ---
-status: Rejected
-reason: analysis not finished
+status: Accepted
+reason: All good from a diagnostic standpoint. 
 ---
 
-# 2018-10-17 O2 Glycerol Dilution
+# 2018-10-19 O2 Acetate Dilution
 
 ## Purpose
-This experiment was the flagship dilution experiment for cells grown in glycerol
+This experiment was the flagship dilution experiment for cells grown in  Acetate
 
 ## Strain Information
 
@@ -29,10 +29,10 @@ This experiment was the flagship dilution experiment for cells grown in glycerol
 ## Analysis Files
 
 **Calibration Factor Determination**
-![]()
+[![dilution summary](output/dilution_summary.png)](output/dilution_summary.html)
 
 **Fold-change**
-![]()
+[![](output/foldchange_summary.png)](output/foldchange_summary.html)
 
 ## Experimental Protocol
 

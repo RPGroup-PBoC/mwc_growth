@@ -1,6 +1,6 @@
 ---
-status: Accepted
-reason: Something happened with the delta LacI strain and I was not able to properly measure fold-change
+status: Rejected
+reason: Something happened with the delta LacI strain and I was not able to properly measure fold-change. However, the distribution for delta lacI is rather reproducible. The fold-change in gene expression was calculated from the delta data from 20181004. 
 ---
 
 # 2018-10-05 O2 Glucose Dilution

@@ -24,7 +24,7 @@ functions{
 data {
     //Dimensional parameters
     int<lower=1> J_1; // Number of unique growth media
-    int<lower=1> J_2; // Number of unique experimental across entire data set
+    int<lower=1> J_2; // Number of unique experiments across entire data set
     int<lower=1> N; // total number of measurements for fluctuations
     int<lower=1, upper=J_1> index_1[J_2];
     int<lower=1, upper=J_2> index_2[N];
@@ -46,14 +46,14 @@ parameters {
 }
 
 transformed parameters {
-    vector[J_2] alpha_2 = alpha_1[index_1] + tau_alpha * alpha_2_tilde;
+    vector<lower=0>[J_2] alpha_2 = alpha_1[index_1] + tau_alpha * alpha_2_tilde;
   }
 
 model {
     // Define the hyperpriors.
     alpha_1 ~ lognormal(2, 2);
     tau_alpha ~ normal(0, 1);
-    alpha_2_tilde ~ lognormal(0, 1);
+    alpha_2_tilde ~ normal(0, 10);
 
     // Iterate through each measurement and compute the likelihood 
     I_1 ~ GammaApproxBinom(I_2, alpha_2[index_2]);     

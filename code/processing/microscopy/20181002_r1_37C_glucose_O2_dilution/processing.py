@@ -57,17 +57,17 @@ family_df['carbon'] = CARBON
 family_df['operator'] = OPERATOR
 
 # Remove cells which do not have any mesured intensity
-family_df = family_df[(family_df['I_1'] > 0) & (family_df['I_2'] > 0)]
+family_df = family_df[((family_df['I_1'] - family_df['bg_val']) * family_df['area_1'] > 0) & ((family_df['I_2'] - family_df['bg_val']) * family_df['area_2'] > 0)]
 
 # Save the fluctuations to output. 
 family_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_fluctuations.csv', index=False) 
 
-# Perform inference of calibration factor. 
-model = mwc.bayes.loadStanModel('../../../stan/calibration_factor.stan')
-
 # Assemble the data dictionary and sample. 
 data_dict = dict(N=len(family_df), I1=(family_df['I_1'] - family_df['bg_val']) * family_df['area_1'], 
                 I2=(family_df['I_2'] - family_df['bg_val']) * family_df['area_2'])
+
+# Perform inference of calibration factor. 
+model = mwc.bayes.loadStanModel('../../../stan/calibration_factor.stan')
 samples = model.sampling(data_dict, iter=5000, chains=4)
 samples_df = samples.to_dataframe()
 samples_df = samples_df[['alpha', 'lp__']]
