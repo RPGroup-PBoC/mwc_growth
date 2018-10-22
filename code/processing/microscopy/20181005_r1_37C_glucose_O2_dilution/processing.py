@@ -15,7 +15,7 @@ import mwc.validation
 constants = mwc.model.load_constants()
 
 # Define the experimental constants
-DATE = 20181004
+DATE = 20181005
 RUN_NO = 1
 TEMP = 37
 CARBON = 'glucose'
@@ -57,7 +57,7 @@ family_df['carbon'] = CARBON
 family_df['operator'] = OPERATOR
 
 # Remove cells which do not have any mesured intensity
-family_df = family_df[(family_df['I_1'] > 0) & (family_df['I_2'] > 0)]
+family_df = family_df[((family_df['I_1'] - family_df['bg_val']) * family_df['area_1'] > 0) & ((family_df['I_2'] - family_df['bg_val']) * family_df['area_2'] > 0)]
 
 # Save the fluctuations to output. 
 family_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_fluctuations.csv', index=False) 
@@ -123,7 +123,7 @@ fc_df = pd.concat(dfs)
 fc_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_foldchange.csv', index=False)
 
 # Generate the fold-change summary figure
-_ = mwc.validation.fc_summary_microscopy(fc_df, samples_df, operator='O2', constants=constants, title='foldchange_summary',
+_ = mwc.validation.fc_summary_microscopy(fc_df, samples_df, operator='O2', constants=constants, fname='foldchange_summary',
                                          title=f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}')
 #
 

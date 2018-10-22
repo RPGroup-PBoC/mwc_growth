@@ -23,27 +23,32 @@ functions{
     * @param alpha: Fluorescenc calibration factor in units of a.u. / molecule
     * @param N: Total number of measurements 
     **/
-    real GammaApproxBinom_lpdf(real[] I1, real[] I2, real alpha, int N) {
-        vector[N] lprob;
-        for (i in 1:N){
-            lprob[i] = lgamma(((I1[i] + I2[i]) / alpha) + 1) - lgamma((I1[i] / alpha) + 1)
-                        - lgamma((I2[i] / alpha) + 1) - ((I1[i] + I2[i]) / alpha) * log(2);
-        }
-        return -N * log(alpha) + sum(lprob);
-    }
-     
+    real GammaApproxBinom_lpdf(vector I1, vector I2, real alpha) {
+        return sum(-log(alpha) + lgamma(((I1 + I2) ./ alpha) + 1) - lgamma((I1 ./ alpha) + 1) - lgamma((I2 ./ alpha) + 1) - ((I1 + I2) ./ alpha) * log(2));
+    } 
 }
+     
 data {
     int<lower=0> N; // Number of data points
-    real I1[N]; // Observed fluorescence of daughter cell 1
-    real I2[N]; // Observed fluorescence of daughter cell 2
+    vector<lower=0>[N] I1; // Observed fluorescence of daughter cell 1
+    vector<lower=0>[N] I2; // Observed fluorescence of daughter cell 2
 }
 
 parameters {
-    real<lower=0> alpha; // Calibraiton factor in units of a.u. /molecule
+    // Generate non-centered modifiers
+    real<lower=0> alpha_mu;
+    real alpha_raw; 
+    real<lower=0> tau;
 }
 
+transformed parameters{
+    real alpha = alpha_mu + tau * alpha_raw;
+}
+
+
 model {    
-    alpha ~ lognormal(0, 10);
-    I1 ~ GammaApproxBinom(I2, alpha, N);  
+    alpha_raw ~ normal(0, 2);
+    alpha_mu ~ lognormal(2, 2);
+    tau ~ normal(0, 1);
+    I1 ~ GammaApproxBinom(I2, alpha);  
 }
