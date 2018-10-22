@@ -33,7 +33,7 @@ parameters {
     vector<lower=0>[J_1] lambda; 
     vector<lower=0>[J_1] log_sigma;
     vector<lower=0>[J_3] area_mu;
-    vector[J_3] area_tilde;
+    vector[J_3] area_raw;
 
     // How the hyperparameters vary
     real<lower=0> tau_lambda;
@@ -55,7 +55,7 @@ transformed parameters {
     // Level 2 parameters
     vector[J_3] lambda_3 = lambda_2[index_2] + tau_lambda * lambda_3_raw;
     vector[J_3] log_sigma_3 = log_sigma_2[index_2] + tau_sigma * log_sigma_3_raw;
-    vector[J_3] area0 = area_mu[index_2] + area_tilde * tau_area;
+    vector[J_3] area0 = area_mu[index_2] + area_raw * tau_area;
    
     vector[J_1] sigma = exp(log_sigma);
     vector[J_2] sigma_2 = exp(log_sigma_2);
@@ -68,17 +68,18 @@ model {
     
     // Define priors for uncentering offsets
     tau_lambda ~ normal(0, 1);
-    tau_sigma ~ normal(0, 2);
-    tau_area ~ normal(0, 2);
+    tau_sigma ~ normal(0, 1);
+    tau_area ~ normal(0, 1);
 
     // Define priors for uncentered parameters
     lambda_2_raw ~ normal(0, 1);
     log_sigma_2_raw ~ normal(0, 2);
     lambda_3_raw ~ normal(0, 1);
     log_sigma_3_raw ~ normal(0, 2);
+    area_raw ~ normal(0, 2);
 
     // Define cenetered parameters
-    area_mu ~ normal(0, 1);
+    area_mu ~ normal(0, 2);
     lambda ~ normal(0, 10);
     
     mu = area0[index_3] .* exp(time ./ lambda_3[index_3]);

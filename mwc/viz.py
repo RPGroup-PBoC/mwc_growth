@@ -3,14 +3,15 @@ import bokeh.plotting
 import bokeh.layouts
 import bokeh.palettes
 import bokeh.themes.theme
+import itertools
 import holoviews as hv
 import skimage.io
 import skimage.measure
 import seaborn as sns
 import numpy as np
+import pandas as pd
 import os
 import matplotlib.pyplot as plt
-import matplotlib
 from matplotlib.animation import FuncAnimation
 from scipy.signal import gaussian, convolve
 
