@@ -29,10 +29,10 @@ This experiment was a replicate of a LacI titration experiment for cells grown i
 ## Analysis Files
 
 **Calibration Factor Determination**
-![]()
+[![dilution summary](output/dilution_summary.png)](output/dilution_summary.html)
 
 **Fold-change**
-![]()
+[![fold-change summary](output/foldchange_summary.png)](output/foldchange_summary.html)
 
 ## Experimental Protocol
 

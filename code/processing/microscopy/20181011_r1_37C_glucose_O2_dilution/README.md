@@ -30,10 +30,10 @@ in this experiment were harvested between 0.3 and 0.45 OD_600nm_.
 ## Analysis Files
 
 **Calibration Factor Determination**
-![]()
+[![dilution summary](output/dilution_summary.png)](output/dilution_summary.html)
 
 **Fold-change**
-![]()
+[![fold-change summary](output/foldchange_summary.png)](output/foldchange_summary.html)
 
 ## Experimental Protocol
 
