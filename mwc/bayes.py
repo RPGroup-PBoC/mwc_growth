@@ -42,8 +42,10 @@ class StanModel(object):
         """
         self.chains = chains
         self.iter = iter
+        print('Beginning sampling...')
         self.samples = self.model.sampling(self.data, 
                         chains=chains, iter=iter, **kwargs)
+        print('finished sampling!')
         if return_df:
             self.df = self.samples.to_dataframe(diagnostics=True)
             return [self.samples, self.df]
