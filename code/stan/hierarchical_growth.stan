@@ -31,16 +31,16 @@ data  {
 parameters {
     // Centered parameters
     vector<lower=0>[J_1] lambda; 
-    vector[J_1] log_sigma;
     vector<lower=0>[J_3] area_mu;
-    vector<lower=0>[J_3] area_raw;
-
+    vector[J_1] log_sigma;
+    
     // How the hyperparameters vary
     real<lower=0> tau_lambda;
     real<lower=0> tau_sigma;
     real<lower=0> tau_area;
 
     // Non-centered parameters.
+    vector[J_3] area_raw;
     vector[J_2] lambda_2_raw;
     vector[J_2] log_sigma_2_raw;
     vector[J_3] lambda_3_raw;
@@ -55,7 +55,7 @@ transformed parameters {
     // Level 2 parameters
     vector<lower=0>[J_3] lambda_3 = lambda_2[index_2] + tau_lambda * lambda_3_raw;
     vector[J_3] log_sigma_3 = log_sigma_2[index_2] + tau_sigma * log_sigma_3_raw;
-    vector<lower=0>[J_3] area0 = area_mu[index_2] + area_raw * tau_area; 
+    vector<lower=0>[J_3] area0 = area_mu + area_raw * tau_area; 
     vector[J_3] sigma_3 = exp(log_sigma_3);
     
 }
@@ -64,20 +64,20 @@ model {
     vector[N] mu;
     
     // Define priors for uncentering offsets
-    tau_lambda ~ inv_gamma(2, 2);
-    tau_sigma ~ inv_gamma(2, 2);
-    tau_area ~ inv_gamma(2, 2);
+    tau_lambda ~ normal(0, 1);
+    tau_sigma ~ normal(0, 1);
+    tau_area ~ normal(0, 1);
 
     // Define priors for uncentered parameters
-    lambda_2_raw ~ inv_gamma(2, 2);
-    log_sigma_2_raw ~ inv_gamma(2, 2);
-    lambda_3_raw ~ inv_gamma(2, 2);
-    log_sigma_3_raw ~ inv_gamma(2, 2);
-    area_raw ~ inv_gamma(2, 2);
+    lambda_2_raw ~ normal(0, 100);
+    log_sigma_2_raw ~ normal(0, 100);
+    lambda_3_raw ~ normal(0, 1);
+    log_sigma_3_raw ~ normal(0, 1);
+    area_raw ~ normal(0, 100);
 
     // Define cenetered parameters
-    //area_mu ~ inv_gamma(2, 2);
-    lambda ~ inv_gamma(2, 2);
+    area_mu ~ normal(0, 100);
+    lambda ~ normal(0, 100);
     
     mu = area0[index_3] .* exp(time ./ lambda_3[index_3]);
     area ~ normal(mu, sigma_3[index_3]);
