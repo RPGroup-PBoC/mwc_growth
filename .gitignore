@@ -18,3 +18,5 @@ __pycache__
 *.out
 *.txt
 .coverage.*
+*egg-info
+*dist
