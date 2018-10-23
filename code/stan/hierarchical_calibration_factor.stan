@@ -30,7 +30,7 @@ data {
     int<lower=1, upper=J_1> index_1[J_2];
     int<lower=1, upper=J_2> index_2[N];
     int<lower=1, upper=J_1> fc_index_1[J_2];
-    int<lower=1, upper=J_2> fc_index_2[M];
+    int<lower=1, upper=J_1> fc_index_2[M];
     
     // Experimental data for calibration factor determination
     vector<lower=0>[N] I_1; // Observed mean pixel intensity of daughter cell 1
