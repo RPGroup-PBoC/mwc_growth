@@ -64,20 +64,20 @@ model {
     vector[N] mu;
     
     // Define priors for uncentering offsets
-    tau_lambda ~ normal(0, 1);
-    tau_sigma ~ normal(0, 1);
-    tau_area ~ normal(0, 1);
+    tau_lambda ~ inv_gamma(2, 2);
+    tau_sigma ~ inv_gamma(2, 2);
+    tau_area ~ inv_gamma(2, 2);
 
     // Define priors for uncentered parameters
-    lambda_2_raw ~ normal(0, 1);
-    log_sigma_2_raw ~ normal(0, 1);
-    lambda_3_raw ~ normal(0, 1);
-    log_sigma_3_raw ~ normal(0, 1);
-    area_raw ~ normal(0, 1);
+    lambda_2_raw ~ inv_gamma(2, 2);
+    log_sigma_2_raw ~ inv_gamma(2, 2);
+    lambda_3_raw ~ inv_gamma(2, 2);
+    log_sigma_3_raw ~ inv_gamma(2, 2);
+    area_raw ~ inv_gamma(2, 2);
 
     // Define cenetered parameters
-    //area_mu ~ normal(0, 1);
-    lambda ~ lognormal(0, 2);
+    //area_mu ~ inv_gamma(2, 2);
+    lambda ~ inv_gamma(2, 2);
     
     mu = area0[index_3] .* exp(time ./ lambda_3[index_3]);
     area ~ normal(mu, sigma_3[index_3]);
