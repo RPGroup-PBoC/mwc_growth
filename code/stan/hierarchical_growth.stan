@@ -30,10 +30,10 @@ data  {
 
 parameters {
     // Centered parameters
-    vector<lower=0>[J_1] lambda; 
-    vector<lower=0>[J_1] log_sigma;
+    vector[J_1] log_lambda; 
+    vector[J_1] log_sigma;
     vector<lower=0>[J_3] area_mu;
-    vector[J_3] area_raw;
+    vector<lower=0>[J_3] area_raw;
 
     // How the hyperparameters vary
     real<lower=0> tau_lambda;
@@ -41,22 +41,25 @@ parameters {
     real<lower=0> tau_area;
 
     // Non-centered parameters.
-    vector[J_2] lambda_2_raw;
+    vector[J_2] log_lambda_2_raw;
     vector[J_2] log_sigma_2_raw;
-    vector[J_3] lambda_3_raw;
+    vector[J_3] log_lambda_3_raw;
     vector[J_3] log_sigma_3_raw;
 }
 
 transformed parameters {
     // Level-1  parameters
-    vector[J_2] lambda_2 = lambda[index_1] + tau_lambda * lambda_2_raw;
+    vector[J_2] log_lambda_2 = log_lambda[index_1] + tau_lambda * log_lambda_2_raw;
     vector[J_2] log_sigma_2 = log_sigma[index_1] + tau_sigma * log_sigma_2_raw;
 
     // Level 2 parameters
-    vector[J_3] lambda_3 = lambda_2[index_2] + tau_lambda * lambda_3_raw;
+    vector[J_3] log_lambda_3 = log_lambda_2[index_2] + tau_lambda * log_lambda_3_raw;
     vector[J_3] log_sigma_3 = log_sigma_2[index_2] + tau_sigma * log_sigma_3_raw;
-    vector[J_3] area0 = area_mu[index_2] + area_raw * tau_area;
-   
+    vector<lower=0>[J_3] area0 = area_mu[index_2] + area_raw * tau_area;
+  
+    vector[J_1] lambda_1 = exp(log_lambda);
+    vector[J_2] lambda_2 = exp(log_lambda_2);
+    vector[J_3] lambda_3 = exp(log_lambda_3);
     vector[J_1] sigma = exp(log_sigma);
     vector[J_2] sigma_2 = exp(log_sigma_2);
     vector[J_3] sigma_3 = exp(log_sigma_3);
@@ -72,16 +75,16 @@ model {
     tau_area ~ normal(0, 1);
 
     // Define priors for uncentered parameters
-    lambda_2_raw ~ normal(0, 1);
-    log_sigma_2_raw ~ normal(0, 2);
-    lambda_3_raw ~ normal(0, 1);
-    log_sigma_3_raw ~ normal(0, 2);
-    area_raw ~ normal(0, 2);
+    log_lambda_2_raw ~ normal(0, 1);
+    log_sigma_2_raw ~ normal(0, 1);
+    log_lambda_3_raw ~ normal(0, 1);
+    log_sigma_3_raw ~ normal(0, 1);
+    area_raw ~ normal(0, 1);
 
     // Define cenetered parameters
-    area_mu ~ normal(0, 2);
-    lambda ~ normal(0, 10);
+    area_mu ~ lognormal(0, 1);
+    log_lambda ~ normal(0, 1);
     
-    mu = area0[index_3] .* exp(time ./ lambda_3[index_3]);
+    mu = area0[index_3] .* -log_lambda_3[index_3] .* exp(time);
     area ~ normal(mu, sigma_3[index_3]);
 }
