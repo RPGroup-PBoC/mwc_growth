@@ -7,6 +7,7 @@ import pystan
 import pandas as pd
 import scipy.special
 import scipy.optimize
+import pickle
 import statsmodels.tools.numdiff as smnd
 from .viz import bokeh_traceplot
 
@@ -16,7 +17,7 @@ class StanModel(object):
     Custom StanModel class for crafting and sampling from Stan
     models.
     """
-    def __init__(self, model, data_dict, samples=None, force_compile=False):
+    def __init__(self, file, data_dict=None, samples=None, force_compile=False):
         """
         Parameters
         ----------
@@ -30,10 +31,15 @@ class StanModel(object):
             If True, model will be forced to compile. If False, 
             a precompiled file will be loaded if present. 
         """
-        self.model = loadStanModel(model, force=force_compile)
-        self.data = data_dict
-        self.samples = samples
-        self.df = None
+        if '.pkl' in file:
+            s = _load(file)
+            self.model = s[0]
+            self.samples = s[1]
+        else:
+            self.model = loadStanModel(file, force=force_compile)
+            self.data = data_dict
+            self.samples = samples
+            self.df = None
         
     def sample(self, iter=2000, chains=4, return_df=True, **kwargs):
         """
@@ -52,6 +58,20 @@ class StanModel(object):
         else:
             return self.samples
     
+    # Pickling objects
+    def dump(fname):
+        """Saves StanFit4Model object and sampling summary as a pickled dictionary."""
+        with open(f"{fname.split('.')[0]}.pkl", 'wb') as _file:
+            pickle.dump({'model' : self.model, 'fit' : self.samples}, _file, protocol=-1)
+                  
+    def _load(fname):
+        with open(file, 'rb') as _file:
+            fit_dict = pickle.load(_file)
+        self.model = fit_dict[0]
+        self.samples = fit_dict[1]
+        return [self.model, self.samples]
+    
+    # Diagnostics
     def check_divergence(self, thresh=0.0005, return_values=True, quiet=False):
         """
         Computes the fraction of diverging samples
@@ -110,7 +130,10 @@ class StanModel(object):
             If True, summary will not be printed to screen. Default is False.
         """
         raise RuntimeError('Not yet implemented!')
+    
+    # 
         
+    # Vizualization    
     def traceplot(self, varnames=None):
         """
         Shows the sampling trace and distributions for desired varnames
