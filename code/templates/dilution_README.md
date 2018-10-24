@@ -38,7 +38,7 @@ reason: experiment not yet completed
 
 1. Cells as described in "Strain Information" were grown to saturation overnight in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain). The cells were assumed to be saturated after this time.
 
-2. Cells were diluted 1:XXX into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a stock in 50% EtOH to the appropriate concentration.
+2. Cells were diluted 1:XXX into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
 3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for X hours at 37°C with shaking at ~ 220 RPM.
 
@@ -54,7 +54,7 @@ reason: experiment not yet completed
 
 4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations) were diluted 1:10 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
 
-5. Agarose pads spotted with cells were allowed to dry and were then placed onto glass bottom dishes.
+5. Agarose pads spotted with cells were allowed to dry and were then placed onto a glass bottom dish.
 
 6. After mounting, the sample dish was affixed to the microscope using double stick tape. Between five and ten positions were marked per snapshot sample. Exposures were as follows:
     - Brightfield - 100ms, gain 4, 12bit
@@ -63,6 +63,6 @@ reason: experiment not yet completed
 
 7. Approximately 15 positions were then marked on the `dilution` mixture pad. These positions were chosen requiring separation of cells and avoidance of debris.
 
-8. These were positions were imaged every XX minutes for XX hours using only the Brightfield channel. After this time lapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
+8. These were positions were imaged every XX minutes for XX hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
 
 9. The samples were discarded and the dataset was transferred to the storage server.
