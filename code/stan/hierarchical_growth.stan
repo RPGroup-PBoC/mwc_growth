@@ -11,74 +11,42 @@
 * different days, with R individual colonies
 */
 
-data  {
-    //Dimensional parameters
-    int<lower=1> J_1; // Number of unique media
-    int<lower=1> J_2; // Number of unique days
-    int<lower=1> J_3; // Number of unique colonies
-    int<lower=1> N; // Number of measurements in data set
-    
-    // Indices for hierarchy
-    int<lower=1, upper=J_1> index_1[J_2];
-    int<lower=1, upper=J_2> index_2[J_3];
-    int<lower=1, upper=J_3> index_3[N];
-
-    // Experimental measurements
-    vector<lower=0>[N] time; // in minutes
-    vector<lower=0>[N] area; // in µm^2
+data {
+    int<lower=1> J;
+    int<lower=1> N;
+    int<lower=1, upper=J> idx[N];
+    vector<lower=0>[N] area;
+    vector<lower=0>[N] time;
     }
+   
+transformed data {
+vector[N] log_area = log(area);
+}
 
 parameters {
-    // Centered parameters
-    vector<lower=0>[J_1] lambda; 
-    vector[J_1] log_sigma;
-    vector<lower=0>[J_3] area_mu;
-    vector<lower=0>[J_3] area_raw;
-
-    // How the hyperparameters vary
-    real<lower=0> tau_lambda;
+    real r;
+    real log_sigma;
+    real<lower=0> tau_r;
     real<lower=0> tau_sigma;
-    real<lower=0> tau_area;
-
-    // Non-centered parameters.
-    vector[J_2] lambda_2_raw;
-    vector[J_2] log_sigma_2_raw;
-    vector[J_3] lambda_3_raw;
-    vector[J_3] log_sigma_3_raw;
+    vector[J] area_0;
+    vector[J] r_2_raw;
+    vector[J] log_sigma_2_raw;
 }
 
 transformed parameters {
-    // Level-1  parameters
-    vector[J_2] lambda_2 = lambda[index_1] + tau_lambda * lambda_2_raw;
-    vector[J_2] log_sigma_2 = log_sigma[index_1] + tau_sigma * log_sigma_2_raw;
-
-    // Level 2 parameters
-    vector<lower=0>[J_3] lambda_3 = lambda_2[index_2] + tau_lambda * lambda_3_raw;
-    vector[J_3] log_sigma_3 = log_sigma_2[index_2] + tau_sigma * log_sigma_3_raw;
-    vector<lower=0>[J_3] area0 = area_mu[index_2] + area_raw * tau_area; 
-    vector[J_3] sigma_3 = exp(log_sigma_3);
-    
+    vector[J] r_2 = r + tau_r * r_2_raw;
+    vector[J] log_sigma_2 = log_sigma + tau_sigma * log_sigma_2_raw;
+    vector[J] sigma_2 = exp(log_sigma_2); 
 }
 
 model {
-    vector[N] mu;
-    
-    // Define priors for uncentering offsets
-    tau_lambda ~ inv_gamma(2, 2);
-    tau_sigma ~ inv_gamma(2, 2);
-    tau_area ~ inv_gamma(2, 2);
-
-    // Define priors for uncentered parameters
-    lambda_2_raw ~ inv_gamma(2, 2);
-    log_sigma_2_raw ~ inv_gamma(2, 2);
-    lambda_3_raw ~ inv_gamma(2, 2);
-    log_sigma_3_raw ~ inv_gamma(2, 2);
-    area_raw ~ inv_gamma(2, 2);
-
-    // Define cenetered parameters
-    //area_mu ~ inv_gamma(2, 2);
-    lambda ~ inv_gamma(2, 2);
-    
-    mu = area0[index_3] .* exp(time ./ lambda_3[index_3]);
-    area ~ normal(mu, sigma_3[index_3]);
+    vector[N] mu  = area_0[idx] .* exp(r_2[idx] .* time);
+    r ~ lognormal(-1, 3);
+    log_sigma ~ normal(0, 2);
+    area_0 ~ normal(0, 100);
+    log_sigma_2_raw ~ normal(0, 1);
+    r_2_raw ~ normal(0, 1);
+    tau_r ~ normal(0, 1);
+    tau_sigma ~ normal(0, 10);
+    area ~ normal(mu, sigma_2[idx]);    
 }
