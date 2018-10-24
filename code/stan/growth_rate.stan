@@ -1,44 +1,36 @@
 data  {
-    // Dimensional parameters
-    int<lower=1> J; // Number of unique samples
-    int<lower=1> N; // Total number of measurements
-    int<lower=1, upper=J> idx[N]; // Identification vector for samples
-
-    // Physical parameters
-    vector<lower=0>[N] time; // total growth time in units of minutes
-
-    // Observed parameters
-    vector<lower=0>[N] rel_abs; // Relative absorbance measurement at 600nm relative to t=0. 
-}
+    int<lower=1> J;
+    int<lower=1> N;
+    int<lower=1, upper=J> idx[N];
+    vector<lower=0>[N] A;
+    vector<lower=0>[N] time;
+    }
+    
+transformed data {
+    vector[N] log_a = log(A);
+    }
 
 parameters {
-    // Hyper parameters
-    real<lower=0> lambda_mu; // Hyperparameter for growth rate
-    real<lower=0> lambda_sigma; // Hyperparameter for homoscedastic error
-
-    // Low level parameters
-    real<lower=0> lambda[J]; // Growth rate for individual samples
-    real<lower=0> sigma[J]; // Homoscedastic error for samples
+      real<lower=0> r;
+      real log_sigma;
+      vector[J] r_raw;
+      vector[J] log_sigma_raw;
+      real<lower=0> tau_r;
+      real<lower=0> tau_sigma;
 }
 
 transformed parameters {
-    vector<lower=0>[N] log_rel_abs; // Log absorbance ratio at 600nm relative to t=0
-    log_rel_abs = log(rel_abs);
+    vector[J] r_1 = r + r_raw * tau_r;
+    vector[J] log_sigma_1 = log_sigma + log_sigma_raw * tau_sigma; 
+    vector[J] sigma_1 = exp(log_sigma_1);
 }
 
 model {
-    // Define a vector to compute the theoretical value
-    vector[N] mu; 
-
-    // Define the priors. 
-    lambda_mu ~ normal(0, 1);
-    lambda_sigma ~ normal(0, 1);
-    lambda ~ normal(lambda_mu, lambda_sigma);
-    sigma ~ normal(0, 1);
-
-    // Evaluate the likelihood
-    for (i in 1:N) {
-        mu[i] = time[i] * lambda[idx[i]];
-        log_rel_abs[i] ~ normal(mu[i], sigma[idx[i]]);
-    }
+    r ~ normal(0, 1);
+    log_sigma ~ normal(0, 1);
+    log_sigma_raw ~ normal(0, 1);
+    r_raw ~ normal(0, 1);
+    tau_r ~ normal(0, 1);
+    tau_sigma ~ normal(0, 1);
+    log_a ~ normal(r_1[idx] .* time, sigma_1[idx]);
 }
