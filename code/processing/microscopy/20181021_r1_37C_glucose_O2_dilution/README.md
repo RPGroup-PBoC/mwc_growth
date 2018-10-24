@@ -3,7 +3,7 @@ status: Accepted
 reason: The high value for the inferred calibration factor is a bit suspect. There are also not many divisions in the growth series.
 ---
 
-# 2018-10-21 O2 Glucose
+# 2018-10-21 37C glucose O2 dilution
 
 ## Purpose
 A biological replicate of a glucose dilution series.
