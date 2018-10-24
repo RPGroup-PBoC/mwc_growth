@@ -26,8 +26,8 @@ transformed parameters {
 }
 
 model {
-    r ~ normal(0, 1);
-    log_sigma ~ normal(0, 1);
+    r ~ lognormal(-1, 4);
+    log_sigma ~ normal(0, 4);
     log_sigma_raw ~ normal(0, 1);
     r_raw ~ normal(0, 1);
     tau_r ~ normal(0, 1);
