@@ -1,49 +1,107 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import pandas as pd
-import bokeh.io
-import bokeh.plotting
-import bebi103.viz
 import mwc.bayes
-import mwc.viz
+import mwc.stats
+# TODO: Generate diagnostics document for each run.
 
 # Load in the compiled data
 fluct_data = pd.read_csv('../../data/compiled_fluctuations.csv')
 fc_data = pd.read_csv('../../data/compiled_fold_change.csv')
 
-# Isolate a single carbon source for dnow
-fluct_data = fluct_data[fluct_data['carbon']=='glucose']
-fc_data = fc_data[fc_data['carbon']=='glucose']
+# Load the stan model
+model = mwc.bayes.loadStanModel('../stan/hierarchical_calibration_factor') 
 
+# Instantiate storage lists for calfactor samples
+alpha_samples_dfs = []
+foldchange_dfs = []
+summary_dfs = []
 
-# Determine the mean autofluorescence. 
-auto = fc_data[fc_data['strain']=='auto']
-mean_auto = np.mean(auto['mean_mCherry'] - auto['mCherry_bg_val'])
+for g, d in fluct_data.groupby(['carbon']):
+    d = d.copy()
+    print(f'Beginning processing of {g} experiments...')
+    # Isolate the fold-change data. 
+    _fc_data = fc_data[fc_data['carbon']==g].copy()    
+    
+    # Compute the mean autofluorescence and delta expression. 
+    auto = _fc_data[_fc_data['strain']=='auto']
+    delta = _fc_data[_fc_data['strain']=='delta']
+    mean_auto_mcherry = np.mean(_fc_data['mean_mCherry'] - _fc_data['mCherry_bg_val'])
+    mean_auto_yfp = np.mean(_fc_data['mean_yfp'] - _fc_data['yfp_bg_val'])
+    delta_yfp = np.mean((delta['mean_yfp'] - delta['yfp_bg_val']) * delta['area_pix'])
+     
+    # Subtract background and mean autofluorescence
+    d['I_1_sub'] = (d['I_1'] - d['bg_val'] - mean_auto_mcherry) * d['area_1']
+    d['I_2_sub'] = (d['I_2'] - d['bg_val'] - mean_auto_mcherry) * d['area_2']
+    _fc_data['mCherry_sub'] = (_fc_data['mean_mCherry'] - _fc_data['mCherry_bg_val'] - mean_auto_mcherry) * _fc_data['area_pix']
+    
+    # Remove negative values
+    d = d[(d['I_1_sub'] >= 0) & (d['I_2_sub'] >= 0)].copy()
+    _fc_data = _fc_data[_fc_data['mCherry_sub'] >= 0].copy()
+     
+    # Add identifiers. 
+    d['idx'] = d.groupby(['date', 'run_no']).ngroup() + 1
+     
+    # Assemble the data dictionary
+    data_dict = {'J_exp':d['idx'].max(),
+                'N_fluct': len(d),
+                'N_mch': len(_fc_data),
+                'index_1':d['idx'],
+                'I_1': d['I_1_sub'],
+                'I_2': d['I_2_sub'],
+                'mcherry': _fc_data['mCherry_sub']}
+    
+    # Sample the model. 
+    print('sampling...')
+    samples = model.sampling(data_dict)
+    print('finished sampling!')
+    
+    # Convert to a dataframe and extract the important parameters. 
+    samples_df = samples.to_dataframe()
+    samples_df['carbon'] = g
+    alpha_samples_dfs.append(samples_df)
+    
+    # Extract the repressor counts
+    fit = samples.extract()
+    min_alpha, max_alpha = mwc.stats.compute_hpd(fit['alpha_1'], 0.95)
+    med_alpha = np.median(fit['alpha_1'])
+    min_rep = np.empty(len(_fc_data))
+    max_rep = np.empty(len(_fc_data))
+    med_rep = np.empty(len(_fc_data)) 
+    for i in range(len(_fc_data)): 
+        hpd_min, hpd_max = mwc.stats.compute_hpd(fit['rep_per_cell'][i], 0.95)
+        _med_rep = np.median(fit['rep_per_cell'][i])
+        min_rep[i] = hpd_min
+        max_rep[i] = hpd_max
+        med_rep[i] = _med_rep
+   
+    # Insert the repressor counts into the dataframe. 
+    _fc_data['min_rep'] = min_rep
+    _fc_data['max_rep'] = max_rep
+    _fc_data['median_rep'] = med_rep
+    _fc_data['min_alpha'] = min_alpha
+    _fc_data['max_alpha'] = max_alpha
+    _fc_data['median_alpha'] = med_alpha
+    
+    # Recompute the fold-change. 
+    _fc_data['fold_change'] = (_fc_data['mean_yfp'] - _fc_data['yfp_bg_val'] - mean_auto_yfp) * _fc_data['area_pix'] /delta_yfp 
+   
+    # Add the longform foldchange data to the storage list
+    foldchange_dfs.append(_fc_data)
+    
+    # Compute the summary statistics. 
+    _grouped = _fc_data.groupby(['strain', 'atc_ngml'])[['min_rep', 'max_rep', 'median_rep', 'fold_change']].mean().reset_index()
+    summary_dfs.append(_grouped)
 
-# Perform background subtraction for fluctuation data. 
-fluct_data['I_1'] = (fluct_data['I_1'] - (fluct_data['bg_val'] + mean_auto)) * fluct_data['area_1']
-fluct_data['I_2'] = (fluct_data['I_2'] - (fluct_data['bg_val'] + mean_auto)) * fluct_data['area_2']
-fc_data['I_tot'] = (fc_data['mean_mCherry'] - (fc_data['mCherry_bg_val'] + mean_auto)) * fc_data['area_pix']
+# Assemble the total dataframes and compute the summary. 
+alpha_samples_df = pd.concat(alpha_samples_dfs)
+foldchange_df = pd.concat(foldchange_dfs)
+summary_df = pd.concat(summary_dfs)
 
-# Assign various identifiers
-fluct_data['run_idx'] = fluct_data.groupby(['date', 'run_no']).ngroup() + 1
-dil_data = fc_data[fc_data['strain']=='dilution']
-dil_data['conc_idx'] = dil_data.groupby(['atc_ngml']).ngroup() + 1
-dil_data['run_idx'] = dil_data.groupby(['atc_ngml', 'date', 'run_number']).ngroup() + 1
-
-
-# Generate the data dictionary. 
-data_dict = {'J_exp': np.max(fluct_data['run_idx']),
-             'N_fluct': len(fluct_data),
-             'index_1': fluct_data['run_idx'],
-             'J_conc': np.max(dil_data['conc_idx']),
-             'J_conc_exp': np.max(dil_data['run_idx']),
-             'N_mch': len(dil_data),
-             'index_2': dil_data['conc_idx'],
-             'index_3': dil_data['run_idx'],
-             'I_1': fluct_data['I_1'],
-             'I_2': fluct_data['I_2'],
-             'mcherry': fc_data['I_tot']}
-# Compile the model and sample. 
-model = mwc.bayes.StanModel('../stan/hierarchical_calibration_factor.stan', data_dict, force_compile=True)
-
+# Save all to disk. 
+print('Saving data to disk...')
+alpha_samples_df.to_csv('../../data/calibration_factor_samples.csv', index=False)
+foldchange_df.to_csv('../../data/foldchange_repressors.csv', index=False)
+summary_df.to_csv('../../data/foldchange_summary.csv', index=False)
+print('Completed. Thank you come again.')
+    
