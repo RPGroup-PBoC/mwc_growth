@@ -2,7 +2,7 @@
 % in MATLAB
 % Define the experiment parameters.
 addpath(genpath('../../../../../SuperSegger'));
-DATE = 20181025;
+DATE = '20181025';
 BASENAME = 'r1_37C_glycerol_O2';
 samples = {'growth'};
 
