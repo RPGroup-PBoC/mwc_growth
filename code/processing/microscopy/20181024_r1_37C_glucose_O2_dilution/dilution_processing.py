@@ -15,11 +15,11 @@ import mwc.validation
 constants = mwc.model.load_constants()
 
 # Define the experimental constants
-DATE = 
-RUN_NO = 
-TEMP = 
-CARBON = 
-OPERATOR =  
+DATE = 20181024
+RUN_NO = 1
+TEMP = 37
+CARBON = 'glucose'
+OPERATOR = 'O2'
 IP_DIST = 0.065
 
 
