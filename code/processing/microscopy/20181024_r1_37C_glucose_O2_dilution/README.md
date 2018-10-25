@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: The low concentrations of ATC seem to push us into a nice regime of repressor copy number
 ---
 
 # 2018-10-24 37C glucose O2 dilution
