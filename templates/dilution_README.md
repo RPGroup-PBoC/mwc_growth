@@ -36,7 +36,7 @@ reason: experiment not yet completed
 
 ## Experimental Protocol
 
-1. Cells as described in "Strain Information" were grown to saturation overnight in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain). The cells were assumed to be saturated after this time.
+1. Cells as described in "Strain Information" were grown to saturation in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain).
 
 2. Cells were diluted 1:XXX into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
