@@ -3,7 +3,7 @@ status: Accepted
 reason: analysis not finished
 ---
 
-# 2018-10-11 O2 Glucose Dilution
+# 2018-10-11 37C Glucose O2 Dilution
 
 ## Purpose
 This experiment was a replicate of a LacI titration experiment for cells grown in glucose at 37°C with YFP regulated by an O2 operator.
@@ -52,20 +52,20 @@ wells were diluted 1:10 into an M9 medium with no available carbon.
 
 1. The `dilution` mixture was pelleted at 13000xg for 2 min. The supernatant was withdrawn and the pellet was resuspended in 1mL of ATC-free M9 + 0.5% glucose. This procedure was repeated twice more.
 
-2. The washed `dilution` mixture was diluted 1:5 into ATC-free M9 + 0.5% glucose. Aliquots of 1µL were spotted onto 2% agarose pads made of M9 + 0.5% glucose.
+2. The washed `dilution` mixture was diluted 1:5 into ATC-free M9 + 0.5% glucose. Aliquots of 1µL were spotted onto 3% agarose pads made of M9 + 0.5% glucose.
 
 3. Aliquots of 1µL from the other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations) were added to agarose pads
 made of M9 medium with no added carbon.
 
-4. Agarose pads spotted with cells were allowed to dry for 10 - 15 min and were then placed onto UV sterilized glass bottom dishes.
+4. Agarose pads spotted with cells were allowed to dry for 10 - 15 min and were then placed onto a glass bottom dish.
 
 5. After mounting, the sample dish was affixed to the microscope using double stick tape. Between five and ten positions were marked per snapshot sample. Exposures were as follows:
-    - Brightfield - 200ms
+    - Brightfield - 100ms
     - mCherry - 5000ms
     - YFP - 5000ms
 
 6. Approximately 15 positions were then marked on the `dilution` mixture pad. These positions were chosen requiring separation of cells and avoidance of debris.
 
-7. These were positions were imaged every five minutes for 1.5 hours using only the Brightfield channel. After two hours, these positions were imaged once more using a Brightfield, mCherry, and YFP channels.
+7. These were positions were imaged every 5 minutes for 1.5 hours using only the Brightfield channel. Afterward, these positions were imaged once more using a Brightfield, mCherry, and YFP channels.
 
-10. The samples were discarded and the dataset was transferred to the storage server.
+8. The samples were discarded and the dataset was transferred to the storage server.
