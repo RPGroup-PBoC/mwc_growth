@@ -1,6 +1,6 @@
 ---
-status: Rejected
-reason: experiment not yet completed
+status: Accepted
+reason: Validation plots look okay. Fold-change is falling beneath the curve. 
 ---
 
 # 2018-10-25 37C glycerol O2 dilution
