@@ -10,6 +10,7 @@ import scipy.optimize
 import pickle
 import statsmodels.tools.numdiff as smnd
 from .viz import bokeh_traceplot
+from .stats import compute_hpd
 
 
 class StanModel(object):
@@ -41,15 +42,17 @@ class StanModel(object):
             self.samples = samples
             self.df = None
         
-    def sample(self, iter=2000, chains=4, return_df=True, **kwargs):
+    def sample(self, data_dict=None, iter=2000, chains=4, return_df=True, **kwargs):
         """
         Samples the assembled model given the supplied data dictionary
         and returns output as a dataframe.
         """
+        if data_dict == None:
+            data_dict = self.data
         self.chains = chains
         self.iter = iter
         print('Beginning sampling...')
-        self.samples = self.model.sampling(self.data, 
+        self.samples = self.model.sampling(data_dict, 
                         chains=chains, iter=iter, **kwargs)
         print('finished sampling!')
         if return_df:
@@ -130,7 +133,84 @@ class StanModel(object):
             If True, summary will not be printed to screen. Default is False.
         """
         raise RuntimeError('Not yet implemented!')
+                  
+    def summarize_parameters(self, parnames=[], mass_frac=0.95):
+        """
+        Summarizes all or a subset of parameters from a Stan model. 
+        
+        Parameters
+        ----------
+        parnames: list
+            List of desired parnames. If left empty, all parameters 
+            are summarized and returned. 
+        mass_frac: float [0, 1]
+            The probability mass fraction for the HPD. Default is 
+            the 95% credible region. 
+            
+        Returns
+        -------
+        summary_df: pandas DataFrame
+            Dataframe of summarized parameters. The columns are as
+            follows:
+                parameter = name of parameter in Stan model
+                dimension = index (dimension) of the parameter
+                mean = mean of samples
+                median = median of samples
+                mode = parameter value when the log posterior is maximized
+                hpd_min = minimum bound of the highest probability density
+                    defined by the mass fraction.
+                hpd_max = upper bound of the highest probability density
+                    defined by the mass fraction
+        """
+        # Extract the sampling information and find the mode
+        samples = self.samples()
+        fit = samples.extract()
+        mode_ind = np.argmax(fit['lp__'])
+        
+        # Get a list of all parameters defined in the model and assign a dimension
+        pars = samples.model_pars
+        
+        # Convert the dimensions for each parameter to integers. 
+        _dims = []
+        for d in samples.par_dims:
+            if len(d) == 0:
+                _dims.append(1)
+            else:
+                _dims.append(int(d[0]))
     
+        par_dims = {p:v for p, v in zip(pars, _dims)}
+        if len(parnames) != 0:
+            pars = varnames
+            desired_pars = {k:v for k, v in par_dims.items() if k in varnames}
+            par_dims = desired_pars
+        
+        # Iterate through each parameter and compute the aggregate properties. 
+        df = pd.DataFrame([], columns=['parameter', 'dimension', 'mean', 
+                                       'median', 'mode', 'hpd_min', 'hpd_max'])
+                           
+        for par, dim in par_dims.items():
+            par_samples = fit[par]
+            if dim == 1:
+                par_samples = par_samples[:, np.newaxis]
+            for j in range(dim):
+                # Compute the summary statistics
+                par_mode = par_samples[:, j][mode_ind]
+                par_mean = np.mean(par_samples[:, j])
+                par_median = np.median(par_samples[:, j])
+                hpd_min, hpd_max = compute_hpd(par_samples[:, j], mass_frac=mass_frac)
+                
+                # Assemble a dictionary to append to the data frame
+                par_dict ={'parameter':par, 
+                          'dimension': j + 1,
+                          'mean': par_mean,
+                          'mode': par_mode,
+                          'median': par_median,
+                          'hpd_min': hpd_min,
+                          'hpd_max': hpd_max,
+                          'mass_fraction': mass_frac}
+                df = df.append(par_dict, ignore_index=True)
+        df['dimension'] = df['dimension'].astype(int) 
+        return df 
     # 
         
     # Vizualization    

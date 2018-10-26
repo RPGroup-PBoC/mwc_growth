@@ -97,5 +97,5 @@ generated quantities {
    vector[J_conc] mch_1 = exp(log_mch_1);
    vector[J_conc] yfp_1 = exp(log_yfp_1);
    vector[J_conc - 1] avg_rep = mch_1[2:] ./ alpha_1;
-   vector[J_conc - 1] fc = yfp_1[2:] ./ yfp_1[1];
+   vector[J_conc - 1] fold_change = yfp_1[2:] ./ yfp_1[1];
 }
