@@ -1,6 +1,6 @@
 ---
-status: Rejected
-reason: experiment not yet completed
+status: Accepted
+reason: All validation checks passed
 ---
 
 # 2018-10-25 37C acetate O2 dilution
