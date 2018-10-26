@@ -1,6 +1,6 @@
 ---
-status: Rejected
-reason: experiment not yet completed
+status: Accepted
+reason: All validation checks passed
 ---
 
 # 2018-10-25 37C glucose O2 dilution
@@ -24,8 +24,8 @@ This is  biological replicate of a dilution experiment with modified ATC concent
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
+* Nothing out of the ordinary occurred
 * 
- 
 ## Analysis Files
 
 **Calibration Factor Determination**
