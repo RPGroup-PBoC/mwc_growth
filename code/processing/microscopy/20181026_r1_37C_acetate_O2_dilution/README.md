@@ -1,12 +1,12 @@
 ---
-status: Rejected 
+status: Rejected
 reason: experiment not yet completed
 ---
 
-# YEAR-MONTH-DATE TEMP CARBON OPERATOR Dilution
+# 2018-10-26 37C Acetate O2 Dilution
 
 ## Purpose
-
+This experiment was a biological replicate of the high ATC induction range.
 
 ## Strain Information
 
@@ -20,12 +20,11 @@ reason: experiment not yet completed
 
 | Inducer | Concentration |
 | :------ | ------------: |
-| Anhydrotetracycline HCl (ATC) | 0, 0.1, 0.2, 0.3, 0.4, 0.7, 1, 10 [ng / mL] |
+| Anhydrotetracycline HCl (ATC) | 0, 1, 2, 3, 4, 7, 10 [ng / mL] |
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
 
- 
 ## Analysis Files
 
 **Calibration Factor Determination**
@@ -38,15 +37,15 @@ reason: experiment not yet completed
 
 1. Cells as described in "Strain Information" were grown to saturation in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain).
 
-2. Cells were diluted 1:XXX into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
+2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for X hours at 37°C with shaking at ~ 220 RPM.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 24 hours at 37°C with shaking at ~ 220 RPM.
 
 4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room and harvested.
 
 **Microscopy**
 
-1. A 100µL aliquot of each of the `dilution` samples with varying ATC concentrations were combined in a 1.5mL eppendorf tube.
+1. A 100µL aliquot of each of the `dilution` samples from ATC concentrations were combined in a 1.5mL eppendorf tube.
 
 2. This `dilution` mixture was pelleted at 13000xg for 2 min. The supernatant was withdrawn and the pellet was resuspended in 1mL of ATC-free growth medium. This procedure was repeated twice more.
 
