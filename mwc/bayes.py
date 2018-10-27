@@ -163,7 +163,7 @@ class StanModel(object):
                     defined by the mass fraction
         """
         # Extract the sampling information and find the mode
-        samples = self.samples()
+        samples = self.samples
         fit = samples.extract()
         mode_ind = np.argmax(fit['lp__'])
         
@@ -180,14 +180,14 @@ class StanModel(object):
     
         par_dims = {p:v for p, v in zip(pars, _dims)}
         if len(parnames) != 0:
-            pars = varnames
-            desired_pars = {k:v for k, v in par_dims.items() if k in varnames}
+            pars = parnames
+            desired_pars = {k:v for k, v in par_dims.items() if k in parnames}
             par_dims = desired_pars
         
         # Iterate through each parameter and compute the aggregate properties. 
-        df = pd.DataFrame([], columns=['parameter', 'dimension', 'mean', 
-                                       'median', 'mode', 'hpd_min', 'hpd_max'])
-                           
+        df = pd.DataFrame([], columns=['parameter', 'dimension', 'mean'
+                                      'mode', 'median', 'hpd_min',
+                                      'hpd_max', 'mass_fraction'])          
         for par, dim in par_dims.items():
             par_samples = fit[par]
             if dim == 1:
@@ -200,7 +200,7 @@ class StanModel(object):
                 hpd_min, hpd_max = compute_hpd(par_samples[:, j], mass_frac=mass_frac)
                 
                 # Assemble a dictionary to append to the data frame
-                par_dict ={'parameter':par, 
+                par_dict ={'parameter':par,
                           'dimension': j + 1,
                           'mean': par_mean,
                           'mode': par_mode,
@@ -211,7 +211,7 @@ class StanModel(object):
                 df = df.append(par_dict, ignore_index=True)
         df['dimension'] = df['dimension'].astype(int) 
         return df 
-    # 
+
         
     # Vizualization    
     def traceplot(self, varnames=None):

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import pandas as pd
+import sys
+sys.path.insert(0, '../../')
 import mwc.bayes
 import mwc.stats
 # TODO: Generate diagnostics document for each run.
@@ -10,7 +12,7 @@ fluct_data = pd.read_csv('../../data/compiled_fluctuations.csv')
 fc_data = pd.read_csv('../../data/compiled_fold_change.csv')
 
 # Load the stan model
-model = mwc.bayes.StanModel('../stan/hierarchical_dilution_analysis.stan', force_compile=True)
+model = mwc.bayes.StanModel('../stan/hierarchical_dilution_analysis.stan')
 
 # Instantiate storage lists for calfactor samples
 dfs = []
@@ -63,7 +65,7 @@ for g, d in fluct_data.groupby(['carbon']):
                  'I_2': d['I_2_sub'],
                  'mcherry': mean_fc_data['mch_sub'],
                  'yfp': mean_fc_data['yfp_sub']} 
-    samples, samples_df = model.sample(data_dict, iter=1000, chains=4, **dict(control=dict(adapt_delta=0.95)))
+    samples, samples_df = model.sample(data_dict, iter=1500, chains=4, **dict(control=dict(adapt_delta=0.95)))
     
     # Compute the summarized parameters. 
     summary = model.summarize_parameters(parnames=['alpha_1', 'avg_rep', 'fold_change'])
@@ -71,15 +73,14 @@ for g, d in fluct_data.groupby(['carbon']):
     # Convert the dimension to the atc concentration 
     for i, c in enumerate(_fc_data['atc_ngml'].unique()):
         summary.loc[summary['dimension']==int(i+1), 'atc_ngml'] = c
-    summary['carbon'] == g 
+    summary['carbon'] = g 
     dfs.append(summary)
     
     # Save the sampling data frame to disk. 
-    samples_df['carbon'] == g
+    samples_df['carbon'] = g
     samples_df.to_csv(f'../../data/{g}_dilution_analysis.csv', index=False)
     
 # Concatenate the summary df and save to disk. 
 df = pd.concat(dfs)
 df.to_csv('../../data/summarized_dilution_analysis.csv', index=False)
     
-
