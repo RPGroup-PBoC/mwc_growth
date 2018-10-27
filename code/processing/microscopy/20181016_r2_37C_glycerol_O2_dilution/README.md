@@ -1,6 +1,6 @@
 ---
 status: Rejected
-reason: analysis not finished
+reason: Something pathological in the data resulting in too many zeros. 
 ---
 
 # 2018-10-16 37C Glycerol O2 Dilution (Run 2)

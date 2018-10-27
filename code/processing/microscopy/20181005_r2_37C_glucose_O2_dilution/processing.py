@@ -82,8 +82,12 @@ delta_df = mwc.process.parse_clists(glob.glob(f'../../../../data/images/20181004
 delta_df = mwc.process.morphological_filter(delta_df, ip_dist=IP_DIST)
 
 # Compute the mean YFP value for autofluorescence and delta LacI
-mean_auto_yfp = auto_df['fluor1_mean_death'].mean()
-mean_delta_yfp = delta_df['fluor1_mean_death'].mean() - mean_auto_yfp
+mean_auto_yfp = (auto_df['fluor1_mean_death'] - auto_df['fluor1_bg_death']).mean()
+mean_delta_yfp = (delta_df['fluor1_mean_death'] - delta_df['fluor1_bg_death']).mean() - mean_auto_yfp
+
+# Compute the mode and hpd of the calibration factor. 
+alpha_mode = samples_df.iloc[np.argmax(samples_df['log_prob'].values)]['alpha']
+hpd_min, hpd_max = mwc.stats.compute_hpd(samples_df['alpha'])
 
 # Iterate through all concentrations. 
 concs = glob.glob(f'{data_dir}snaps/*')
@@ -101,7 +105,7 @@ for i, c in enumerate(concs):
     _df['mean_bg_mCherry'] = _df['fluor2_bg_death']
     _df['mean_yfp'] = _df['fluor1_mean_death'] 
     _df['mean_mCherry'] = _df['fluor2_mean_death'] 
-    _df['fold_change'] = (_df['mean_yfp'] - mean_auto_yfp) / mean_delta_yfp
+    _df['fold_change'] = (_df['mean_yfp'] - _df['fluor1_bg_death'] - mean_auto_yfp) / mean_delta_yfp
     _df['atc_ngml'] = atc
     _df['date'] = DATE
     _df['area_pix'] = _df['area_death']
@@ -111,9 +115,12 @@ for i, c in enumerate(concs):
     _df['run_number'] = RUN_NO
     _df['yfp_bg_val'] = _df['fluor1_bg_death']
     _df['mCherry_bg_val'] = _df['fluor2_bg_death']
+    _df['alpha_mode'] = alpha_mode
+    _df['alpha_hpd_min'] = alpha_hpd_min
+    _df['alpha_hpd_max'] = alpha_hpd_max
     dfs.append(_df[['strain', 'area_pix', 'mean_yfp', 'mean_mCherry', 'fold_change',
                    'atc_ngml', 'date', 'carbon', 'temp', 'operator', 'run_number',
-                   'yfp_bg_val', 'mCherry_bg_val']])
+                   'yfp_bg_val', 'mCherry_bg_val', 'alpha_mode', 'alpha_hpd_min', 'alpha_hpd_max']])
 fc_df = pd.concat(dfs)
 
 # Save to disk. 

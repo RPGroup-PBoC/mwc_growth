@@ -1,6 +1,6 @@
 ---
-status: Rejected
-reason: analysis not finished
+status: Accepted
+reason: Foldchange is lower than usually observed for glycerol. 
 ---
 
 # 2018-10-18 37C Glycerol O2 Dilution
