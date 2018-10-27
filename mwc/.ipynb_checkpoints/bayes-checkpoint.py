@@ -185,7 +185,9 @@ class StanModel(object):
             par_dims = desired_pars
         
         # Iterate through each parameter and compute the aggregate properties. 
-        df = pd.DataFrame([])          
+        df = pd.DataFrame([], columns=['parameter', 'dimension', 'mean'
+                                      'mode', 'median', 'hpd_min',
+                                      'hpd_max', 'mass_fraction'])          
         for par, dim in par_dims.items():
             par_samples = fit[par]
             if dim == 1:
@@ -198,13 +200,14 @@ class StanModel(object):
                 hpd_min, hpd_max = compute_hpd(par_samples[:, j], mass_frac=mass_frac)
                 
                 # Assemble a dictionary to append to the data frame
-                par_dict ={'dimension': j + 1,
-                          f'{par}_mean': par_mean,
-                          f'{par}_mode': par_mode,
-                          f'{par}_median': par_median,
-                          f'{par}_hpd_min': hpd_min,
-                          f'{par}_hpd_max': hpd_max,
-                          f'mass_fraction': mass_frac}
+                par_dict ={'parameter':par,
+                          'dimension': j + 1,
+                          'mean': par_mean,
+                          'mode': par_mode,
+                          'median': par_median,
+                          'hpd_min': hpd_min,
+                          'hpd_max': hpd_max,
+                          'mass_fraction': mass_frac}
                 df = df.append(par_dict, ignore_index=True)
         df['dimension'] = df['dimension'].astype(int) 
         return df 
