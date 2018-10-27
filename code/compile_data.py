@@ -30,16 +30,16 @@ fc_df['IPTGuM'] = 0
 fluct_df.to_csv('../data/compiled_fluctuations.csv', index=False)
 fc_df.to_csv('../data/compiled_fold_change.csv', index=False)
 
-# Find all microscopy growth experiments. 
-growth_exp = glob.glob(f'{data_dir}*growth')
-growth_dfs = []
-for _, d in enumerate(growth_exp):
-    # Load the readme file.
-    info = mwc.io.scrape_frontmatter(f'{d}')
+# # Find all microscopy growth experiments. 
+# growth_exp = glob.glob(f'{data_dir}*growth')
+# growth_dfs = []
+# for _, d in enumerate(growth_exp):
+#     # Load the readme file.
+#     info = mwc.io.scrape_frontmatter(f'{d}')
     
-    if info['status'].lower() == 'accepted':
-        growth_df = pd.read_csv(glob.glob(f'{d}/output/*growth.csv')[0])
-        growth_dfs.append(growth_df)
-growth_df = pd.concat(growth_dfs)
-growth_df.to_csv('../data/compiled_growth_microscopy.csv', index=False)
+#     if info['status'].lower() == 'accepted':
+#         growth_df = pd.read_csv(glob.glob(f'{d}/output/*growth.csv')[0])
+#         growth_dfs.append(growth_df)
+# growth_df = pd.concat(growth_dfs)
+# growth_df.to_csv('../data/compiled_growth_microscopy.csv', index=False)
 print('all data compiled')
