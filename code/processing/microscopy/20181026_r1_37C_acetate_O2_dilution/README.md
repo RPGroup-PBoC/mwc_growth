@@ -1,6 +1,6 @@
 ---
 status: Rejected
-reason: experiment not yet completed
+reason: Something pathological with the data. There was little expression of mCherry, even at high induction levels. Something likely went wrong with the inoculation. 
 ---
 
 # 2018-10-26 37C Acetate O2 Dilution
