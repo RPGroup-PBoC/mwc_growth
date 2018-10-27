@@ -2,8 +2,8 @@
 % in MATLAB
 % Define the experiment parameters.
 addpath(genpath('../../../../../SuperSegger'));
-DATE = '';
-BASENAME = '';
+DATE = '20181026';
+BASENAME = 'r1_37C_glucose_O2';
 samples = {'growth'};
 
 % Get the snaps names.

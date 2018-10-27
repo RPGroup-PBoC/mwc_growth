@@ -24,9 +24,8 @@ This experiment was a replicate of a LacI titration experiment for cells grown i
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-* Cells were grown during the day from a 1:1000 dilution of a saturated LB culture. The cells imaged in this experiment were harvested between 0.3 and 0.45 OD_600nm. 
-
-* The cells used for snapshots were flooded with Kanamycin at a concentration of 100µg/mL  in an attempt to cease protein translation. However, we forgot that these strains have a kanamycin resistance casette, so it didn't make any real difference.
+* Cells were grown during the day from a 1:1000 dilution of a saturated LB culture. The cells imaged in this experiment were harvested between 0.3 and 0.45 OD_600nm.
+* The cells used for snapshots were flooded with Kanamycin at a concentration of 100µg/mL in an attempt to cease protein translation. However, we forgot that these strains have a kanamycin resistance casette, so it didn't make any real difference.
 
 ## Analysis Files
 **Calibration Factor Determination**
@@ -57,7 +56,7 @@ wells were diluted 1:10 into an M9 medium with no available carbon.
 3. Aliquots of 1µL from the other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations) were added to agarose pads
 made of M9 medium with no added carbon.
 
-4. Agarose pads spotted with cells were allowed to dry for 10 - 15 min and were then placed onto UV sterilized glass bottom dishes.
+4. Agarose pads spotted with cells were allowed to dry for 10 - 15 min and were then placed onto a glass bottom dish.
 
 5. After mounting, the sample dish was affixed to the microscope using double stick tape. Between five and ten positions were marked per snapshot sample. Exposures were as follows:
     - Brightfield - 100ms

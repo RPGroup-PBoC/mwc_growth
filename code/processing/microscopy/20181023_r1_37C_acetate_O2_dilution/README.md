@@ -25,7 +25,8 @@ This experiment was a biological replicate of an M9 + 0.25% acetate growth lac r
 
 ## Notes & Observations
 * As is usually the case, the `deltaLacI` strain grew more slowly than the others and was harvested at an OD_600nm_ around 0.1. The others were between 0.25 and 0.3.
- 
+* The `dilution` tubes with 1 and 2 ng/mL of ATC were added to the mix at the double the usual amount, to improve the fluctuations data spread.
+
 ## Analysis Files
 
 **Calibration Factor Determination**
@@ -46,7 +47,7 @@ This experiment was a biological replicate of an M9 + 0.25% acetate growth lac r
 
 **Microscopy**
 
-1. A 100µL aliquot of each of the `dilution` samples from ATC concentrations were combined in a 1.5mL eppendorf tube.
+1. A 100µL aliquot of each of the `dilution` samples with varying ATC concentrations were combined in a 1.5mL eppendorf tube, with 200µL of the 1ng/mL and 2ng/mL `dilution` samples added instead of 100µL.
 
 2. This `dilution` mixture was pelleted at 13000xg for 2 min. The supernatant was withdrawn and the pellet was resuspended in 1mL of ATC-free growth medium. This procedure was repeated twice more.
 
@@ -54,7 +55,7 @@ This experiment was a biological replicate of an M9 + 0.25% acetate growth lac r
 
 4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations) were diluted 1:10 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
 
-5. Agarose pads spotted with cells were allowed to dry and were then placed onto glass bottom dishes.
+5. Agarose pads spotted with cells were allowed to dry and were then placed onto a glass bottom dish.
 
 6. After mounting, the sample dish was affixed to the microscope using double stick tape. Between five and ten positions were marked per snapshot sample. Exposures were as follows:
     - Brightfield - 100ms, gain 4, 12bit
