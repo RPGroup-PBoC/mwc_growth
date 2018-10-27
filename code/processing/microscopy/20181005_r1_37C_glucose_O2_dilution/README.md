@@ -1,6 +1,6 @@
 ---
-status: Accepted
-reason: Low fold-change observed on low repressor copy number.
+status: Rejected 
+reason: Upon reanalysis for proper background subtraction, there is something pathological with the data, likely resulting from incorrect triad linking. 
 ---
 
 # 2018-10-05 37C Glucose O2 Dilution

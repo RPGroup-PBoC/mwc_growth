@@ -15,7 +15,7 @@ import mwc.validation
 constants = mwc.model.load_constants()
 
 # Define the experimental constants
-DATE = 20181016
+DATE = 20181016 
 RUN_NO = 2
 TEMP = 37
 CARBON = 'glycerol'
@@ -44,7 +44,7 @@ growth_df = growth_df[growth_df['valid'] == True]
 # Load the autofluorescence data. 
 auto_df = mwc.process.parse_clists(glob.glob(f'{data_dir}snaps/auto_00ngml/xy*/clist.mat'))
 auto_df = mwc.process.morphological_filter(auto_df, ip_dist=IP_DIST)
-mean_auto = auto_df['fluor2_mean_death'].mean()
+mean_auto = (auto_df['fluor2_mean_death'] - auto_df['fluor2_bg_death']).mean()
 
 # Compute the fluctuations. 
 family_df = mwc.process.family_reunion(growth_df, fluo_channel=2)
@@ -57,17 +57,17 @@ family_df['carbon'] = CARBON
 family_df['operator'] = OPERATOR
 
 # Remove cells which do not have any mesured intensity
-family_df = family_df[((family_df['I_1'] - family_df['bg_val']) * family_df['area_1'] > 0) & ((family_df['I_2'] - family_df['bg_val']) * family_df['area_2'] > 0)]
+family_df = family_df[((family_df['I_1'] - family_df['bg_val'] - mean_auto) * family_df['area_1'] > 0) & ((family_df['I_2'] - family_df['bg_val'] - mean_auto) * family_df['area_2'] > 0)]
 
 # Save the fluctuations to output. 
 family_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_fluctuations.csv', index=False) 
 
+# Assemble the data dictionary and sample. 
+data_dict = dict(N=len(family_df), I1=(family_df['I_1'] - family_df['bg_val'] - mean_auto) * family_df['area_1'], 
+                I2=(family_df['I_2'] - family_df['bg_val'] - mean_auto) * family_df['area_2'])
+
 # Perform inference of calibration factor. 
 model = mwc.bayes.loadStanModel('../../../stan/calibration_factor.stan')
-
-# Assemble the data dictionary and sample. 
-data_dict = dict(N=len(family_df), I1=(family_df['I_1'] - family_df['bg_val']) * family_df['area_1'], 
-                I2=(family_df['I_2'] - family_df['bg_val']) * family_df['area_2'])
 samples = model.sampling(data_dict, iter=5000, chains=4)
 samples_df = samples.to_dataframe()
 samples_df = samples_df[['alpha', 'lp__']]
@@ -85,8 +85,12 @@ delta_df = mwc.process.parse_clists(glob.glob(f'{data_dir}snaps/delta_00ngml/xy*
 delta_df = mwc.process.morphological_filter(delta_df, ip_dist=IP_DIST)
 
 # Compute the mean YFP value for autofluorescence and delta LacI
-mean_auto_yfp = auto_df['fluor1_mean_death'].mean()
-mean_delta_yfp = delta_df['fluor1_mean_death'].mean() - mean_auto_yfp
+mean_auto_yfp = (auto_df['fluor1_mean_death'] - auto_df['fluor1_bg_death']).mean()
+mean_delta_yfp = (delta_df['fluor1_mean_death'] - delta_df['fluor1_bg_death']).mean() - mean_auto_yfp
+
+# Compute the mode and hpd of the calibration factor. 
+alpha_mode = samples_df.iloc[np.argmax(samples_df['log_prob'].values)]['alpha']
+hpd_min, hpd_max = mwc.stats.compute_hpd(samples_df['alpha'], 0.95)
 
 # Iterate through all concentrations. 
 concs = glob.glob(f'{data_dir}snaps/*')
@@ -104,26 +108,30 @@ for i, c in enumerate(concs):
     _df['mean_bg_mCherry'] = _df['fluor2_bg_death']
     _df['mean_yfp'] = _df['fluor1_mean_death'] 
     _df['mean_mCherry'] = _df['fluor2_mean_death'] 
-    _df['fold_change'] = (_df['mean_yfp'] - mean_auto_yfp) / mean_delta_yfp
     _df['atc_ngml'] = atc
     _df['date'] = DATE
     _df['area_pix'] = _df['area_death']
     _df['carbon'] = CARBON
+    _df['fold_change'] = (_df['mean_yfp'] - _df['fluor1_bg_death'] - mean_auto_yfp) / mean_delta_yfp
     _df['temp'] = TEMP
     _df['operator'] = OPERATOR
     _df['run_number'] = RUN_NO
     _df['yfp_bg_val'] = _df['fluor1_bg_death']
     _df['mCherry_bg_val'] = _df['fluor2_bg_death']
-    dfs.append(_df[['strain', 'area_pix', 'mean_yfp', 'mean_mCherry', 'fold_change',
-                   'atc_ngml', 'date', 'carbon', 'temp', 'operator', 'run_number',
-                   'yfp_bg_val', 'mCherry_bg_val']])
+    _df['alpha_mode'] = alpha_mode
+    _df['alpha_hpd_min'] = hpd_min
+    _df['alpha_hpd_max'] = hpd_max
+    dfs.append(_df[['strain', 'area_pix', 'mean_yfp', 'mean_mCherry', 
+                   'atc_ngml', 'date', 'carbon', 'temp', 'operator', 'run_number', 'yfp_bg_val', 'mCherry_bg_val',
+                   'alpha_mode', 'alpha_hpd_min', 'alpha_hpd_max',
+                   'fold_change']])
 fc_df = pd.concat(dfs)
 
 # Save to disk. 
 fc_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_foldchange.csv', index=False)
 
 # Generate the fold-change summary figure
-_ = mwc.validation.fc_summary_microscopy(fc_df, samples_df, operator='O2', constants=constants,  fname='foldchange_summary',
+_ = mwc.validation.fc_summary_microscopy(fc_df, samples_df, operator='O2', constants=constants, fname='foldchange_summary', 
                                          title=f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}')
 #
 
