@@ -11,7 +11,8 @@ fluct_data = pd.read_csv('../../data/compiled_fluctuations.csv')
 fc_data = pd.read_csv('../../data/compiled_fold_change.csv')
 
 # Load the hierarchical model. 
-model = mwc.bayes.StanModel('../stan/hierarchical_calibration_factor.stan', force_compile=True)
+model = mwc.bayes.StanModel('../stan/hierarchical_calibration_factor.stan')
+
 # Loop through each carbon source and analyze independently
 _fc_dfs = []
 for g, d in fluct_data.groupby('carbon'):
@@ -42,9 +43,9 @@ for g, d in fluct_data.groupby('carbon'):
     rep_mode = np.zeros(len(_fc_data))
     rep_max = np.zeros(len(_fc_data))
     rep_min = np.zeros(len(_fc_data))
-    for i in len(_fc_data):
-        cell = samples_df[f'rep_per_cell[{i+1}]']
-        rep_mode[i] = cell.loc[ind]['alpha_1']
+    for i in range(len(_fc_data)):
+        cell = samples_df[f'rep_per_cell[{i+1}]'].values
+        rep_mode[i] = cell[ind]
         _min, _max = mwc.stats.compute_hpd(cell, 0.95)
         rep_min[i] = _min
         rep_max[i] = _max
