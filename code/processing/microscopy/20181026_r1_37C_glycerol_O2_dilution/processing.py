@@ -16,11 +16,12 @@ constants = mwc.model.load_constants()
 
 # Define the experimental constants
 DATE = 20181026 
-RUN_NO = 1
+RUN_NO = 1 
 TEMP = 37
-CARBON = 'acetate'
+CARBON = 'glycerol'
 OPERATOR = 'O2'
 IP_DIST = 0.065
+
 
 # Make the output directory if necessary
 if os.path.isdir('output') == False:
