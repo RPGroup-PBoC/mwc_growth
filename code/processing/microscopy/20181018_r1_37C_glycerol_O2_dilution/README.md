@@ -24,7 +24,9 @@ A biological replicate of a glycerol dilution series.
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-* Cells were grown overnight from a 1:1000 dilution followed by a 1:10 dilution into fresh media with ATC to adjust for improper OD. The cells imaged in this experiment were harvested between 0.3 and 0.45 OD_600nm_.  
+* Cells were grown overnight from a 1:1000 dilution followed by a 1:5 dilution into fresh media with ATC to adjust for improper OD. The cells imaged in this experiment were harvested between 0.25 and 0.45 OD_600nm_.  
+* The `dilution` tubes with 1 and 2 ng/mL of ATC were added to the mix at the double the usual amount, to improve the fluctuations data spread.
+* Snapshot samples were accidentally diluted into growth medium rather than no-carbon M9.
 
 ## Analysis Files
 
@@ -40,12 +42,9 @@ A biological replicate of a glycerol dilution series.
 
 2. Cells were diluted 1:1000 into 3mL of M9 + 0.5% glycerol (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for ~ 15 hours at 37°C with shaking at ~ 220 RPM. The cells grew to near saturation overnight (OD_600nm_ ~ 0.8) and were further diluted 1:10 and allowed to growth for 3 more hours. 
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for ~ 13 hours at 37°C with shaking at ~ 220 RPM. The cells grew to near saturation overnight (OD_600nm_ ~ 0.8) and were further diluted 1:5 and allowed to growth for ~ 4.5 more hours.
 
-4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells
-were removed from the warm room. A 100µL aliquot of the `dilution` samples
-from ATC concentrations of 1, 2, 3, 4, 7, and 10 ng/mL were combined in a 1.5mL eppendorf tube. The remaining
-wells were diluted 1:10 into an M9 medium with no available carbon.
+4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room. A 100µL aliquot of the `dilution` samples from ATC concentrations of 3, 4, 7, and 10 ng/mL, and a 200µL aliquot from the 1 and 2 ng/mL `dilution` samples, were combined in a 1.5mL eppendorf tube. The remaining wells were diluted 1:10 into an M9 growth medium.
 
 **Microscopy**
 

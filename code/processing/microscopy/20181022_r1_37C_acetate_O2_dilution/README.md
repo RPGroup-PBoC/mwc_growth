@@ -24,8 +24,8 @@ A biological replicate of an acetate dilution series.
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-* Nothing notable or different from other experiments. 
- 
+* The `dilution` tubes with 1 and 2 ng/mL of ATC were added to the mix at the double the usual amount, to improve the fluctuations data spread.
+
 ## Analysis Files
 
 **Calibration Factor Determination**
@@ -40,13 +40,13 @@ A biological replicate of an acetate dilution series.
 
 2. Cells were diluted 1:1000 into 3mL of M9 + 0.25% acetate (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for ~ 24 hours at 37°C with shaking at ~ 220 RPM.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for ~ 23 hours at 37°C with shaking at ~ 220 RPM.
 
 4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room and harvested.
 
 **Microscopy**
 
-1. A 100µL aliquot of each of the `dilution` samples from ATC concentrations were combined in a 1.5mL eppendorf tube.
+1. A 100µL aliquot of each of the `dilution` samples with varying ATC concentrations were combined in a 1.5mL eppendorf tube, with 200µL of the 1ng/mL and 2ng/mL `dilution` samples added instead of 100µL.
 
 2. This `dilution` mixture was pelleted at 13000xg for 2 min. The supernatant was withdrawn and the pellet was resuspended in 1mL of ATC-free growth medium. This procedure was repeated twice more.
 
