@@ -31,7 +31,7 @@ data {
     // Experimental data for calibration factor determination
     vector<lower=0>[N_fluct] I_1; // Observed mean pixel intensity of daughter cell 1
     vector<lower=0>[N_fluct] I_2; // Observed mean pixel intensity of daughter cell 2 
-    vector<lower=0>[N_mch] mcherry;
+    vector[N_mch] mcherry;
 }
    
 parameters {
