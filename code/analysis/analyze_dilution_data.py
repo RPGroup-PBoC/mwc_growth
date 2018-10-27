@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import pandas as pd
+import sys
+sys.path.insert(0, '../../')
 import mwc.bayes
 import mwc.stats
 # TODO: Generate diagnostics document for each run.
@@ -63,7 +65,7 @@ for g, d in fluct_data.groupby(['carbon']):
                  'I_2': d['I_2_sub'],
                  'mcherry': mean_fc_data['mch_sub'],
                  'yfp': mean_fc_data['yfp_sub']} 
-    samples, samples_df = model.sample(data_dict, iter=1000, chains=4, **dict(control=dict(adapt_delta=0.95)))
+    samples, samples_df = model.sample(data_dict, iter=1500, chains=4, **dict(control=dict(adapt_delta=0.95)))
     
     # Compute the summarized parameters. 
     summary = model.summarize_parameters(parnames=['alpha_1', 'avg_rep', 'fold_change'])
@@ -82,4 +84,3 @@ for g, d in fluct_data.groupby(['carbon']):
 df = pd.concat(dfs)
 df.to_csv('../../data/summarized_dilution_analysis.csv', index=False)
     
-
