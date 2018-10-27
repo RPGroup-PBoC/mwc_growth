@@ -36,11 +36,11 @@ This experiment was the flagship dilution experiment for cells grown in glycerol
 
 ## Experimental Protocol
 
-1. Cells as described in "Strain Information" were grown to saturation overnight in 3mL of LB Miller + chloramphenicol for the `dilution` strain. The cells were assumed to be saturated during this time.
+1. Cells as described in "Strain Information" were grown to saturation in 3mL of LB Miller + chloramphenicol for the `dilution` strain. The cells were assumed to be saturated during this time.
 
 2. Cells were diluted 1:1000 into 3mL of M9 + 0.5% glycerol (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for ~ X hours at 37°C with shaking at ~ 220 RPM. The cells grew to near saturation overnight (OD_600nm_ ~ 0.9) and were further diluted 1:10 and allowed to growth for 3 more hours.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for ~ 14 hours at 37°C with shaking at ~ 220 RPM. The cells grew to near saturation overnight (OD_600nm_ ~ 0.9) and were further diluted 1:10 and allowed to growth for 3 more hours.
 
 4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells
 were removed from the warm room. A 100µL aliquot of the `dilution` samples
