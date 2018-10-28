@@ -16,7 +16,7 @@ from matplotlib.animation import FuncAnimation
 from scipy.signal import gaussian, convolve
 
 # Thematic settings
-def set_style(theme=''):
+def set_style(holoviews=False):
     theme = bokeh.themes.theme.Theme(
         json={
         'attrs': {
@@ -26,14 +26,15 @@ def set_style(theme=''):
                 'grid_line_width': 1,
                 'grid_line_color': '#ffffff'},
         'Text' : {
-            'text_font': "Open Sans"},
+            'text_font': "Cabin"},
         'Axis': {
-            'axis_label_text_font': "Helvetica",
+            'axis_label_text_font': "Open Sans",
             'axis_label_text_font_style': "normal",
-            'major_label_text_font': "Helvetica"}
+            'major_label_text_font': "Open Sans"}
         }
         })
-    hv.renderer('bokeh').theme = theme
+    if holoviews == True:
+        hv.renderer('bokeh').theme = theme
 
 def pub_style(return_colors=True):
     """
@@ -227,3 +228,31 @@ def growth_animation(images, fname, contours=None, descriptors={'bar_length':10,
     anim = FuncAnimation(fig, update, frames=np.arange(0, len(images), 1),
                         interval=100)
     anim.save(fname, dpi=200, writer='imagemagick')
+
+
+def fill_between(p, domain, range_1, range_2, **kwargs):
+    """
+    Creates a shaded area between two curves on a bokeh figure
+    similar to matplotlibs `fill_between`.
+    Parameters
+    ----------
+    p : Bokeh Figure
+        Figure canvas on which to plot shaded region.
+    domain : numpy array
+        Range of x-values over which to shade
+    range_1, range_2 : numpy array
+        The two curves to fill between.
+    """
+
+    # Ensure that domain, range_1, and range_2 are the same length.
+    lengths = np.unique([len(domain), len(range_1), len(range_2)])
+    if len(lengths) > 1:
+        raise RuntimeError(
+            "domain, range_1, and range_2 must be the same length.")
+
+    # Set up the patch objects.
+    patch_x = np.append(domain, domain[::-1])
+    patch_y = np.append(range_1, range_2[::-1])
+
+    # Add a patch to the bokeh Figure.
+    p.patch(patch_x, patch_y, **kwargs)

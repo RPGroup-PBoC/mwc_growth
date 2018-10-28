@@ -43,6 +43,11 @@ for g, d in _fluct_df.groupby(['carbon', 'date', 'run_no']):
     _fc_data['mean_mCherry'] -= (mean_auto_mch + _fc_data['mCherry_bg_val'])
     _fc_data['mean_yfp'] -= (mean_auto_yfp + _fc_data['yfp_bg_val'])
     _fc_data['total_mCherry'] = _fc_data['mean_mCherry'] * _fc_data['area_pix']
+    
+    # Compute the repressors per cell from day-to-day calibration factor. 
+    _fc_data['repressors'] = _fc_data['total_mCherry'] / _fc_data['alpha_mode']
+    _fc_data['repressors_min'] = _fc_data['total_mCherry'] / _fc_data['alpha_hpd_min']
+    _fc_data['repressors_max'] = _fc_data['total_mCherry'] / _fc_data['alpha_hpd_max']
      
     # Subtract from the fluctuation data. 
     d['I_1'] = (d['I_1'] - d['bg_val'] - mean_auto_mch) * d['area_1']
