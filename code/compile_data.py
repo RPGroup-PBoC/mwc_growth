@@ -48,6 +48,9 @@ for g, d in _fluct_df.groupby(['carbon', 'date', 'run_no']):
     d['I_1'] = (d['I_1'] - d['bg_val'] - mean_auto_mch) * d['area_1']
     d['I_2'] = (d['I_2'] - d['bg_val'] - mean_auto_mch) * d['area_2']
     
+    # Ensure positivity
+    d = d[(d['I_1'] >= 0) & (d['I_2'] >= 0)]
+    
     # Compute the fluctuations and squared differences for simple plotting. 
     d['summed'] = d['I_1'] + d['I_2']
     d['sq_fluct'] = (d['I_1'] - d['I_2'])**2
