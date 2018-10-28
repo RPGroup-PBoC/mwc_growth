@@ -3,6 +3,7 @@ import sys
 sys.path.insert(0, '../../')
 import numpy as np 
 import pandas as pd 
+import tqdm
 import mwc.bayes
 import mwc.stats
 
@@ -43,7 +44,7 @@ for g, d in fluct_data.groupby('carbon'):
     rep_mode = np.zeros(len(_fc_data))
     rep_max = np.zeros(len(_fc_data))
     rep_min = np.zeros(len(_fc_data))
-    for i in range(len(_fc_data)):
+    for i in tqdm.tqdm(range(len(_fc_data)), desc='Counting repressors...'):
         cell = samples_df[f'rep_per_cell[{i+1}]'].values
         rep_mode[i] = cell[ind]
         _min, _max = mwc.stats.compute_hpd(cell, 0.95)
