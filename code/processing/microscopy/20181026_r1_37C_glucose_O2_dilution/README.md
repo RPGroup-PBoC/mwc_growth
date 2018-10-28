@@ -1,12 +1,12 @@
 ---
 status: Rejected 
-reason: experiment not yet completed
+reason: Like in the case with the 20181026 Acetate experiment, there was no induction with ATC. Not sure what's happening, but I will remake some materials for the next round
 ---
 
-# YEAR-MONTH-DATE TEMP CARBON OPERATOR Dilution
+# 2018-10-26 37C Glucose O2 Dilution
 
 ## Purpose
-
+This experiment was a biological replicate of a low atc induction series.
 
 ## Strain Information
 
@@ -24,7 +24,7 @@ reason: experiment not yet completed
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-
+Nothing notable happened during the experiment, but it seems like there was no observed induction
  
 ## Analysis Files
 
@@ -38,9 +38,9 @@ reason: experiment not yet completed
 
 1. Cells as described in "Strain Information" were grown to saturation in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain).
 
-2. Cells were diluted 1:XXX into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
+2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for X hours at 37°C with shaking at ~ 220 RPM.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 8 hours at 37°C with shaking at ~ 220 RPM.
 
 4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room and harvested.
 
@@ -63,6 +63,6 @@ reason: experiment not yet completed
 
 7. Approximately 15 positions were then marked on the `dilution` mixture pad. These positions were chosen requiring separation of cells and avoidance of debris.
 
-8. These were positions were imaged every XX minutes for XX hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
+8. These were positions were imaged every 5 minutes for 1.5 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
 
 9. The samples were discarded and the dataset was transferred to the storage server.
