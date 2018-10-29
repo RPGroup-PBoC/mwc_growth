@@ -8,12 +8,12 @@ import bokeh.io
 import bokeh.plotting
 import bokeh.layouts
 
-def dilution_summary(fluct_df, alpha_samples, fname=None, ip_dist=0.065,
+def dilution_summary(fluct_df, mean_auto, alpha_samples, fname=None, ip_dist=0.065,
                     title=None):
     """Generates a Bokeh plot summarzing the dilution data."""
     # Compute necessary properties.
-    fluct_df['I_1_sub'] = fluct_df['I_1'] - fluct_df['bg_val']
-    fluct_df['I_2_sub'] = fluct_df['I_2'] - fluct_df['bg_val']
+    fluct_df['I_1_sub'] = fluct_df['I_1'] - mean_auto
+    fluct_df['I_2_sub'] = fluct_df['I_2'] - mean_auto
     
     # Determine if the fluctuations have been calculated
     if 'summed' not in fluct_df.keys():
@@ -89,8 +89,9 @@ def fc_summary_microscopy(fc_data, alpha_samples, fname=None, constants=None,
                           operator='O2', title=None):
     """Generates a summary plot of measured fold-change"""    
     # Compute the credible regions and median for repressors per cell
+    mean_auto = fc_data[fc_data['strain']=='auto']['mean_mCherry'].mean()
     hpd = compute_hpd(alpha_samples['alpha'], 0.95)
-    int_mCherry = (fc_data['mean_mCherry'] - fc_data['mCherry_bg_val']) * fc_data['area_pix'] 
+    int_mCherry = (fc_data['mean_mCherry'] - mean_auto) * fc_data['area_pix'] 
     fc_data['repressors_min'] = int_mCherry / hpd[0]
     fc_data['repressors_max'] = int_mCherry / hpd[1]
     fc_data['repressors_median'] = int_mCherry / np.median(alpha_samples['alpha'])
