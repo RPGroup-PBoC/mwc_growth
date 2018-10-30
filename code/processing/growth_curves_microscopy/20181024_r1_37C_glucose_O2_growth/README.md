@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: Need to examine the growth curves more carefully. 
 ---
 
 # 2018-10-24 37C Glucose O2 Microscopy Growth Measurement
