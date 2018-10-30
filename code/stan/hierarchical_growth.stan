@@ -59,7 +59,7 @@ model {
     log_r_2_raw ~ normal(0, 1);
     log_r_3_raw ~ normal(0, 1);
     tau_r ~ lognormal(0, 2);
-    tau_sigma ~ lognormal(0, 2);
+    tau_sigma ~ inv_gamma(2, 2);
     log_area ~ normal(mu, sigma_3[index_2]);    
 }
 
