@@ -11,6 +11,7 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 import os
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from scipy.signal import gaussian, convolve

@@ -12,13 +12,13 @@
 */
 
 data {
-    int<lower=1> J_1;
-    int<lower=1> J_2;
-    int<lower=1> N;
-    int<lower=1, upper=J_1> index_1[J_2];
-    int<lower=1, upper=J_2> index_2[N]; 
-    vector<lower=0>[N] area;
-    vector<lower=0>[N] time;
+    int<lower=1> J_1; // Number of biological replicates
+    int<lower=1> J_2; // Number of microcolonies
+    int<lower=1> N; // Number of area measurements
+    int<lower=1, upper=J_1> index_1[J_2]; // ID vector of colonies to days
+    int<lower=1, upper=J_2> index_2[N];  // ID vector of measurements to colonies
+    vector<lower=0>[N] area; // Measured cell area in units of square microns
+    vector<lower=0>[N] time; // Time in units of minutes
     }
    
 transformed data {
@@ -30,7 +30,7 @@ parameters {
     real log_sigma;
     real<lower=0> tau_r;
     real<lower=0> tau_sigma;
-    vector[J_2] log_area_0;
+    vector<lower=0>[J_2] area_0;
     vector[J_1] log_r_2_raw;
     vector[J_2] log_r_3_raw;
     vector[J_1] log_sigma_2_raw;
@@ -50,19 +50,17 @@ transformed parameters {
 }
 
 model {
-    vector[N] mu  = log_area_0[index_2]  + r_3[index_2] .* time;
+    vector[N] mu  = log(area_0[index_2])  + time ./ r_3[index_2];
     r ~ normal(0, 1);
     log_sigma ~ normal(0, 2);
-    log_area_0 ~ normal(0, 2);
+    area_0 ~ normal(0, 10);
     log_sigma_2_raw ~ normal(0, 1);
     log_sigma_2_raw ~ normal(0, 1);
     log_r_2_raw ~ normal(0, 1);
     log_r_3_raw ~ normal(0, 1);
-    tau_r ~ lognormal(-1, 2);
-    tau_sigma ~ normal(0, 2);
+    tau_r ~ lognormal(0, 2);
+    tau_sigma ~ lognormal(0, 2);
     log_area ~ normal(mu, sigma_3[index_2]);    
 }
 
-generated quantities {
-    real lambda = 1 / r;
-}
+

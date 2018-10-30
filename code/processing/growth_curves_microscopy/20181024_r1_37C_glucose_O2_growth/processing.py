@@ -30,7 +30,7 @@ if os.path.isdir('output') == False:
     os.mkdir('output')
 
 # Determine the max number of poisitions
-files = np.sort(glob.glob(f'../../../../data/images/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_growth/*c2.tif'))
+files = np.sort(glob.glob(f'/Volumes/GDC_DATA_2/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_growth/*c2.tif'))
 NUM_POS = int(files[-1].split('xy')[-1].split('c')[0])
 
 # Determine the max number of positions
@@ -39,7 +39,7 @@ df = pd.DataFrame([], columns=['date', 'carbon', 'temp_C', 'operator', 'colony_i
 col_no = 1
 for i in range(NUM_POS): 
     files = glob.glob(
-        '../../../../data/images/{}_r{}_{}C_{}_{}_growth/*xy{:02d}c2*.tif'.format(DATE, RUN_NO,
+        '/Volumes/GDC_DATA_2/{}_r{}_{}C_{}_{}_growth/*xy{:02d}c2*.tif'.format(DATE, RUN_NO,
                                                                 TEMP, CARBON, 
                                                                 OPERATOR, i+1))
     files = np.sort(files)
