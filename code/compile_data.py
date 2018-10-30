@@ -17,19 +17,11 @@ fluct_dfs = []
 fc_dfs = []
 samp_dfs = []
 for _, d in enumerate(dil_exp):
-    date, temp, run_no, carbon, operator, _ = d.split('/')[-1].split('_')
-    date = int(float(date))
-    run_no = int(float(run_no.split('r')[-1]))
-    temp = int(temp.split('C')[0])
-    
-    # Load the readme file.
     info = mwc.io.scrape_frontmatter(f'{d}')
 
     if info['status'].lower() == 'accepted':
         fluct_df = pd.read_csv(glob.glob(f'{d}/output/*fluctuations.csv')[0])
         fc_df = pd.read_csv(glob.glob(f'{d}/output/*foldchange.csv')[0])
-        samp_df = pd.read_csv(glob.glob(f'{d}/output/*samples.csv')[0])
-        samp_df['carbon'] = 
         fluct_dfs.append(fluct_df)
         fc_dfs.append(fc_df)
 _fluct_df = pd.concat(fluct_dfs, sort=False)
@@ -77,16 +69,18 @@ fc_df = pd.concat(fc_dfs, sort=False)
 fluct_df.to_csv('../data/compiled_fluctuations.csv', index=False)
 fc_df.to_csv('../data/compiled_fold_change.csv', index=False)
 
-# # Find all microscopy growth experiments. 
-# growth_exp = glob.glob(f'{data_dir}*growth')
-# growth_dfs = []
-# for _, d in enumerate(growth_exp):
-#     # Load the readme file.
-#     info = mwc.io.scrape_frontmatter(f'{d}')
+
+# Find all microscopy growth experiments. 
+data_dir = '../code/processing/growth_curves_microscopy/'
+growth_exp = glob.glob(f'{data_dir}*growth')
+growth_dfs = []
+for _, d in enumerate(growth_exp):
+    # Load the readme file.
+    info = mwc.io.scrape_frontmatter(f'{d}')
     
-#     if info['status'].lower() == 'accepted':
-#         growth_df = pd.read_csv(glob.glob(f'{d}/output/*growth.csv')[0])
-#         growth_dfs.append(growth_df)
-# growth_df = pd.concat(growth_dfs)
-# growth_df.to_csv('../data/compiled_growth_microscopy.csv', index=False)
+    if info['status'].lower() == 'accepted':
+        growth_df = pd.read_csv(glob.glob(f'{d}/output/*growth.csv')[0])
+        growth_dfs.append(growth_df)
+growth_df = pd.concat(growth_dfs)
+growth_df.to_csv('../data/compiled_growth_microscopy.csv', index=False)
 print('all data compiled')
