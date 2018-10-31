@@ -19,15 +19,21 @@ transformed data {
 }
 
 parameters {
-    vector[J] log_A_0;
+    vector[J] log_A0;
     vector[J] log_r;
     vector[J] log_sigma;
 }
 
+transformed parameters {  
+    vector[J] sigma = exp(log_sigma);
+    vector[J] r = exp(log_r);
+    vector[J] A0 = exp(log_A0);    
+}
+
 model {
     // Set the priors
-    log_A_0 ~ normal(0, 1);
-    log_r ~ normal(0, 1);
+    log_A0 ~ normal(0, 1);
+    log_r ~ normal(0, 2);
     log_sigma ~ normal(0, 2); 
-    log_area ~ normal(log_A_0[index_1]  + exp(log_r[index_1]) .* time, exp(log_sigma[index_1]));
+    log_area ~ normal(log_A0[index_1] + time ./ r[index_1], sigma[index_1]);
 }

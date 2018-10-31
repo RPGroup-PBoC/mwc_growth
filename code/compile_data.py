@@ -17,11 +17,14 @@ fluct_dfs = []
 fc_dfs = []
 samp_dfs = []
 for _, d in enumerate(dil_exp):
+    date, run, temp, carbon, op, _ = d.split('/')[-1].split('_')
     info = mwc.io.scrape_frontmatter(f'{d}')
-
     if info['status'].lower() == 'accepted':
         fluct_df = pd.read_csv(glob.glob(f'{d}/output/*fluctuations.csv')[0])
         fc_df = pd.read_csv(glob.glob(f'{d}/output/*foldchange.csv')[0])
+        # Remove a problem data point.
+        if (date == '20181026') & (carbon == 'glycerol'):
+            fc_df = fc_df[fc_df['atc_ngml'] != 0.7] 
         fluct_dfs.append(fluct_df)
         fc_dfs.append(fc_df)
 _fluct_df = pd.concat(fluct_dfs, sort=False)
