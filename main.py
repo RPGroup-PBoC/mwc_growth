@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-    
 import sys
 import mwc.io
-from dilution_experiments import  dilution_forager
+from forager/dilution import  dilution_forager
 import pandas as pd
 import bokeh.io
 import bokeh.plotting
