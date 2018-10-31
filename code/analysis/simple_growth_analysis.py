@@ -9,16 +9,15 @@ import mwc.bayes
 
 # Load the growth curve data. 
 growth = pd.read_csv('../../data/compiled_growth_microscopy.csv')
-
-# Compute the means for each growth curve. 
-grouped = growth.groupby(['carbon', 'date', 'time_min']).mean().reset_index()
+grouped = growth.groupby(['carbon', 'time_min']).mean().reset_index()
 
 # Add proper identifiers. 
 grouped['idx'] = grouped.groupby(['carbon']).ngroup() + 1
 dfs = []
 for g, d in grouped.groupby(['carbon']):
     d = d.copy()
-    d['time_min'] -= d['time_min']
+    d.sort_values(by='time_min', inplace=True)
+    d['time_min'] -= d['time_min'].min()
     if g == 'acetate':
         d['time_min'] = np.arange(0, len(d), 1) * 10
     dfs.append(d)
