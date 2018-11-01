@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*- 
-
 import sys
 sys.path.insert(0, '../../')
 import numpy as np
@@ -18,11 +17,13 @@ growth_samples = pd.read_csv('../../data/mean_area_growth_samples.csv')
 color_key = {c:colors[i] for i, c in enumerate(growth_data['carbon'].unique())}
 
 grouped = growth_data.groupby(['carbon', 'time_min']).mean().reset_index()
-fig, ax = plt.subplots(figsize=(6, 4))
+fig, ax = plt.subplots(figsize=(5, 5))
 ax.set_xlim([0, 480])
 ax.set_ylim([0, 60])
-ax.set_xlabel('time [min]', fontsize=12)
-ax.set_ylabel(r'segmented area [µm$^2$]', fontsize=12)
+ax.set_xlabel('time [min]', fontsize=18)
+ax.set_ylabel(r'segmented area [µm$^2$]', fontsize=18)
+ax.xaxis.set_tick_params(labelsize=14)
+ax.yaxis.set_tick_params(labelsize=14)
 # ax.set_yscale('log')
 # Plot the data
 t_double = {}
