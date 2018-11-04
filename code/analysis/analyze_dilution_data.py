@@ -24,19 +24,19 @@ for g, d in fluct_data.groupby(['carbon']):
     
     # Compute the mean autofluorescence for each channel. 
     auto = _fc_data[_fc_data['strain']=='auto']
-    mean_auto_mch = np.mean(auto['mean_mCherry'] - auto['mCherry_bg_val'])
-    mean_auto_yfp = np.mean(auto['mean_yfp'] - auto['yfp_bg_val'])
+    mean_auto_mch = np.mean(auto['mean_mCherry'])
+    mean_auto_yfp = np.mean(auto['mean_yfp'])
 
     # Perform necessary background subtraction for fluctuation measurements. 
-    d['I_1_sub'] = (d['I_1'] - d['bg_val'] - mean_auto_mch) * d['area_1']
-    d['I_2_sub'] = (d['I_2'] - d['bg_val'] - mean_auto_mch) * d['area_2']
+    d['I_1_sub'] = (d['I_1']- mean_auto_mch) * d['area_1']
+    d['I_2_sub'] = (d['I_2']- mean_auto_mch) * d['area_2']
 
     # Ensure positivity. 
     d = d[(d['I_1_sub'] >= 0) & (d['I_2_sub'] >= 0)]
 
     # Perform background subtraction for fluorescence measurements. 
-    _fc_data['yfp_sub'] = (_fc_data['mean_yfp'] - _fc_data['yfp_bg_val']) * _fc_data['area_pix']
-    _fc_data['mch_sub'] = (_fc_data['mean_mCherry'] - _fc_data['mCherry_bg_val']) * _fc_data['area_pix']
+    _fc_data['yfp_sub'] = _fc_data['mean_yfp'] * _fc_data['area_pix']
+    _fc_data['mch_sub'] = _fc_data['mean_mCherry'] * _fc_data['area_pix']
 
     # Add relevant identifiers to each data set. 
     d['date_idx'] = d.groupby(['date']).ngroup() + 1

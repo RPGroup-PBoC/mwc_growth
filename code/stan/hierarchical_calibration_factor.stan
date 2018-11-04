@@ -47,7 +47,7 @@ parameters {
 
 transformed parameters {
     // Non-centered parameterization for means
-    vector<lower=0>[J_exp] alpha_2 = alpha_1 + tau_alpha * alpha_2_raw; 
+    vector[J_exp] alpha_2 = alpha_1 + tau_alpha * alpha_2_raw; 
   }
   
 model {
