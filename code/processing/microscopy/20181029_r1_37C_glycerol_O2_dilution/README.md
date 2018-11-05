@@ -25,7 +25,8 @@ A biological replicate of a low ATC induction series
 
 ## Notes & Observations
 * It took a longer time to get the cells to the proper OD. This could be due to a non saturated LB starting culture.
- 
+* Cells were harvested at OD<sub>600nm</sub> 0.3 - 0.4 for `autofluoresence` and `deltaLacI` samples, and at 0.1 - 0.3 for `dilution`, except for two `dilution` samples reading an OD<sub>600nm</sub> of 0.0. These two tubes could be seen to have cells and were treated normally during the microscopy protocol.
+
 ## Analysis Files
 
 **Calibration Factor Determination**
@@ -52,7 +53,7 @@ A biological replicate of a low ATC induction series
 
 3. The washed `dilution` mixture was diluted 1:5 into ATC-free growth medium. Aliquots of 1µL were spotted onto 3% agarose pads made of the growth medium.
 
-4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations) were diluted 1:10 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
+4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations except 10ng/mL) were diluted 1:10 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
 
 5. Agarose pads spotted with cells were allowed to dry and were then placed onto a glass bottom dish.
 

@@ -25,7 +25,7 @@ This experiment was a biological replicate of the low ATC induction series.
 
 ## Notes & Observations
 * There were occasionally cells very bright in YFP while acquiring the snapshots, even for the high ATC concentrations. These points, however, do not reveal themselves in the summary plots and are likely okay. 
-* There was an error in setting up the experiment for the 0.7 ng/mL ATC concentration. I must have missed that tube because there is a drastic drop to 0 repressors per cell for that concentration. 
+* There was an error in setting up the experiment for the 0.7 ng/mL ATC concentration. I must have missed that tube because there is a drastic drop to 0 repressors per cell for that concentration.
  
 ## Analysis Files
 
@@ -53,7 +53,7 @@ This experiment was a biological replicate of the low ATC induction series.
 
 3. The washed `dilution` mixture was diluted 1:5 into ATC-free growth medium. Aliquots of 1µL were spotted onto 3% agarose pads made of the growth medium.
 
-4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations) were diluted 1:10 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
+4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations except 10ng/mL) were diluted 1:10 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
 
 5. Agarose pads spotted with cells were allowed to dry and were then placed onto a glass bottom dish.
 
