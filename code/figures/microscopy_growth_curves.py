@@ -24,7 +24,10 @@ ax.set_xlabel('time [min]', fontsize=18)
 ax.set_ylabel(r'segmented area [µm$^2$]', fontsize=18)
 ax.xaxis.set_tick_params(labelsize=14)
 ax.yaxis.set_tick_params(labelsize=14)
-# ax.set_yscale('log')
+
+# Plot glyphs for legend.
+ax.plot([], [], '.', color='k', label='data')
+ax.plot([], [], '-', color='k', label='fit')
 # Plot the data
 t_double = {}
 for g, d in grouped.groupby(['carbon']):
@@ -32,7 +35,7 @@ for g, d in grouped.groupby(['carbon']):
         time = np.arange(0, len(d), 1) * 10
     else:
         time = d['time_min'] - d['time_min'].min()
-    ax.plot(time, d['area'] , '.', color=color_key[g], ms=5, label=g)
+    ax.plot(time[::3], d['area'][::3] , '.', color=color_key[g], ms=10, label='__nolegend__')
     
     time_range = np.linspace(0, 500, 500)
     cred_region = np.zeros((2, len(time_range)))
@@ -42,6 +45,7 @@ for g, d in grouped.groupby(['carbon']):
     for i, t in enumerate(time_range):
         fit = np.exp(growth_samples[f'log_A0.{g}']) * np.exp(t / growth_samples[f'r.{g}'])
         cred_region[:, i] = mwc.stats.compute_hpd(fit, 0.95)
-    ax.fill_between(time_range, cred_region[0, :], cred_region[1, :], alpha=0.5, color=color_key[g])
-                   
+    ax.fill_between(time_range, cred_region[0, :], cred_region[1, :], alpha=0.5, color=color_key[g],
+                   label='__nolegend__')
+plt.legend(fontsize=14, loc='upper left')                   
 plt.savefig('../../figs/microscopy_growth_curves.svg', bbox_inches='tight') 

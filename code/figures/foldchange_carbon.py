@@ -14,7 +14,7 @@ colors = mwc.viz.pub_style()
 fc_data = pd.read_csv('../../data/compiled_fold_change.csv')
 
 # Assign colors. 
-color_key = {c:colors[i] for i, c in enumerate(fc_data['carbon'].unique())}
+color_key = {'acetate':colors[1], 'glycerol':colors[2], 'glucose': colors[0]}
 
 # Compute the mean and sem for each carbon. 
 dilution = fc_data[(fc_data['strain']=='dilution') & (fc_data['repressors'] >= 20) & (fc_data['fold_change'])]
@@ -33,7 +33,7 @@ ax.xaxis.set_tick_params(labelsize=14)
 ax.yaxis.set_tick_params(labelsize=14)
 ax.set_xscale('log')
 ax.set_yscale('log')
-ax.set_xlim([0, 5E3])
+ax.set_xlim([10, 1E3])
 
 # Plot the repressors. 
 _ = ax.plot(rep_range, theo, 'k-', lw=2, label='prediction')
