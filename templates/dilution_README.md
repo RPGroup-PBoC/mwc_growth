@@ -52,7 +52,7 @@ reason: experiment not yet completed
 
 3. The washed `dilution` mixture was diluted 1:5 into ATC-free growth medium. Aliquots of 1µL were spotted onto 3% agarose pads made of the growth medium.
 
-4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations) were diluted 1:10 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
+4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations except 10ng/mL) were diluted 1:10 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
 
 5. Agarose pads spotted with cells were allowed to dry and were then placed onto a glass bottom dish.
 
