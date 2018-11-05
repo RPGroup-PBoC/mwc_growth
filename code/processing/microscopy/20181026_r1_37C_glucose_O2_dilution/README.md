@@ -1,6 +1,6 @@
 ---
 status: Rejected 
-reason: Like in the case with the 20181026 Acetate experiment, there was no induction with ATC. Not sure what's happening, but I will remake some materials for the next round
+reason: The mCherry channel was diverted to the eyepiece, so no mCherry expression could be observed in the images.
 ---
 
 # 2018-10-26 37C Glucose O2 Dilution
@@ -24,8 +24,10 @@ This experiment was a biological replicate of a low atc induction series.
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-Nothing notable happened during the experiment, but it seems like there was no observed induction
- 
+* Cells were harvested at OD<sub>600nm</sub> 0.25 - 0.45, except for auto, which was at 0.5. 
+* The `deltaLacI` strain was at a different OD than the others, potentially due to an error during dilution, as the tube only had 2mL instead of 3mL culture volume. This sample was back diluted 2x.
+* All samples were back diluted 2x to adjust the experiment timing.
+
 ## Analysis Files
 
 **Calibration Factor Determination**
@@ -38,11 +40,11 @@ Nothing notable happened during the experiment, but it seems like there was no o
 
 1. Cells as described in "Strain Information" were grown to saturation in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain).
 
-2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
+2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration. It seems likely `deltaLacI` was diluted into only 2mL accidentally.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 8 hours at 37°C with shaking at ~ 220 RPM.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 8 hours at 37°C with shaking at ~ 220 RPM. ~3.5 hours before harvesting, the `deltaLacI` sample was diluted 1:2 to bring it to the OD<sub>600nm</sub> of the other samples. ~1.5 hours before harvesting, all samples were diluted 1:2 to adjust experimental timing.
 
-4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room and harvested.
+4. Once the cells reached an OD<sub>600nm</sub> between 0.25 - 0.45, the cells were removed from the warm room and harvested.
 
 **Microscopy**
 
@@ -52,7 +54,7 @@ Nothing notable happened during the experiment, but it seems like there was no o
 
 3. The washed `dilution` mixture was diluted 1:5 into ATC-free growth medium. Aliquots of 1µL were spotted onto 3% agarose pads made of the growth medium.
 
-4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations) were diluted 1:10 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
+4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations except 10ng/mL) were diluted 1:10 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
 
 5. Agarose pads spotted with cells were allowed to dry and were then placed onto a glass bottom dish.
 

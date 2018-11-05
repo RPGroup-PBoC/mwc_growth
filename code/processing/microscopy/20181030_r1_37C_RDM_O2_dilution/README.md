@@ -24,10 +24,11 @@ reason: Very low number of detected cells, leading me to think different constan
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-* The cells are considerably larger than those grown in M9, leading me to think the segmentation constants will need to be changed. 
-* Due to fast generation times, cells had doubled for the later ATC concentration snapshots, which could pose a problem in analysis. 
-* Growth of 45 minutes was too long and can likely be cut to 20 or 30 minutes in future experiments. 
- 
+* The cells are considerably larger than those grown in M9, leading me to think the segmentation constants will need to be changed.
+* Due to fast generation times, cells had doubled for the later ATC concentration snapshots, which could pose a problem in analysis.
+* Growth of 45 minutes was too long and can likely be cut to 20 or 30 minutes in future experiments.
+* The first 3 or 4 positions on the growth pad were imaged for the final fluoresence batch, initially out of focus, and then retaken. They didn't appear to be bleached, since the initial exposures were so out of focus, so they were not removed from the analysis.
+
 ## Analysis Files
 
 **Calibration Factor Determination**
@@ -54,7 +55,7 @@ reason: Very low number of detected cells, leading me to think different constan
 
 3. The washed `dilution` mixture was diluted 1:5 into ATC-free growth medium. Aliquots of 1µL were spotted onto 3% agarose pads made of the growth medium.
 
-4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations) were diluted 1:10 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
+4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations except 10ng/mL) were diluted 1:10 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
 
 5. Agarose pads spotted with cells were allowed to dry and were then placed onto a glass bottom dish.
 

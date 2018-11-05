@@ -1,6 +1,6 @@
 ---
 status: Rejected
-reason: Something pathological with the data. There was little expression of mCherry, even at high induction levels. Something likely went wrong with the inoculation. 
+reason: The mCherry channel was diverted to the eyepiece, so no mCherry expression could be observed in the images. 
 ---
 
 # 2018-10-26 37C Acetate O2 Dilution
@@ -24,6 +24,7 @@ This experiment was a biological replicate of the high ATC induction range.
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
+* Cells were harvested a bit later than normal with OD_600nm_ for the `dilution` strains between 0.35 - 0.45, the `autofluoresence` strain at 0.38, and the `deltaLacI` strain at 0.11.
 
 ## Analysis Files
 
@@ -62,6 +63,6 @@ This experiment was a biological replicate of the high ATC induction range.
 
 7. Approximately 15 positions were then marked on the `dilution` mixture pad. These positions were chosen requiring separation of cells and avoidance of debris.
 
-8. These were positions were imaged every XX minutes for XX hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
+8. These were positions were imaged every 10 minutes for 4 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
 
 9. The samples were discarded and the dataset was transferred to the storage server.
