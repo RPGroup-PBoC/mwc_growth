@@ -7,8 +7,8 @@ import matplotlib.pyplot as plt
 import mwc.viz
 import mwc.stats
 import bokeh.palettes
-mwc.viz.pub_style()
-colors = bokeh.palettes.viridis(4)
+colors = mwc.viz.pub_style()
+colors = [colors[2], colors[1], colors[0]]
 
 
 # Load the various data
@@ -16,6 +16,7 @@ fc_data = pd.read_csv('../../data/compiled_fold_change.csv')
 growth_samples = pd.read_csv('../../data/mean_area_growth_samples.csv')
 
 # Determine the HPD of growth rate.  ind = np.argmax(growth_samples['lp__'].values)
+ind = np.argmax(growth_samples['lp__'].values)
 growth_rates = {}
 for i, c in enumerate(fc_data['carbon'].unique()):
     r_mode = growth_samples.iloc[ind][f'r.{c}']
@@ -35,16 +36,27 @@ ax.yaxis.set_tick_params(labelsize=14)
 concs = fc_data[(fc_data['strain']=='dilution') & ((fc_data['atc_ngml']==1) |
                                                    (fc_data['atc_ngml']==3) |
                                                    (fc_data['atc_ngml']==10))]
-color_key = {c:colors[i] for i, c in enumerate(concs['atc_ngml'].unique())}
+color_key = {c:colors[i] for i, c in enumerate(concs['carbon'].unique())}
+glyphs = {1.0:'s', 3.0:'D', 10.0:'o'}
 for g, d in concs.groupby(['atc_ngml']): 
+    d = d.copy()
+    d.dropna(inplace=True)
     grouped = d.groupby(['carbon', 'date', 'run_number']).mean().reset_index()
-    grouped_mean = grouped.groupby(['carbon']).mean().reset_index()
-    grouped_sem = grouped.groupby(['carbon']).sem().reset_index()
-    grouped_mean = grouped_mean.sort_values('rate_mode')
-    _ = ax.errorbar(grouped_mean['rate_mode'], grouped_mean['repressors'], grouped_sem['repressors'],
-                    fmt='o', lw=1, color=color_key[g], label=int(g), ms=5, linestyle='-', zorder=100,
-                   capsize=2)
+    grouped_mean = grouped.groupby(['carbon'])
+    for _g, _d in grouped_mean:
+        _ = ax.errorbar(_d['rate_mode'].mean(), _d['repressors'].mean(), 
+                        _d['repressors'].sem(), fmt=glyphs[g], ms=8, markeredgecolor=color_key[_g],
+                       capsize=2, markerfacecolor='w', color=color_key[_g], markeredgewidth=2.5)
 
+    grouped_mean = grouped_mean.mean().reset_index()
+    grouped_mean.sort_values('rate_mode', inplace=True)
+    _ = ax.plot(grouped_mean['rate_mode'], grouped_mean['repressors'], 'k-', lw=1, label='__nolegend__')
+
+# Plot the glyphs.
+for c, g in glyphs.items():
+    _ = ax.plot([], [], g, label=int(c), markerfacecolor='w', markeredgecolor='k', 
+                markeredgewidth=2.5, markersize=8)
+    
 leg = ax.legend(title='ATC [ng / mL]', fontsize=12)    
 leg.get_title().set_fontsize(12)
 plt.savefig('../../figs/reps_v_growthrate.svg', bbox_inches='tight') 
