@@ -3,10 +3,10 @@ status: Rejected
 reason: experiment not yet completed
 ---
 
-# 2018-11-07 37C Acetate O2 Microscopy Growth Measurement
+# 2018-10-28 37C Glucose O2 Microscopy Growth Measurement
 
 ## Purpose
-This experiment aims to measure the growth rate of the *E. coli* strains of interest in acetate at 37°C.
+This experiment aims to measure the growth rate of the *E. coli* strains of interest in glucose at 37°C.
 
 ## Strain Information
 | Location | Plasmid | Genotype | Host Strain | Shorthand |
@@ -21,7 +21,7 @@ This experiment aims to measure the growth rate of the *E. coli* strains of inte
 | Isopropylthiogalactopyranoside (IPTG) | 0|
 
 ## Notes & Observations
-* `deltaLacI` grew very slowly.
+* Cells were harvested at OD_600nm of 0.34.
 
 ## Analysis Files
 
@@ -37,7 +37,7 @@ This experiment aims to measure the growth rate of the *E. coli* strains of inte
 
 2. Cells were diluted 1:1000 into 3mL of growth medium in a 14mL Falcon tube.
 
-3. Cells were allowed to grow for 32 hours at 37°C with shaking at ~ 220 RPM.
+3. Cells were allowed to grow for 8 hours at 37°C with shaking at ~ 220 RPM. Cells were then diluted 1:2 and allowed to grow for another ~ 1 hour.
 
 4. The cells were removed from the shaker and diluted 1:50.
 
@@ -47,6 +47,6 @@ This experiment aims to measure the growth rate of the *E. coli* strains of inte
     - Brightfield - 100ms, gain 4, 12bit
     - YFP - 250ms, gain 4, 12bit
 
-7. One or two positions were marked and were imaged every 10 minutes for 10 hours.
+7. One or two positions were marked and were imaged every 5 minutes for 6 hours.
 
 8. The samples were discarded and the dataset was transferred to the storage server.
