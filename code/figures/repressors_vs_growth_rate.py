@@ -8,7 +8,7 @@ import mwc.viz
 import mwc.stats
 import bokeh.palettes
 colors = mwc.viz.pub_style()
-colors = [colors[2], colors[1], colors[0]]
+colors = [colors[1], colors[0], colors[2]]
 
 
 # Load the various data
