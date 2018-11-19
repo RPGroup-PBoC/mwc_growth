@@ -65,8 +65,6 @@ data {
 
 parameters {
     // Define hyper parameters
-    real<lower=0> alpha_mu;
-    real<lower=0> alpha_sigma;
     real ep_RA;
     real sigma;
     vector<lower=0>[J_conc] R_mu;
@@ -88,8 +86,7 @@ parameters {
 
 model {
     // Define the top-level priors
-    alpha_mu ~ lognormal(0, 3);
-    alpha_sigma ~ normal(0, 10);
+    alpha ~ lognormal(0, 3);
     ep_RA ~ normal(0, 10);
     sigma ~ normal(0, 1);
     R_mu ~ lognormal(0, 3);
@@ -103,7 +100,6 @@ model {
     
     
     // Define the low-level priors
-    alpha ~ normal(alpha_mu, alpha_sigma);
     R_mu_run ~ normal(R_mu[fc_index_conc], R_sigma[fc_index_conc]);
     R_sigma_run ~ normal(R_sigma_mu[fc_index_conc] ,R_sigma_sigma[fc_index_conc]);
     fc_mu_run ~ normal(fc_mu[fc_index_conc], fc_sigma[fc_index_conc]);   
