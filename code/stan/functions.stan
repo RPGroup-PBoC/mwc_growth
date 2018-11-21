@@ -35,10 +35,9 @@ functions{
     * @param ep_ai The energetic difference between the active and inactive
     *        states of the repressor in kBT.
     **/
-    real fold_change(vector R, real Nns, vector ep_r, real ep_ai) {
+    vector fold_change(vector R, real Nns, real ep_r, real ep_ai) {
         // Compute the various componenets piecewise for simplicity.
-        real pact = 1 / (1 + exp(-ep_ai))
-        real rep = 1 / (1 + (R ./ Nns) .* exp(-ep_ai))
-        return rep;
+        real pact = 1 / (1 + exp(-ep_ai));
+        return 1 ./ (1 + pact * (R / Nns) * exp(-ep_r));
         } 
 }
