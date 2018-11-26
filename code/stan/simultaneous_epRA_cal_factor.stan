@@ -39,32 +39,35 @@ data {
 parameters {
     // Define hyper parameters.
     real ep_RA;
-    real sigma;    
+    real<lower=0> sigma;    
     vector<lower=0>[J_conc] R_mu;
     vector<lower=0>[J_conc] R_sigma;
     real<lower=0> alpha_mu;
     real<lower=0> alpha_sigma;
     
     // Define low-level parameters.
-    vector<lower=0>[J_runs] alpha_run;
+    vector[J_runs] alpha_run_raw;
 }
 
-transformed parameters {
+transformed parameters {    
+    
+    // Uncenter the alpha parameter
+    vector[J_runs] alpha_run = alpha_mu + alpha_run_raw * alpha_sigma;
+    
     // Compute the number of repressors per cell based off of inferred alpha. 
     vector[N_fc] inferred_R = mean_mCherry ./ alpha_run[fc_index_run];
 }
 
 model {
     // Define the top-level priors.
-    alpha_mu ~ normal(0, 100);
-    alpha_sigma ~ normal(0, 10);
+    alpha_mu ~ normal(0, 10);
+    alpha_sigma ~ normal(0, 1);
+    alpha_run_raw ~ normal(0, 1);
     ep_RA ~ normal(0, 10);
     sigma ~ normal(0, 1);
     R_mu ~ lognormal(0, 3);
     R_sigma ~ lognormal(0, 2); 
     
-    // Define the low-level priors.
-    alpha_run ~ normal(alpha_mu, alpha_sigma);
     
     // Compute the calibration factor likelihood.
     I_1 ~ GammaApproxBinom(I_2, alpha_run[fluct_index]);
