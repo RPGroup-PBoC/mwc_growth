@@ -60,13 +60,13 @@ transformed parameters {
 
 model {
     // Define the top-level priors.
-    alpha_mu ~ normal(0, 10);
-    alpha_sigma ~ normal(0, 1);
+    alpha_mu ~ lognormal(0, 3);
+    alpha_sigma ~ normal(0, 10);
     alpha_run_raw ~ normal(0, 1);
     ep_RA ~ normal(0, 10);
     sigma ~ normal(0, 1);
     R_mu ~ lognormal(0, 3);
-    R_sigma ~ lognormal(0, 2); 
+    R_sigma ~ lognormal(0, 1); 
     
     
     // Compute the calibration factor likelihood.
