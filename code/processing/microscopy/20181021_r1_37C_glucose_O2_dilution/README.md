@@ -3,10 +3,10 @@ status: Accepted
 reason: The high value for the inferred calibration factor is a bit suspect. There are also not many divisions in the growth series.
 ---
 
-# 2018-10-21 37C glucose O2 dilution
+# 2018-10-21 37C Glucose O2 dilution
 
 ## Purpose
-A biological replicate of a glucose dilution series.
+A biological replicate of an M9 + 0.4% glucose dilution series.
 
 ## Strain Information
 
@@ -39,7 +39,7 @@ A biological replicate of a glucose dilution series.
 
 1. Cells as described in "Strain Information" were grown to saturation in 3mL of LB Miller + chloramphenicol for the `dilution` strain. The cells were assumed to be saturated after this time.
 
-2. Cells were diluted 1:10000 into 3mL of M9 + 0.5% glucose (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
+2. Cells were diluted 1:10000 into 3mL of M9 + 0.4% glucose (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
 3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 8 hours at 37°C with shaking at ~ 220 RPM.
 

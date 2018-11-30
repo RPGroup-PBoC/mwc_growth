@@ -6,7 +6,7 @@ reason: Nothing suspect in data
 # 2018-10-30 37C Acetate O2 Dilution
 
 ## Purpose
-This experiment was the flagship run of a low ATC concentration titration for cells grown on acetate medium.
+This experiment was the flagship run of a low ATC concentration titration for cells grown on M9 + 0.2% acetate medium.
 
 ## Strain Information
 

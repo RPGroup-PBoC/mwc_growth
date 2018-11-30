@@ -3,10 +3,10 @@ status: Rejected
 reason: experiment not yet completed
 ---
 
-# 2018-11-20 37C Glycerol O2 Dilution
+# 2018-11-21 37C Glucose O2 Dilution
 
 ## Purpose
-* This experiment was a biological replicate of the low ATC induction series for cells grown on M9 + .4% glycerol.
+This experiment was a biological replicate of a low-ATC induction series in M9 + 0.4% glucose.
 
 ## Strain Information
 
@@ -24,7 +24,8 @@ reason: experiment not yet completed
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-* Cells were harvested at OD<sub>600nm</sub> ranging from 0.22-0.41, except for the `dilution` samples 1.0ng/ml and 10ng/ml, which were at OD<sub>600nm</sub> ~0.1.
+* All samples were diluted 3x at 5pm.
+* Cells were harvested at OD_600nm 0.28-0.34, except `autofluorescence` which was at 0.37.
  
 ## Analysis Files
 
@@ -40,9 +41,9 @@ reason: experiment not yet completed
 
 2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 14 hours at 37°C with shaking at ~ 220 RPM.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 8 hours at 37°C with shaking at ~ 220 RPM. Cells were then diluted 1:3 and allowed to grow for another 1.5 hours.
 
-4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room and harvested.
+4. Once the cells reached an OD<sub>600nm</sub> ~0.3, the cells were removed from the warm room and harvested.
 
 **Microscopy**
 
@@ -63,6 +64,6 @@ reason: experiment not yet completed
 
 7. Approximately 15 positions were then marked on the `dilution` mixture pad. These positions were chosen requiring separation of cells and avoidance of debris.
 
-8. These were positions were imaged every 7 minutes for 2.5 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
+8. These were positions were imaged every 5 minutes for 6 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
 
 9. The samples were discarded and the dataset was transferred to the storage server.

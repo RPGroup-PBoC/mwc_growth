@@ -3,10 +3,10 @@ status: Accepted
 reason: All validation checks passed
 ---
 
-# 2018-10-25 37C acetate O2 dilution
+# 2018-10-25 37C Acetate O2 dilution
 
 ## Purpose
-This experiment was a biological replicate of the standard high-atc concentration titration series.
+This experiment was a biological replicate of the standard high-atc concentration titration series in M9 + 0.2% acetate.
 
 ## Strain Information
 

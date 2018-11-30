@@ -3,7 +3,7 @@ status: Accepted
 reason: The low concentrations of ATC seem to push us into a nice regime of repressor copy number
 ---
 
-# 2018-10-24 37C glucose O2 dilution
+# 2018-10-24 37C Glucose O2 dilution
 
 ## Purpose
 This is the flagship experiment of a low-ATC titration series to explore regimes <  50 repressors per cell.
@@ -38,7 +38,7 @@ This is the flagship experiment of a low-ATC titration series to explore regimes
 
 1. Cells as described in "Strain Information" were grown to saturation overnight in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain). The cells were assumed to be saturated after this time.
 
-2. Cells were diluted 1:1000 into 3mL of M9 + 0.5% glucose (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
+2. Cells were diluted 1:1000 into 3mL of M9 + 0.4% glucose (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
 3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 8 hours at 37°C with shaking at ~ 220 RPM.
 

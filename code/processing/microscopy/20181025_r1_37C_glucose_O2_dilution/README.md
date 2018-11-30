@@ -3,10 +3,10 @@ status: Accepted
 reason: All validation checks passed
 ---
 
-# 2018-10-25 37C glucose O2 dilution
+# 2018-10-25 37C Glucose O2 dilution
 
 ## Purpose
-This is a biological replicate of a dilution experiment with modified ATC concentrations with cells grown on glucose as a carbon source.
+This is a biological replicate of a dilution experiment with modified ATC concentrations with cells grown on M9 + 0.4% glucose as a carbon source.
 
 ## Strain Information
 

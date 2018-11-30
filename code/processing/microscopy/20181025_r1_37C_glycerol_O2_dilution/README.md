@@ -3,11 +3,11 @@ status: Accepted
 reason: Validation plots look okay. Fold-change is falling beneath the curve. 
 ---
 
-# 2018-10-25 37C glycerol O2 dilution
+# 2018-10-25 37C Glycerol O2 dilution
 
 ## Purpose
 This is the flagship experiment of a low-ATC titration series to explore regimes <  50 repressors per cell
-under glycerol growth conditions.
+under M9 + 0.4% glycerol growth conditions.
 
 ## Strain Information
 
