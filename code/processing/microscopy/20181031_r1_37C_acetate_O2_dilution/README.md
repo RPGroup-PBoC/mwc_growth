@@ -6,7 +6,7 @@ reason: ATC Titration is suspicious -- no clear trend of increasing copy number 
 # 2018-10-31 37C Acetate O2 Dilution
 
 ## Purpose
-* This experiment was a biological replicate of the low ATC induction series for cells grown on acetate
+* This experiment was a biological replicate of the low ATC induction series for cells grown on M9 + 0.2% acetate.
 
 ## Strain Information
 

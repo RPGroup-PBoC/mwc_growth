@@ -6,7 +6,7 @@ reason: experiment not yet completed
 # 2018-11-06 37C Glycerol O2 Dilution
 
 ## Purpose
-* This experiment was a biological replicate of the low ATC induction series for cells grown on glycerol.
+* This experiment was a biological replicate of the low ATC induction series for cells grown on M9 + 0.4% glycerol.
 
 ## Strain Information
 

@@ -6,7 +6,7 @@ reason: Everything looks good, except for 0.7 ng/ml ATC which is obviously wrong
 # 2018-10-26 37C Glycerol O2 Dilution
 
 ## Purpose
-This experiment was a biological replicate of the low ATC induction series.
+This experiment was a biological replicate of the low ATC induction series in M9 + 0.4% glycerol.
 
 ## Strain Information
 

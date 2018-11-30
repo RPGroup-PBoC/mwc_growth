@@ -6,7 +6,7 @@ reason: The mCherry channel was diverted to the eyepiece, so no mCherry expressi
 # 2018-10-26 37C Acetate O2 Dilution
 
 ## Purpose
-This experiment was a biological replicate of the high ATC induction range.
+This experiment was a biological replicate of the high ATC induction range in M9 + 0.2% acetate.
 
 ## Strain Information
 

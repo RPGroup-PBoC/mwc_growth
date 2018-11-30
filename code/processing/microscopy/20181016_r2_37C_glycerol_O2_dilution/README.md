@@ -6,7 +6,7 @@ reason: Something pathological in the data resulting in too many zeros.
 # 2018-10-16 37C Glycerol O2 Dilution (Run 2)
 
 ## Purpose
-A biological replicate of a glycerol dilution series.
+A biological replicate of an M9 + 0.4% glycerol dilution series.
 
 ## Strain Information
 
@@ -39,7 +39,7 @@ A biological replicate of a glycerol dilution series.
 
 1. Cells as described in "Strain Information" were grown to saturation overnight in 3mL of LB Miller + chloramphenicol for the `dilution` strain. The cells were assumed to be saturated during this time.
 
-2. Cells were diluted 1:1000 into 3mL of M9 + 0.5% glycerol (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
+2. Cells were diluted 1:1000 into 3mL of M9 + 0.4% glycerol (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
 3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for ~ 14 hours at 37°C with shaking at ~ 220 RPM. The cells grew to near saturation overnight (OD_600nm_ ~ 0.9) and were further diluted 1:100 and allowed to growth for 9 more hours.
 
@@ -50,9 +50,9 @@ wells were diluted 1:10 into an M9 growth medium.
 
 **Microscopy**
 
-1. The `dilution` mixture was pelleted at 13000xg for 2 min. The supernatant was withdrawn and the pellet was resuspended in 1mL of ATC-free M9 + 0.5% glycerol. This procedure was repeated twice more.
+1. The `dilution` mixture was pelleted at 13000xg for 2 min. The supernatant was withdrawn and the pellet was resuspended in 1mL of ATC-free M9 + 0.4% glycerol. This procedure was repeated twice more.
 
-2. The washed `dilution` mixture was diluted 1:5 into ATC-free M9 + 0.5% glycerol. Aliquots of 1µL were spotted onto 3% agarose pads made of M9 + 0.5% glycerol.
+2. The washed `dilution` mixture was diluted 1:5 into ATC-free M9 + 0.4% glycerol. Aliquots of 1µL were spotted onto 3% agarose pads made of M9 + 0.4% glycerol.
 
 3. Aliquots of 1µL from the other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations) were added to agarose pads
 made of M9 medium with no added carbon.

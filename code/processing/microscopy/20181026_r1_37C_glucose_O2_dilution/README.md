@@ -6,7 +6,7 @@ reason: The mCherry channel was diverted to the eyepiece, so no mCherry expressi
 # 2018-10-26 37C Glucose O2 Dilution
 
 ## Purpose
-This experiment was a biological replicate of a low atc induction series.
+This experiment was a biological replicate of a low atc induction series in M9 + 0.4% glucose.
 
 ## Strain Information
 

@@ -3,10 +3,10 @@ status: Accepted
 reason: All diagnostics look good and nothing is worrysome.
 ---
 
-# 2018-10-23 37C acetate O2 Dilution
+# 2018-10-23 37C Acetate O2 Dilution
 
 ## Purpose
-This experiment was a biological replicate of an M9 + 0.25% acetate growth lac repressor titration.
+This experiment was a biological replicate of an M9 + 0.2% acetate growth lac repressor titration.
 
 ## Strain Information
 

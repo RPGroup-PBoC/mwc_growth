@@ -1,12 +1,12 @@
 ---
-status: Accepted 
-reason:  Looks like a good run! Nothing suspect. 
+status: Rejected 
+reason: experiment not yet completed
 ---
 
-# 2018-10-29 37C Glycerol O2 Dilution
+# 2018-11-26 37C Glucose O2 Dilution
 
 ## Purpose
-A biological replicate of a low ATC induction series in M9 + 0.4% glycerol.
+This is  a low-ATC titration series and the flagship experiment in M9 + 0.5% glucose.
 
 ## Strain Information
 
@@ -24,8 +24,8 @@ A biological replicate of a low ATC induction series in M9 + 0.4% glycerol.
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-* It took a longer time to get the cells to the proper OD. This could be due to a non saturated LB starting culture.
-* Cells were harvested at OD<sub>600nm</sub> 0.3 - 0.4 for `autofluoresence` and `deltaLacI` samples, and at 0.1 - 0.3 for `dilution`, except for two `dilution` samples reading an OD<sub>600nm</sub> of 0.0. These two tubes could be seen to have cells and were treated normally during the microscopy protocol.
+* Cells were harvested at OD_600nm 0.25-0.4, except for `deltaLacI` which was at 0.14. 
+* `Dilution` samples 0.1 and 0.3ngml, and `deltaLacI` were diluted 2x, 3x, and 4x respectively at 6pm.
 
 ## Analysis Files
 
@@ -41,9 +41,9 @@ A biological replicate of a low ATC induction series in M9 + 0.4% glycerol.
 
 2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 13 hours at 37°C with shaking at ~ 220 RPM.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for X hours at 37°C with shaking at ~ 220 RPM. `Dilution` samples 0.1 and 0.3ngml, and `deltaLacI` were diluted 2x, 3x, and 4x respectively, then allowed to grow for another 1.5 hours. All other samples were only allowed to grow for a total of X hours.
 
-4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room and harvested.
+4. Once the cells reached an OD<sub>600nm</sub> between 0.14 - 0.4, the cells were removed from the warm room and harvested.
 
 **Microscopy**
 
@@ -64,6 +64,6 @@ A biological replicate of a low ATC induction series in M9 + 0.4% glycerol.
 
 7. Approximately 15 positions were then marked on the `dilution` mixture pad. These positions were chosen requiring separation of cells and avoidance of debris.
 
-8. These were positions were imaged every 7 minutes for 2.5 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
+8. These were positions were imaged every 5 minutes for 6 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
 
 9. The samples were discarded and the dataset was transferred to the storage server.
