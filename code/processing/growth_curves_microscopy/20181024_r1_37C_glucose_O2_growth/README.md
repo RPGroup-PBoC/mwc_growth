@@ -6,7 +6,7 @@ reason: Need to examine the growth curves more carefully.
 # 2018-10-24 37C Glucose O2 Microscopy Growth Measurement
 
 ## Purpose
-This experiment was the flagship growth experiment in M9 + 0.5% glucose.
+This experiment was the flagship growth experiment in M9 + 0.4% glucose.
 
 ## Strain Information
 | Location | Plasmid | Genotype | Host Strain | Shorthand |

@@ -6,7 +6,7 @@ reason: experiment not yet completed
 # 2018-10-29 37C Glucose O2 Microscopy Growth Measurement
 
 ## Purpose
-This experiment aims to measure the growth rate of the *E. coli* strains of interest in acetate at 37°C.
+This experiment aims to measure the growth rate of the *E. coli* strains of interest in M9 + 0.2% acetate at 37°C.
 
 ## Strain Information
 | Location | Plasmid | Genotype | Host Strain | Shorthand |

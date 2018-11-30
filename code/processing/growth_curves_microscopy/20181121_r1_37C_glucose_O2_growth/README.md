@@ -1,12 +1,12 @@
 ---
-status: Accepted
-reason: Need to examine the growth curves more carefully. 
+status: Rejected 
+reason: experiment not yet completed
 ---
 
-# 2018-10-24 37C Acetate O2 Microscopy Growth Measurement
+# 2018-11-21 37C Glucose O2 Microscopy Growth Measurement
 
 ## Purpose
-This experiment was the flagship growth experiment in M9 + 0.2% acetate.
+This experiment aims to measure the growth rate of the *E. coli* strains of interest in M9 + 0.4% glucose at 37°C.
 
 ## Strain Information
 | Location | Plasmid | Genotype | Host Strain | Shorthand |
@@ -21,7 +21,7 @@ This experiment was the flagship growth experiment in M9 + 0.2% acetate.
 | Isopropylthiogalactopyranoside (IPTG) | 0|
 
 ## Notes & Observations
-* Cells were harvested at an OD_600nm_ of ~0.45.
+
 
 ## Analysis Files
 
@@ -37,7 +37,7 @@ This experiment was the flagship growth experiment in M9 + 0.2% acetate.
 
 2. Cells were diluted 1:1000 into 3mL of growth medium in a 14mL Falcon tube.
 
-3. Cells were allowed to grow for ~28 hours at 37°C with shaking at ~ 220 RPM.
+3. Cells were allowed to grow for 8 hours at 37°C with shaking at ~ 220 RPM. The cells were then diluted 1:4 and allowed to grow for another 3 hours.
 
 4. The cells were removed from the shaker and diluted 1:50.
 
@@ -47,6 +47,6 @@ This experiment was the flagship growth experiment in M9 + 0.2% acetate.
     - Brightfield - 100ms, gain 4, 12bit
     - YFP - 250ms, gain 4, 12bit
 
-7. Between five and ten positions were marked and were imaged every 10 minutes for 12 hours.
+7. One or two positions were marked and were imaged every 5 minutes for 6 hours.
 
 8. The samples were discarded and the dataset was transferred to the storage server.
