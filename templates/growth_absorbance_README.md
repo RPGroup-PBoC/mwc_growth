@@ -27,7 +27,7 @@ This file corresponds to the XX run, although both experiments were conducted co
 
 ## Analysis Files
 
-![](output/X_growth.png)
+![growth curve](output/growth_rate.png)
 
 ## Experimental Protocol
 
