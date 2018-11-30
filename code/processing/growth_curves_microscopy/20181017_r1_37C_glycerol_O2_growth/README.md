@@ -6,7 +6,7 @@ reason:
 # 2018-10-17 Microscopy Growth Measurement
 
 ## Purpose
-This experiment was performed to measure the growth rate of our cells on M9 + 0.5% glycerol.
+This experiment was performed to measure the growth rate of our cells on M9 + 0.4% glycerol.
 
 ## Strain Information
 | Location | Plasmid | Genotype | Host Strain | Shorthand |
