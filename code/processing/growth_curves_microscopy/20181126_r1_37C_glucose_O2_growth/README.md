@@ -22,6 +22,7 @@ This experiment aims to measure the growth rate of the *E. coli* strains of inte
 
 ## Notes & Observations
 * Cells were harvested at OD_600nm 0.36.
+* Images became blurry, but some colonies may be salvagable.
 
 ## Analysis Files
 
