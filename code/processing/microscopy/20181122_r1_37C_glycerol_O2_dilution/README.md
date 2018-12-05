@@ -63,6 +63,6 @@ This experiment was a biological replicate of a low atc induction series in M9 +
 
 7. Approximately 15 positions were then marked on the `dilution` mixture pad. These positions were chosen requiring separation of cells and avoidance of debris.
 
-8. These were positions were imaged every 7 minutes for 8 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
+8. These were positions were imaged every 7 minutes for 2.5 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
 
 9. The samples were discarded and the dataset was transferred to the storage server.

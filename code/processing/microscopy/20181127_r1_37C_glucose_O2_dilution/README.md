@@ -3,10 +3,10 @@ status: Rejected
 reason: experiment not yet completed
 ---
 
-# 2018-11-06 37C Glycerol O2 Dilution
+# 2018-11-27 37C Glucose O2 Dilution
 
 ## Purpose
-* This experiment was a biological replicate of the low ATC induction series for cells grown on M9 + 0.4% glycerol.
+This experiment was a biological replicate of a low-ATC induction series in M9 + 0.5% glucose.
 
 ## Strain Information
 
@@ -24,8 +24,7 @@ reason: experiment not yet completed
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-* All samples grew slower than expected, except for `autofluoresence` which was diluted 3x to bring it down to the ODs of the other samples.
-* Cells were harvested at OD<sub>600nm</sub> of ~ 0.22 - 0.42 at harvest, except for 0.7ng/mL, which was left out of shaker for 2hrs prior to harvesting, and 10ng/mL which was slightly low at an OD<sub>600nm</sub> of ~ 0.15.
+* Cells were harvested at OD<sub>600nm</sub> 0.3 - 0.4, except for `dilution` 0.2ng/mL and 0.7ng/mL, which were at OD<sub>600nm</sub> 0.46 and 0.43 respectively.
 
 ## Analysis Files
 
@@ -41,9 +40,9 @@ reason: experiment not yet completed
 
 2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for ~17 hours at 37°C with shaking at ~ 220 RPM. After only ~14 hours, the `autofluoresence` sample was diluted 1:3 to bring it back to the ODs of the other samples.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 7.5 hours at 37°C with shaking at ~ 220 RPM. They were then diluted 1:3, allowed to grow for 2 more hours, diluted 1:2, allowed to grow for ~ 1.5 more hours, diluted 1:2 and allowed to grow for ~ 1 more hours before harvesting.
 
-4. Once the cells reached an OD<sub>600nm</sub> between 0.25 - 0.45, the cells were removed from the warm room and harvested. The 0.7ng/mL sample was accidentally left stationary in the 37C room for the two hours prior to harvesting, and was harvested at and OD<sub>600nm</sub> of 0.1.
+4. Once the cells reached an OD<sub>600nm</sub> between 0.3 - 0.45, the cells were removed from the warm room and harvested.
 
 **Microscopy**
 
@@ -64,6 +63,6 @@ reason: experiment not yet completed
 
 7. Approximately 15 positions were then marked on the `dilution` mixture pad. These positions were chosen requiring separation of cells and avoidance of debris.
 
-8. These were positions were imaged every 7 minutes for 2.5 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
+8. These were positions were imaged every 5 minutes for 1.5 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
 
 9. The samples were discarded and the dataset was transferred to the storage server.
