@@ -18,8 +18,8 @@ constants = mwc.model.load_constants()
 DATE = 
 RUN_NO = 
 TEMP = 
-CARBON = 
-OPERATOR =  
+CARBON = ''
+OPERATOR = '' 
 IP_DIST = 0.065
 
 
