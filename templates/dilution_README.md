@@ -44,6 +44,20 @@ reason: experiment not yet completed
 
 4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room and harvested.
 
+**Sample OD<sub>600nm</sub> Measurements**
+
+| Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
+| :--- | :---: | :---: |
+| `autofluorescence` | 0 |  |
+| `delta` | 0 |  |
+| `dilution` | 0.1 |  |
+| `dilution` | 0.2 |  |
+| `dilution` | 0.3 |  |
+| `dilution` | 0.4 |  |
+| `dilution` | 0.7 |  |
+| `dilution` | 1 |  |
+| `dilution` | 10 |  |
+
 **Microscopy**
 
 1. A 100µL aliquot of each of the `dilution` samples with varying ATC concentrations were combined in a 1.5mL eppendorf tube.
