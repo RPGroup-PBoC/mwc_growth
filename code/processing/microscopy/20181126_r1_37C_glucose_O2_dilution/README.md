@@ -40,11 +40,25 @@ This is  a low-ATC titration series and the flagship experiment in M9 + 0.5% glu
 
 1. Cells as described in "Strain Information" were grown to saturation in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain).
 
-2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
+2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from 1µg/mL and 100ng/mL stocks in 50% EtOH to the appropriate concentration.
 
 3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 7.5 hours at 37°C with shaking at ~ 220 RPM. `Dilution` samples 0.1 and 0.3ngml, and `deltaLacI` were diluted 2x, 3x, and 4x respectively, then allowed to grow for another 1.5 hours. All other samples were only allowed to grow for a total of 8.5 hours.
 
 4. Once the cells reached an OD<sub>600nm</sub> between 0.14 - 0.4, the cells were removed from the warm room and harvested.
+
+**Sample OD<sub>600nm</sub> Measurements**
+
+| Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
+| :--- | :---: | :---: |
+| `autofluorescence` | 0 | 0.33 |
+| `delta` | 0 | 0.14 |
+| `dilution` | 0.1 | 0.34 |
+| `dilution` | 0.2 | 0.41 |
+| `dilution` | 0.3 | 0.26 |
+| `dilution` | 0.4 | 0.38 |
+| `dilution` | 0.7 | 0.35 |
+| `dilution` | 1 | 0.27 |
+| `dilution` | 10 | 0.29 |
 
 **Microscopy**
 

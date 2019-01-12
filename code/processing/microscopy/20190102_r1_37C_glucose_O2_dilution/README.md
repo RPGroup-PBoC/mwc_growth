@@ -1,12 +1,12 @@
 ---
-status: Accepted
-reason: Nothing suspect in data 
+status: Rejected 
+reason: experiment not yet completed
 ---
 
-# 2018-10-30 37C Acetate O2 Dilution
+# 2019-01-02 37C Glucose O2 Dilution (Run 1)
 
 ## Purpose
-This experiment was the flagship run of a low ATC concentration titration for cells grown on M9 + 0.2% acetate medium.
+This experiment was a biological replicate of a low-ATC induction series in M9 + 0.5% glucose.
 
 ## Strain Information
 
@@ -14,7 +14,7 @@ This experiment was the flagship run of a low ATC concentration titration for ce
 | :------- | :------ | :------- | ----------: | --------: |
 | dilution 1 - pos. 2 | None | `galK<>KD4+noKan, gspI<>4*5noO1v1-cfp` | HG105 | `autofluorescence` |
 | dilution 1 - pos. 5 | `pZS3*PN25-tetR` | `galK<>25O2+11-YFP ybcN<>1-Wiggins2-lacI-mCherry, gspI<>4*5noO1v1-CFP` | HG105 | `dilution`|
-| dilution 1 - pos. 9 | `pZS3*PN25-tetR`| `galK<>25O2+11-YFP, gspI<>4*5noO1v1-CFP` |  HG105 | `deltaLacI` |
+| dilution 1 - pos. 9 | `pZS3*PN25-tetR`| `galK<>25O2+11-YFP, gspI<>4*5noO1v1-CFP` |  HG105 |`deltaLacI` |
 
 ## Titration Series
 
@@ -24,8 +24,10 @@ This experiment was the flagship run of a low ATC concentration titration for ce
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-* Cells were harvested at OD<sub>600nm</sub> of 0.2-.3 for the `autofluorescence` and `dilution` samples, but `deltaLacI` lagged at .1-.2.
- 
+* The `autofluoresence` sample was diluted back 2x shortly before harvesting to bring it to the ODs of the other samples.
+* An initial attempt at microscopy had over-diluted the samples and was abandonded. This represents the second attempt, and as a result the samples were left on the bench for ~1.5 hours between being removed from the shaker and being harvested.
+* Cells were harvested at OD<sub>600nm</sub>s 0.18-0.35.
+
 ## Analysis Files
 
 **Calibration Factor Determination**
@@ -40,9 +42,9 @@ This experiment was the flagship run of a low ATC concentration titration for ce
 
 2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from 1µg/mL and 100ng/mL stocks in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for ~24 hours at 37°C with shaking at ~ 220 RPM.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 7.5 hours at 37°C with shaking at ~ 220 RPM. After 7 hours, the `autofluoresence` strain was diluted 1:2 and allowed to grow for another half hour.
 
-4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room and harvested.
+4. Once the cells reached an OD<sub>600nm</sub> between 0.18 - 0.35, the cells were removed from the warm room. They remained on the bench for 1.5 hours, and were then harvested.
 
 **Microscopy**
 
@@ -50,9 +52,9 @@ This experiment was the flagship run of a low ATC concentration titration for ce
 
 2. This `dilution` mixture was pelleted at 13000xg for 2 min. The supernatant was withdrawn and the pellet was resuspended in 1mL of ATC-free growth medium. This procedure was repeated twice more.
 
-3. The washed `dilution` mixture was diluted 1:5 into ATC-free growth medium. Aliquots of 1µL were spotted onto 3% agarose pads made of the growth medium.
+3. The washed `dilution` mixture was diluted 1:10 into ATC-free growth medium. Aliquots of 1µL were spotted onto 3% agarose pads made of the growth medium.
 
-4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations, except 10ng/ml) were diluted 1:10 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
+4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations except 10ng/mL) were diluted 1:5 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
 
 5. Agarose pads spotted with cells were allowed to dry and were then placed onto a glass bottom dish.
 
@@ -63,6 +65,6 @@ This experiment was the flagship run of a low ATC concentration titration for ce
 
 7. Approximately 15 positions were then marked on the `dilution` mixture pad. These positions were chosen requiring separation of cells and avoidance of debris.
 
-8. These were positions were imaged every 10 minutes for 3.5 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
+8. These were positions were imaged every 5 minutes for 1.5 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
 
 9. The samples were discarded and the dataset was transferred to the storage server.

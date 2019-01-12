@@ -40,7 +40,7 @@ This experiment was a biological replicate of a low atc induction series in M9 +
 
 1. Cells as described in "Strain Information" were grown to saturation in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain).
 
-2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration. It seems likely `deltaLacI` was diluted into only 2mL accidentally.
+2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from 1µg/mL and 100ng/mL stocks in 50% EtOH to the appropriate concentration. It seems likely `deltaLacI` was diluted into only 2mL accidentally.
 
 3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 8 hours at 37°C with shaking at ~ 220 RPM. ~3.5 hours before harvesting, the `deltaLacI` sample was diluted 1:2 to bring it to the OD<sub>600nm</sub> of the other samples. ~1.5 hours before harvesting, all samples were diluted 1:2 to adjust experimental timing.
 

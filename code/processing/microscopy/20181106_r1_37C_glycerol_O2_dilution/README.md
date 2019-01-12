@@ -39,11 +39,25 @@ reason: experiment not yet completed
 
 1. Cells as described in "Strain Information" were grown to saturation in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain).
 
-2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
+2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from 1µg/mL and 100ng/mL stocks in 50% EtOH to the appropriate concentration.
 
 3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for ~17 hours at 37°C with shaking at ~ 220 RPM. After only ~14 hours, the `autofluoresence` sample was diluted 1:3 to bring it back to the ODs of the other samples.
 
 4. Once the cells reached an OD<sub>600nm</sub> between 0.25 - 0.45, the cells were removed from the warm room and harvested. The 0.7ng/mL sample was accidentally left stationary in the 37C room for the two hours prior to harvesting, and was harvested at and OD<sub>600nm</sub> of 0.1.
+
+**Sample OD<sub>600nm</sub> Measurements**
+
+| Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
+| :--- | :---: | :---: |
+| `autofluorescence` | 0 | 0.25 |
+| `delta` | 0 | 0.25 |
+| `dilution` | 0.1 | 0.30 |
+| `dilution` | 0.2 | 0.39 |
+| `dilution` | 0.3 | 0.37 |
+| `dilution` | 0.4 | 0.42 |
+| `dilution` | 0.7 | 0.01 |
+| `dilution` | 1 | 0.22 |
+| `dilution` | 10 | 0.15 |
 
 **Microscopy**
 
