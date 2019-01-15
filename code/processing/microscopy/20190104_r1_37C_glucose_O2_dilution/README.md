@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason:
 ---
 
 # 2019-01-04 37C Glucose O2 Dilution
