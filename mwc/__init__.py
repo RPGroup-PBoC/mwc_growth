@@ -11,6 +11,7 @@ from . import stats
 from . import model
 from . import validation
 from . import process
+from . import fitderiv
 
 
 __author__ = """Griffin Chure"""

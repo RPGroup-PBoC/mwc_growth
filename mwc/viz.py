@@ -67,22 +67,23 @@ def pub_style(return_colors=True):
     if return_colors:
         return colors
 
+    
 def personal_style():
     """
-    Sets the plotting style to my personal preference.
-    """
-    rc = {'axes.facecolor': '#EAECEE',
-          'font.family': 'Arial',
+    Sets the plotting style to my preference
+    """ 
+    rc = {'axes.facecolor': '#f1f2f6',  #'#EAECEE',
+          'font.family': 'sans-serif',
           'font.style': 'italic',
           'axes.grid': True,
           'axes.edgecolor': 'slategray',
           'axes.spines.right': False,
           'axes.spines.top': False,
           'axes.axisbelow': True,
-          'axes.linewidth': 0.75,
+          'axes.linewidth': 1,
           'axes.titlesize': 8,
           'axes.grid': True,
-          'lines.linewidth': 1.2,
+          'lines.linewidth': 2,
           'lines.dash_capstyle': 'round',
           'grid.linestyle': '-',
           'grid.linewidth': 0.75,
@@ -92,19 +93,20 @@ def personal_style():
           'xtick.labelsize': 8,
           'ytick.labelsize': 8,
           'legend.fontsize': 8,
-          'legend.frameon': False,
+          'legend.frameon': True,
           'xtick.color': '#4b4b4b',
           'ytick.color': '#4b4b4b',
           'axes.xmargin': 0.01,
           'axes.ymargin': 0.01,
-          'figure.dpi': 150}
+          'figure.dpi': 100}
 
     # plt.rc('mathtext', fontset='dejavuserif', sf='sans')
     plt.rc('text.latex', preamble=r'\usepackage{mathpazo}')
     matplotlib.style.use(rc)
-    flat = ['#34495e', '#c0392b', '#3498db', '#27ae60', '#7B1FA2', '#d35400']
+    flat = ['#64767C', '#484B3E','#95B7D8', '#699FCE','#6B5E86','#8389B4',  '#A6DCE8', '#72A2B6',
+            '#6D7960']
     sns.set_palette(flat)
-    return flat
+    return flat      
 
 def format_axes(pub_style=False):
     """
