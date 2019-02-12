@@ -343,6 +343,29 @@ class fitderiv:
         if figtitle: plt.title(figtitle)
 
 
+    def plotdoubtime(self, errorfac= 1, xlabel= 'time', ylabel= False, figtitle= False):
+        '''
+        Plots the results of the fit.
+
+        Arguments
+        --
+        char: the type of fit to plot - 'f' or 'df' or 'ddf'
+        errorfac: sets the size of the errorbars to be errorfac times the standard deviation
+        ylabel: the y-axis label
+        figtitle: the title of the figure
+        '''
+        x= getattr(self, 'df')
+        xv= getattr(self, 'df' + 'var')
+        td= np.log(2)/x
+        tdv= xv/x**4
+        plt.plot(self.t, td, 'b')
+        plt.fill_between(self.t, td-errorfac*np.sqrt(tdv), td+errorfac*np.sqrt(tdv), facecolor= 'blue', alpha= 0.2)
+        if ylabel:
+            plt.ylabel(ylabel)
+        else:
+            plt.ylabel('td')
+        plt.xlabel(xlabel)
+        if figtitle: plt.title(figtitle)
 
 
     def calculatestats(self, nosamples= 100, statnames= False, showerrors= True):
