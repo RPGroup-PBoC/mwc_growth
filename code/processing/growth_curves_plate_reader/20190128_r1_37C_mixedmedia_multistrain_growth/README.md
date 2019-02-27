@@ -17,3 +17,4 @@ This experiment aims to measure the growth rate of the *E. coli* strains of inte
 * The 96 well plate used had round wells and a total capacity of 250µL, with 100µL of culture added to each well.
 * The plate was shaken in a linear mode at the fastest speed for the duration of the experiment.
 * Measurements were taken every 7 min for 12 hours (720 min).
+* Plastic dust was observed on the plate at the completion of the experiment, as well as noise in the growth curves of the center wells.

@@ -19,3 +19,4 @@ This experiment aims to measure the growth rate of the *E. coli* strains of inte
 * The plate was shaken in a linear mode at the fastest speed for the duration of the experiment.
 * Measurements were taken every 7 min for 18 hours (1080 min).
 * Two wells and two rows were switched from their intended layout, which is reflected in the analysis.
+* Plastic dust was observed on the plate at the completion of the experiment, as well as noise in the growth curves of the center wells.
