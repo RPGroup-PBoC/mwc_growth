@@ -38,32 +38,32 @@ for g, d in _fluct_df.groupby(['carbon', 'date', 'run_no']):
     _fc_data = fc_df[(fc_df['carbon']==g[0]) &
                      (fc_df['date']==g[1]) & 
                      (fc_df['run_number']==g[2])].copy()
-    auto = _fc_data[_fc_data['strain']=='auto']
-    mean_auto_mch = auto['mean_mCherry'].mean()
-    mean_auto_yfp = auto['mean_yfp'].mean()
+#     auto = _fc_data[_fc_data['strain']=='auto']
+#     mean_auto_mch = auto['mean_mCherry'].mean()
+#     mean_auto_yfp = auto['mean_yfp'].mean()
     
-    # Subtract from the fold-change data
-    _fc_data['mean_mCherry'] -= mean_auto_mch
-    _fc_data['mean_yfp'] -= mean_auto_yfp 
-    _fc_data['total_mCherry'] = _fc_data['mean_mCherry'] * _fc_data['area_pix']
+#     # Subtract from the fold-change data
+#     _fc_data['mean_mCherry'] -= mean_auto_mch
+#     _fc_data['mean_yfp'] -= mean_auto_yfp 
+#     _fc_data['total_mCherry'] = _fc_data['mean_mCherry'] * _fc_data['area_pix']
     
-    # Compute the repressors per cell from day-to-day calibration factor. 
-    _fc_data['repressors'] = _fc_data['total_mCherry'] / _fc_data['alpha_mean']
-    _fc_data['repressors_min'] = _fc_data['total_mCherry'] / _fc_data['alpha_hpd_min']
-    _fc_data['repressors_max'] = _fc_data['total_mCherry'] / _fc_data['alpha_hpd_max']
+#     # Compute the repressors per cell from day-to-day calibration factor. 
+#     _fc_data['repressors'] = _fc_data['total_mCherry'] / _fc_data['alpha_mean']
+#     _fc_data['repressors_min'] = _fc_data['total_mCherry'] / _fc_data['alpha_hpd_min']
+#     _fc_data['repressors_max'] = _fc_data['total_mCherry'] / _fc_data['alpha_hpd_max']
      
-    # Subtract from the fluctuation data. 
-    d['I_1'] = (d['I_1'] - mean_auto_mch) * d['area_1']
-    d['I_2'] = (d['I_2'] - mean_auto_mch) * d['area_2']
+#     # Subtract from the fluctuation data. 
+#     d['I_1'] = (d['I_1'] - mean_auto_mch) * d['area_1']
+#     d['I_2'] = (d['I_2'] - mean_auto_mch) * d['area_2']
     
-    # Ensure positivity
-    d = d[(d['I_1'] >= 0) & (d['I_2'] >= 0)]
+#     # Ensure positivity
+#     d = d[(d['I_1'] >= 0) & (d['I_2'] >= 0)]
     
-    # Compute the fluctuations and squared differences for simple plotting. 
-    d['summed'] = d['I_1'] + d['I_2']
-    d['sq_fluct'] = (d['I_1'] - d['I_2'])**2
+#     # Compute the fluctuations and squared differences for simple plotting. 
+#     d['summed'] = d['I_1'] + d['I_2']
+#     d['sq_fluct'] = (d['I_1'] - d['I_2'])**2
 
-    # Append the dataframes to lists and concatenate.
+#     # Append the dataframes to lists and concatenate.
     fluct_dfs.append(d)
     fc_dfs.append(_fc_data)
     
