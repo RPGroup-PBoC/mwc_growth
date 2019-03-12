@@ -3,7 +3,7 @@
 % Define the experiment parameters.
 addpath(genpath('../../../../../SuperSegger'));
 DATE = '20190305';
-BASENAME = 'r1_37C_glycerol_O2_dilution';
+BASENAME = 'r1_37C_glycerol_O2';
 samples = {'growth'};
 
 % Get the snaps names.

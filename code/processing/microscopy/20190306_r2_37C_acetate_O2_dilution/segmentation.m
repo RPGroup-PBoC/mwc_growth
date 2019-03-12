@@ -3,7 +3,7 @@
 % Define the experiment parameters.
 addpath(genpath('../../../../../SuperSegger'));
 DATE = '20190306';
-BASENAME = 'r2_37C_acetate_O2_dilution';
+BASENAME = 'r2_37C_acetate_O2';
 samples = {'growth'};
 
 % Get the snaps names.
