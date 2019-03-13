@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted 
+reason: Looks great.
 ---
 
 # 2018-11-27 37C Glycerol O2 Dilution

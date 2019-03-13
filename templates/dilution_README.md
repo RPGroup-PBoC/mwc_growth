@@ -25,7 +25,7 @@ reason: experiment not yet completed
 
 ## Notes & Observations
 
- 
+
 ## Analysis Files
 
 **Calibration Factor Determination**
@@ -49,7 +49,7 @@ reason: experiment not yet completed
 | Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
 | :--- | :---: | :---: |
 | `autofluorescence` | 0 |  |
-| `delta` | 0 |  |
+| `deltaLacI` | 0 |  |
 | `dilution` | 0.1 |  |
 | `dilution` | 0.2 |  |
 | `dilution` | 0.3 |  |
@@ -64,9 +64,9 @@ reason: experiment not yet completed
 
 2. This `dilution` mixture was pelleted at 13000xg for 2 min. The supernatant was withdrawn and the pellet was resuspended in 1mL of ATC-free growth medium. This procedure was repeated twice more.
 
-3. The washed `dilution` mixture was diluted 1:10 into ATC-free growth medium. Aliquots of 1µL were spotted onto 3% agarose pads made of the growth medium.
+3. The washed `dilution` mixture was diluted 1:5 into ATC-free growth medium. Aliquots of 1µL were spotted onto 3% agarose pads made of the growth medium.
 
-4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations except 10ng/mL) were diluted 1:5 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
+4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations except 10ng/mL) were diluted 1:5 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no available carbon.
 
 5. Agarose pads spotted with cells were allowed to dry and were then placed onto a glass bottom dish.
 

@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: Nothing suspicious.
 ---
 
 # 2018-11-27 37C Glucose O2 Dilution
@@ -49,7 +49,7 @@ This experiment was a biological replicate of a low-ATC induction series in M9 +
 | Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
 | :--- | :---: | :---: |
 | `autofluorescence` | 0 | 0.40 |
-| `delta` | 0 | 0.40 |
+| `deltaLacI` | 0 | 0.40 |
 | `dilution` | 0.1 | 0.38 |
 | `dilution` | 0.2 | 0.46 |
 | `dilution` | 0.3 | 0.37 |

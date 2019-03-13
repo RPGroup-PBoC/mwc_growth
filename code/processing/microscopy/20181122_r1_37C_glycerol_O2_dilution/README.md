@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: Looks good, all validation checks pass.
 ---
 
 # 2018-11-22 37C Glycerol O2 Dilution
@@ -49,7 +49,7 @@ This experiment was a biological replicate of a low atc induction series in M9 +
 | Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
 | :--- | :---: | :---: |
 | `autofluorescence` | 0 | 0.35 |
-| `delta` | 0 | 0.15 |
+| `deltaLacI` | 0 | 0.15 |
 | `dilution` | 0.1 | 0.19 |
 | `dilution` | 0.2 | 0.23 |
 | `dilution` | 0.3 | 0.18 |

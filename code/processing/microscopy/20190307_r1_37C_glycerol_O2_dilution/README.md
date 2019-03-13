@@ -1,12 +1,12 @@
 ---
-status: Accepted
-reason: Validation checks pass.
+status: Rejected 
+reason: experiment not yet completed; the first 7 timepoints of the growth movie were discarded.
 ---
 
-# 2019-03-01 37C Glycerol O2 Dilution
+# 2019-03-07 37C Glycerol O2 Dilution
 
 ## Purpose
-This experiment was a biological replicate of the standard high-ATC induction series in M9 + 0.5% glycerol.
+This experiment was a biological replicate of high-ATC induction series in M9 + 0.5% glycerol.
 
 ## Strain Information
 
@@ -24,8 +24,9 @@ This experiment was a biological replicate of the standard high-ATC induction se
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-* Cells were harvested at OD_600nm between 0.20-0.38.
-* The `autofluoresence` and `deltaLacI` samples were diluted 5x 3 hours before harvesting to allow the slower dilution samples to grow.
+* Cells were harvested at OD_600nm between 0.21 and 0.33. 
+* The `autofluoresence` sample was diluted 2x 1.5 hours before harvesting.
+* The first seven timepoints of the growth timelapse were discarded due to a sudden shift in cell positioning between the seventh and eigth time points.
 
 ## Analysis Files
 
@@ -41,22 +42,22 @@ This experiment was a biological replicate of the standard high-ATC induction se
 
 2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 16 hours at 37°C with shaking at ~ 220 RPM. After 13 hours, `deltaLacI` and `autofluoresence` samples were diluted 1:5 and returned to the shaker.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 12.75 hours at 37°C with shaking at ~ 220 RPM. After 11.25 hours, the `autofluoresence` sample was diluted 1:2 and returned to the shaker.
 
-4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room and harvested.
+4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.35, the cells were removed from the warm room and harvested.
 
 **Sample OD<sub>600nm</sub> Measurements**
 
 | Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
 | :--- | :---: | :---: |
-| `autofluorescence` | 0 | 0.33 |
-| `deltaLacI` | 0 | 0.20 |
-| `dilution` | 1 | 0.31 |
-| `dilution` | 2 | 0.34 |
-| `dilution` | 3 | 0.30 |
-| `dilution` | 4 | 0.35 |
-| `dilution` | 7 | 0.38 |
-| `dilution` | 10 | 0.30 |
+| `autofluorescence` | 0 | 0.32 |
+| `delta` | 0 | 0.25 |
+| `dilution` | 1 | 0.21 |
+| `dilution` | 2 | 0.33 |
+| `dilution` | 3 | 0.31 |
+| `dilution` | 4 | 0.26 |
+| `dilution` | 7 | 0.23 |
+| `dilution` | 10 | 0.24 |
 
 **Microscopy**
 
@@ -79,4 +80,4 @@ This experiment was a biological replicate of the standard high-ATC induction se
 
 8. These were positions were imaged every 7 minutes for 2.5 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
 
-9. The samples were discarded and the dataset was transferred to the storage server.
+9. The samples were discarded and the dataset was transferred to the storage server. The first seven timepoints of the timelapse were discarded due to a sudden shift in cell positioning between the seventh and eigth time points.

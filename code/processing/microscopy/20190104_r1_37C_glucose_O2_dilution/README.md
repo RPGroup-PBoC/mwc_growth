@@ -1,6 +1,6 @@
 ---
 status: Accepted
-reason:
+reason: Nothing suspicious.
 ---
 
 # 2019-01-04 37C Glucose O2 Dilution
@@ -51,7 +51,7 @@ This experiment was a biological replicate of a low-ATC induction series in M9 +
 | Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
 | :--- | :---: | :---: |
 | `autofluorescence` | 0 | .40 |
-| `delta` | 0 | .42 |
+| `deltaLacI` | 0 | .42 |
 | `dilution` | 0.1 | .20 |
 | `dilution` | 0.2 | .32 |
 | `dilution` | 0.3 | .33 |

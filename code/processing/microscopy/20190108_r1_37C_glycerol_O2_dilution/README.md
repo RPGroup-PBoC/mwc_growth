@@ -1,6 +1,6 @@
 ---
 status: Rejected 
-reason: experiment not yet completed
+reason: Negative repressor counts--something wrong with induction or auto?
 ---
 
 # 2019-01-08 37C Glycerol O2 Dilution
@@ -50,7 +50,7 @@ This experiment was a biological replicate of a low-ATC induction series in M9 +
 | Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
 | :--- | :---: | :---: |
 | `autofluorescence` | 0 |  |
-| `delta` | 0 |  |
+| `deltaLacI` | 0 |  |
 | `dilution` | 0.1 |  |
 | `dilution` | 0.2 |  |
 | `dilution` | 0.3 |  |

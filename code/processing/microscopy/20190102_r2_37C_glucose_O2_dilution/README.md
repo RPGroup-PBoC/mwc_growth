@@ -1,6 +1,6 @@
 ---
 status: Accepted
-reason: 
+reason: Looks ok, but calibration factor estimate is high.
 ---
 
 # 2019-01-02 37C Glucose O2 Dilution (Run 2)
@@ -24,6 +24,7 @@ This experiment was a biological replicate of a low-ATC induction series in M9 +
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
+* The 0.4ng/mL sample shows close to 0 repressors and may have been skipped during dilution.
 
 ## Analysis Files
 

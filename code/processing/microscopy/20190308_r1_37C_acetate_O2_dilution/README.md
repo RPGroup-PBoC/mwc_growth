@@ -1,12 +1,12 @@
 ---
-status: Accepted 
-reason: Nothing suspicious.
+status: Rejected 
+reason: experiment not yet completed
 ---
 
-# 2019-01-03 37C Glucose O2 Dilution (Run 2)
+# 2019-03-08 37C Acetate O2 Dilution
 
 ## Purpose
-This experiment was a biological replicate of a low-ATC induction series in M9 + 0.5% glucose.
+
 
 ## Strain Information
 
@@ -20,13 +20,12 @@ This experiment was a biological replicate of a low-ATC induction series in M9 +
 
 | Inducer | Concentration |
 | :------ | ------------: |
-| Anhydrotetracycline HCl (ATC) | 0, 0.1, 0.2, 0.3, 0.4, 0.7, 1, 10 [ng / mL] |
+| Anhydrotetracycline HCl (ATC) | 0, 1, 2, 3, 4, 7, 10 [ng / mL] |
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-* Cells were harvested at OD<sub>600nm</sub> 0.25-0.55. 
-* Positions 1 and 2 of the growth movie were 'wet', but the others look fine.
-* The blank used to measure OD<sub>600nm</sub>s was a couple months old and may have contributed to the higher OD values.
+* Cells were harvested at OD_600nm between 0.19 and 0.33.
+* OD_600nm of samples were measured, then samples were left covered on the bench for half an hour before being diluted and plated.
 
 ## Analysis Files
 
@@ -40,25 +39,24 @@ This experiment was a biological replicate of a low-ATC induction series in M9 +
 
 1. Cells as described in "Strain Information" were grown to saturation in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain).
 
-2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from 1µg/mL and 100ng/mL stocks in 50% EtOH to the appropriate concentration.
+2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from a 1µg/mL stock in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for ~7 hours at 37°C with shaking at ~ 220 RPM.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 24 hours at 37°C with shaking at ~ 220 RPM.
 
-4. Once the cells reached an OD<sub>600nm</sub> between 0.25 - 0.55, the cells were removed from the warm room and harvested.
+4. Once the cells reached an OD<sub>600nm</sub> between 0.19 - 0.33, the cells were removed from the warm room, placed on the bench (covered and at room temperature) for 30 minutes, and then harvested.
 
 **Sample OD<sub>600nm</sub> Measurements**
 
 | Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
 | :--- | :---: | :---: |
-| `autofluorescence` | 0 | 0.4 |
-| `deltaLacI` | 0 | 0.5 |
-| `dilution` | 0.1 | 0.3 |
-| `dilution` | 0.2 | 0.5 |
-| `dilution` | 0.3 | 0.3 |
-| `dilution` | 0.4 | 0.5 |
-| `dilution` | 0.7 | 0.3 |
-| `dilution` | 1 | 0.25 |
-| `dilution` | 10 | 0.25 |
+| `autofluorescence` | 0 | 0.32 |
+| `deltaLacI` | 0 | 0.30 |
+| `dilution` | 1 | 0.19 |
+| `dilution` | 2 | 0.33 |
+| `dilution` | 3 | 0.25 |
+| `dilution` | 4 | 0.28 |
+| `dilution` | 7 | 0.22 |
+| `dilution` | 10 | 0.30 |
 
 **Microscopy**
 
@@ -66,9 +64,9 @@ This experiment was a biological replicate of a low-ATC induction series in M9 +
 
 2. This `dilution` mixture was pelleted at 13000xg for 2 min. The supernatant was withdrawn and the pellet was resuspended in 1mL of ATC-free growth medium. This procedure was repeated twice more.
 
-3. The washed `dilution` mixture was diluted 1:10 into ATC-free growth medium. Aliquots of 1µL were spotted onto 3% agarose pads made of the growth medium.
+3. The washed `dilution` mixture was diluted 1:5 into ATC-free growth medium. Aliquots of 1µL were spotted onto 3% agarose pads made of the growth medium.
 
-4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations except 10ng/mL) were diluted 1:5 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no added carbon.
+4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations) were diluted 1:5 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no available carbon.
 
 5. Agarose pads spotted with cells were allowed to dry and were then placed onto a glass bottom dish.
 
@@ -79,6 +77,6 @@ This experiment was a biological replicate of a low-ATC induction series in M9 +
 
 7. Approximately 15 positions were then marked on the `dilution` mixture pad. These positions were chosen requiring separation of cells and avoidance of debris.
 
-8. These were positions were imaged every 5 minutes for 1.5 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
+8. These were positions were imaged every 10 minutes for 4 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
 
 9. The samples were discarded and the dataset was transferred to the storage server.

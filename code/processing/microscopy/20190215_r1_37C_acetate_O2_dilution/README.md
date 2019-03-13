@@ -49,7 +49,7 @@ reason: experiment not yet completed
 | Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
 | :--- | :---: | :---: |
 | `autofluorescence` | 0 |  |
-| `delta` | 0 |  |
+| `deltaLacI` | 0 |  |
 | `dilution` | 0.1 |  |
 | `dilution` | 0.2 |  |
 | `dilution` | 0.3 |  |

@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: Everything looks good. 
 ---
 
 # 2018-11-23 37C Acetate O2 Dilution
@@ -26,6 +26,7 @@ This experiment was a biological replicate of a low atc induction series in M9 +
 ## Notes & Observations
 * Cells were harvested at OD_600nm 0.2-0.3, except for `deltaLacI` which was at 0.02. 
 * The `deltaLacI` sample was diluted only 4x instead of the usual 10x.
+* Processing output suggests 0.4ng/mL and 0.7ng/mL samples were switched.
 
 ## Analysis Files
 
@@ -50,7 +51,7 @@ This experiment was a biological replicate of a low atc induction series in M9 +
 | Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
 | :--- | :---: | :---: |
 | `autofluorescence` | 0 | 0.25 |
-| `delta` | 0 | 0.02 |
+| `deltaLacI` | 0 | 0.02 |
 | `dilution` | 0.1 | 0.22 |
 | `dilution` | 0.2 | 0.25 |
 | `dilution` | 0.3 | 0.23 |

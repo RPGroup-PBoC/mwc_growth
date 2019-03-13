@@ -51,7 +51,7 @@ This is  a low-ATC titration series and the flagship experiment in M9 + 0.5% glu
 | Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
 | :--- | :---: | :---: |
 | `autofluorescence` | 0 | 0.33 |
-| `delta` | 0 | 0.14 |
+| `deltaLacI` | 0 | 0.14 |
 | `dilution` | 0.1 | 0.34 |
 | `dilution` | 0.2 | 0.41 |
 | `dilution` | 0.3 | 0.26 |
