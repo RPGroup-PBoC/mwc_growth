@@ -36,10 +36,6 @@ parameters {
     
     // Low level parameters -- Dilution Measurements
     vector<lower=0>[J] alpha;
-    vector<lower=0>[N_dil] I1_mu;
-    vector<lower=0>[N_dil] I1_sigma;
-    vector<lower=0>[N_dil] I2_mu;
-    vector<lower=0>[N_dil] I2_sigma;
     
     // Low level parameters -- Control Measurements. 
     vector<lower=0>[J] auto_mu;
@@ -55,17 +51,11 @@ model {
     
     // Low Level priors -- Dilution Measurements
     alpha ~ normal(alpha_mu, alpha_sigma);
-    I1_mu ~ lognormal(2, 2);
-    I2_mu ~ lognormal(2, 2);
-    I1_sigma ~ normal(0, 100);
-    I2_sigma ~ normal(0, 100);
-    
+ 
     // Low level priors -- Control Measurements
     auto_mu ~ normal(auto_mu_hyper, auto_sigma_hyper);
     
     // Evaluate the likelihoods
     auto_fluo ~ normal(auto_mu[idx_con], sigma[idx_con]);
-    I1 ~ normal(auto_mu[idx_dil] + I1_mu, I1_sigma[idx_dil]);
-    I2 ~ normal(auto_mu[idx_dil] + I2_mu, I2_sigma[idx_dil]);
-    I1_mu ~ GammaApproxBinom(I2_mu, alpha[idx_dil]);
+    I1 - auto_mu_hyper ~ GammaApproxBinom(I2 - auto_mu_hyper, alpha[idx_dil]);
 }
