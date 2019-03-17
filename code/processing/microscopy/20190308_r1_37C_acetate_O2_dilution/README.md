@@ -1,6 +1,6 @@
 ---
 status: Rejected 
-reason: experiment not yet completed
+reason: Negative repressor counts.
 ---
 
 # 2019-03-08 37C Acetate O2 Dilution

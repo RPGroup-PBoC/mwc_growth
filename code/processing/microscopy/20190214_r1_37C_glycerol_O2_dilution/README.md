@@ -24,7 +24,7 @@ This experiment was a biological replicate of a low-ATC induction series in M9 +
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-* Cells were harvested early, at OD_600nm between 0.14 and 0.23.
+* Cells were harvested early, at OD_600nm between 0.14 and 0.23, except 10ng/mL which was at 0.12.
 * The ATC stocks used here may actually be 10x more dilute than what is written.
 
 ## Analysis Files
@@ -44,6 +44,20 @@ This experiment was a biological replicate of a low-ATC induction series in M9 +
 3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 12.5 hours at 37°C with shaking at ~ 220 RPM.
 
 4. Once the cells reached an OD<sub>600nm</sub> between 0.14 - 0.23, the cells were removed from the warm room and harvested.
+
+**Sample OD<sub>600nm</sub> Measurements**
+
+| Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
+| :--- | :---: | :---: |
+| `autofluorescence` | 0 | 0.23 |
+| `deltaLacI` | 0 | 0.18 |
+| `dilution` | 0.1 | 0.20 |
+| `dilution` | 0.2 | 0.16 |
+| `dilution` | 0.3 | 0.15 |
+| `dilution` | 0.4 | 0.15 |
+| `dilution` | 0.7 | 0.14 |
+| `dilution` | 1 | 0.14 |
+| `dilution` | 10 | 0.12 |
 
 **Microscopy**
 

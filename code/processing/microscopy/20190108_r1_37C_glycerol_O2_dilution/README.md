@@ -1,6 +1,6 @@
 ---
 status: Rejected 
-reason: Negative repressor counts--something wrong with induction or auto?
+reason: Few divisions detected and negative repressor counts.
 ---
 
 # 2019-01-08 37C Glycerol O2 Dilution
