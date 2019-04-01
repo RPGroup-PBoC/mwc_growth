@@ -324,13 +324,18 @@ class fitderiv:
 
         Arguments
         --
-        char: the type of fit to plot - 'f' or 'df' or 'ddf'
+        char: the type of fit to plot - 'f' or 'df' or 'ddf' or 'dt' ('dt' gives log2/df)
         errorfac: sets the size of the errorbars to be errorfac times the standard deviation
         ylabel: the y-axis label
         figtitle: the title of the figure
         '''
-        x= getattr(self, char)
-        xv= getattr(self, char + 'var')
+        if char != 'dt':
+            x= getattr(self, char)
+            xv= getattr(self, char + 'var')
+        else:
+            x= np.log(2)/getattr(self, 'df')
+            dfv = getattr(self, 'df' + 'var')
+            xv= dfv*(np.log(2)**2)/(x**4)
         if char == 'f':
             plt.plot(self.t, self.d, 'r.')
         plt.plot(self.t, x, 'b')
