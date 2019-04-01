@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: Looks great.
 ---
 
 # YEAR-MONTH-DATE TEMP CARBON OPERATOR Dilution

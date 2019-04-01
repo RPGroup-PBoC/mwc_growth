@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: Negative repressor counts.
+status: Accepted
+reason: (Provisionally accepted) Negative repressor counts; high calibration factor estimate.
 ---
 
 # 2019-03-08 37C Acetate O2 Dilution

@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: 10ng/ml ATC had alignment issues; High calibration factor estimate.
 ---
 
 # YEAR-MONTH-DATE TEMP CARBON OPERATOR Dilution

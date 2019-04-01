@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed; the first 7 timepoints of the growth movie were discarded.
+status: Accepted
+reason: (Provisionally accepted) High calibration factor estimate; the first 7 timepoints of the growth movie were discarded. There seem to be two populations of deltaLacI.
 ---
 
 # 2019-03-07 37C Glycerol O2 Dilution

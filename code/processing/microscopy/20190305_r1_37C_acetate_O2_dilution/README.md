@@ -1,6 +1,6 @@
 ---
 status: Rejected 
-reason: experiment not yet completed
+reason: No correlation between ATC and repressor copy number; screwy controls.
 ---
 
 # 2019-03-05 37C Acetate O2 Dilution

@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: Auto fluorescence above the dilution strains.
+status: Accepted
+reason: (Provisionally accepted) Auto fluorescence above the dilution strains.
 ---
 
 # 2019-03-06 37C Acetate O2 Dilution (Run 1)

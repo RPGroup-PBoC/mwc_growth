@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: Beautiful. High calibration factor estimate. 
 ---
 
 # 2019-03-05 37C Glycerol O2 Dilution
