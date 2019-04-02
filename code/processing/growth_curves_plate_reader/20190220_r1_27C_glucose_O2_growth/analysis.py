@@ -42,6 +42,10 @@ restricted = data[(data['strain']==STRAIN) & (data['carbon']==CARBON)
 # perform non-parametric inference of the time-dependent growth rates.
 gp = mwc.fitderiv.fitderiv(restricted['time_min'].values, restricted['od_sub'].values)
 
+# Make output directory
+if os.path.exists(f'output/{STRAIN}_{CARBON}/') == False:
+    os.mkdir(f'output/{STRAIN}_{CARBON}/')
+
 # Export summary statistics
 stats = gp.printstats(performprint=False)
 with open(f'output/{STRAIN}_{CARBON}/gp_output_stats.csv','w') as f:
@@ -92,6 +96,10 @@ plt.savefig(f'output/{STRAIN}_{CARBON}/gp_output_curves.png')
 
 # Perform by-well analysis
 if PER_WELL:
+    # Make output directory
+    if os.path.exists(f'output/{STRAIN}_{CARBON}/per_well') == False:
+        os.mkdir(f'output/{STRAIN}_{CARBON}/per_well')
+    
     well_stats = []
     
     for well in restricted['well_id'].unique():
