@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: (Provisionally accepted) Negative repressor counts, high calibration factor.
 ---
 
 # YEAR-MONTH-DATE TEMP CARBON OPERATOR Dilution
