@@ -133,7 +133,6 @@ for row in np.arange(0,8,1):
                     c=strain_color_dict[strain_map[row][column]])
 
 # Save figure.
-plt.tight_layout()
 plt.savefig(f'output/growth_plate_layout.png', bbox_inches='tight')
 
 
@@ -149,5 +148,4 @@ for r in np.arange(0,8,1):
         well_id = alphanumeric_map[f'{row_letter}{c+1}']
         well_dat = data[data['well_id']==well_id]
         ax[r][c].scatter(well_dat['time_min'], well_dat['od_600nm'], marker='.', s=0.2)
-plt.tight_layout()
 plt.savefig(f'output/growth_plate_summary.png', bbox_inches='tight')

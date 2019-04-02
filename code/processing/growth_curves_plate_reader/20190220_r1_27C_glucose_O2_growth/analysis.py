@@ -14,7 +14,9 @@ import csv
 STRAIN = 'delta'
 CARBON = 'glucose'
 
-PER_WELL = False
+PER_WELL = True
+
+# ----------------------------------
 
 # Load the data. 
 data = pd.read_csv(f'output/growth_plate.csv')
@@ -42,92 +44,114 @@ gp = mwc.fitderiv.fitderiv(restricted['time_min'].values, restricted['od_sub'].v
 
 # Export summary statistics
 stats = gp.printstats(performprint=False)
-with open(f'output/{STRAIN}_{CARBON}_GP_summary.csv','w') as f:
+with open(f'output/{STRAIN}_{CARBON}/gp_output_stats.csv','w') as f:
     w = csv.writer(f)
     w.writerow(['parameter','value'])
     w.writerows(stats.items())
     
 # Export full time series results of the fit
-gp.export('output/gp_output.csv')
+gp.export(f'output/{STRAIN}_{CARBON}/gp_output.csv')
+
+# Read in gp results as dataframe and calculate doubling time
+gp_df = pd.read_csv(f'output/{STRAIN}_{CARBON}/gp_output.csv')
+gp_df = gp_df[['t','od','log(OD)','log(OD) error','gr','gr error']]
+gp_df.rename(columns = {'log(OD)':'log(OD)_fit', 'log(OD) error':'log(OD)_fit_std', 
+                        'gr':'growth_rate', 'gr error':'growth_rate_std', 
+                        'od':'OD_raw_data', 't':'time'}, inplace = True)
+gp_df['doubling_time'] = np.log(2)/gp_df['growth_rate']
+gp_df['doubling_time_std'] = np.log(2)*gp_df['growth_rate_std']/(gp_df['growth_rate']**2)
+gp_df.to_csv(f'output/{STRAIN}_{CARBON}/gp_output.csv')
 
 # Plot results
-plt.figure(figsize=(10, 4))
-plt.subplot(1,3,1)
-plt.title('growth vs time', fontsize = 10)
-gp.plotfit('f')
-plt.subplot(1,3,2)
-plt.title('time derivative vs time', fontsize=10)
-gp.plotfit('df')
-plt.subplot(1,3,3)
-plt.title('doubling time vs time', fontsize=10)
-gp.plotfit('dt')
-plt.axhline(y=stats['inverse max df'],c='red')
-locs, _ = plt.yticks()
-plt.yticks(np.append(locs[1:-1],round(stats['inverse max df'],2)))
+fig, ax = plt.subplots(ncols = 3, figsize=(10, 4))
+ax[0].set_title('growth vs time', fontsize = 10)
+ax[1].set_title('time derivative vs time', fontsize = 10)
+ax[2].set_title('doubling time vs time', fontsize = 10)
+
+ax[0].scatter(gp_df['time'],np.log(gp_df['OD_raw_data']),c='r', marker = '.')
+ax[0].plot(gp_df['time'],gp_df['log(OD)_fit'],c='blue')
+ax[0].fill_between(gp_df['time'], gp_df['log(OD)_fit']-gp_df['log(OD)_fit_std'], 
+                      gp_df['log(OD)_fit']+gp_df['log(OD)_fit_std'],
+                      facecolor= 'blue', alpha= 0.2)
+
+ax[1].plot(gp_df['time'],gp_df['growth_rate'],c='b')
+ax[1].fill_between(gp_df['time'], gp_df['growth_rate']-gp_df['growth_rate_std'], 
+                      gp_df['growth_rate']+gp_df['growth_rate_std'],
+                      facecolor= 'blue', alpha= 0.2)
+
+ax[2].plot(gp_df['time'],gp_df['doubling_time'],c='b')
+ax[2].fill_between(gp_df['time'], gp_df['doubling_time']-gp_df['doubling_time_std'], 
+                      gp_df['doubling_time']+gp_df['doubling_time_std'],
+                      facecolor= 'blue', alpha= 0.2)
+ax[2].axhline(y=gp_df.min()['doubling_time'],c='red')
+locs = ax[2].get_yticks()
+plt.yticks(np.append(locs[2:-1],round(gp_df.min()['doubling_time'],2)))
+
 plt.tight_layout()
-plt.savefig(f'output/{STRAIN}_{CARBON}_GP_fit_and_time_derivative.png')
+plt.savefig(f'output/{STRAIN}_{CARBON}/gp_output_curves.png')
 
 # Perform by-well analysis
 if PER_WELL:
     well_stats = []
     
-    for well in restricted['well_id']:
+    for well in restricted['well_id'].unique():
+        # select data for single well
         subset = restricted[restricted['well_id'] == well]
         
-        # perform gaussian processing
+        # run gaussian processing and export fit and time derivative results
         gp = mwc.fitderiv.fitderiv(subset['time_min'].values, subset['od_sub'].values)
+        gp.export(f'output/{STRAIN}_{CARBON}/per_well/gp_output_{well}.csv')
         
-        # export full results
-        gp.export('output/well_by_well/gp_output_{well}.csv')
-
-        # export statistics
+        # export summary statistics
         stats = gp.printstats(performprint=False)
-        with open(f'output/per_well/{STRAIN}_{CARBON}_GP_summary_{well}.csv','w') as f:
+        with open(f'output/{STRAIN}_{CARBON}/per_well/gp_output_stats_{well}.csv','w') as f:
             w = csv.writer(f)
             w.writerow(['parameter','value'])
             w.writerows(stats.items())
         
-        # make dataframe of statistics and add to list
-        _df = pd.DataFrame(stats)
-        _df['well_id'] = well
-        well_stats.append(_df)
+        # add summary statistics to list
+        stats['well_id'] = well
+        well_stats.append(pd.DataFrame(stats))
         
-        # plot and export results
-        plt.figure(figsize=(10, 4))
-        plt.subplot(1,3,1)
-        plt.title('growth vs time', fontsize = 10)
-        gp.plotfit('f')
-        plt.subplot(1,3,2)
-        plt.title('time derivative vs time', fontsize=10)
-        gp.plotfit('df')
-        plt.subplot(1,3,3)
-        plt.title('doubling time vs time', fontsize=10)
-        gp.plotfit('dt')
-        plt.axhline(y=stats['inverse max df'],c='red')
-        locs, _ = plt.yticks()
-        plt.yticks(np.append(locs[1:-1],round(stats['doubling time'],2)))
+        # read in gp results exported above as dataframe and calculate doubling time
+        gp_df = pd.read_csv(f'output/{STRAIN}_{CARBON}/per_well/gp_output_{well}.csv')
+        gp_df = gp_df[['t','od','log(OD)','log(OD) error','gr','gr error']]
+        gp_df.rename(columns = {'log(OD)':'log(OD)_fit', 'log(OD) error':'log(OD)_fit_std', 
+                                'gr':'growth_rate', 'gr error':'growth_rate_std', 
+                                'od':'OD_raw_data', 't':'time'}, inplace = True)
+        gp_df['doubling_time'] = np.log(2)/gp_df['growth_rate']
+        gp_df['doubling_time_std'] = np.log(2)*gp_df['growth_rate_std']/(gp_df['growth_rate']**2)
+        gp_df.to_csv(f'output/{STRAIN}_{CARBON}/per_well/gp_output.csv')
+        
+        # plot results
+        fig, ax = plt.subplots(ncols = 3, figsize=(10, 4))
+        ax[0].set_title('growth vs time', fontsize = 10)
+        ax[1].set_title('time derivative vs time', fontsize = 10)
+        ax[2].set_title('doubling time vs time', fontsize = 10)
+
+        ax[0].scatter(gp_df['time'],np.log(gp_df['OD_raw_data']),c='r', marker = '.')
+        ax[0].plot(gp_df['time'],gp_df['log(OD)_fit'],c='blue')
+        ax[0].fill_between(gp_df['time'], gp_df['log(OD)_fit']-gp_df['log(OD)_fit_std'], 
+                              gp_df['log(OD)_fit']+gp_df['log(OD)_fit_std'],
+                              facecolor= 'blue', alpha= 0.2)
+
+        ax[1].plot(gp_df['time'],gp_df['growth_rate'],c='b')
+        ax[1].fill_between(gp_df['time'], gp_df['growth_rate']-gp_df['growth_rate_std'], 
+                              gp_df['growth_rate']+gp_df['growth_rate_std'],
+                              facecolor= 'blue', alpha= 0.2)
+
+        ax[2].plot(gp_df['time'],gp_df['doubling_time'],c='b')
+        ax[2].fill_between(gp_df['time'], gp_df['doubling_time']-gp_df['doubling_time_std'], 
+                              gp_df['doubling_time']+gp_df['doubling_time_std'],
+                              facecolor= 'blue', alpha= 0.2)
+        ax[2].axhline(y=gp_df.min()['doubling_time'],c='red')
+        locs = ax[2].get_yticks()
+        plt.yticks(np.append(locs[2:-1],round(gp_df.min()['doubling_time'],2)))
         plt.tight_layout()
-        plt.savefig(f'output/{STRAIN}_{CARBON}_GP_fit_and_time_derivative_{well}.png')
+        plt.savefig(f'output/{STRAIN}_{CARBON}/per_well/gp_output_curves_{well}.png')
     
-    # create single dataframe of the statistics for each well and save
+    # compile dataframe of statistics for all wells
     well_data = pd.concat(well_stats)
     well_data['carbon'] = CARBON
     well_data['strain'] = STRAIN
-    well_data.to_csv('per_well_stats.csv', index=False)
-    
-# Troubleshooting
-plt.figure(figsize=(10, 4))
-plt.subplot(1,3,1)
-plt.title('growth vs time', fontsize = 10)
-gp.plotfit('f')
-plt.subplot(1,3,2)
-plt.title('time derivative vs time', fontsize=10)
-gp.plotfit('df')
-plt.subplot(1,3,3)
-plt.title('doubling time vs time', fontsize=10)
-gp.plotdoubtime()
-plt.axhline(y=stats['doubling time'],c='red')
-locs, _ = plt.yticks()
-plt.yticks(np.append(locs[1:-1],round(stats['doubling time'],2)))
-plt.tight_layout()
-plt.savefig(f'output/{STRAIN}_{CARBON}_GP_fit_and_time_derivative_doubtime.png')
+    well_data.to_csv(f'output/{STRAIN}_{CARBON}/per_well/per_well_stats.csv', index=False)
