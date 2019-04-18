@@ -1,3 +1,6 @@
+# Modified from original package by Zofii Kaczmarek: export method now includes an argument to toggle saving
+# or not, for stats and full model, and now returns the full model as a dataframe. 
+
 import numpy as np
 from . import gaussianprocess as gp
 import matplotlib.pyplot as plt
@@ -348,29 +351,6 @@ class fitderiv:
         if figtitle: plt.title(figtitle)
 
 
-    def plotdoubtime(self, errorfac= 1, xlabel= 'time', ylabel= False, figtitle= False):
-        '''
-        Plots the results of the fit.
-
-        Arguments
-        --
-        char: the type of fit to plot - 'f' or 'df' or 'ddf'
-        errorfac: sets the size of the errorbars to be errorfac times the standard deviation
-        ylabel: the y-axis label
-        figtitle: the title of the figure
-        '''
-        x= getattr(self, 'df')
-        xv= getattr(self, 'df' + 'var')
-        td= np.log(2)/x
-        tdv= xv/x**4
-        plt.plot(self.t, td, 'b')
-        plt.fill_between(self.t, td-errorfac*np.sqrt(tdv), td+errorfac*np.sqrt(tdv), facecolor= 'blue', alpha= 0.2)
-        if ylabel:
-            plt.ylabel(ylabel)
-        else:
-            plt.ylabel('td')
-        plt.xlabel(xlabel)
-        if figtitle: plt.title(figtitle)
 
 
     def calculatestats(self, nosamples= 100, statnames= False, showerrors= True):
@@ -480,14 +460,16 @@ class fitderiv:
 
 
 
-    def export(self, fname, rows= False):
+    def export(self, fname, rows= False, savegp= True, savestats= True):
         '''
-        Exports the fit and inferred time-derivative to a text or Excel file.
+        Returns and saves the fit and inferred time-derivative to a text or Excel file.
 
         Arguments
         --
-        fname: name of the file (.csv files are recognized)
+        fname: name of the file (.csv files are recognized) (not used if savegp and savestats are False)
         rows: if True (default is False), data are exported in rows; if False, in columns
+        savegp: if True, saves gp results as fname
+        savestats: if True, saves gp statistics as fname with '_stats' appended
         '''
         import pandas as pd
         ods= self.origd
@@ -505,25 +487,31 @@ class fitderiv:
         statd= self.printstats(performprint= False)
         dfs= pd.DataFrame(statd, index= [0], columns= statd.keys())
         # export in appropriate format
-        ftype= fname.split('.')[-1]
-        if ftype == 'csv' or ftype == 'txt' or ftype == 'dat':
-            if ftype == 'txt' or ftype == 'dat':
-                sep= ' '
+        if (savegp | savestats):
+            ftype= fname.split('.')[-1]
+            if ftype == 'csv' or ftype == 'txt' or ftype == 'dat':
+                if ftype == 'txt' or ftype == 'dat':
+                    sep= ' '
+                else:
+                    sep= ','
+                if savegp:
+                    if rows:
+                        df.to_csv(fname, sep= sep, header= False)
+                    else:
+                        df.to_csv(fname, sep= sep, index= False)
+                if savestats:
+                    dfs.to_csv('.'.join(fname.split('.')[:-1]) + '_stats.' + ftype, sep= sep, index= False)
+            elif ftype == 'xls' or ftype == 'xlsx':
+                if savegp:
+                    if rows:
+                        df.to_excel(fname, sheet_name= 'Sheet1', header= False)
+                    else:
+                        df.to_excel(fname, sheet_name= 'Sheet1', index= False)
+                if savestats:
+                    dfs.to_excel('.'.join(fname.split('.')[:-1]) + '_stats.xlsx', sheet_name= 'Sheet1', index= False)
             else:
-                sep= ','
-            if rows:
-                df.to_csv(fname, sep= sep, header= False)
-            else:
-                df.to_csv(fname, sep= sep, index= False)
-            dfs.to_csv('.'.join(fname.split('.')[:-1]) + '_stats.' + ftype, sep= sep, index= False)
-        elif ftype == 'xls' or ftype == 'xlsx':
-            if rows:
-                df.to_excel(fname, sheet_name= 'Sheet1', header= False)
-            else:
-                df.to_excel(fname, sheet_name= 'Sheet1', index= False)
-            dfs.to_excel('.'.join(fname.split('.')[:-1]) + '_stats.xlsx', sheet_name= 'Sheet1', index= False)
-        else:
-            print('!! File type is either not recognized or not specified. Cannot save as', fname)
+                print('!! File type is either not recognized or not specified. Cannot save as', fname)
+        return df
 
 
 #####
