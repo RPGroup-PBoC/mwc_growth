@@ -11,8 +11,6 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import mwc.viz
 colors = mwc.viz.personal_style()
-from multiprocessing import Pool, cpu_count
-pool = Pool(max(cpu_count()//2, 1))
 
 # Define the experimental constants
 DATE = 20190220

@@ -17,7 +17,7 @@ import seaborn as sns
 STRAIN = 'delta'
 CARBON = 'glucose'
 
-WHOLE_PLATE = False
+WHOLE_PLATE = True
 PER_WELL = True
 
 # ----------------------------------
@@ -61,7 +61,6 @@ if WHOLE_PLATE:
     # Create dataframe with full time series results of the fit
     gp_df = gp.export('NONE', savegp = False, savestats = False)
     # Calculate doubling time
-    gp_df = pd.read_csv(f'output/{STRAIN}_{CARBON}/gp_output.csv')
     gp_df = gp_df[['t','od','log(OD)','log(OD) error','gr','gr error']]
     gp_df.rename(columns = {'log(OD)':'log(OD)_fit', 'log(OD) error':'log(OD)_fit_std', 
                             'gr':'growth_rate', 'gr error':'growth_rate_std', 
@@ -142,12 +141,15 @@ if PER_WELL:
     well_stats_df = well_stats_df.sort_values('well_id')
     well_stats_df.to_csv(f'output/{STRAIN}_{CARBON}/per_well_stats.csv', index=False)
 
+#     well_data = pd.read_csv(f'output/{STRAIN}_{CARBON}/per_well_output.csv')
+#     well_stats_df = pd.read_csv(f'output/{STRAIN}_{CARBON}/per_well_stats.csv')
+
     alpha_map = {alpha:no for alpha, no in zip(string.ascii_uppercase, np.arange(0, 27, 1) * 12)}
     alphanumeric_map = {f'{a}{n}':alpha_map[a] + n for n in np.arange(1, 13, 1) for a in string.ascii_uppercase}
     row_letters = {no:alpha for no, alpha in zip(np.arange(0, 27, 1),string.ascii_uppercase)}
 
     # Plot doubling time curves for all wells
-    fig, ax = plt.subplots(8,12, figsize=(12, 4))
+    fig, ax = plt.subplots(8,12, figsize=(10, 4))
 
     for r in np.arange(0,8,1):
         for c in np.arange(0,12,1):
