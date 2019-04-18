@@ -9,3 +9,12 @@ reason: experiment not yet completed
 This experiment aims to measure the growth rate of the *E. coli* strains of interest at XX°C.
 
 ## Notes & Observations
+
+
+## Analysis Files
+
+**Plate Layout**
+![plate layout](output/growth_plate_layout.png)
+
+**Growth Curves**
+[![growth curves](output/growth_plate_summary.png)]
