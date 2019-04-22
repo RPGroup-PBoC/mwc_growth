@@ -1,0 +1,241 @@
+parameter,value,well_id,carbon,strain
+max df,0.006468219207290349,27,glycerol,delta
+lag time std,2.24995748218921,27,glycerol,delta
+lag time,451.0718778222157,27,glycerol,delta
+max y stderr,9.366761041610842e-05,27,glycerol,delta
+max y std,0.0009366761041610842,27,glycerol,delta
+max y,0.14207274650895305,27,glycerol,delta
+inverse max df stderr,0.09714375591802343,27,glycerol,delta
+lag time stderr,0.22499574821892102,27,glycerol,delta
+inverse max df,107.17078552569521,27,glycerol,delta
+time of max df stderr,0.659450528849587,27,glycerol,delta
+time of max df std,6.59450528849587,27,glycerol,delta
+time of max df,665.9166666666667,27,glycerol,delta
+max df stderr,5.863229308411543e-06,27,glycerol,delta
+max df std,5.863229308411543e-05,27,glycerol,delta
+inverse max df std,0.9714375591802343,27,glycerol,delta
+max df,0.00638058914431889,28,glycerol,delta
+max df std,3.277189655529134e-05,28,glycerol,delta
+max df stderr,3.277189655529134e-06,28,glycerol,delta
+time of max df,647.1566666666666,28,glycerol,delta
+time of max df std,5.445172173586434,28,glycerol,delta
+time of max df stderr,0.5445172173586433,28,glycerol,delta
+inverse max df stderr,0.05578909107186921,28,glycerol,delta
+inverse max df std,0.5578909107186921,28,glycerol,delta
+max y,0.1496196106957685,28,glycerol,delta
+max y std,0.0010110830484265014,28,glycerol,delta
+max y stderr,0.00010110830484265014,28,glycerol,delta
+lag time stderr,0.16970128366846485,28,glycerol,delta
+inverse max df,108.63659259763477,28,glycerol,delta
+lag time,445.88519814380766,28,glycerol,delta
+lag time std,1.6970128366846484,28,glycerol,delta
+lag time,439.03478424150194,29,glycerol,delta
+lag time stderr,0.14648257481675814,29,glycerol,delta
+max df,0.006803501257305459,29,glycerol,delta
+max df std,3.909452152980242e-05,29,glycerol,delta
+max df stderr,3.909452152980242e-06,29,glycerol,delta
+time of max df,634.7666666666667,29,glycerol,delta
+time of max df std,4.747630988187687,29,glycerol,delta
+lag time std,1.4648257481675813,29,glycerol,delta
+inverse max df,101.8843128797213,29,glycerol,delta
+inverse max df std,0.5850126396607712,29,glycerol,delta
+inverse max df stderr,0.05850126396607712,29,glycerol,delta
+max y,0.14872043935183066,29,glycerol,delta
+max y std,0.0009110037968857316,29,glycerol,delta
+max y stderr,9.110037968857316e-05,29,glycerol,delta
+time of max df stderr,0.4747630988187687,29,glycerol,delta
+lag time,432.6865538129594,30,glycerol,delta
+max y stderr,0.00010388990377750099,30,glycerol,delta
+max y std,0.00103889903777501,30,glycerol,delta
+max y,0.15239936468767012,30,glycerol,delta
+inverse max df stderr,0.05351571121504624,30,glycerol,delta
+inverse max df std,0.5351571121504624,30,glycerol,delta
+time of max df std,4.747630988187687,30,glycerol,delta
+time of max df stderr,0.4747630988187687,30,glycerol,delta
+time of max df,615.1666666666666,30,glycerol,delta
+max df stderr,3.767421815372753e-06,30,glycerol,delta
+max df std,3.767421815372753e-05,30,glycerol,delta
+lag time std,1.6216378726413132,30,glycerol,delta
+inverse max df,99.32954221344303,30,glycerol,delta
+max df,0.006978461050934977,30,glycerol,delta
+lag time stderr,0.16216378726413133,30,glycerol,delta
+max df,0.006588394819594647,31,glycerol,delta
+max df stderr,6.541613523321969e-06,31,glycerol,delta
+time of max df,621.1866666666666,31,glycerol,delta
+time of max df std,8.799977272697923,31,glycerol,delta
+time of max df stderr,0.8799977272697923,31,glycerol,delta
+inverse max df,105.21765882129799,31,glycerol,delta
+inverse max df std,1.0441330092040408,31,glycerol,delta
+inverse max df stderr,0.10441330092040409,31,glycerol,delta
+max y,0.1572850881387601,31,glycerol,delta
+max y std,0.002066651349012888,31,glycerol,delta
+max y stderr,0.00020666513490128882,31,glycerol,delta
+lag time,438.98842063299315,31,glycerol,delta
+lag time std,2.842485955890867,31,glycerol,delta
+lag time stderr,0.28424859558908666,31,glycerol,delta
+max df std,6.54161352332197e-05,31,glycerol,delta
+max df,0.006561169720003554,32,glycerol,delta
+lag time,439.3694513240434,32,glycerol,delta
+max y stderr,9.094628742514073e-05,32,glycerol,delta
+max y std,0.0009094628742514073,32,glycerol,delta
+max y,0.15320756203518088,32,glycerol,delta
+inverse max df stderr,0.05505728041603308,32,glycerol,delta
+inverse max df std,0.5505728041603308,32,glycerol,delta
+inverse max df,105.64671167695957,32,glycerol,delta
+time of max df stderr,0.47943612713269745,32,glycerol,delta
+time of max df std,4.7943612713269745,32,glycerol,delta
+time of max df,636.3766666666667,32,glycerol,delta
+max df stderr,3.4192858423544754e-06,32,glycerol,delta
+max df std,3.419285842354475e-05,32,glycerol,delta
+lag time std,1.457084512310685,32,glycerol,delta
+lag time stderr,0.14570845123106851,32,glycerol,delta
+time of max df std,4.357464859296057,33,glycerol,delta
+max df std,3.2776226120211306e-05,33,glycerol,delta
+lag time stderr,0.14957472520449097,33,glycerol,delta
+lag time std,1.4957472520449098,33,glycerol,delta
+lag time,434.70095608755486,33,glycerol,delta
+max y stderr,9.07684631513653e-05,33,glycerol,delta
+max df,0.00652460526088069,33,glycerol,delta
+max y,0.15381280875503683,33,glycerol,delta
+max y std,0.0009076846315136531,33,glycerol,delta
+inverse max df std,0.5336319472007586,33,glycerol,delta
+inverse max df,106.23856046423765,33,glycerol,delta
+time of max df stderr,0.4357464859296057,33,glycerol,delta
+time of max df,623.2166666666667,33,glycerol,delta
+max df stderr,3.2776226120211305e-06,33,glycerol,delta
+inverse max df stderr,0.053363194720075856,33,glycerol,delta
+time of max df std,5.774045375644358,34,glycerol,delta
+max df,0.007214253830668093,34,glycerol,delta
+max df std,8.874794461656427e-05,34,glycerol,delta
+max df stderr,8.874794461656428e-06,34,glycerol,delta
+time of max df,651.1466666666666,34,glycerol,delta
+time of max df stderr,0.5774045375644359,34,glycerol,delta
+inverse max df,96.09464290567662,34,glycerol,delta
+inverse max df std,1.1717843944257276,34,glycerol,delta
+lag time std,3.1145921614191447,34,glycerol,delta
+lag time,455.4794573993251,34,glycerol,delta
+max y stderr,0.00016363595313511839,34,glycerol,delta
+lag time stderr,0.31145921614191446,34,glycerol,delta
+max y,0.14781705186736405,34,glycerol,delta
+inverse max df stderr,0.11717843944257275,34,glycerol,delta
+max y std,0.0016363595313511837,34,glycerol,delta
+max df,0.006652391955788316,63,glycerol,delta
+max df std,6.917782278312549e-05,63,glycerol,delta
+max y stderr,9.057239039897117e-05,63,glycerol,delta
+max df stderr,6.917782278312549e-06,63,glycerol,delta
+time of max df,651.0066666666667,63,glycerol,delta
+time of max df std,4.9773888736967296,63,glycerol,delta
+time of max df stderr,0.497738887369673,63,glycerol,delta
+inverse max df,104.20648426859997,63,glycerol,delta
+inverse max df std,1.0871227353489694,63,glycerol,delta
+inverse max df stderr,0.10871227353489694,63,glycerol,delta
+max y,0.15135578468936614,63,glycerol,delta
+lag time,451.8464737347574,63,glycerol,delta
+max y std,0.0009057239039897116,63,glycerol,delta
+lag time stderr,0.24063141847452507,63,glycerol,delta
+lag time std,2.4063141847452507,63,glycerol,delta
+max y std,0.0009462394494727819,64,glycerol,delta
+max y,0.15122229257309294,64,glycerol,delta
+inverse max df stderr,0.04887159357152706,64,glycerol,delta
+inverse max df std,0.4887159357152706,64,glycerol,delta
+inverse max df,102.08942445202935,64,glycerol,delta
+time of max df stderr,0.4396089171070122,64,glycerol,delta
+time of max df std,4.396089171070122,64,glycerol,delta
+time of max df,623.2866666666666,64,glycerol,delta
+max df stderr,3.253339831104661e-06,64,glycerol,delta
+max df std,3.253339831104661e-05,64,glycerol,delta
+max df,0.0067897638140435946,64,glycerol,delta
+lag time std,1.3533628773521291,64,glycerol,delta
+lag time stderr,0.13533628773521292,64,glycerol,delta
+lag time,441.269628622436,64,glycerol,delta
+max y stderr,9.462394494727819e-05,64,glycerol,delta
+lag time,441.83282622950765,65,glycerol,delta
+max y stderr,8.93499851354727e-05,65,glycerol,delta
+max y std,0.0008934998513547269,65,glycerol,delta
+max y,0.15295659219743585,65,glycerol,delta
+inverse max df stderr,0.06730081679809795,65,glycerol,delta
+inverse max df std,0.6730081679809795,65,glycerol,delta
+inverse max df,108.16765489683465,65,glycerol,delta
+time of max df stderr,0.6126099901242225,65,glycerol,delta
+time of max df std,6.126099901242225,65,glycerol,delta
+time of max df,641.6966666666666,65,glycerol,delta
+max df,0.0064083293822788275,65,glycerol,delta
+max df stderr,3.979383000694126e-06,65,glycerol,delta
+max df std,3.979383000694126e-05,65,glycerol,delta
+lag time std,1.7589374260410313,65,glycerol,delta
+lag time stderr,0.17589374260410312,65,glycerol,delta
+max df,0.006883326640276038,66,glycerol,delta
+max df std,3.395303428805922e-05,66,glycerol,delta
+max df stderr,3.395303428805922e-06,66,glycerol,delta
+time of max df,626.9266666666666,66,glycerol,delta
+time of max df std,4.413887175721646,66,glycerol,delta
+time of max df stderr,0.4413887175721646,66,glycerol,delta
+inverse max df,100.7018956535277,66,glycerol,delta
+inverse max df std,0.4965951745897907,66,glycerol,delta
+inverse max df stderr,0.04965951745897907,66,glycerol,delta
+max y,0.1474702612796501,66,glycerol,delta
+max y std,0.0009460975534232861,66,glycerol,delta
+max y stderr,9.46097553423286e-05,66,glycerol,delta
+lag time,442.3438942906524,66,glycerol,delta
+lag time std,1.3434668001237806,66,glycerol,delta
+lag time stderr,0.13434668001237807,66,glycerol,delta
+max y,0.15394594085530483,67,glycerol,delta
+lag time std,1.576266713276644,67,glycerol,delta
+lag time,456.24317584524465,67,glycerol,delta
+max y stderr,9.293322889476817e-05,67,glycerol,delta
+max y std,0.0009293322889476817,67,glycerol,delta
+inverse max df stderr,0.06630470885997763,67,glycerol,delta
+inverse max df std,0.6630470885997763,67,glycerol,delta
+lag time stderr,0.1576266713276644,67,glycerol,delta
+time of max df stderr,0.5856620185738493,67,glycerol,delta
+time of max df std,5.8566201857384925,67,glycerol,delta
+time of max df,685.1666666666669,67,glycerol,delta
+max df stderr,4.144287414326146e-06,67,glycerol,delta
+max df std,4.1442874143261466e-05,67,glycerol,delta
+max df,0.006580674283517329,67,glycerol,delta
+inverse max df,105.3348985245866,67,glycerol,delta
+inverse max df stderr,0.05704518535226579,68,glycerol,delta
+lag time std,1.7337069431762315,68,glycerol,delta
+lag time,445.0445544701711,68,glycerol,delta
+max y stderr,8.818025168157956e-05,68,glycerol,delta
+max y std,0.0008818025168157957,68,glycerol,delta
+max y,0.15147958577744874,68,glycerol,delta
+lag time stderr,0.17337069431762314,68,glycerol,delta
+inverse max df,111.00698028976566,68,glycerol,delta
+time of max df stderr,1.3295393939255764,68,glycerol,delta
+time of max df std,13.295393939255764,68,glycerol,delta
+time of max df,684.8166666666668,68,glycerol,delta
+max df stderr,3.2126572320489026e-06,68,glycerol,delta
+max df std,3.2126572320489026e-05,68,glycerol,delta
+max df,0.006244341617064117,68,glycerol,delta
+inverse max df std,0.5704518535226579,68,glycerol,delta
+lag time,435.86650197477013,69,glycerol,delta
+max y stderr,9.88006178378429e-05,69,glycerol,delta
+max y std,0.000988006178378429,69,glycerol,delta
+max y,0.1532707399872344,69,glycerol,delta
+inverse max df stderr,0.05731934391138569,69,glycerol,delta
+inverse max df std,0.5731934391138569,69,glycerol,delta
+time of max df std,5.772347875864725,69,glycerol,delta
+time of max df stderr,0.5772347875864725,69,glycerol,delta
+lag time stderr,0.15544545043785074,69,glycerol,delta
+time of max df,615.1666666666666,69,glycerol,delta
+max df stderr,3.6349751003930667e-06,69,glycerol,delta
+max df std,3.634975100393067e-05,69,glycerol,delta
+max df,0.006621871726685922,69,glycerol,delta
+inverse max df,104.67856275675615,69,glycerol,delta
+lag time std,1.5544545043785074,69,glycerol,delta
+max df stderr,4.070954197037855e-06,70,glycerol,delta
+time of max df,632.8766666666667,70,glycerol,delta
+time of max df std,5.187089742813402,70,glycerol,delta
+time of max df stderr,0.5187089742813402,70,glycerol,delta
+inverse max df,103.15123389811724,70,glycerol,delta
+inverse max df std,0.6241384787540877,70,glycerol,delta
+inverse max df stderr,0.06241384787540877,70,glycerol,delta
+max y,0.14887938324070896,70,glycerol,delta
+max y std,0.001049148164296611,70,glycerol,delta
+max y stderr,0.0001049148164296611,70,glycerol,delta
+lag time,440.9422964031475,70,glycerol,delta
+lag time std,1.847906308438069,70,glycerol,delta
+lag time stderr,0.1847906308438069,70,glycerol,delta
+max df std,4.070954197037855e-05,70,glycerol,delta
+max df,0.006719964095885328,70,glycerol,delta
