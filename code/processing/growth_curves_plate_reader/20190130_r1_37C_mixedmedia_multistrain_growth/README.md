@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: Looks good, despite spikes.
 ---
 
 # 2019-01-30 37C Glucose O2 Plate Reader Growth Measurement
@@ -30,7 +30,7 @@ This experiment aims to measure the growth rate of the *E. coli* strains of inte
 
 3. Cells were removed from the shaker and the four cultures were diluted 1:5.
 
-4. 100µL of water were added to the first and last row, and the first and last two columns of a round-welled, clear-bottomed 96 well plate, the total capacity of which was 250µL. 100µL of each culture were added to the remaining wells in the arrangement depicted in the output file 'growth_plate_layout.png'.
+4. 100µL of water were added to the first and last two rows and columns of a round-welled, clear-bottomed 96 well plate, the total capacity of which was 250µL. 100µL of each culture were added to the remaining wells in the arrangement depicted in the output file 'growth_plate_layout.png'.
 
 5. Double-sided tape was placed between the edges of the plate and the lid to prevent them rubbing and creating plastic dust.
 
