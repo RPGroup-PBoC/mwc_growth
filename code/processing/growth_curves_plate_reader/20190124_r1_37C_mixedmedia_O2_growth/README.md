@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: Looks great
 ---
 
 # 2019-01-24 37C Mixed Media O2 Plate Reader Growth Measurement

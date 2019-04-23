@@ -16,7 +16,7 @@ import statsmodels.api as sm
 
 # Define the experimental constants
 # For figure titles
-DATE = 20190129
+DATE = 20190128
 RUN_NO = 1
 TEMP = 37
 # For analysis
