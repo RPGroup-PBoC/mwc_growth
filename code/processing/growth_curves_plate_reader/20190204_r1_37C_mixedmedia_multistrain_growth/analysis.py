@@ -20,8 +20,8 @@ DATE = 20190204
 RUN_NO = 1
 TEMP = 37
 # For analysis
-STRAIN = 'delta'
-CARBON = 'acetate'
+STRAIN = 'manuel_delta'
+CARBON = 'glucose'
 
 WHOLE_PLATE = True
 WHOLE_REPLOT_ONLY = False #only replots if whole plate is also true
