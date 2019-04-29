@@ -1,0 +1,46 @@
+parameter,value,well_id,carbon,strain
+max df,0.013171430126754697,32,glucose,geneva_BW
+lag time stderr,0.1918745099629124,32,glucose,geneva_BW
+lag time std,1.9187450996291238,32,glucose,geneva_BW
+lag time,167.91606229297957,32,glucose,geneva_BW
+max y stderr,0.00032108703061568383,32,glucose,geneva_BW
+max y,0.21031161380134109,32,glucose,geneva_BW
+inverse max df stderr,0.0766242344945154,32,glucose,geneva_BW
+max y std,0.0032108703061568384,32,glucose,geneva_BW
+inverse max df,52.63624722774768,32,glucose,geneva_BW
+time of max df stderr,0.6110081832512558,32,glucose,geneva_BW
+time of max df std,6.1100818325125585,32,glucose,geneva_BW
+time of max df,275.0366666666667,32,glucose,geneva_BW
+max df stderr,1.9249816434263042e-05,32,glucose,geneva_BW
+max df std,0.00019249816434263042,32,glucose,geneva_BW
+inverse max df std,0.766242344945154,32,glucose,geneva_BW
+max y,0.20799098637752092,33,glucose,geneva_BW
+lag time stderr,0.12648202600160774,33,glucose,geneva_BW
+lag time std,1.2648202600160774,33,glucose,geneva_BW
+lag time,166.18155752150508,33,glucose,geneva_BW
+max y stderr,0.00020012339101404546,33,glucose,geneva_BW
+max y std,0.0020012339101404546,33,glucose,geneva_BW
+inverse max df stderr,0.04063472846928178,33,glucose,geneva_BW
+inverse max df std,0.40634728469281783,33,glucose,geneva_BW
+inverse max df,55.79204833535339,33,glucose,geneva_BW
+time of max df stderr,0.39912278812415874,33,glucose,geneva_BW
+time of max df std,3.9912278812415876,33,glucose,geneva_BW
+time of max df,254.17666666666665,33,glucose,geneva_BW
+max df stderr,9.060649542721521e-06,33,glucose,geneva_BW
+max df std,9.060649542721521e-05,33,glucose,geneva_BW
+max df,0.012424422784236595,33,glucose,geneva_BW
+lag time,160.85840406821478,34,glucose,geneva_BW
+max y stderr,0.00020765928981401552,34,glucose,geneva_BW
+max y std,0.002076592898140155,34,glucose,geneva_BW
+max y,0.20565276589169454,34,glucose,geneva_BW
+inverse max df stderr,0.0500322687861899,34,glucose,geneva_BW
+inverse max df std,0.500322687861899,34,glucose,geneva_BW
+time of max df,269.3666666666667,34,glucose,geneva_BW
+time of max df stderr,0.5238320341483518,34,glucose,geneva_BW
+time of max df std,5.238320341483518,34,glucose,geneva_BW
+lag time std,1.336021321383948,34,glucose,geneva_BW
+max df stderr,1.1506920703676908e-05,34,glucose,geneva_BW
+max df std,0.00011506920703676908,34,glucose,geneva_BW
+max df,0.012607369380095768,34,glucose,geneva_BW
+inverse max df,54.984091167130465,34,glucose,geneva_BW
+lag time stderr,0.1336021321383948,34,glucose,geneva_BW

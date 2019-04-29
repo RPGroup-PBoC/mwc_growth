@@ -134,7 +134,7 @@ for row in np.arange(0,8,1):
         ax[0].scatter(column+1, 8-row, s = 150, marker=strain_shape_dict[strain_map[row][column]], 
                     c=strain_color_dict[strain_map[row][column]])
 
-# Save figure.
+fig.suptitle(f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{STRAIN}: growth conditions and strains', y=1.13)
 plt.savefig(f'output/growth_plate_layout.png', bbox_inches='tight')
 
 
@@ -150,4 +150,5 @@ for r in np.arange(0,8,1):
         well_id = alphanumeric_map[f'{row_letter}{c+1}']
         well_dat = data[data['well_id']==well_id]
         ax[r][c].scatter(well_dat['time_min'], well_dat['od_600nm'], marker='.', s=0.2)
+fig.suptitle(f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{STRAIN}: whole plate growth curves', y=0.95)
 plt.savefig(f'output/growth_plate_summary.png', bbox_inches='tight')

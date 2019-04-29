@@ -1,0 +1,76 @@
+parameter,value,well_id,carbon,strain
+max df,0.02820682364180747,50,LB,geneva_BW
+lag time std,0.9738505220132467,50,LB,geneva_BW
+lag time,74.82866745594873,50,LB,geneva_BW
+max y stderr,0.000491944581390517,50,LB,geneva_BW
+max y std,0.00491944581390517,50,LB,geneva_BW
+max y,0.2685739266607639,50,LB,geneva_BW
+inverse max df stderr,0.021497927569110727,50,LB,geneva_BW
+lag time stderr,0.09738505220132468,50,LB,geneva_BW
+inverse max df,24.575620544867583,50,LB,geneva_BW
+time of max df stderr,0.3265333061113369,50,LB,geneva_BW
+time of max df std,3.265333061113369,50,LB,geneva_BW
+time of max df,134.40666666666667,50,LB,geneva_BW
+max df stderr,2.466206403141184e-05,50,LB,geneva_BW
+max df std,0.0002466206403141184,50,LB,geneva_BW
+inverse max df std,0.21497927569110728,50,LB,geneva_BW
+max df stderr,3.128543078444856e-05,51,LB,geneva_BW
+time of max df,139.51666666666665,51,LB,geneva_BW
+time of max df std,2.2951034835057,51,LB,geneva_BW
+time of max df stderr,0.22951034835057,51,LB,geneva_BW
+inverse max df,25.397504270833984,51,LB,geneva_BW
+inverse max df stderr,0.029223851279386332,51,LB,geneva_BW
+max y stderr,0.0005382993482035394,51,LB,geneva_BW
+max y std,0.005382993482035393,51,LB,geneva_BW
+lag time,78.84158650013468,51,LB,geneva_BW
+lag time std,1.1290088817111452,51,LB,geneva_BW
+lag time stderr,0.11290088817111452,51,LB,geneva_BW
+max df std,0.00031285430784448563,51,LB,geneva_BW
+max y,0.28455132284020346,51,LB,geneva_BW
+max df,0.02729554008294036,51,LB,geneva_BW
+inverse max df std,0.2922385127938633,51,LB,geneva_BW
+lag time stderr,0.07165835769031682,52,LB,geneva_BW
+max df,0.027825568401275497,52,LB,geneva_BW
+max df std,0.0002707600271067416,52,LB,geneva_BW
+max df stderr,2.707600271067416e-05,52,LB,geneva_BW
+time of max df,145.88666666666666,52,LB,geneva_BW
+time of max df stderr,0.137171425595858,52,LB,geneva_BW
+inverse max df,24.912795987493364,52,LB,geneva_BW
+time of max df std,1.3717142559585798,52,LB,geneva_BW
+inverse max df std,0.2420356164910426,52,LB,geneva_BW
+inverse max df stderr,0.024203561649104262,52,LB,geneva_BW
+max y,0.2820697210664018,52,LB,geneva_BW
+max y std,0.0030368993294077468,52,LB,geneva_BW
+max y stderr,0.00030368993294077465,52,LB,geneva_BW
+lag time,82.24598476599898,52,LB,geneva_BW
+lag time std,0.7165835769031682,52,LB,geneva_BW
+max y,0.28402911002438463,53,LB,geneva_BW
+lag time stderr,0.06817553692758517,53,LB,geneva_BW
+lag time std,0.6817553692758517,53,LB,geneva_BW
+lag time,80.1225021862019,53,LB,geneva_BW
+max y stderr,0.0003871811052136394,53,LB,geneva_BW
+max y std,0.003871811052136394,53,LB,geneva_BW
+inverse max df stderr,0.023058999577228203,53,LB,geneva_BW
+inverse max df std,0.23058999577228204,53,LB,geneva_BW
+inverse max df,24.29713609591894,53,LB,geneva_BW
+time of max df stderr,0.2989581910568767,53,LB,geneva_BW
+time of max df std,2.989581910568767,53,LB,geneva_BW
+time of max df,140.84666666666666,53,LB,geneva_BW
+max df stderr,2.7078934949674525e-05,53,LB,geneva_BW
+max df std,0.00027078934949674525,53,LB,geneva_BW
+max df,0.028530507249797395,53,LB,geneva_BW
+lag time,81.7653900220501,54,LB,geneva_BW
+max y stderr,0.00041323860794073217,54,LB,geneva_BW
+max y std,0.004132386079407322,54,LB,geneva_BW
+max y,0.2899681472193891,54,LB,geneva_BW
+inverse max df stderr,0.028478721944415995,54,LB,geneva_BW
+inverse max df std,0.28478721944415997,54,LB,geneva_BW
+time of max df,144.83666666666667,54,LB,geneva_BW
+time of max df stderr,0.2746106334430624,54,LB,geneva_BW
+time of max df std,2.7461063344306242,54,LB,geneva_BW
+lag time stderr,0.08151773170765896,54,LB,geneva_BW
+max df stderr,3.232576445958212e-05,54,LB,geneva_BW
+max df std,0.00032325764459582124,54,LB,geneva_BW
+max df,0.028042382312420247,54,LB,geneva_BW
+inverse max df,24.721124610340166,54,LB,geneva_BW
+lag time std,0.8151773170765896,54,LB,geneva_BW

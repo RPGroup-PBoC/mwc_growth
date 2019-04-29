@@ -1,6 +1,6 @@
 ---
-status: Accepted
-reason: Looks okay, many Manuel Delta wells slid to the bounds.
+status: Rejected
+reason: Old `deltaLacI` culture grew slowly. Otherwise, looks okay, many Manuel Delta wells slid to the bounds.
 ---
 
 # 2019-01-21 37C Glucose Multistrain Plate Reader Growth Measurement

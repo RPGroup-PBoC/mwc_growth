@@ -23,15 +23,18 @@ TEMP = 45
 STRAIN = 'delta'
 CARBON = 'glucose'
 
-WHOLE_PLATE = True
-WHOLE_REPLOT_ONLY = False #only replots if whole plate is also true
+WHOLE_PLATE = False
+WHOLE_REPLOT_ONLY = True #only replots if whole plate is also true
 PER_WELL = True
-PER_WELL_REPLOT_ONLY = False
+PER_WELL_REPLOT_ONLY = True
 
 # ----------------------------------
 
 # Load the data. 
 data = pd.read_csv(f'output/growth_plate.csv')
+
+# Thin the data by keeping only every other time point.
+data = data.groupby('well_id').nth(list(np.arange(0,243,3))).reset_index()
 
 # Generate a dictionary of the mean blank at each time point. 
 blank_vals = {t:val['od_600nm'].mean() for t, val in data[data['strain']=='blank'].groupby(['time_min'])}
@@ -104,8 +107,9 @@ if WHOLE_PLATE:
     ax[2].axhline(y=gp_df.min()['doubling_time'],c='red')
     locs = ax[2].get_yticks()
     plt.yticks(np.append(locs[2:-1],round(gp_df.min()['doubling_time'],2)))
-
     plt.tight_layout()
+    fig.subplots_adjust(top = 0.86)
+    fig.suptitle(f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{STRAIN}: growth and derivative vs time', fontsize = 10, y=0.96)
     plt.savefig(f'output/{STRAIN}_{CARBON}/gp_output_curves.png')
 
 # Perform by-well analysis
@@ -174,10 +178,10 @@ if PER_WELL:
                                       data['doubling_time']+data['doubling_time_std'],
                                       facecolor= 'blue', alpha= 0.2)
                 ax[r][c].axvline(x=int(data[data['doubling_time'] == data['doubling_time'].min()]['time']),c='red')
-                ax[r][c].set_ylim([0, 300])
-    ax[0][0].set_ylim([0, 300])
+                ax[r][c].set_ylim([0, 1000])
+    ax[0][0].set_ylim([0, 1000])
     ax[0][0].get_yaxis().set_visible(True)
-    fig.suptitle(f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{STRAIN} doubling time vs time', fontsize = 10, y=0.93)
+    fig.suptitle(f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{STRAIN}: doubling time vs time', fontsize = 10, y=0.93)
     plt.savefig(f'output/{STRAIN}_{CARBON}/per_well_doubling_time_curves.png')    
     plt.close()
 
@@ -192,7 +196,7 @@ if PER_WELL:
                 plate[r][c] = int(_temp[_temp['parameter'] == 'inverse max df']['value'])
     mask = np.isnan(plate)
     ax = sns.heatmap(plate, mask=mask, square = True)
-    ax.set_title(f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{STRAIN} doubling times', fontsize = 10)
+    ax.set_title(f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{STRAIN}: doubling times', fontsize = 10)
     plt.savefig(f'output/{STRAIN}_{CARBON}/per_well_doubling_times_heatmap.png')    
     plt.close()
 
@@ -205,7 +209,7 @@ if PER_WELL:
     ax.step(x, y)
     ax.set_xlabel('doubling time (minutes)', fontsize = 10)
     ax.set_ylabel('frequency', fontsize = 10)
-    ax.set_title(f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{STRAIN} doubling time distribution across wells', fontsize = 10)
+    ax.set_title(f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{STRAIN}: doubling time distribution across wells', fontsize = 10)
     ax.tick_params(labelsize=10)
     plt.savefig(f'output/{STRAIN}_{CARBON}/per_well_doubling_times_distribution.png')
     plt.close()

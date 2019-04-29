@@ -31,6 +31,6 @@ This experiment aims to measure the growth rate of the *E. coli* strains of inte
 
 2. Cells were diluted 1:1000 into 10mL of growth media in a 14mL Falcon tube.
 
-3. 300µL of water were added to the first and last two rows and columns of a square-welled, clear-bottomed 96 well plate, the total capacity of which was 700µL. 300µL of cells were added to the remaining wells.
+3. 300µL of water were added to the first and last two rows and columns of a square-welled, clear-bottomed 96 well plate, the total capacity of which was 630µL. 300µL of cells were added to the remaining wells.
 
 4. The plate was placed in a Biotek Gen5 plate reader and grown at 43C, shaking in a linear mode at the fastest speed. Measurements were taken every 7 minutes for approximately 48 hours.

@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: All looks good.
 ---
 
 # 2019-03-18 44C Glucose O2 Plate Reader Growth Measurement
@@ -15,7 +15,7 @@ This experiment aims to measure the growth rate of the *E. coli* strains of inte
 | dilution 1 - pos. 9 | `pZS3*PN25-tetR`| `galK<>25O2+11-YFP, gspI<>4*5noO1v1-CFP` |  HG105 |`deltaLacI` |
 
 ## Notes & Observations
-
+* Within analysis.py, the growth data was altered to include only every 2nd time point, lowering the growth series resolution slightly, so that the whole plate could be analyzed via gaussian processing without crashing. The per-well analysis was done using all datapoints.
 
 ## Analysis Files
 
@@ -31,6 +31,6 @@ This experiment aims to measure the growth rate of the *E. coli* strains of inte
 
 2. Cells were diluted 1:1000 into 10mL of growth media in a 14mL Falcon tube.
 
-3. 300µL of water were added to the first and last two rows and columns of a square-welled, clear-bottomed 96 well plate, the total capacity of which was 700µL. 300µL of cells were added to the remaining wells.
+3. 300µL of water were added to the first and last two rows and columns of a square-welled, clear-bottomed 96 well plate, the total capacity of which was 630µL. 300µL of cells were added to the remaining wells.
 
 4. The plate was placed in a Biotek Gen5 plate reader and grown at 44C, shaking in a linear mode at the fastest speed. Measurements were taken every 7 minutes for approximately 48 hours.
