@@ -9,7 +9,6 @@ import scipy.special
 import scipy.optimize
 import pickle
 import statsmodels.tools.numdiff as smnd
-from .viz import bokeh_traceplot
 from .stats import compute_hpd
 
 

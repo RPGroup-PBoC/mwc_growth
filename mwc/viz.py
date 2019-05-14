@@ -108,6 +108,131 @@ def personal_style():
     sns.set_palette(flat)
     return flat      
 
+
+def pboc_style(grid=True):
+    """
+    Sets the style to the publication style
+    """
+    rc = {'axes.facecolor': '#E3DCD0',
+          'font.family': 'Lucida Sans Unicode',
+          'grid.linestyle': '-',
+          'grid.linewidth': 0.5,
+          'grid.alpha': 0.75,
+          'grid.color': '#ffffff',
+          'axes.grid': grid,
+          'ytick.direction': 'in',
+          'xtick.direction': 'in',
+          'xtick.gridOn': True,
+          'ytick.gridOn': True,
+          'ytick.major.width':5,
+          'xtick.major.width':5,
+          'ytick.major.size': 5,
+          'xtick.major.size': 5,
+          'mathtext.fontset': 'stixsans',
+          'mathtext.sf': 'sans',
+          'legend.frameon': True,
+          'legend.facecolor': '#FFEDCE',
+          'figure.dpi': 150,
+           'xtick.color': 'k',
+           'ytick.color': 'k'}
+    plt.rc('text.latex', preamble=r'\usepackage{sfmath}')
+    plt.rc('mathtext', fontset='stixsans', sf='sans')
+    sns.set_style('darkgrid', rc=rc)
+
+
+def phd_style():
+    """
+    Sets the plotting style to my preference
+    """   
+    rc = {'axes.facecolor': '#EFEFEF', # '#F5F9FC', #E5E8EA', #DFE8EF', #EAEAEA', #E0E1E2', 
+          'font.family': 'sans-serif',
+          'font.style': 'italic',
+          'font.weight': 400,
+          'font.family': 'Arial',
+          'axes.edgecolor': 'slategray',
+          'axes.spines.right': False,
+          'axes.spines.top': False,
+          'axes.axisbelow': True,
+          'axes.linewidth': 0.75,
+          'axes.titlesize': 6,
+          'axes.grid': True,
+          'lines.linewidth': 0.75,
+          'lines.dash_capstyle': 'round',
+          'grid.linestyle': '-',
+          'grid.linewidth': 0.35,
+          'grid.color': '#ffffff',
+          'axes.labelsize': 6,
+          'xtick.labelsize': 5,
+          'ytick.labelsize': 5,
+          'legend.fontsize': 6,
+          'legend.frameon': True,
+          'axes.xmargin': 0.02,
+          'axes.ymargin': 0.02,
+          'figure.dpi': 200}
+
+    plt.rc('text.latex', preamble=r'\usepackage{mathpazo}')
+    matplotlib.style.use(rc)
+    colors = {'dark_purple': '#5F2E88', 'dark_orange':'#F38227', 'black':'#444147',
+              'dark_blue': '#3F60AC', 'dark_red':'#9C372F', 'dark_green':'#395A34',
+              'purple': '#7E59A2', 'orange':'#E39943', 'blue': '#7292C7', 'red':'#C76A6A',
+               'green':'#688A2F', 'light_purple':'#A17DB8', 'light_orange':'#EEBA7F',
+               'light_blue':'#A5B3CC', 'light_red':'#E39C9D', 'light_green':'#B3CD86', 
+               'grey': '#EFEFEF', 'gray': '#EFEFEF', 'light_grey':'#6D6F72'}
+    palette = [v for k, v in colors.items() if v not in ['grey', 'gray', 'dark_purple', 'light_grey']]
+    sns.set_palette(palette)
+    return colors     
+
+def bokeh_theme(return_color_list=True):
+    theme_json =  {
+    'attrs' : {
+        'Figure' : {
+            'background_fill_color': '#EEEEEE',
+        },
+        'Axis': {
+            'axis_line_color': 'slategray',
+            'major_tick_line_color': None,
+            'minor_tick_line_color': None,
+        },
+        'Legend': {
+            'border_line_color': 'slategray',
+            'background_fill_color': '#EEEEEE',
+            'border_line_width': 0.75,
+            'background_fill_alpha': 0.75,
+        },
+        'Grid': {
+            'grid_line_color': '#FFFFFF',
+            'grid_line_width': 0.75,
+        },
+        'Text': {
+            'text_font_style': 'italic',
+            'text_font': 'Arial', 
+            'text_font_size':10,
+        },
+        'Title': {
+            'background_fill_color': '#EEEEEE',
+            'text_color': '#3c3c3c',
+            'align': 'center',
+            'text_font': 'Arial',
+            'offset': 2,
+         }
+    }
+    }
+
+    colors = {'dark_purple': '#5F2E88', 'dark_orange':'#F38227', 'black':'#444147',
+        'dark_blue': '#3F60AC', 'dark_red':'#9C372F', 'dark_green':'#395A34',
+        'purple': '#7E59A2', 'orange':'#E39943', 'blue': '#7292C7', 'red':'#C76A6A',
+        'green':'#688A2F', 'light_purple':'#A17DB8', 'light_orange':'#EEBA7F',
+        'light_blue':'#A5B3CC', 'light_red':'#E39C9D', 'light_green':'#B3CD86', 
+        'grey': '#EFEFEF', 'gray': '#EFEFEF', 'light_grey':'#6D6F72'}
+        
+    color_items = [v for v in colors.values()]
+    theme = bokeh.themes.Theme(json=theme_json)
+    bokeh.io.curdoc().theme = theme
+    if return_color_list:
+        return [colors, color_items]
+    else:
+        return colors
+
 def format_axes(pub_style=False):
     """
     Executes a seaborn despining function with my prefered offset and trimming.
@@ -115,63 +240,6 @@ def format_axes(pub_style=False):
     if pub_style == False:
         sns.despine(offset=7)
 
-# Specialized viewing functions.
-
-def bokeh_traceplot(samples, varnames=None):
-    """
-    Generate a Bokey traceplot of a series of parameters and their sampling 
-    history. As of now, the only shown distribution is 'ecdf'. 
-
-    Parameters
-    ----------
-    samples: StanFit4Model object
-        Sampling output from Stan.
-    varnames: list
-        List of variable names to include in the plot.
-    """
-    params = samples.model_pars
-    sample_values = samples.extract()
-    palette = bokeh.palettes.Category10_10
-    
-    # Define the standard plot sizes.   
-    pairs = []
-    if varnames != None:
-        iterator = varnames
-    else:
-        iterator = params
-    for p in iterator:
-        colors = itertools.cycle(palette)
-        if len(np.shape(sample_values[p])) == 1:
-            _samples = np.array([sample_values[p]]).T
-        else:
-            _samples = sample_values[p]
-      
-        dfs = []
-        trace = bokeh.plotting.figure(plot_width=400, plot_height=200, 
-                                      x_axis_label='sample number', y_axis_label=f'{p}',
-                                     title=f'sampling history for {p}', background_fill_color='#ecedef') 
-
-        dist = bokeh.plotting.figure(plot_width=400, plot_height=200, 
-                                     x_axis_label=f'{p}', y_axis_label='ECDF',
-                                    title=f'posterior distribution for {p}', background_fill_color='#ecedef')   
-        
-        # Add visual formatting
-        trace.xgrid.grid_line_color = '#FFFFFF'
-        trace.ygrid.grid_line_color = '#FFFFFF'
-        dist.xgrid.grid_line_color = '#FFFFFF'
-        dist.ygrid.grid_line_color = '#FFFFFF'    
-        
-        for i, color in zip(range(np.shape(_samples)[1]), colors): 
-            # Extract the specific values. 
-            _values = _samples[:, i]
-            x, y = np.sort(_values), np.arange(0, len(_values), 1) / len(_values)
-            _df = pd.DataFrame(np.array([x, y, 
-                                         _values, np.arange(0, len(_values), 1)]).T, 
-                               columns=['x', 'ecdf', 'samples', 'step_no'])            
-            dist.line(_df['x'], _df['ecdf'], line_width=2, color=color)
-            trace.line(_df['step_no'], _df['samples'], line_width=1, color=color) 
-        pairs.append([dist, trace])  
-    return bokeh.io.show(bokeh.layouts.gridplot(pairs))
 
 def growth_animation(images, fname, contours=None, descriptors={'bar_length':10,
     'ip_dist':0.07, 'temperature':'', 'carbon':'', 'time_interval':0}):
