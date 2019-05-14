@@ -25,13 +25,11 @@ data {
     // Dimensional parameters for calibration factor determination
     int<lower=1> J_exp; // Number of unique experiments across entire data set
     int<lower=1> N_fluct; // Total number of measurements for fluctuations
-    int<lower=1> N_mch;
     int<lower=1, upper=J_exp> index_1[N_fluct]; // Indices for fluctuation measurements
  
     // Experimental data for calibration factor determination
     vector<lower=0>[N_fluct] I_1; // Observed mean pixel intensity of daughter cell 1
     vector<lower=0>[N_fluct] I_2; // Observed mean pixel intensity of daughter cell 2 
-    vector[N_mch] mcherry;
 }
    
 parameters {
@@ -64,7 +62,4 @@ model {
     I_1 ~ GammaApproxBinom(I_2, alpha_2[index_1]);        
 }
 
-generated quantities {
-    vector[N_mch] rep_per_cell = mcherry ./ alpha_1;
-}
  

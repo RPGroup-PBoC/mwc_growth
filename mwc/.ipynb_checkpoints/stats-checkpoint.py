@@ -138,12 +138,14 @@ def compute_statistics(df, varnames=None, logprob_name='logp'):
         ind = ind[0]
 
     # Instantiate the dataframe for the parameters.
-    stat_df = pd.DataFrame([], columns=['parameter', 'mode', 'hpd_min',
+    stat_df = pd.DataFrame([], columns=['parameter', 'mode', 'mean', 'median', 'hpd_min',
                                         'hpd_max'])
     for v in varnames:
         mode = df.iloc[ind][v]
+        median = df[v].median()
+        mean = df[v].mean()
         hpd_min, hpd_max = compute_hpd(df[v].values, mass_frac=0.95)
-        stat_dict = dict(parameter=v, mode=mode, hpd_min=hpd_min,
+        stat_dict = dict(parameter=v, median=median, mean=mean, mode=mode, hpd_min=hpd_min,
                          hpd_max=hpd_max)
         stat_df = stat_df.append(stat_dict, ignore_index=True)
 
