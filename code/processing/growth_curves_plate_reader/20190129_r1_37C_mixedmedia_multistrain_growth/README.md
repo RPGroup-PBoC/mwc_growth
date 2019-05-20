@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: Looks good
 ---
 
 # 2019-01-29 37C Mixed Media Multistrain Plate Reader Growth Measurement

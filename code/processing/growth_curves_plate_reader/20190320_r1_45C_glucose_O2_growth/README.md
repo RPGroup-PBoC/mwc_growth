@@ -15,7 +15,7 @@ This experiment aims to measure the growth rate of the *E. coli* strains of inte
 | dilution 1 - pos. 9 | `pZS3*PN25-tetR`| `galK<>25O2+11-YFP, gspI<>4*5noO1v1-CFP` |  HG105 |`deltaLacI` |
 
 ## Notes & Observations
-* Within analysis.py, the growth data was altered to include only every 2nd time point, lowering the growth series resolution slightly, so that the whole plate could be analyzed via gaussian processing without crashing. The per-well and whole plate analyses were performed with this thinned data. 
+* Within analysis.py, the growth data was altered to include only every 2nd time point, lowering the growth series resolution slightly, so that the whole plate could be analyzed via gaussian processing without crashing. The per-well and whole plate analyses were performed with this thinned data.
 
 ## Analysis Files
 

@@ -20,7 +20,7 @@ DATE = 20190129
 RUN_NO = 1
 TEMP = 37
 # For analysis
-STRAIN = 'manuel_delta'
+STRAIN = 'delta'
 CARBON = 'LB'
 
 WHOLE_PLATE = True
