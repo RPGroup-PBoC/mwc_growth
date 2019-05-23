@@ -46,6 +46,20 @@ This experiment was a biological replicate of a low-ATC induction series in M9 +
 
 4. Once the cells reached an OD<sub>600nm</sub> between 0.18 - 0.35, the cells were removed from the warm room. They remained on the bench for 1.5 hours, and were then harvested.
 
+**Sample OD<sub>600nm</sub> Measurements**
+
+| Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
+| :--- | :---: | :---: |
+| `autofluorescence` | 0 | .31 |
+| `deltaLacI` | 0 | .54 |
+| `dilution` | 0.1 | .18 |
+| `dilution` | 0.2 | .22 |
+| `dilution` | 0.3 | .25 |
+| `dilution` | 0.4 | .23 |
+| `dilution` | 0.7 | .18 |
+| `dilution` | 1 | .22 |
+| `dilution` | 10 | 0.20 |
+
 **Microscopy**
 
 1. A 100µL aliquot of each of the `dilution` samples with varying ATC concentrations were combined in a 1.5mL eppendorf tube.

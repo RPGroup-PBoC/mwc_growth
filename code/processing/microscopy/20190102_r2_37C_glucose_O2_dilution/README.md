@@ -20,10 +20,11 @@ This experiment was a biological replicate of a low-ATC induction series in M9 +
 
 | Inducer | Concentration |
 | :------ | ------------: |
-| Anhydrotetracycline HCl (ATC) | 0, 0.1, 0.2, 0.3, 0.4, 0.7, 1, 10 [ng / mL] |
+| Anhydrotetracycline HCl (ATC) | 0, 0.5, 1, 1.5, 2.7, 3.5, 5 [ng / mL] |
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
+* Cells were harvested at OD<sub>600nm</sub>s 0.25-0.38, except `dilution` 0.3ngml at 0.46 and `deltaLacI` at 0.68.
 * The 0.4ng/mL sample shows close to 0 repressors and may have been skipped during dilution.
 
 ## Analysis Files
@@ -42,7 +43,21 @@ This experiment was a biological replicate of a low-ATC induction series in M9 +
 
 3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 8 hours at 37°C with shaking at ~ 220 RPM.
 
-4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room and harvested.
+4. Once the cells reached an OD<sub>600nm</sub> between 0.25 - 0.5, excepting the `deltaLacI` culture, the cells were removed from the warm room and harvested.
+
+**Sample OD<sub>600nm</sub> Measurements**
+
+| Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
+| :--- | :---: | :---: |
+| `autofluorescence` | 0 | .38 |
+| `deltaLacI` | 0 | .68 |
+| `dilution` | 0.1 | .28 |
+| `dilution` | 0.2 | .37 |
+| `dilution` | 0.3 | .46 |
+| `dilution` | 0.4 | .27 |
+| `dilution` | 0.7 | .25 |
+| `dilution` | 1 | .3 |
+| `dilution` | 10 | 0.32 |
 
 **Microscopy**
 

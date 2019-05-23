@@ -3,10 +3,10 @@ status: Accepted
 reason: Looks great.
 ---
 
-# YEAR-MONTH-DATE TEMP CARBON OPERATOR Dilution
+# 2019-03-18 37C Glycerol O2 Dilution
 
 ## Purpose
-
+This experiment was a biological replicate of high-ATC induction series in M9 + 0.5% glycerol.
 
 ## Strain Information
 
@@ -20,11 +20,12 @@ reason: Looks great.
 
 | Inducer | Concentration |
 | :------ | ------------: |
-| Anhydrotetracycline HCl (ATC) | 0, 0.1, 0.2, 0.3, 0.4, 0.7, 1, 10 [ng / mL] |
+| Anhydrotetracycline HCl (ATC) | 0, 1, 2, 3, 4, 7, 10 [ng / mL] |
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-
+* Cells were harvested at OD_600nm of 0.22-0.42.
+* The `autofluoresence` culture was diluted 2x 1.75 hours before harvesting.
 
 ## Analysis Files
 
@@ -38,25 +39,24 @@ reason: Looks great.
 
 1. Cells as described in "Strain Information" were grown to saturation in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain).
 
-2. Cells were diluted 1:XXX into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from 1µg/mL and 100ng/mL stocks in 50% EtOH to the appropriate concentration.
+2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from 1µg/mL and 100ng/mL stocks in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for X hours at 37°C with shaking at ~ 220 RPM.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 13 hours at 37°C with shaking at ~ 220 RPM. About 1.75 hours before harvesting, the `autofluoresence` culture was diluted 1:2.
 
-4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room and harvested.
+4. Once the cells reached an OD<sub>600nm</sub> between 0.22 - 0.42, the cells were removed from the warm room and harvested.
 
 **Sample OD<sub>600nm</sub> Measurements**
 
 | Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
 | :--- | :---: | :---: |
-| `autofluorescence` | 0 |  |
-| `deltaLacI` | 0 |  |
-| `dilution` | 0.1 |  |
-| `dilution` | 0.2 |  |
-| `dilution` | 0.3 |  |
-| `dilution` | 0.4 |  |
-| `dilution` | 0.7 |  |
-| `dilution` | 1 |  |
-| `dilution` | 10 |  |
+| `autofluorescence` | 0 | 0.35 |
+| `deltaLacI` | 0 | 0.22 |
+| `dilution` | 1 | 0.35 |
+| `dilution` | 2 | 0.42 |
+| `dilution` | 3 | 0.42 |
+| `dilution` | 4 | 0.42 |
+| `dilution` | 7 | 0.33 |
+| `dilution` | 10 | 0.34 |
 
 **Microscopy**
 
@@ -77,6 +77,6 @@ reason: Looks great.
 
 7. Approximately 15 positions were then marked on the `dilution` mixture pad. These positions were chosen requiring separation of cells and avoidance of debris.
 
-8. These were positions were imaged every XX minutes for XX hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
+8. These were positions were imaged every 7 minutes for 2.5 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
 
 9. The samples were discarded and the dataset was transferred to the storage server.

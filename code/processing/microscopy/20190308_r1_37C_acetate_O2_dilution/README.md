@@ -6,7 +6,7 @@ reason: (Provisionally accepted) Negative repressor counts; high calibration fac
 # 2019-03-08 37C Acetate O2 Dilution
 
 ## Purpose
-
+This experiment was a biological replicate of high-ATC induction series in M9 + 0.5% glycerol.
 
 ## Strain Information
 

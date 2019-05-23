@@ -3,10 +3,10 @@ status: Accepted
 reason: 10ng/ml ATC had alignment issues; High calibration factor estimate.
 ---
 
-# YEAR-MONTH-DATE TEMP CARBON OPERATOR Dilution
+# 2019-03-19 37C Glycerol O2 Dilution
 
 ## Purpose
-
+This experiment was a biological replicate of high-ATC induction series in M9 + 0.5% glycerol.
 
 ## Strain Information
 
@@ -20,11 +20,12 @@ reason: 10ng/ml ATC had alignment issues; High calibration factor estimate.
 
 | Inducer | Concentration |
 | :------ | ------------: |
-| Anhydrotetracycline HCl (ATC) | 0, 0.1, 0.2, 0.3, 0.4, 0.7, 1, 10 [ng / mL] |
+| Anhydrotetracycline HCl (ATC) | 0, 1, 2, 3, 4, 7, 10 [ng / mL] |
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-
+* Cells were harvested at OD_600nm 0.19-0.29.
+* Cultures of `autofluoresence` and all `dilution` cultures were diluted 4x about 2.5 hours before harvesting.
 
 ## Analysis Files
 
@@ -38,25 +39,24 @@ reason: 10ng/ml ATC had alignment issues; High calibration factor estimate.
 
 1. Cells as described in "Strain Information" were grown to saturation in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain).
 
-2. Cells were diluted 1:XXX into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from 1µg/mL and 100ng/mL stocks in 50% EtOH to the appropriate concentration.
+2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from 1µg/mL and 100ng/mL stocks in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for X hours at 37°C with shaking at ~ 220 RPM.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 15 hours at 37°C with shaking at ~ 220 RPM. After about 12.5 hours (2.5 hours before harvesting), the `autofluoresence` culture and all `dilution` cultures were diluted 1:4.
 
-4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room and harvested.
+4. Once the cells reached an OD<sub>600nm</sub> between 0.19 - 0.29, the cells were removed from the warm room and harvested.
 
 **Sample OD<sub>600nm</sub> Measurements**
 
 | Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
 | :--- | :---: | :---: |
-| `autofluorescence` | 0 |  |
-| `deltaLacI` | 0 |  |
-| `dilution` | 0.1 |  |
-| `dilution` | 0.2 |  |
-| `dilution` | 0.3 |  |
-| `dilution` | 0.4 |  |
-| `dilution` | 0.7 |  |
-| `dilution` | 1 |  |
-| `dilution` | 10 |  |
+| `autofluorescence` | 0 | 0.29 |
+| `deltaLacI` | 0 | 0.19 |
+| `dilution` | 1 | 0.23 |
+| `dilution` | 2 | 0.24 |
+| `dilution` | 3 | 0.27 |
+| `dilution` | 4 | 0.24 |
+| `dilution` | 7 | 0.25 |
+| `dilution` | 10 | 0.23 |
 
 **Microscopy**
 

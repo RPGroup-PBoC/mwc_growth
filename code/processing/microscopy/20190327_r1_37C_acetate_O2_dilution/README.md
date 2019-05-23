@@ -3,10 +3,10 @@ status: Accepted
 reason: (Provisionally accepted) Negative repressor counts, high calibration factor.
 ---
 
-# YEAR-MONTH-DATE TEMP CARBON OPERATOR Dilution
+# 2019-03-27 37C Acetate O2 Dilution
 
 ## Purpose
-
+This experiment was a biological replicate of high-ATC induction series in M9 + 0.5% acetate.
 
 ## Strain Information
 
@@ -15,16 +15,18 @@ reason: (Provisionally accepted) Negative repressor counts, high calibration fac
 | dilution 1 - pos. 2 | None | `galK<>KD4+noKan, gspI<>4*5noO1v1-cfp` | HG105 | `autofluorescence` |
 | dilution 1 - pos. 5 | `pZS3*PN25-tetR` | `galK<>25O2+11-YFP ybcN<>1-Wiggins2-lacI-mCherry, gspI<>4*5noO1v1-CFP` | HG105 | `dilution`|
 | dilution 1 - pos. 9 | `pZS3*PN25-tetR`| `galK<>25O2+11-YFP, gspI<>4*5noO1v1-CFP` |  HG105 |`deltaLacI` |
+|  |  |  |  | `autoM` |
 
 ## Titration Series
 
 | Inducer | Concentration |
 | :------ | ------------: |
-| Anhydrotetracycline HCl (ATC) | 0, 0.1, 0.2, 0.3, 0.4, 0.7, 1, 10 [ng / mL] |
+| Anhydrotetracycline HCl (ATC) | 0, 1, 2, 3, 4, 7, 10 [ng / mL] |
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-
+* Cells harvested at OD_600nm 0.27-0.32.
+* About 5.5 hours before harvesting, all cultures were diluted back to varying degrees. The `autoM` sample was diluted back 4x, the `autofluorescence` sample 8x, the `deltaLacI` sample 6x, and the `dilution` samples (in increasing ATC order) 6x, 4x, 4x, 5x, 3x, 3x.
 
 ## Analysis Files
 
@@ -38,25 +40,25 @@ reason: (Provisionally accepted) Negative repressor counts, high calibration fac
 
 1. Cells as described in "Strain Information" were grown to saturation in 3mL of LB Miller (+ chloramphenicol for the `dilution` strain).
 
-2. Cells were diluted 1:XXX into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from 1µg/mL and 100ng/mL stocks in 50% EtOH to the appropriate concentration.
+2. Cells were diluted 1:1000 into 3mL of growth media (+ chloramphenicol for the `dilution` strain) in 14mL Falcon tubes. ATC was added from 1µg/mL and 100ng/mL stocks in 50% EtOH to the appropriate concentration.
 
-3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for X hours at 37°C with shaking at ~ 220 RPM.
+3. Tubes were placed in a rack and covered with a plastic box to protect from photocleavage of ATC. Cells were allowed to grow for 27 hours at 37°C with shaking at ~ 220 RPM. After about 21.5 hours, the samples were diluted (in the order they are listed in the OD section below) 4x, 8x, 6x, 6x, 4x, 4x, 5x, 3x, 3x, respectively.
 
-4. Once the cells reached an OD<sub>600nm</sub> between 0.2 - 0.4, the cells were removed from the warm room and harvested.
+4. Once the cells reached an OD<sub>600nm</sub> between 0.27 - 0.32, the cells were removed from the warm room and harvested.
 
 **Sample OD<sub>600nm</sub> Measurements**
 
 | Strain | ATC Concentration [ng / mL] | OD<sub>600nm</sub> |
 | :--- | :---: | :---: |
-| `autofluorescence` | 0 |  |
-| `deltaLacI` | 0 |  |
-| `dilution` | 0.1 |  |
-| `dilution` | 0.2 |  |
-| `dilution` | 0.3 |  |
-| `dilution` | 0.4 |  |
-| `dilution` | 0.7 |  |
-| `dilution` | 1 |  |
-| `dilution` | 10 |  |
+| `autoM` | 0 | 0.32 |
+| `autofluorescence` | 0 | 0.27 |
+| `deltaLacI` | 0 | 0.30 |
+| `dilution` | 1 | 0.27 |
+| `dilution` | 2 | 0.31 |
+| `dilution` | 3 | 0.27 |
+| `dilution` | 4 | 0.27 |
+| `dilution` | 7 | 0.31 |
+| `dilution` | 10 | 0.30 |
 
 **Microscopy**
 
@@ -77,6 +79,6 @@ reason: (Provisionally accepted) Negative repressor counts, high calibration fac
 
 7. Approximately 15 positions were then marked on the `dilution` mixture pad. These positions were chosen requiring separation of cells and avoidance of debris.
 
-8. These were positions were imaged every XX minutes for XX hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
+8. These were positions were imaged every 10 minutes for 4 hours using only the Brightfield channel. After this timelapse, these positions were imaged once more using Brightfield, mCherry, and YFP channels.
 
 9. The samples were discarded and the dataset was transferred to the storage server.
