@@ -48,7 +48,7 @@ transformed parameters{
 
 model {    
     alpha_raw ~ normal(0, 2);
-    alpha_mu ~ lognormal(5, 3);
+    alpha_mu ~ normal(0, 500);
     tau ~ normal(0, 1);
     I1 ~ GammaApproxBinom(I2, alpha);  
 }
