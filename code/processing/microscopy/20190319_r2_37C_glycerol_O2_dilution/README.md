@@ -26,6 +26,7 @@ This experiment was a biological replicate of high-ATC induction series in M9 + 
 ## Notes & Observations
 * Cells were harvested at OD_600nm 0.19-0.29.
 * Cultures of `autofluoresence` and all `dilution` cultures were diluted 4x about 2.5 hours before harvesting.
+* The 10ng/ml ATC pad had alignment issues between the fluoresence and bright field channels, and those data were removed from the foldchange.csv file.
 
 ## Analysis Files
 

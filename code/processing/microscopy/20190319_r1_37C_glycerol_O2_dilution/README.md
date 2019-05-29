@@ -24,7 +24,7 @@ This experiment was a biological replicate of high-ATC induction series in M9 + 
 | Isopropylthiogalactopyranoside (IPTG) | None |
 
 ## Notes & Observations
-
+* The 10ng/ml ATC pad had alignment issues between the fluoresence and bright field channels, and those data were removed from the foldchange.csv file. 
 
 ## Analysis Files
 
