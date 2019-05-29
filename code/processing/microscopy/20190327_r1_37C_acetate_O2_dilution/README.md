@@ -15,7 +15,7 @@ This experiment was a biological replicate of high-ATC induction series in M9 + 
 | dilution 1 - pos. 2 | None | `galK<>KD4+noKan, gspI<>4*5noO1v1-cfp` | HG105 | `autofluorescence` |
 | dilution 1 - pos. 5 | `pZS3*PN25-tetR` | `galK<>25O2+11-YFP ybcN<>1-Wiggins2-lacI-mCherry, gspI<>4*5noO1v1-CFP` | HG105 | `dilution`|
 | dilution 1 - pos. 9 | `pZS3*PN25-tetR`| `galK<>25O2+11-YFP, gspI<>4*5noO1v1-CFP` |  HG105 |`deltaLacI` |
-|  |  |  |  | `autoM` |
+| dilution 1 - pos. 2 | None | `galK<>KD4+noKan, gspI<>4*5noO1v1` | HG105 | `autoM` |
 
 ## Titration Series
 
@@ -68,7 +68,7 @@ This experiment was a biological replicate of high-ATC induction series in M9 + 
 
 3. The washed `dilution` mixture was diluted 1:5 into ATC-free growth medium. Aliquots of 1µL were spotted onto 3% agarose pads made of the growth medium.
 
-4. The other samples (`autofluorescence`, `deltaLacI`, and `dilution` for all ATC concentrations except 10ng/mL) were diluted 1:5 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no available carbon.
+4. The other samples (`autofluorescence`, `autoM`, `deltaLacI`, and `dilution` for all ATC concentrations except 10ng/mL) were diluted 1:5 into a growth medium with no available carbon. Aliquots of 1µL were added to agarose pads made of the growth medium with no available carbon.
 
 5. Agarose pads spotted with cells were allowed to dry and were then placed onto a glass bottom dish.
 
