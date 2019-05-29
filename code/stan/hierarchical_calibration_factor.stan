@@ -37,7 +37,7 @@ parameters {
     real tau_alpha; 
     
     // Top-level parameters
-    real alpha_1; // Calibration factor for particular growth medium 
+    real<lower=0> alpha_1; // Calibration factor for particular growth medium 
     
     // Level-1 Parameters
     vector[J_exp] alpha_2_raw; // Non-centered parameterization for cal factor
@@ -50,13 +50,13 @@ transformed parameters {
   
 model {
     // Define the hyperpriors.
-    alpha_1 ~ normal(500, 200); 
+    alpha_1 ~ normal(500, 100); 
    
     // Priors on hyperparameter variation
     tau_alpha ~ normal(0, 1); 
     
     // Define priors on non-centering
-    alpha_2_raw ~ normal(0, 100);    
+    alpha_2_raw ~ normal(0, 1);    
 
     //  Likelihood for calibration factor
     I_1[index_1] ~ GammaApproxBinom(I_2[index_1], alpha_2[index_1]);        

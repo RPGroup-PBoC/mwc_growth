@@ -71,14 +71,12 @@ lineages = lineages[(lineages['I1_tot'] >= 0) & (lineages['I2_tot'] >= 0)].copy(
 #%% [markdown]
 # With this in hand, we can now iterate through each unique day, run_number,
 # and carbon source to infer the calibration factor.
-
-#%%
-model = mwc.bayes.StanModel('../stan/hierarchical_calibration_factor.stan') 
-
+model = mwc.bayes.StanModel('../stan/hierarchical_calibration_factor.stan',
+                           force_compile=True) 
 stat_dfs = []
 for g, d in lineages.groupby(['carbon']):
     d = d.copy()
-    d['id'] = lineages.groupby(['date', 'run_no']).ngroup() + 1
+    d['id'] = d.groupby(['date', 'run_no']).ngroup() + 1
     data_dict = {'J_exp':d['id'].max(), 'N_fluct':len(d), 'index_1':d['id'], 
                 'I_1':d['I1_tot'], 'I_2':d['I2_tot']}
     samples = model.sample(data_dict)
