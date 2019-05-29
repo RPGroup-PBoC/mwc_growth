@@ -122,17 +122,26 @@ def fc_summary_microscopy(fc_data, alpha_samples, fname=None, constants=None,
     if title != None:
         p1.title.text = title
 
-    for g, d in fc_data.groupby(['atc_ngml']):
+    for g, d in fc_data.groupby(['atc_ngml','strain']):
         # Compute the ECDF of mCherry intensity
-        x_mch, y_mch = np.sort(d['mean_mCherry']), np.arange(0, len(d), 1) /len(d)    
-    
+        x_mch, y_mch = np.sort(d['mean_mCherry']), np.arange(0, len(d), 1) /len(d)
+        if g[0] == 0: legend = g[1]
+        else: legend = str(g[0])
+
         # Plot the various glyphs
-        p1.circle(d['mean_mCherry'], d['mean_yfp'], color=mch_colors[g], size=0.75, legend=str(g))
-        p2.line(x_mch, y_mch, color=mch_colors[g], line_width=2, legend=str(g))
-        p3.circle(g, np.mean(d['repressors_median']))
-        p3.line([g,g],  [np.mean(d['repressors_min']), np.mean(d['repressors_max'])])
+        p1.circle(d['mean_mCherry'], d['mean_yfp'], color=mch_colors[g[0]], size=0.75, legend=legend)
+        p2.line(x_mch, y_mch, color=mch_colors[g[0]], line_width=2, legend=legend)
+        p3.circle(g[0], np.mean(d['repressors_median']))
+        p3.line([g[0],g[0]],  [np.mean(d['repressors_min']), np.mean(d['repressors_max'])])
         p4.circle(np.mean(d['repressors_median']), np.mean(d['fold_change']))
         p4.line(rep_range, arch, line_width=2, color='black')
+    
+    p1.legend.label_text_font_size = '8pt'
+    p2.legend.label_text_font_size = '8pt'
+    p1.legend.spacing = -4
+    p2.legend.spacing = -4
+    p1.legend.click_policy = 'hide'
+    p2.legend.click_policy = 'hide'
     
     # Assemble the layout and determine if the plot should be saved
     _layout = bokeh.layouts.gridplot([[p1, p2], [p3, p4]])
