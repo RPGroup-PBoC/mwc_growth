@@ -23,7 +23,7 @@ functions{
     * @param alpha: Fluorescenc calibration factor in units of a.u. / molecule
     * @param N: Total number of measurements 
     **/
-    real GammaApproxBinom_lpdf(vector I1, vector I2, real alpha) {
+    real GammaApproxBinom_lpdf(vector I1, vector I2, real alpha, int N) {
         return sum(-log(alpha) + lgamma(((I1 + I2) ./ alpha) + 1) - lgamma((I1 ./ alpha) + 1) - lgamma((I2 ./ alpha) + 1) - ((I1 + I2) ./ alpha) * log(2));
     } 
 }
@@ -36,19 +36,14 @@ data {
 
 parameters {
     // Generate non-centered modifiers
-    real<lower=0> alpha_mu;
-    real alpha_raw; 
-    real<lower=0> tau;
+    real<lower=0> log_alpha;
 }
 
-transformed parameters{
-    real alpha = alpha_mu + tau * alpha_raw;
+transformed parameters {
+    real<lower=1> alpha = exp(log_alpha);
+
 }
-
-
 model {    
-    alpha_raw ~ normal(0, 2);
-    alpha_mu ~ normal(0, 500);
-    tau ~ normal(0, 1);
-    I1 ~ GammaApproxBinom(I2, alpha);  
+    log_alpha ~ normal(5, 3);
+    I1 ~ GammaApproxBinom(I2, alpha, N);  
 }
