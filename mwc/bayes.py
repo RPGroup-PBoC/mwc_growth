@@ -281,7 +281,7 @@ def deterministic_log_posterior(alpha, I_1, I_2, p=0.5, neg=False):
 
     # Ensure that the two intensities are positive.
     if (I_1 < 0).any() or (I_2 < 0).any():
-        raise ValueError('I_1 or I_2 contains negative values. Fix that plz.')
+        raise ValueError('I_1 or I_2 contains negative values.')
 
     # Make sure value for p is sensical.
     if (p < 0) | (p > 1):
@@ -301,7 +301,7 @@ def deterministic_log_posterior(alpha, I_1, I_2, p=0.5, neg=False):
 
     # Assemble the log posterior.
     logpost = change_of_var + binom + prob
-    return prefactor * (logpost)
+    return prefactor * logpost
 
 
 def estimate_calibration_factor(I_1, I_2, p=0.5, return_eval=False):
@@ -332,9 +332,9 @@ def estimate_calibration_factor(I_1, I_2, p=0.5, return_eval=False):
         raise ValueError('p must be between 0 and 1.')
 
     # Perform the optimization
-    popt = scipy.optimize.minimize_scalar(
-        deterministic_log_posterior, args=(I_1, I_2, p, True))
-    alpha_opt = popt.x
+    popt = scipy.optimize.minimize(
+        deterministic_log_posterior, 300, args=(I_1, I_2, p, True))
+    alpha_opt = popt.x[0]
 
     # Compute the hessian.
     hess = smnd.approx_hess([alpha_opt], deterministic_log_posterior,

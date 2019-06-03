@@ -18,6 +18,8 @@ import mwc.model
 import mwc.viz
 import bokeh.io
 import bokeh.plotting
+import imp
+imp.reload(mwc.bayes)
 bokeh.io.output_notebook()
 colors, color_list = mwc.viz.bokeh_theme()
 constants = mwc.model.load_constants()
@@ -42,7 +44,7 @@ fc_data = pd.read_csv('../../data/compiled_fold_change.csv')
 fc_data.dropna(inplace=True)
 
 # Isolate the autofluorescence data. 
-auto_data = fc_data[fc_data['strain']=='auto'].copy()
+auto_data = fc_data[fc_data['strain']=='delta'].copy()
 
 # Go through and subtract teh autofluorescence information.
 for g, d in lineages.groupby(['carbon', 'date', 'run_no']):
@@ -94,8 +96,8 @@ for g, d in lineages.groupby(['carbon']):
 # Note that here we took a pooled approach in estimation of the calibration factor
 #%%
 # Instantiate the figure. 
-carbon = 'acetate'
 # carbon = 'glucose'
+carbon = 'acetate'
 # carbon = 'glycerol'
 ax = bokeh.plotting.figure(width=600, height=400,
                            x_axis_type='log',
@@ -121,8 +123,8 @@ ax.circle(bins['summed'], bins['fluct'], color='tomato', size=5)
 #      (stat_dfs['parameter']=='alpha')][['hpd_min', 'hpd_max']].values[0]
 
 opt = df[df['carbon']==carbon]['alpha_opt'].values[0] * I_tot
-low = stats[0] * I_tot
-high = stats[1] * I_tot
+# low = stats[0] * I_tot
+# high = stats[1] * I_tot
 ax.line(I_tot, opt, color='tomato', alpha=0.75, line_width=4)
 # mwc.viz.fill_between(ax, I_tot, low, high, color='tomato', alpha=0.5)
 
@@ -136,7 +138,7 @@ bokeh.io.show(ax)
 # autofluorescence samples? Let's look at a distribution to figure it out. 
 
 #%%
-_auto_data = fc_data[fc_data['strain']=='auto']
+_auto_data = fc_data[fc_data['strain']=='delta']
 for g, d in _auto_data.groupby('carbon'):
         # _stats = stat_dfs[(stat_dfs['carbon']==g) &\
                         # (stat_dfs['parameter']=='alpha')]['median']
@@ -164,7 +166,7 @@ bokeh.io.show(ax)
 # drop any calculated repressors below this floor.  
 
 #%%
-lower_bound = 5 
+lower_bound = 20 
 
 # Compute the repressor count, only go with the median. 
 # dilution_data = fc_data[fc_data['strain']=='dilution']

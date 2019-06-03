@@ -2,9 +2,9 @@
 % in MATLAB
 % Define the experiment parameters.
 addpath(genpath('../../../../../SuperSegger'));
-DATE = '';
-BASENAME = '';
-samples = {'growth'};
+DATE = '20190603';
+BASENAME = 'r1_42C_glucose_O2';
+samples = {'growth', 'snaps'};
 
 % Get the snaps names.
 dirpath = ['../../../../data/images/', DATE, '_', BASENAME, '_dilution/snaps/'];
