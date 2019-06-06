@@ -4,7 +4,7 @@
 addpath(genpath('../../../../../SuperSegger'));
 DATE = '20190603';
 BASENAME = 'r1_42C_glucose_O2';
-samples = {'growth', 'snaps'};
+samples = {'growth'};
 
 % Get the snaps names.
 dirpath = ['../../../../data/images/', DATE, '_', BASENAME, '_dilution/snaps/'];
