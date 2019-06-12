@@ -18,8 +18,8 @@ This experiment aims to measure the growth rate of the *E. coli* strains of inte
 
 | Antibiotic | Concentration |
 | :------ | ------------: |
-| Rifamycin | 0, 5, 10, 50, 100, 500, 1000, 10000, 50000 [ng / mL] |
-| Streptomycin | 0, 10, 20, 100, 200, 1000, 2000, 20000, 100000 [ng / mL] |
+| Rifampicin | XX [ng / mL] |
+| Apromycin | 0, 40, 100, 200, 400, 100, 2000, 4000, 1000, 20000, 40000 [ng / mL] |
 
 ## Notes & Observations
 * Cells were harvested at OD_600nm .
@@ -39,6 +39,8 @@ This experiment aims to measure the growth rate of the *E. coli* strains of inte
 
 2. Cells were diluted 1:1000 into 50mL of growth media in a 250mL flask and grown to steady state.
 
-3. 300µL of growth media were added to the first and last rows and first two and last two columns of a square-welled, clear-bottomed 96 well plate, the total capacity of which was 630µL. 300µL of cells were added to the remaining wells, in the arrangement depicted in 'output/growth_plate_layout.png'.
+3. 300µL of growth media were added to the first and last rows and columns of a square-welled, clear-bottomed 96 well plate, the total capacity of which was 630µL. Cells were diluted 100x and 300µL were added to the remaining wells.
 
-4. The plate was placed in a Biotek Gen5 plate reader and grown at 37C, shaking in a linear mode at the fastest speed. Measurements were taken every 7 minutes for approximately 72 hours.
+4. Antibiotics were diluted in the arrangement depicted in 'output/growth_plate_layout.png'. Starting with column numbered 2 on the plate, the antibiotics were diluted 100x-1000x into the plate to achieve the concentrations listed in the "Antibiotic Titration Series" section, from the first non-zero concentration in column 2 and increasing to the right.
+
+5. The plate was placed in a Biotek Gen5 plate reader and grown at 37C, shaking in a linear mode at the fastest speed. Measurements were taken every 7 minutes for approximately 18 hours.
