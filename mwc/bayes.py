@@ -184,7 +184,7 @@ class StanModel(object):
             par_dims = desired_pars
         
         # Iterate through each parameter and compute the aggregate properties. 
-        df = pd.DataFrame([], columns=['parameter', 'dimension', 'mean'
+        df = pd.DataFrame([], columns=['parameter', 'dimension', 'mean',
                                       'mode', 'median', 'hpd_min',
                                       'hpd_max', 'mass_fraction'])          
         for par, dim in par_dims.items():
@@ -211,16 +211,7 @@ class StanModel(object):
         df['dimension'] = df['dimension'].astype(int) 
         return df 
 
-        
-    # Vizualization    
-    def traceplot(self, varnames=None):
-        """
-        Shows the sampling trace and distributions for desired varnames
-        See documentation for mwc.viz.bokeh_traceplot for more details.
-        """
-        return bokeh_traceplot(self.samples, varnames=varnames)
-
-    
+   
 
     
     
@@ -238,7 +229,7 @@ def loadStanModel(fname, force=False):
         print('finished!')
     else:
         print('Precompiled model not found. Compiling model...')
-        model = pystan.StanModel(fname)
+        model = pystan.StanModel(fname, extra_compile_args=['-stdlib=libc++'])
         print('finished!')
         with open(pkl_name, 'wb') as f:
             pickle.dump(model, f)      
