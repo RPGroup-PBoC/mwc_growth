@@ -24,7 +24,9 @@ functions{
     * @param N: Total number of measurements 
     **/
     real GammaApproxBinom_lpdf(vector I1, vector I2, real alpha, int N) {
-        return sum(-log(alpha) + lgamma(((I1 + I2) ./ alpha) + 1) - lgamma((I1 ./ alpha) + 1) - lgamma((I2 ./ alpha) + 1) - ((I1 + I2) ./ alpha) * log(2));
+        return -N * log(alpha) + sum(lgamma(((I1 + I2) ./ alpha) + 1) - 
+                    lgamma((I1 ./ alpha) + 1) - lgamma((I2 ./ alpha) + 1) - 
+                    ((I1 + I2) ./ alpha) * log(2));
     } 
 }
      
@@ -34,15 +36,16 @@ data {
     vector<lower=0>[N] I2; // Observed fluorescence of daughter cell 2
 }
 
+
 parameters {
     // Generate non-centered modifiers
-    real<lower=0> log_alpha;
+    real log_alpha;
 }
 
 transformed parameters {
-    real<lower=1> alpha = exp(log_alpha);
-
+    real alpha = exp(log_alpha);
 }
+
 model {    
     log_alpha ~ normal(5, 3);
     I1 ~ GammaApproxBinom(I2, alpha, N);  
