@@ -30,37 +30,39 @@ if os.path.isdir('output') == False:
 # Define the data directory 
 data_dir = f'../../../../data/images/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_dilution/'
 
-# Process the growth files. 
-growth_clists = glob.glob(f'{data_dir}growth/xy*/clist.mat')
-growth_df = mwc.process.parse_clists(growth_clists)
+# # Process the growth files. 
+# growth_clists = glob.glob(f'{data_dir}growth/xy*/clist.mat')
+# growth_df = mwc.process.parse_clists(growth_clists)
 
-# Pass through the morphological filter
-growth_df = mwc.process.morphological_filter(growth_df, ip_dist= IP_DIST)
+# # Pass through the morphological filter
+# growth_df = mwc.process.morphological_filter(growth_df, ip_dist= IP_DIST)
 
-# Remove cells with an error frame. 
-growth_df['valid'] = growth_df['error_frame'].isnull()
-growth_df = growth_df[growth_df['valid'] == True]
+# # Remove cells with an error frame. 
+# growth_df['valid'] = growth_df['error_frame'].isnull()
+# growth_df = growth_df[growth_df['valid'] == True]
 
 # Load the autofluorescence data. 
 auto_df = mwc.process.parse_clists(glob.glob(f'{data_dir}snaps/auto_00ngml/xy*/clist.mat'))
 auto_df = mwc.process.morphological_filter(auto_df, ip_dist=IP_DIST)
 mean_auto = (auto_df['fluor2_mean_death']  ).mean()
 
-# Compute the fluctuations. 
-family_df = mwc.process.family_reunion(growth_df, fluo_channel=2)
+# # Compute the fluctuations. 
+# family_df = mwc.process.family_reunion(growth_df, fluo_channel=2)
 
-# Insert identifying information.
-family_df['date'] = DATE
-family_df['run_no'] = RUN_NO
-family_df['temp'] = TEMP
-family_df['carbon'] = CARBON
-family_df['operator'] = OPERATOR
+# # Insert identifying information.
+# family_df['date'] = DATE
+# family_df['run_no'] = RUN_NO
+# family_df['temp'] = TEMP
+# family_df['carbon'] = CARBON
+# family_df['operator'] = OPERATOR
 
-# Remove cells which do not have any mesured intensity
-family_df = family_df[((family_df['I_1'] - mean_auto) * family_df['area_1'] > 0) & ((family_df['I_2'] - mean_auto) * family_df['area_2'] > 0)]
+# # Remove cells which do not have any mesured intensity
+# family_df = family_df[((family_df['I_1'] - mean_auto) * family_df['area_1'] > 0) & ((family_df['I_2'] - mean_auto) * family_df['area_2'] > 0)]
 
-# Save the fluctuations to output. 
-family_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_fluctuations.csv', index=False) 
+# # Save the fluctuations to output. 
+# family_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_fluctuations.csv', index=False) 
+
+family_df = pd.read_csv('../20190603_r2_42C_glucose_O2_dilution/output/20190603_r2_42C_glucose_O2_fluctuations.csv')
 
 # Assemble the data dictionary and sample. 
 data_dict = dict(N=len(family_df), 
