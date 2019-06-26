@@ -21,7 +21,8 @@ RUN_NO = 1
 TEMP = 37
 # For analysis
 STRAIN = 'delta'
-CARBON = 'apromycin'
+CARBON = 'rifampicin'
+CONC = 8000
 
 WHOLE_PLATE = False
 WHOLE_REPLOT_ONLY = False #only replots if whole plate is also true
@@ -41,18 +42,33 @@ for k, v in blank_vals.items():
     data.loc[data['time_min']==k, 'blank_val'] = v
 data['od_sub'] = data['od_600nm'] - data['blank_val']
 
-# Load time range to be analyzed
-ranges_df = pd.read_csv('output/ranges.csv')
-XMIN = ranges_df[STRAIN+CARBON][0]
-XMAX = ranges_df[STRAIN+CARBON][1]
+if CONC:
+    # Load time range to be analyzed
+    ranges_df = pd.read_csv('output/ranges.csv')
+    XMIN = ranges_df[STRAIN+CARBON+str(CONC)][0]
+    XMAX = ranges_df[STRAIN+CARBON+str(CONC)][1]
 
-# Restrict data to desired range
-restricted = data[(data['strain']==STRAIN) & (data['carbon']==CARBON) 
-                  & (data['time_min'] > XMIN) & (data['time_min'] < XMAX)].sort_values('time_min')
+    # Restrict data to desired range
+    restricted = data[(data['strain']==STRAIN) & (data['carbon']==CARBON) & (data['ab_conc']==CONC) 
+                    & (data['time_min'] > XMIN) & (data['time_min'] < XMAX)].sort_values('time_min')
+
+    BASENAME = f'{STRAIN}_{CARBON}_{CONC}'
+
+else:
+    # Load time range to be analyzed
+    ranges_df = pd.read_csv('output/ranges.csv')
+    XMIN = ranges_df[STRAIN+CARBON][0]
+    XMAX = ranges_df[STRAIN+CARBON][1]
+
+    # Restrict data to desired range
+    restricted = data[(data['strain']==STRAIN) & (data['carbon']==CARBON) 
+                    & (data['time_min'] > XMIN) & (data['time_min'] < XMAX)].sort_values('time_min')
+    
+    BASENAME = f'{STRAIN}_{CARBON}'
 
 # Make output directory
-if os.path.exists(f'output/{STRAIN}_{CARBON}/') == False:
-    os.mkdir(f'output/{STRAIN}_{CARBON}/')
+if os.path.exists(f'output/{BASENAME}/') == False:
+    os.mkdir(f'output/{BASENAME}/')
 
 # Perform full plate analysis
 if WHOLE_PLATE:
@@ -64,7 +80,7 @@ if WHOLE_PLATE:
         # Export summary statistics
         stats = gp.printstats(performprint=False)
         _stats = pd.DataFrame(list(stats.items())).rename(columns = {0:'parameter',1:'value'})
-        _stats.to_csv(f'output/{STRAIN}_{CARBON}/gp_output_stats.csv')
+        _stats.to_csv(f'output/{BASENAME}/gp_output_stats.csv')
 
         # Create dataframe with full time series results of the fit
         gp_df = gp.export('NONE', savegp = False, savestats = False)
@@ -76,9 +92,9 @@ if WHOLE_PLATE:
         gp_df['doubling_time'] = np.log(2)/gp_df['growth_rate']
         gp_df['doubling_time_std'] = np.log(2)*gp_df['growth_rate_std']/(gp_df['growth_rate']**2)
         # Save results
-        gp_df.to_csv(f'output/{STRAIN}_{CARBON}/gp_output.csv')
+        gp_df.to_csv(f'output/{BASENAME}/gp_output.csv')
     else:
-        gp_df = pd.read_csv(f'output/{STRAIN}_{CARBON}/gp_output.csv')
+        gp_df = pd.read_csv(f'output/{BASENAME}/gp_output.csv')
     
     # Plot results
     fig, ax = plt.subplots(ncols = 3, figsize=(10, 4))
@@ -106,7 +122,7 @@ if WHOLE_PLATE:
     plt.yticks(np.append(locs[2:-1],round(gp_df.min()['doubling_time'],2)))
 
     plt.tight_layout()
-    plt.savefig(f'output/{STRAIN}_{CARBON}/gp_output_curves.png')
+    plt.savefig(f'output/{BASENAME}/gp_output_curves.png')
 
 # Perform by-well analysis
 if PER_WELL:
@@ -140,20 +156,24 @@ if PER_WELL:
         well_data = pd.concat(well_gps)
         well_data['carbon'] = CARBON
         well_data['strain'] = STRAIN
+        if CONC:
+            well_data['ab_conc'] = CONC
         well_data = well_data.sort_values('well_id')
-        well_data.to_csv(f'output/{STRAIN}_{CARBON}/per_well_output.csv', index=False)
+        well_data.to_csv(f'output/{BASENAME}/per_well_output.csv', index=False)
 
         # Compile dataframe of statistics for all wells
         well_stats_df = pd.concat(well_stats)
         well_stats_df = well_stats_df.rename(columns = {0:'parameter',1:'value'})
         well_stats_df['carbon'] = CARBON
         well_stats_df['strain'] = STRAIN
+        if CONC:
+            well_data['ab_conc'] = CONC
         well_stats_df = well_stats_df.sort_values('well_id')
-        well_stats_df.to_csv(f'output/{STRAIN}_{CARBON}/per_well_stats.csv', index=False)
+        well_stats_df.to_csv(f'output/{BASENAME}/per_well_stats.csv', index=False)
 
     else:
-        well_data = pd.read_csv(f'output/{STRAIN}_{CARBON}/per_well_output.csv')
-        well_stats_df = pd.read_csv(f'output/{STRAIN}_{CARBON}/per_well_stats.csv')
+        well_data = pd.read_csv(f'output/{BASENAME}/per_well_output.csv')
+        well_stats_df = pd.read_csv(f'output/{BASENAME}/per_well_stats.csv')
 
     alpha_map = {alpha:no for alpha, no in zip(string.ascii_uppercase, np.arange(0, 27, 1) * 12)}
     alphanumeric_map = {f'{a}{n}':alpha_map[a] + n for n in np.arange(1, 13, 1) for a in string.ascii_uppercase}
@@ -178,7 +198,7 @@ if PER_WELL:
     ax[0][0].set_ylim([0, 300])
     ax[0][0].get_yaxis().set_visible(True)
     fig.suptitle(f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{STRAIN} doubling time vs time', fontsize = 10, y=0.93)
-    plt.savefig(f'output/{STRAIN}_{CARBON}/per_well_doubling_time_curves.png')    
+    plt.savefig(f'output/{BASENAME}/per_well_doubling_time_curves.png')    
     plt.close()
 
     # Plot heatmap of minimum doubling times for all wells
@@ -193,7 +213,7 @@ if PER_WELL:
     mask = np.isnan(plate)
     ax = sns.heatmap(plate, mask=mask, square = True)
     ax.set_title(f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{STRAIN} doubling times', fontsize = 10)
-    plt.savefig(f'output/{STRAIN}_{CARBON}/per_well_doubling_times_heatmap.png')    
+    plt.savefig(f'output/{BASENAME}/per_well_doubling_times_heatmap.png')    
     plt.close()
 
     # Plot distribution of minimum doubling times for all wells
@@ -207,5 +227,5 @@ if PER_WELL:
     ax.set_ylabel('frequency', fontsize = 10)
     ax.set_title(f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{STRAIN} doubling time distribution across wells', fontsize = 10)
     ax.tick_params(labelsize=10)
-    plt.savefig(f'output/{STRAIN}_{CARBON}/per_well_doubling_times_distribution.png')
+    plt.savefig(f'output/{BASENAME}/per_well_doubling_times_distribution.png')
     plt.close()

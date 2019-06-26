@@ -1,0 +1,31 @@
+parameter,value,well_id,carbon,strain
+max df,0.01001062175952471,41,rifampicin,delta
+lag time std,0.8187031365753756,41,rifampicin,delta
+lag time,366.54050692414967,41,rifampicin,delta
+max y stderr,8.834525386224329e-05,41,rifampicin,delta
+max y std,0.0008834525386224329,41,rifampicin,delta
+max y,0.21902454517927808,41,rifampicin,delta
+inverse max df stderr,0.026336889197084823,41,rifampicin,delta
+lag time stderr,0.08187031365753757,41,rifampicin,delta
+inverse max df,69.24217445757337,41,rifampicin,delta
+time of max df stderr,0.4503454229810712,41,rifampicin,delta
+time of max df std,4.503454229810712,41,rifampicin,delta
+time of max df,501.8366666666668,41,rifampicin,delta
+max df stderr,3.8113271242547002e-06,41,rifampicin,delta
+max df std,3.8113271242547004e-05,41,rifampicin,delta
+inverse max df std,0.26336889197084823,41,rifampicin,delta
+lag time,371.37202705001283,77,rifampicin,delta
+max y stderr,8.980636852105228e-05,77,rifampicin,delta
+max y std,0.0008980636852105228,77,rifampicin,delta
+max y,0.21939308598664475,77,rifampicin,delta
+inverse max df stderr,0.04073133053129745,77,rifampicin,delta
+inverse max df std,0.4073133053129745,77,rifampicin,delta
+time of max df,524.1666666666666,77,rifampicin,delta
+time of max df stderr,0.3283291031876401,77,rifampicin,delta
+time of max df std,3.283291031876401,77,rifampicin,delta
+max df stderr,5.557512339859851e-06,77,rifampicin,delta
+max df std,5.557512339859851e-05,77,rifampicin,delta
+max df,0.009729556937194019,77,rifampicin,delta
+lag time std,0.7859615057964681,77,rifampicin,delta
+inverse max df,71.24371858114397,77,rifampicin,delta
+lag time stderr,0.0785961505796468,77,rifampicin,delta
