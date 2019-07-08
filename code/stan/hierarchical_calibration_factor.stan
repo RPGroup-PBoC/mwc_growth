@@ -15,10 +15,10 @@ functions{
     * @param alpha: Fluorescence calibration factor in units of a.u. / molecule
     * @param N: Total number of measurements 
     **/
-    real GammaApproxBinom_lpdf(vector I1, vector I2, vector alpha ) { 
-            return sum(-log(alpha))  + sum(lgamma(((I1 + I2) ./ alpha) + 1) -
+    real GammaApproxBinom_lpdf(vector I1, vector I2, vector alpha, int N) { 
+            return sum(-N * log(alpha)  + sum(lgamma(((I1 + I2) ./ alpha) + 1) -
                      lgamma((I1 ./ alpha) + 1) - lgamma((I2 ./ alpha) + 1) - 
-                     ((I1 + I2) ./ alpha) * log(2));
+                     ((I1 + I2) ./ alpha) * log(2)));
         }
     
 }
@@ -52,7 +52,7 @@ transformed parameters {
   
 model {
     // Define the hyperpriors.
-    log_alpha_1 ~ normal(3, 2); 
+    log_alpha_1 ~ gamma(2, 0.6); 
    
     // Priors on hyperparameter variation
     tau_alpha ~ normal(0, 1); 
@@ -61,7 +61,7 @@ model {
     alpha_2_raw ~ normal(0, 10);    
 
     //  Likelihood for calibration factor
-    I_1[index_1] ~ GammaApproxBinom(I_2[index_1], alpha_2[index_1]);        
+    I_1[index_1] ~ GammaApproxBinom(I_2[index_1], alpha_2[index_1], N_fluct);        
 }
 
  

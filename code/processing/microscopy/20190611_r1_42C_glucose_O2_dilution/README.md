@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Rejected
+reason: Need to rerun
 ---
 
 # 2019-06-11 42C Glucose O2 Dilution
