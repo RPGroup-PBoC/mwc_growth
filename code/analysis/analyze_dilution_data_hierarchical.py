@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import mwc.bayes
 import mwc.stats
+import joblib
 import tqdm
 
 # Load in the compiled data
@@ -19,7 +20,8 @@ model = mwc.bayes.StanModel('../stan/hierarchical_calibration_factor.stan')
 
 #%%
 # Perform inference for each unique sample
-for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp'])):
+def proc(arg):
+    g, d = arg
     d = d.copy()
     d['idx'] = d.groupby(['date', 'run_no']).ngroup() + 1
 
@@ -60,8 +62,7 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp'])):
     # Assemble the data dictionary for sampling
     data_dict = dict(J_exp=d['idx'].max(), N_fluct=len(d), index_1=d['idx'],
                     I_1=d['I_1_sub'], I_2=d['I_2_sub'])
-
-    _, samples = model.sample(data_dict) #, iter=5000, control=dict(adapt_delta=0.95))
+    _, samples = model.sample(data_dict, iter=5000, control=dict(adapt_delta=0.95))
 
     # Compute the statistics from the sampling output
     parnames = [f'alpha_2[{i}]' for i in d['idx'].unique()]
@@ -88,12 +89,11 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp'])):
     fluct_df['carbon'] = g[0]
     fluct_df['temp'] = g[1]
     for _g, _ in fluct_df.groupby(['idx']):
-        fluct_df.loc[fluct_df['idx']==_g, 'alpha_median'] = median_idx[g] 
-        fluct_df.loc[fluct_df['idx']==_g, 'alpha_mean'] = mean_idx[g] 
-        fluct_df.loc[fluct_df['idx']==_g, 'alpha_mode'] = mode_idx[g] 
-        fluct_df.loc[fluct_df['idx']==_g, 'alpha_min'] = min_idx[g] 
-        fluct_df.loc[fluct_df['idx']==_g, 'alpha_max'] = max_idx[g] 
-    fluct_dfs.append(fluct_df)
+        fluct_df.loc[fluct_df['idx']==_g, 'alpha_median'] = median_idx[_g] 
+        fluct_df.loc[fluct_df['idx']==_g, 'alpha_mean'] = mean_idx[_g] 
+        fluct_df.loc[fluct_df['idx']==_g, 'alpha_mode'] = mode_idx[_g] 
+        fluct_df.loc[fluct_df['idx']==_g, 'alpha_min'] = min_idx[_g] 
+        fluct_df.loc[fluct_df['idx']==_g, 'alpha_max'] = max_idx[_g] 
 
     # Perform background subtraction for fluorescence measurements. 
     _fc_data['yfp_sub'] = (_fc_data['mean_yfp'] - _fc_data['mean_auto_yfp']) * _fc_data['area_pix']
@@ -118,15 +118,13 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp'])):
     _fc['carbon'] = g[0]
     _fc['temp'] = g[1]
     _fc = _fc[_fc['strain']=='dilution']
-    fc_dfs.append(_fc[['repressors', 'repressors_max', 'repressors_min', 
-                    'fold_change', 'carbon', 'temp', 'idx']])
+    return [fc_dfs, fluct_dfs]
+
+_out = joblib.Parallel(n_jobs=-1)(joblib.delayed(proc)((g, d) for g, d in fluct_data.groupby(['carbon', 'temp'])))
 
 # Concatenate the summary df and save to disk. 
-fc_df = pd.concat(fc_dfs)
-fc_df.to_csv('../../data/analyzed_foldchange.csv', index=False)
-fluct_df = pd.concat(fluct_dfs)
-fluct_df.to_csv('../../data/analyzed_fluctuations.csv', index=False)
-    
-
-
+fc_df = pd.concat([a[0] for a in _out])
+fc_df.to_csv('../../data/analyzed_foldchange_hierarchical.csv', index=False)
+fluct_df = pd.concat([a[1] for a in _out])
+fluct_df.to_csv('../../data/analyzed_fluctuations_hierarchical.csv', index=False)
 #%%
