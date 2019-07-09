@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: Looks okay
 ---
 
 # 2019-06-17 37C 37C O2 Dilution

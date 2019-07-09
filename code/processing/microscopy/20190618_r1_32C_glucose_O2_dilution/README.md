@@ -1,6 +1,6 @@
 ---
-status: Rejected 
-reason: experiment not yet completed
+status: Accepted
+reason: Passes validation checks
 ---
 
 # 2019-06-18 32C Glucose O2 Dilution

@@ -225,12 +225,15 @@ def bin_by_events(df, bin_size, sortby='summed', average=['summed', 'fluct']):
     # Set the bins.
     bins = np.arange(0, len(sorted_df) + bin_size, bin_size)
     averages = {i: np.zeros(len(bins)) for _, i in enumerate(average)}
+    for k in average:
+        averages[f'{k}_sem'] = np.zeros(len(bins))
     # Iterate through each bin and compute the average quanities.
     for i in range(1, len(bins)):
         # Slice the data frame.
         d = sorted_df.iloc[bins[i - 1]:bins[i]][average]
         for k in d.keys():
             val = np.mean(d[k].values)
+            averages[f'{k}_sem'][i-1] = np.std(d[k].values) / np.sqrt(len(d))
             averages[k][i-1] = val
     return averages
 

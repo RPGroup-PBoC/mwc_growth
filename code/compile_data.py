@@ -25,6 +25,7 @@ for _, d in enumerate(dil_exp):
         fc_dfs.append(fc_df)
 
 _fluct_df = pd.concat(fluct_dfs, sort=False)
+_fluct_df = _fluct_df[['carbon', 'temp', 'date', 'run_no', 'I_1', 'I_2', 'area_1', 'area_2']]
 fc_df = pd.concat(fc_dfs, sort=False)
 _fluct_df.to_csv('../data/compiled_fluctuations.csv', index=False)
 fc_df.to_csv('../data/compiled_fold_change.csv', index=False)
