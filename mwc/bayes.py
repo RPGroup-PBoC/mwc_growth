@@ -333,7 +333,6 @@ def estimate_calibration_factor(I_1, I_2, p=0.5, return_eval=False):
     alpha_std = np.sqrt(cov[0])[0]
     if return_eval is True:
         return [alpha_opt, alpha_std, popt]
-
     else:
         return [alpha_opt, alpha_std]
 

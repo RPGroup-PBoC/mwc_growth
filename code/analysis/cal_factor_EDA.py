@@ -2,24 +2,22 @@
 #%%[markdown]
 # # Exploratory Data Analysis for Calculating Repressor Copy Number
 # ---
-
 #%%
 import numpy as np 
 import pandas as pd
 import bokeh.io 
 import bokeh.plotting
 import bokeh_catplot as bkcat 
+import scipy.optimize
 import mwc.stats 
 import mwc.bayes 
 import mwc.viz
 import bokeh.palettes
 import scipy.stats
 import scipy.special
-import scipy.misc
-imp.reload(mwc.viz)
+import statsmodels.tools.numdiff as smnd
 colors, color_list = mwc.viz.bokeh_theme()
-bokeh.io.output_notebook()
-import imp
+bokeh.io.output_otebook()
 
 #%% [markdown]
 # In this notebook, I explore all processing steps and inference for determining
@@ -638,7 +636,161 @@ for g, d in post_df[post_df['carbon']=='glucose'].groupby(['temp']):
 temps = bokeh.layouts.column(list(temp_ax.values()))
 carbs = bokeh.layouts.column(list(carb_ax.values()))
 bokeh.io.show(bokeh.layouts.row(temps, carbs))
+
+
+#%%[markdown]
+
+# The spread of the posteriors is pretty amazing from day to day! and some of
+# them have pretty significant widths, meaning it will be hard to pin down a 
+# solid value for the posteriors where there are not a lot of points. 
+# We can get a point estimate and error for the calibration factor through
+# minimization and approximating the posterior as a gaussian, which it more or
+# less is. 
+# 
 #%%
+# Find the MAP through minimization
+for g, d in lin_final.groupby(['date', 'carbon', 'temp']):
+    popt = scipy.optimize.minimize_scalar(log_posterior, args=(d['I_1_sub'], d['I_2_sub'], True))
+    alpha_mu = popt.x
+    hess = smnd.approx_hess([alpha_mu], log_posterior, args=(d['I_1_sub'], d['I_2_sub'], False))
+    cov = -np.linalg.inv(hess)
+    alpha_std = np.sqrt(cov[0])[0]
+
+    # Add the alpha information to the lineage dataframe. 
+    lin_final.loc[(lin_final['date']==g[0]) & 
+                  (lin_final['carbon']==g[1]) &
+                  (lin_final['temp']==g[2]), 
+                  'alpha_opt'] = alpha_mu
+    lin_final.loc[(lin_final['date']==g[0]) & 
+                  (lin_final['carbon']==g[1]) &
+                  (lin_final['temp']==g[2]), 
+                  'alpha_std'] = alpha_std
+#%%[markdown]
+# Now that we've found the map, we can see how well it describes the average
+# result of the binomial partitioning method,
+#
+# $$ \langle \left(I_1 - I_2\right)^2\rangle = \alpha I_\text{tot}$$
+# 
+# To see how "right" it is, I can bin the data by a specific amount (say, 50
+# divisions per bin) or within a certain intensity range, compute the means, and
+# then plot the MAP and error to see if it passes through the means. Let's try
+# this first just by choosing a single condition. 
+#%%
+# Look only at glucose 37.
+glucose_37 = lin_final[(lin_final['temp']==37) & (lin_final['carbon']=='glucose')]
+
+# Compute the squared differences and the sum total. 
+glucose_37['fluct'] = (glucose_37['I_1_sub'] - glucose_37['I_2_sub'])**2
+glucose_37['summed'] = (glucose_37['I_1_sub'] + glucose_37['I_2_sub'])
+
+# Define a function to compute the mean and sem of the data in the
+def bin_by_value(df, bins):
+    """
+    Bins by predefined bins. Returns the mean and SEM of all points in that bin
+    """
+    # Iterate through the bins.
+    df = df.copy()
+    summed_means = np.zeros(len(bins) - 1)
+    fluct_means = np.zeros(len(bins) - 1)
+    summed_sems = np.zeros(len(bins) - 1)
+    fluct_sems = np.zeros(len(bins) - 1)
+    for i in range(len(bins) - 1):
+        lower = bins[i] - 1
+        upper = bins[i+1] + 1
+        samps = df[(df['summed'] >= lower) & (df['summed'] <= upper)]
+        summed_means[i] = np.mean(samps['summed'])
+        fluct_means[i] = np.mean(samps['fluct'])
+        summed_sems[i] = np.std(samps['summed']) / np.sqrt(len(samps))
+        fluct_sems[i] = np.std(samps['fluct']) / np.sqrt(len(samps))
+    # assemble into a dataframe
+    _df = pd.DataFrame(np.array([summed_means, summed_sems, fluct_means, fluct_sems]).T,
+                       columns=['summed_mean', 'summed_sem', 'fluct_mean', 'fluct_sem'])
+    # Compute the mins and max for eaach. 
+    _df['summed_min'] = _df['summed_mean'] - _df['summed_sem']
+    _df['summed_max'] = _df['summed_mean'] + _df['summed_sem']
+    _df['fluct_min'] = _df['fluct_mean'] - _df['fluct_sem']
+    _df['fluct_max'] = _df['fluct_mean'] + _df['fluct_sem']
+    return _df
+        
+#%%
+# Set up the figure canvas. 
+p = bokeh.plotting.figure(width=500, height=300, x_axis_type='log',
+                        y_axis_type='log', x_axis_label='summed intensity',
+                        y_axis_label='fluctuations')
+
+# Plot all of the single cell division data. 
+p.circle(x='summed', y='fluct', size=1, alpha=0.5, color=colors['black'],
+        source=glucose_37, legend='division')
+
+global_min, global_max = glucose_37['summed'].min(), glucose_37['summed'].max()
+I_tot_range = np.logspace(np.log10(global_min)-0.5, np.log10(global_max) + 0.5)
+# Iterate through each date, bin the data, and plot the means. 
+pal = bokeh.palettes.viridis(11)
+iter = 0
+for g, d in glucose_37.groupby(['date']):
+    min_val, max_val = np.min(d['summed']) , np.max(d['summed'])
+    bins = np.logspace(np.log10(min_val), np.log10(max_val), 10)
+    binned = bin_by_value(d, bins)
+
+    # Plot the  errors
+    p.segment(x0='summed_mean', x1='summed_mean', y0='fluct_min', y1='fluct_max',
+            line_width=1, color=pal[iter], source=binned)
+    p.segment(x0='summed_min', x1='summed_max', y0='fluct_mean', y1='fluct_mean',
+            line_width=1, color=pal[iter], source=binned)
+
+    # Plot the means
+    p.circle(x='summed_mean', y='fluct_mean', size=6, fill_color='white', line_color=pal[iter],
+            source=binned, line_width=2, fill_alpha=0.5)
+
+    # Plot the line of best fit. 
+    p.line(I_tot_range, I_tot_range * d['alpha_opt'].unique(), color=pal[iter]) 
+    iter += 1
+p.legend.location = 'top_left'
+bokeh.io.show(p)
+#%%[markdown]
+# Wow that seems pretty bad! There is either something wrong with the way that
+# I've figured out the statistical model or in some way that I've processed the
+# data. 
+
+# Let's try a more proper approach factoring in all of the error in the data. 
+# This is a more proper Bayesian model in which I make only one critical
+# assumption. I have a bunch of measurements $I_1$ and $I_2$ of daughter cells.
+# I can make an approximation that any measurement of a given $I_1$ or $I_2$ is
+# Gaussian with a mean $\mu$ and some homoscedastic error $\sigma$. This mean is 
+# dictated by the relationship $I_1 = \alpha N_\text{1}$ and $I_2 = \alpha
+# N_\text{2}$. The likelihoods in this case are given by 
+# $$ I_\text{1} \sim \mathcal{N}(\alpha N_\text{1}, \sigma);\,\,I_\text{2}\sim \mathcal{N}(\alpha(N_\text{tot}-N_\text{1}),\sigma).$$
+#  
+# I have to therefore assign some prior to $N_1$, and $N_\text{tot}$. The crux
+# of this model hands on the assumption that partitioning is binomial. As I
+# can't really discretely sample in Stan,  I will have to approximate it as a
+# Gaussian. The Gaussian approximation of a binomial is one with a mean $np$ and
+# standard deviation $np(1 - p)$. Since I am assuming $p = 1/2$ here, this comes
+# out to $\mu = N_\text{tot} / 2$ and $\sigma = N_\text{tot} / 4$.
+#
+# Finally, I just have to assign a prior on $\alpha$, which is still super
+# tricky. I suppose that I can just be super uninformative and take uniform over
+# some huge range.
+#
+# This isn't the kind of thing that I can just minimize, so I will have to code
+# this up in `stan`, which I have done in another file. 
+# 
+# Below, we will load the model and sample the replicates of the glucose 37°C replicates
+
+#%%
+# Load the stan model
+model = mwc.bayes.StanModel('../stan/proper_calibration_factor.stan', force_compile=True)
+
+#%%
+# Choose a single date to benchmark it and make sure things are at least
+chosen_date = glucose_37['date'].unique()[0]
+glucose_sel = glucose_37[glucose_37['date']==chosen_date]
+# Assemble the data dictionary. 
+data_dict = {'N':len(glucose_sel), 
+             'I1':glucose_sel['I_1_sub'], 
+             'I2':glucose_sel['I_2_sub']}
+
+fit, samples = model.sample(data_dict, iter=1000)
 
 
 #%%
