@@ -11,6 +11,20 @@ import tqdm
 fluct_data = pd.read_csv('../../data/compiled_fluctuations.csv')
 fc_data = pd.read_csv('../../data/compiled_fold_change.csv')
 
+# Apply an area filter
+# Constants and bounds for size
+IP_DIST = 0.065 # In nm / pix
+min_size = 0.5 / IP_DIST**2 # Number is in µm 
+max_size = 4 / IP_DIST**2 # Number is in µm
+
+fluct_data = fluct_data[(fluct_data['area_1'] >= min_size) & 
+                        (fluct_data['area_2'] >= min_size) &
+                        (fluct_data['area_1'] <= max_size) & 
+                        (fluct_data['area_2'] <= max_size)].copy()
+
+fc_data = fc_data[(fc_data['area_pix'] >= min_size) & 
+                 (fc_data['area_pix'] <= max_size)]
+
 # Instantiate storage lists for calfactor samples
 fc_dfs = []
 fluct_dfs = []
@@ -20,10 +34,10 @@ model = mwc.bayes.StanModel('../stan/hierarchical_calibration_factor.stan')
 
 #%%
 # Perform inference for each unique sample
-def proc(arg):
-    g, d = arg
+for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp'])):
     d = d.copy()
-    d['idx'] = d.groupby(['date', 'run_no']).ngroup() + 1
+    d['idx'] = d.groupby(['date']).ngroup() + 1
+    # d['idx'] = 1
 
     # Isolate the fold-change data. 
     _fc_data = fc_data[(fc_data['carbon']==g[0]) & (fc_data['temp']==g[1])].copy()    
@@ -62,12 +76,13 @@ def proc(arg):
     # Assemble the data dictionary for sampling
     data_dict = dict(J_exp=d['idx'].max(), N_fluct=len(d), index_1=d['idx'],
                     I_1=d['I_1_sub'], I_2=d['I_2_sub'])
-    _, samples = model.sample(data_dict, iter=5000, control=dict(adapt_delta=0.95))
+    _, samples = model.sample(data_dict, iter=2000)
 
     # Compute the statistics from the sampling output
     parnames = [f'alpha_2[{i}]' for i in d['idx'].unique()]
     parnames.append('alpha_1')
-    params = model.summarize_parameters(parnames=parnames)
+    params = mwc.stats.compute_statistics(samples, varnames=parnames, logprob_name='lp__')
+
 
     # Generate a mapping of number to calibration factor. 
     median_idx = {i:params[(params['parameter']==f'alpha_2[{i}]')]['median'] for i in d['idx'].unique()} 
@@ -90,7 +105,7 @@ def proc(arg):
     fluct_df['temp'] = g[1]
     for _g, _ in fluct_df.groupby(['idx']):
         fluct_df.loc[fluct_df['idx']==_g, 'alpha_median'] = median_idx[_g] 
-        fluct_df.loc[fluct_df['idx']==_g, 'alpha_mean'] = mean_idx[_g] 
+        fluct_df.loc[fluct_df['idx']==_g, 'alpha_mu'] = mean_idx[_g] 
         fluct_df.loc[fluct_df['idx']==_g, 'alpha_mode'] = mode_idx[_g] 
         fluct_df.loc[fluct_df['idx']==_g, 'alpha_min'] = min_idx[_g] 
         fluct_df.loc[fluct_df['idx']==_g, 'alpha_max'] = max_idx[_g] 
@@ -117,14 +132,12 @@ def proc(arg):
     
     _fc['carbon'] = g[0]
     _fc['temp'] = g[1]
-    _fc = _fc[_fc['strain']=='dilution']
-    return [fc_dfs, fluct_dfs]
-
-_out = joblib.Parallel(n_jobs=-1)(joblib.delayed(proc)((g, d) for g, d in fluct_data.groupby(['carbon', 'temp'])))
+    fc_dfs.append(_fc) 
+    fluct_dfs.append(fluct_df)
 
 # Concatenate the summary df and save to disk. 
-fc_df = pd.concat([a[0] for a in _out])
+fc_df = pd.concat(fc_dfs)
 fc_df.to_csv('../../data/analyzed_foldchange_hierarchical.csv', index=False)
-fluct_df = pd.concat([a[1] for a in _out])
+fluct_df = pd.concat(fluct_dfs)
 fluct_df.to_csv('../../data/analyzed_fluctuations_hierarchical.csv', index=False)
 #%%

@@ -7,7 +7,6 @@ import scp
 import yaml
 import os
 
-
 def scrape_frontmatter(dirname, file='README.md'):
     """
     Reads the status of a given experimental dataset. This status is embedded

@@ -7,6 +7,7 @@ import pystan
 import pandas as pd
 import scipy.special
 import scipy.optimize
+import scipy.stats
 import pickle
 import statsmodels.tools.numdiff as smnd
 from .stats import compute_hpd
@@ -162,7 +163,7 @@ class StanModel(object):
                     defined by the mass fraction
         """
         # Extract the sampling information and find the mode
-        samples = self.samples
+        samples = self.model
         fit = samples.extract()
         mode_ind = np.argmax(fit['lp__'])
         
@@ -212,10 +213,6 @@ class StanModel(object):
         return df 
 
    
-
-    
-    
-
 def loadStanModel(fname, force=False):
     """Loads a precompiled Stan model. If no compiled model is found, one will be saved."""
     # Identify the model name and directory structure
@@ -278,6 +275,9 @@ def deterministic_log_posterior(alpha, I_1, I_2, p=0.5, neg=False):
     if (p < 0) | (p > 1):
         raise ValueError('p must be on the domain [0, 1]')
 
+    # Define the log prior
+    # lp = scipy.stats.gamma(2, loc=0, scale=1/0.6).logpdf(np.log(alpha))
+
     # Convert the intensities to protein number.
     n_1 = I_1 / alpha
     n_2 = I_2 / alpha
@@ -287,11 +287,11 @@ def deterministic_log_posterior(alpha, I_1, I_2, p=0.5, neg=False):
     # Compute the various parts of the posterior.
     binom = scipy.special.gammaln(n_tot + 1).sum() - scipy.special.gammaln(
         n_1 + 1).sum() - scipy.special.gammaln(n_2 + 1).sum()
-    prob = n_1.sum() * np.log(p) + n_2.sum() * np.log(1 - p)
+    prob =  -n_tot.sum() * np.log(2)
     change_of_var = -k * np.log(alpha)
 
     # Assemble the log posterior.
-    logpost = change_of_var + binom + prob
+    logpost = change_of_var + binom + prob # + lp 
     return prefactor * logpost
 
 
@@ -323,9 +323,8 @@ def estimate_calibration_factor(I_1, I_2, p=0.5, return_eval=False):
         raise ValueError('p must be between 0 and 1.')
 
     # Perform the optimization
-    popt = scipy.optimize.minimize(
-        deterministic_log_posterior, 300, args=(I_1, I_2, p, True))
-    alpha_opt = popt.x[0]
+    popt = scipy.optimize.minimize_scalar(deterministic_log_posterior, [1, 4000], args=(I_1, I_2, p, True))
+    alpha_opt = popt.x
 
     # Compute the hessian.
     hess = smnd.approx_hess([alpha_opt], deterministic_log_posterior,

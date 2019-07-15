@@ -189,7 +189,7 @@ def bokeh_theme(return_color_list=True):
             'background_fill_color': '#EEEEEE',
         },
         'Axis': {
-            'axis_line_color': 'slategray',
+            'axis_line_color': 'black',
             'major_tick_line_color': None,
             'minor_tick_line_color': None,
         },
@@ -205,14 +205,14 @@ def bokeh_theme(return_color_list=True):
         },
         'Text': {
             'text_font_style': 'italic',
-            'text_font': 'Arial', 
+            'text_font': 'Stone Sans', 
             'text_font_size':10,
         },
         'Title': {
-            'background_fill_color': '#EEEEEE',
-            'text_color': '#3c3c3c',
-            'align': 'center',
-            'text_font': 'Arial',
+            'text_color': 'black',
+            'align': 'left',
+            'text_font_style': 'italic',
+            'text_font': 'Helvetica',
             'offset': 2,
          }
     }

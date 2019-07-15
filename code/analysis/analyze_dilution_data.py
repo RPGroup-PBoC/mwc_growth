@@ -10,19 +10,35 @@ import tqdm
 fluct_data = pd.read_csv('../../data/compiled_fluctuations.csv')
 fc_data = pd.read_csv('../../data/compiled_fold_change.csv')
 
+# Constants and bounds for size
+IP_DIST = 0.065 # In nm / pix
+min_size = 0.25 / IP_DIST**2 # Number is in µm 
+max_size = 5 / IP_DIST**2 # Number is in µm
+
+# Filter the cells on area
+fluct_data = fluct_data[(fluct_data['area_1'] >= min_size) & 
+                        (fluct_data['area_2'] >= min_size) &
+                        (fluct_data['area_1'] <= max_size) & 
+                        (fluct_data['area_2'] <= max_size)].copy()
+
+fc_data = fc_data[(fc_data['area_pix'] >= min_size) & 
+                 (fc_data['area_pix'] <= max_size)].copy()
+
 # Instantiate storage lists for calfactor samples
+mean_yfp = {37: 175, 42:375, 32:375}
+mean_mch = {37: 195, 42:230, 32:230}
 fc_dfs = []
 fluct_dfs = []
 for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
     d = d.copy()
     # Isolate the fold-change data. 
-    _fc_data = fc_data[(fc_data['carbon']==g[0]) & (fc_data['temp']==g[1]) &
-                      (fc_data['date']==g[2]) & (fc_data['run_number']==g[-1])].copy()    
+    _fc_data = fc_data[(fc_data['carbon']==g[0]) & (fc_data['temp']==g[1]) & 
+    (fc_data['run_number']==g[3]) & (fc_data['date']==g[2])].copy()    
     
     # Compute the mean autofluorescence for each channel. 
     auto = _fc_data[_fc_data['strain']=='auto']
     delta = _fc_data[_fc_data['strain']=='delta']
-    mean_auto_mch = np.median(auto['mean_mCherry'])
+    mean_auto_mch = np.median(delta['mean_mCherry'])
     mean_auto_yfp = np.median(auto['mean_yfp'])
 
     # Perform necessary background subtraction for fluctuation measurements. 
@@ -36,22 +52,7 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
     _fc_data['yfp_sub'] = (_fc_data['mean_yfp'] - mean_auto_yfp) * _fc_data['area_pix']
     _fc_data['mch_sub'] = (_fc_data['mean_mCherry'] - mean_auto_mch) * _fc_data['area_pix']
 
-    # Add relevant identifiers to each data set. 
-    d['date_idx'] = d.groupby(['date']).ngroup() + 1
-    d['rep_idx'] = d.groupby(['date', 'run_no']).ngroup() + 1
-
-    # Compute the means for the fold-change data
-    mean_fc_data = _fc_data.groupby(['date', 'atc_ngml', 'run_number', 'strain']).mean().reset_index()
-
-    # Enforce positivity of YFP and mCherry.
-    mean_fc_data = mean_fc_data[mean_fc_data['strain'] != 'auto'].copy()
-    mean_fc_data = mean_fc_data[(mean_fc_data['yfp_sub'] >= 0) & (mean_fc_data['mch_sub'] >= 0)]
-
-    # Add appropriate identifiers to mean data.
-    mean_fc_data['conc_idx'] = mean_fc_data.groupby(['atc_ngml', 'strain']).ngroup() + 1
-    mean_fc_data['rep_idx'] = mean_fc_data.groupby(['date', 'atc_ngml', 'run_number', 'strain']).ngroup() + 1
-   
-    # Estimate teh calibration factor
+    # Estimate the calibration factor
     opt, err = mwc.bayes.estimate_calibration_factor(d['I_1_sub'], d['I_2_sub'])
 
     # Generate a dataframe with all of the fluctuations
@@ -66,6 +67,9 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
 
     # Compute the fold-change
     _fc = pd.DataFrame([])
+    _fc['atc_ngml'] = _fc_data['atc_ngml']
+    _fc['date'] = _fc_data['date']
+    _fc['run_number'] = _fc_data['run_number']
     _fc['repressors'] = _fc_data['mch_sub'] / opt
     _fc['repressors_max'] = _fc_data['mch_sub'] / (opt - err)
     _fc['repressors_min'] = _fc_data['mch_sub'] / (opt + err)
@@ -74,6 +78,7 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
     _fc['alpha_std'] = err
     _fc['carbon'] = g[0]
     _fc['temp'] = g[1]
+    _fc['strain'] = _fc_data['strain']
     fc_dfs.append(_fc)
     
 # Concatenate the summary df and save to disk. 

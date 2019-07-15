@@ -168,10 +168,8 @@ def family_reunion(dilution_df, multi_xy=True, fluo_channel=2):
 
     # Determine what to groupby.
     if multi_xy == True:
-        print('Grouping by position and mother ID....')
         groupby = ['position', 'mother_id']
     else:
-        print('Grouping only by mother ID...')
         groupby = ['mother_id']
 
     # Group the growth dataframe and iterate.
