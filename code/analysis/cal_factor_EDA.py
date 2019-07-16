@@ -901,7 +901,7 @@ for g, d in approved_snaps.groupby(['carbon', 'temp', 'date']):
     
     # Insert the cal factors. 
     approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[-1]) & 
-                        (approved_snaps['temp']==g[1]), 'alpha_mean'] = samp_lineages['alpha'].values[0]
+                        (approved_snaps['temp']==g[1]), 'alpha_mean'] = samp_lineages['alpha_mean'].values[0]
     approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[-1]) & 
                         (approved_snaps['temp']==g[1]), 'alpha_max'] = samp_lineages['alpha_max'].values[0]
     approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[-1]) & 
@@ -924,8 +924,8 @@ for g, d in approved_snaps.groupby(['carbon', 'temp', 'date']):
     median_auto_yfp = auto['fluor1_mean_death'].median()
 
     # Compute the integrated intensities for each. 
-    d['mcherry_sub']= d['area_pix'] * (d['fluor2_mean_death'] - median_auto_mch)
-    d['yfp_sub']= d['area_pix'] * (d['fluor1_mean_death'] - median_auto_yfp)
+    d['mcherry_sub']= d['area_death'] * (d['fluor2_mean_death'] - median_auto_mch)
+    d['yfp_sub']= d['area_death'] * (d['fluor1_mean_death'] - median_auto_yfp)
 
     # compute the mean, min, and max number of repressors. 
     d['rep_mean'] = d['mcherry_sub'] / d['alpha_mean']
@@ -933,5 +933,20 @@ for g, d in approved_snaps.groupby(['carbon', 'temp', 'date']):
     d['rep_max'] = d['mcherry_sub'] / d['alpha_min']
 
     # Isolate delta and compute the mean yfp
+    delta = d[d['strain']=='delta']
+    delta_yfp = delta['yfp_sub'].mean()
+
+    # Compute the fold-change
+    d['fold_change'] = d['yfp_sub'] / delta_yfp
+
+    # Reduce the dataframe to the informative columns and append to the storage
+    # list. 
+    d = d[['carbon', 'temp', 'date', 'alpha_mean', 'rep_mean', 'rep_min', 'rep_max', 'fold_change', 'strain']]
+    fc_dfs.append(d)
+
+# Concatenate the fold-change dataframe
+fc_df = pd.concat(fc_dfs)
 
 
+
+#%%
