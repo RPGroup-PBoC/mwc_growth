@@ -12,12 +12,14 @@ import scipy.optimize
 import mwc.stats 
 import mwc.bayes 
 import mwc.viz
+import bokeh.models
+import tqdm
 import bokeh.palettes
 import scipy.stats
 import scipy.special
 import statsmodels.tools.numdiff as smnd
 colors, color_list = mwc.viz.bokeh_theme()
-bokeh.io.output_otebook()
+bokeh.io.output_notebook()
 
 #%% [markdown]
 # In this notebook, I explore all processing steps and inference for determining
@@ -340,6 +342,12 @@ lineages = pd.read_csv('../../data/raw_compiled_lineages.csv')
 # Remove the problematic day
 lineages = lineages[lineages['date']!=20181022]
 
+# Convert the error frames from nan to num
+lineages['error_frame'] = np.nan_to_num(lineages['error_frame'].values)
+
+# Drop all measurements with an error frame. 
+lineages = lineages[lineages['error_frame']==0]
+
 # Convert daughter areas to sq micron. 
 lineages['area_1_um'] = lineages['area_1'] * IP_DIST**2
 lineages['area_2_um'] = lineages['area_2'] * IP_DIST**2
@@ -368,8 +376,8 @@ bokeh.io.show(row)
 # important. We'll go with bounds of 0.5 to 8 sq µm.
 #%%
 # Morphologically filter the cells
-lin_filt = lineages[(lineages['area_1_um'] >= 0.5) & (lineages['area_2_um'] >= 0.5) 
-       & (lineages['area_1_um'] <= 8) & (lineages['area_2_um'] <= 8)].copy()
+lin_filt = lineages[(lineages['area_1_um'] >= 0) & (lineages['area_2_um'] >= 0) 
+       & (lineages['area_1_um'] <= 50) & (lineages['area_2_um'] <= 50)].copy()
 # %%
 # With the lineages filtered, let's now look at the distribution of fluorescence
 # between the two daughter cells. As is demanded by our assumption of binomial
@@ -425,8 +433,8 @@ for g, d in lin_int.groupby(['date', 'carbon', 'temp']):
     median_mch = auto['fluor2_mean_death'].median()
 
     # Subtract it from both daughter cells. 
-    d['I_1_sub'] = d['I_1_tot'].values - (d['area_1'].values * median_mch) 
-    d['I_2_sub'] = d['I_2_tot'].values - (d['area_2'].values * median_mch) 
+    d['I_1_sub'] = (d['I_1']  -  median_mch)  * d['area_1']
+    d['I_2_sub'] = (d['I_2'] -  median_mch)  * d['area_2']
 
     # Append the new dataframe to the storage list
     subtracted_lineages.append(d)
@@ -458,7 +466,9 @@ bokeh.io.show(p)
 # least one of the daughter cells drops below zero in its intensity. 
 #%%
 # Drop the negative cells. 
-lin_final = lin_sub[(lin_sub['I_1_sub'] >= 0) & (lin_sub['I_2_sub'] >= 0)]
+lin_final = lin_sub[(lin_sub['I_1_sub'] >= 0) & (lin_sub['I_2_sub'] >= 0) &
+                    ((lin_sub['I_1_sub'] != 0) & (lin_sub['I_2_sub'] !=0))]
+
 
 #%%[markdown]
 # ## Estimating a Fluorescence Calibration Factor
@@ -549,9 +559,12 @@ def log_posterior(alpha, I1, I2, negative=False):
     n2 = I2 / alpha
     ntot = (I1 + I2) / alpha
     # Code the gamma approximation of the binomial.
-    binom = scipy.special.gammaln(ntot + 1).sum() - \
+    binom = scipy.special.gammaln(ntot + 1).sum() -\
             scipy.special.gammaln(n1 + 1).sum() -\
             scipy.special.gammaln(n2 + 1).sum()
+
+    # Define the log prior
+    # log_prior = scipy.stats.halfnorm(0, 100).logpdf(alpha)
 
     # Compute the partitioning probability portion
     prob = -ntot.sum() * np.log(2)
@@ -560,9 +573,9 @@ def log_posterior(alpha, I1, I2, negative=False):
     cov = -len(I1) * np.log(alpha)
 
     # Compute the entire log posterior 
-    logp = prefactor * (cov + prob + binom)
+    logp = prefactor * (prob + cov + binom ) #+ log_prior)
     return logp
-##%%
+
 # Define the range of alpha values over which to iterate
 alpha_range = np.logspace(0, 4.01, 500)
 
@@ -586,7 +599,7 @@ for g, d in lin_final.groupby(['carbon', 'temp', 'date']):
     df['alpha'] = alpha_range
     df['carbon'] = g[0]
     df['temp'] = g[1]
-    df['date'] = g[2]
+    df['date'] = g[2] 
 
     # Append the dataframe to the list and move on. 
     post_dfs.append(df)
@@ -618,7 +631,8 @@ for g, d in post_df[post_df['temp']==37].groupby(['carbon']):
     # Iterate through each date and plot the posteriors
     for _g, _d in d.groupby(['date']):
         ax.line(_d['alpha'], _d['post'], line_width=1, color=pal[iter])
-        iter += 1
+        iter +=1
+    
 
 # Iterate through each unique posterior and plot on the appropriate axis.
 for g, d in post_df[post_df['carbon']=='glucose'].groupby(['temp']):
@@ -629,9 +643,9 @@ for g, d in post_df[post_df['carbon']=='glucose'].groupby(['temp']):
     # Iterate through each date and plot the posteriors
     for _g, _d in d.groupby(['date']):
         ax.line(_d['alpha'], _d['post'], line_width=1, color=pal[iter])
-                
         iter += 1
-    
+                
+   
 # Define the layout and show.
 temps = bokeh.layouts.column(list(temp_ax.values()))
 carbs = bokeh.layouts.column(list(carb_ax.values()))
@@ -650,7 +664,7 @@ bokeh.io.show(bokeh.layouts.row(temps, carbs))
 #%%
 # Find the MAP through minimization
 for g, d in lin_final.groupby(['date', 'carbon', 'temp']):
-    popt = scipy.optimize.minimize_scalar(log_posterior, args=(d['I_1_sub'], d['I_2_sub'], True))
+    popt = scipy.optimize.minimize_scalar(log_posterior, [1, 2**12], args=(d['I_1_sub'], d['I_2_sub'], True))
     alpha_mu = popt.x
     hess = smnd.approx_hess([alpha_mu], log_posterior, args=(d['I_1_sub'], d['I_2_sub'], False))
     cov = -np.linalg.inv(hess)
@@ -681,7 +695,7 @@ glucose_37 = lin_final[(lin_final['temp']==37) & (lin_final['carbon']=='glucose'
 
 # Compute the squared differences and the sum total. 
 glucose_37['fluct'] = (glucose_37['I_1_sub'] - glucose_37['I_2_sub'])**2
-glucose_37['summed'] = (glucose_37['I_1_sub'] + glucose_37['I_2_sub'])
+glucose_37['summed'] = glucose_37['I_1_sub'] + glucose_37['I_2_sub']
 
 # Define a function to compute the mean and sem of the data in the
 def bin_by_value(df, bins):
@@ -723,16 +737,16 @@ p.circle(x='summed', y='fluct', size=1, alpha=0.5, color=colors['black'],
         source=glucose_37, legend='division')
 
 global_min, global_max = glucose_37['summed'].min(), glucose_37['summed'].max()
-I_tot_range = np.logspace(np.log10(global_min)-0.5, np.log10(global_max) + 0.5)
+I_tot_range = np.logspace(-5, np.log10(global_max) + 0.5)
 # Iterate through each date, bin the data, and plot the means. 
 pal = bokeh.palettes.viridis(11)
 iter = 0
-for g, d in glucose_37.groupby(['date']):
+for g, d in glucose_37.groupby(['date', 'alpha_opt']):
     min_val, max_val = np.min(d['summed']) , np.max(d['summed'])
     bins = np.logspace(np.log10(min_val), np.log10(max_val), 10)
     binned = bin_by_value(d, bins)
 
-    # Plot the  errors
+    # # Plot the  errors
     p.segment(x0='summed_mean', x1='summed_mean', y0='fluct_min', y1='fluct_max',
             line_width=1, color=pal[iter], source=binned)
     p.segment(x0='summed_min', x1='summed_max', y0='fluct_mean', y1='fluct_mean',
@@ -741,9 +755,9 @@ for g, d in glucose_37.groupby(['date']):
     # Plot the means
     p.circle(x='summed_mean', y='fluct_mean', size=6, fill_color='white', line_color=pal[iter],
             source=binned, line_width=2, fill_alpha=0.5)
-
+    print(d['alpha_opt'].unique())
     # Plot the line of best fit. 
-    p.line(I_tot_range, I_tot_range * d['alpha_opt'].unique(), color=pal[iter]) 
+    p.line(I_tot_range, I_tot_range * g[-1], color=pal[iter]) 
     iter += 1
 p.legend.location = 'top_left'
 bokeh.io.show(p)
@@ -751,7 +765,9 @@ bokeh.io.show(p)
 # Wow that seems pretty bad! There is either something wrong with the way that
 # I've figured out the statistical model or in some way that I've processed the
 # data. 
+#
 
+#%%[markdown]
 # Let's try a more proper approach factoring in all of the error in the data. 
 # This is a more proper Bayesian model in which I make only one critical
 # assumption. I have a bunch of measurements $I_1$ and $I_2$ of daughter cells.
@@ -779,18 +795,143 @@ bokeh.io.show(p)
 
 #%%
 # Load the stan model
-model = mwc.bayes.StanModel('../stan/proper_calibration_factor.stan', force_compile=True)
-
+model = mwc.bayes.StanModel('../stan/proper_calibration_factor.stan')
 #%%
 # Choose a single date to benchmark it and make sure things are at least
-chosen_date = glucose_37['date'].unique()[0]
+chosen_date = glucose_37['date'].unique()[1]
 glucose_sel = glucose_37[glucose_37['date']==chosen_date]
 # Assemble the data dictionary. 
 data_dict = {'N':len(glucose_sel), 
              'I1':glucose_sel['I_1_sub'], 
              'I2':glucose_sel['I_2_sub']}
+# Keyword for whether sampling should be executed or not.             
+SAMPLE = True
+if SAMPLE:
+    fit, samples = model.sample(data_dict, iter=2000)
+# %%
+p = bokeh.plotting.figure(x_axis_type='log', y_axis_type='log')
+bins = np.logspace(2, 8, 10)
+binned = bin_by_value(glucose_sel, bins)
+p.circle(glucose_sel['summed'], glucose_sel['fluct'], color='black', size=0.5)
+p.circle(binned['summed_mean'], binned['fluct_mean'])
+p.line(bins, bins * np.mean(samples['alpha']))
+bokeh.io.show(p)
+#%%[markdown]
+# This doesn't seem too bad! And it samples relatively quickly. Let's try again
+# with all of the dates. 
+#%%
+for g, d in tqdm.tqdm(lin_final.groupby(['date', 'carbon', 'temp'])):
+    # Set up the data dict and sample
+    data_dict = {'N': len(d), 'I1':d['I_1_sub'], 'I2':d['I_2_sub']}
+    _, samples = model.sample(data_dict, iter=2000)
 
-fit, samples = model.sample(data_dict, iter=1000)
+    # Compute the important stats of alpha. 
+    mean_alpha = np.mean(samples['alpha'])
+    alpha_min,alpha_max = mwc.stats.compute_hpd(samples['alpha'], 0.95)
 
+    lin_final.loc[(lin_final['carbon']==g[1]) & (lin_final['date']==g[0]) &
+                (lin_final['temp']==g[2]), 'alpha_mean'] = mean_alpha
+    lin_final.loc[(lin_final['carbon']==g[1]) & (lin_final['date']==g[0]) &
+                (lin_final['temp']==g[2]), 'alpha_min'] = alpha_min
+    lin_final.loc[(lin_final['carbon']==g[1]) & (lin_final['date']==g[0]) &
+                (lin_final['temp']==g[2]), 'alpha_max'] = alpha_max
 
 #%%
+glucose_37 = lin_final[(lin_final['temp']==32) & (lin_final['carbon']=='glucose')]
+
+# Compute the squared differences and the sum total. 
+glucose_37['fluct'] = (glucose_37['I_1_sub'] - glucose_37['I_2_sub'])**2
+glucose_37['summed'] = glucose_37['I_1_sub'] + glucose_37['I_2_sub']
+
+
+p = bokeh.plotting.figure(width=500, height=300, x_axis_type='log',
+                        y_axis_type='log', x_axis_label='summed intensity',
+                        y_axis_label='fluctuations')
+
+# Plot all of the single cell division data. 
+p.circle(x='summed', y='fluct', size=1, alpha=0.5, color=colors['black'],
+        source=glucose_37, legend='division')
+
+global_min, global_max = glucose_37['summed'].min(), glucose_37['summed'].max()
+I_tot_range = np.logspace(np.log10(global_min)-0.5, np.log10(global_max) + 0.5)
+# Iterate through eachjdate, bin the data, and plot the means. 
+pal = bokeh.palettes.Category20_20
+iter = 0
+for g, d in glucose_37.groupby(['date', 'alpha_opt']):
+    min_val, max_val = np.min(d['summed']) , np.max(d['summed'])
+    bins = np.logspace(np.log10(min_val), np.log10(max_val), 10)
+    binned = mwc.stats.bin_by_events(d, 100)
+
+    # # Plot the  errors
+    # p.segment(x0='summed_mean', x1='summed_mean', y0='fluct_min', y1='fluct_max',
+            # line_width=1, color=pal[iter], source=binned)
+    # p.segment(x0='summed_min', x1='summed_max', y0='fluct_mean', y1='fluct_mean',
+            # line_width=1, color=pal[iter], source=binned)
+
+    # Plot the means
+    p.circle(x='summed', y='fluct', size=6, fill_color='white', line_color=pal[iter],
+            source=bokeh.models.ColumnDataSource(binned), line_width=2, fill_alpha=0.5)
+    # Plot the line of best fit. 
+    p.line(I_tot_range, I_tot_range * g[-1], color=pal[iter]) 
+    iter += 1
+p.legend.location = 'top_left'
+bokeh.io.show(p)
+
+#%%[markdown]
+# This seems like it works pretty well, although I should look more at the
+# actual protein distributions. For now, though, we can use these calibration
+# factors to look at the protein expression and how it scales with the repressor
+# growth rate.
+#
+# First, let's just save the lineages so we don't have to do everything over
+# again all of the time. 
+#
+#%%
+lin_final.to_csv('../../data/analyzed_lineages_proper.csv', index=False)
+
+
+#%%[markdown] To look at the protein expression, we'll make a LUT for the
+#calibration factor based on the condition. 
+#%%
+# Insert the alpha and credible regions into the approved snaps df. 
+for g, d in approved_snaps.groupby(['carbon', 'temp', 'date']):
+    # Get the calibration factor. 
+    samp_lineages = lin_final[(lin_final['date']==g[-1]) & (lin_final['carbon']==g[0]) &
+                    (lin_final['temp']==g[1])]
+    
+    # Insert the cal factors. 
+    approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[-1]) & 
+                        (approved_snaps['temp']==g[1]), 'alpha_mean'] = samp_lineages['alpha'].values[0]
+    approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[-1]) & 
+                        (approved_snaps['temp']==g[1]), 'alpha_max'] = samp_lineages['alpha_max'].values[0]
+    approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[-1]) & 
+                        (approved_snaps['temp']==g[1]), 'alpha_min'] = samp_lineages['alpha_min'].values[0]
+
+#%%[markdown]
+# Now that the calibration factors have been assigned, we can move forward and
+# do the proper background subtraction, like we did with the lineages. 
+# Now, compute the mean, min, and max repressor count. 
+
+#%%
+# Iterate through, perform the background subtraction, and compute the
+# fold-change
+fc_dfs = []
+for g, d in approved_snaps.groupby(['carbon', 'temp', 'date']):
+    d = d.copy()
+    # Isolate the autofluorescence samples. 
+    auto = d[d['strain']=='auto']
+    median_auto_mch = auto['fluor2_mean_death'].median()
+    median_auto_yfp = auto['fluor1_mean_death'].median()
+
+    # Compute the integrated intensities for each. 
+    d['mcherry_sub']= d['area_pix'] * (d['fluor2_mean_death'] - median_auto_mch)
+    d['yfp_sub']= d['area_pix'] * (d['fluor1_mean_death'] - median_auto_yfp)
+
+    # compute the mean, min, and max number of repressors. 
+    d['rep_mean'] = d['mcherry_sub'] / d['alpha_mean']
+    d['rep_min'] = d['mcherry_sub'] / d['alpha_max']
+    d['rep_max'] = d['mcherry_sub'] / d['alpha_min']
+
+    # Isolate delta and compute the mean yfp
+
+

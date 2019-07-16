@@ -180,6 +180,7 @@ def family_reunion(dilution_df, multi_xy=True, fluo_channel=2):
             if (ints >= 0).all() == True:
                 I_1, I_2 = ints
                 family_dict = {'I_1': I_1, 'I_2': I_2, 
+                               'error_frame': d['error_frame'].values[0],
                                'area_1':d['area_death'].values[0], 
                                'area_2':d['area_death'].values[1],
                                'bg_val': d[f'fluor{fluo_channel}_bg_death'].unique()[0],
