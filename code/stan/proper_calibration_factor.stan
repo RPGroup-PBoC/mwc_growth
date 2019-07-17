@@ -28,7 +28,7 @@ data {
 }
 
 parameters {
-   real<lower=0, upper=4*2^12> alpha;     
+   real<lower=0> alpha;     
    vector<lower=0>[2*N] n_prot;
 }
 

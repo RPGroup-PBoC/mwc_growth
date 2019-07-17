@@ -795,7 +795,7 @@ bokeh.io.show(p)
 
 #%%
 # Load the stan model
-model = mwc.bayes.StanModel('../stan/proper_calibration_factor.stan')
+model = mwc.bayes.StanModel('../stan/proper_calibration_factor.stan', force_compile=True)
 #%%
 # Choose a single date to benchmark it and make sure things are at least
 chosen_date = glucose_37['date'].unique()[1]
@@ -820,7 +820,7 @@ bokeh.io.show(p)
 # This doesn't seem too bad! And it samples relatively quickly. Let's try again
 # with all of the dates. 
 #%%
-for g, d in tqdm.tqdm(lin_final.groupby(['date', 'carbon', 'temp'])):
+for g, d in tqdm.tqdm(lin_final.groupby(['date', 'carbon', 'temp', 'run_number'])):
     # Set up the data dict and sample
     data_dict = {'N': len(d), 'I1':d['I_1_sub'], 'I2':d['I_2_sub']}
     _, samples = model.sample(data_dict, iter=2000)
@@ -830,14 +830,14 @@ for g, d in tqdm.tqdm(lin_final.groupby(['date', 'carbon', 'temp'])):
     alpha_min,alpha_max = mwc.stats.compute_hpd(samples['alpha'], 0.95)
 
     lin_final.loc[(lin_final['carbon']==g[1]) & (lin_final['date']==g[0]) &
-                (lin_final['temp']==g[2]), 'alpha_mean'] = mean_alpha
+                (lin_final['temp']==g[2]) & (lin_final['run_number']==g[-1]), 'alpha_mean'] = mean_alpha
     lin_final.loc[(lin_final['carbon']==g[1]) & (lin_final['date']==g[0]) &
-                (lin_final['temp']==g[2]), 'alpha_min'] = alpha_min
+                (lin_final['temp']==g[2]) & (lin_final['run_number']==g[-1]), 'alpha_min'] = alpha_min
     lin_final.loc[(lin_final['carbon']==g[1]) & (lin_final['date']==g[0]) &
-                (lin_final['temp']==g[2]), 'alpha_max'] = alpha_max
+                (lin_final['temp']==g[2]) & (lin_final['run_number']==g[-1]), 'alpha_max'] = alpha_max
 
 #%%
-glucose_37 = lin_final[(lin_final['temp']==32) & (lin_final['carbon']=='glucose')]
+glucose_37 = lin_final[(lin_final['temp']==37) & (lin_final['carbon']=='glycerol')]
 
 # Compute the squared differences and the sum total. 
 glucose_37['fluct'] = (glucose_37['I_1_sub'] - glucose_37['I_2_sub'])**2
@@ -857,7 +857,7 @@ I_tot_range = np.logspace(np.log10(global_min)-0.5, np.log10(global_max) + 0.5)
 # Iterate through eachjdate, bin the data, and plot the means. 
 pal = bokeh.palettes.Category20_20
 iter = 0
-for g, d in glucose_37.groupby(['date', 'alpha_opt']):
+for g, d in glucose_37.groupby(['date', 'run_number']):
     min_val, max_val = np.min(d['summed']) , np.max(d['summed'])
     bins = np.logspace(np.log10(min_val), np.log10(max_val), 10)
     binned = mwc.stats.bin_by_events(d, 100)
@@ -894,7 +894,7 @@ lin_final.to_csv('../../data/analyzed_lineages_proper.csv', index=False)
 #calibration factor based on the condition. 
 #%%
 # Insert the alpha and credible regions into the approved snaps df. 
-for g, d in approved_snaps.groupby(['carbon', 'temp', 'date']):
+for g, d in approved_snaps.groupby(['carbon', 'temp', 'date', 'run_number']):
     # Get the calibration factor. 
     samp_lineages = lin_final[(lin_final['date']==g[-1]) & (lin_final['carbon']==g[0]) &
                     (lin_final['temp']==g[1])]
@@ -916,7 +916,7 @@ for g, d in approved_snaps.groupby(['carbon', 'temp', 'date']):
 # Iterate through, perform the background subtraction, and compute the
 # fold-change
 fc_dfs = []
-for g, d in approved_snaps.groupby(['carbon', 'temp', 'date']):
+for g, d in approved_snaps.groupby(['carbon', 'temp', 'date', 'run_number']):
     d = d.copy()
     # Isolate the autofluorescence samples. 
     auto = d[d['strain']=='auto']
@@ -941,12 +941,31 @@ for g, d in approved_snaps.groupby(['carbon', 'temp', 'date']):
 
     # Reduce the dataframe to the informative columns and append to the storage
     # list. 
-    d = d[['carbon', 'temp', 'date', 'alpha_mean', 'rep_mean', 'rep_min', 'rep_max', 'fold_change', 'strain']]
+    d = d[['carbon', 'temp', 'date', 'atc_ngml', 'alpha_mean', 'rep_mean', 'rep_min', 'rep_max', 'fold_change', 'strain']]
     fc_dfs.append(d)
 
 # Concatenate the fold-change dataframe
 fc_df = pd.concat(fc_dfs)
+#%%
+fc_df.to_csv('../../data/analyzed_foldchange_proper.csv', index=False)
+#%%
+carb_var = fc_df[(fc_df['temp']==37) & (fc_df['strain']=='dilution')]
+iter = 0
+p = bokeh.plotting.figure(x_axis_type='log', y_axis_type='log')
+for g, d in carb_var.groupby(['carbon']):
 
+    # round by the repressor copy number and compute the mean
+    # d['rep'] = np.round(d['rep_mean'], decimals=-1)
+    grouped = d.groupby('rep').agg(('mean', 'sem')).reset_index()
+    p.circle(grouped['rep'], grouped['fold_change']['mean'], size=5, color=color_list[iter], 
+    legend=g)
+    iter += 1
 
+rep_range = np.logspace(0, 4, 200)
+fc = (1 + (rep_range/4.6E6) * np.exp(13.9))**-1
+p.line(rep_range, fc, color='tomato', legend='theory')
+
+p.legend.click_policy='hide'
+bokeh.io.show(p)
 
 #%%
