@@ -1,6 +1,6 @@
 functions {
     // real marginalized_normal_lpdf(vector I1, vector I2, vector n1, vector n_tot,
-    // real alpha, int N)
+    //  real alpha, int N)
     // {
     //     vector[N] aI1 = alpha * n1;
     //     vector[N] aI2 = alpha * (n_tot - n1);
@@ -16,10 +16,19 @@ functions {
     //     }
     //     return binom - N * 0.5 * log(out);
     // }
-    real gamma_appx_binom_lpdf(vector n_1, vector n_tot) { 
-        return sum(lgamma(n_tot + 1) - lgamma(n_1 + 1) - lgamma(n_tot - n_1 +1)
-        - n_tot * log(2));
+    real gamma_appx_binom_lpdf(vector n_1, vector n_tot, int N) { 
+        real lp = 0;
+        for (i in 1:N) {
+            if (n_1[i] > N) 
+                return -1E10;  
+            else
+                lp += -n_tot[i] * log(2) + lgamma(n_tot[i] + 1) - lgamma(n_1[i]
+                + 1) - lgamma(n_tot[i] - n_1[i] + 1);
+        }
+        return lp;
     }
+}
+
 }
 data {
     int <lower=1> N; // Number of measurements
@@ -29,23 +38,20 @@ data {
 
 
 parameters {
-   real<lower=0> log_alpha;
+   real<lower=0> alpha;
    real<lower=0> sigma;
-   vector<lower=0>[2*N] n_prot;
-}
-
-transformed parameters {
-    real alpha = exp(log_alpha);
-
+//    vector<lower=0>[2*N] n_prot;
+   vector<lower=0>[N] n_tot;
+   vector<lower=0>[N] n_1;
 }
 
 
 model {
-    n_prot[:N] ~ normal(0, 2000);
-    log_alpha ~ normal(0, 5);
-    sigma ~ normal(0, 1);
-    n_prot[N+1:] ~ gamma_appx_binom(n_prot[:N]);
-    I1 ~ normal(alpha *n_prot[N+1:], sigma);
-    I2 ~ normal(alpha * (n_prot[:N] - n_prot[N+1:]), sigma);
+    alpha ~ normal(0, 500);
+    n_tot ~ normal(0, 2000);
+    n_1 ~ gamma_appx_binom(n_tot, N);
+    sigma ~ normal(0, 100);
+    I1 ~ normal(alpha * n_1, sigma);
+    I2 ~ normal(alpha * (n_tot - n_1), sigma);
 
 }

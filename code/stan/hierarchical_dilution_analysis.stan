@@ -16,7 +16,7 @@ functions{
     * @param N: Total number of measurements 
     **/
     real GammaApproxBinom_lpdf(vector I1, vector I2, vector alpha ) { 
-            return sum(-log(alpha))  + sum(lgamma(((I1 + I2) ./ alpha) + 1) - lgamma((I1 ./ alpha) + 1)
+            return -size(I1) * log(alpha) sum(lgamma(((I1 + I2) ./ alpha) + 1) - lgamma((I1 ./ alpha) + 1)
                         - lgamma((I2 ./ alpha) + 1) - ((I1 + I2) ./ alpha) * log(2));
         }
 }
