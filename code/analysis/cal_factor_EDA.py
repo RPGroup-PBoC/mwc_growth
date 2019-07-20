@@ -1,7 +1,6 @@
 #%%
 #%%[markdown]
 # # Exploratory Data Analysis for Calculating Repressor Copy Number
-# ---
 #%%
 import numpy as np 
 import pandas as pd
@@ -13,6 +12,7 @@ import mwc.stats
 import mwc.bayes 
 import mwc.viz
 import bokeh.models
+import bokeh.transform
 import tqdm
 import bokeh.palettes
 import scipy.stats
@@ -27,8 +27,7 @@ bokeh.io.output_notebook()
 # (extracted from the `clist.mat` files in
 # `code/processing/batch_processing.py`l)
 # and explore any and all filtering steps that have to be performed to get a
-# proper estimate of the mean autofluorescence background for both channels. 
-#
+# proper estimate of the mean autofluorescence background for both channels. #
 # ## Exploring Size Dependence
 # One of the first things we can do is explore the cell size distribution of the
 # each condition and see how it scales with growthrate. As Zofii so kindly
@@ -323,18 +322,78 @@ bokeh.io.show(acetate_plot)
 #%%
 # Remove the problematic day
 approved_snaps = snaps_filtered[snaps_filtered['date'] != 20181022]
+
+#%%[markdown]
+# With a solid dataset in hand, we will go through each date and run number and 
+# subtract the background for each channel. 
+#%%
+approved_dfs = []
+for g, d in approved_snaps.groupby(['carbon', 'temp', 'run_number', 'date']):
+    d = d.copy()
+    auto = d[d['strain']=='auto']
+    median_mch = auto['fluor1_mean_death'].median()
+    median_yfp = auto['fluor2_mean_death'].median()
+
+    # Subtract
+    d['fluor1_mean_sub'] = d['fluor1_mean_death'] - median_mch
+    d['fluor2_mean_sub'] = d['fluor2_mean_death'] - median_yfp
+    approved_dfs.append(d)
+approved_snaps = pd.concat(approved_dfs)
+
 #%%[markdown]
 # I think with the current set of data, that's all that I can really say moving
 # forward and computing the calibration factor so I can look at the actuall
 # scaling of LacI expression. 
 #
+
+
+#%%[markdown]
+# ## Exploring correlated expression
+# Regardless of the condition, increasing mCherry intensity should negatively
+# correlate with YFP intensity. We can check that for all dilution circuit cells
+
+#%%
+p = bokeh.plotting.figure(
+                         x_axis_label='mean mCherry intensity [a.u.]',
+                          y_axis_label='mean YFP intensity [a.u.]',
+                          width=500, height=300)
+
+# Only look at the dilution strain .
+dilution = approved_snaps[approved_snaps['strain']=='dilution']
+carb_var = dilution[dilution['temp']==37]
+temp_var = dilution[dilution['carbon']=='glucose']
+carb_summary = carb_var.groupby(['carbon', 'atc_ngml']).agg(('mean', 'sem'))
+carb_summary['fluor1_low'] = carb_summary['fluor1_mean_sub']['mean'] - carb_summary['fluor1_mean_sub']['sem']
+carb_summary['fluor1_high'] = carb_summary['fluor1_mean_sub']['mean'] + carb_summary['fluor1_mean_sub']['sem']
+carb_summary['fluor2_low'] = carb_summary['fluor2_mean_sub']['mean'] - carb_summary['fluor2_mean_sub']['sem']
+carb_summary['fluor2_high'] = carb_summary['fluor2_mean_sub']['mean'] + carb_summary['fluor2_mean_sub']['sem']
+temp_summary = temp_var.groupby(['temp', 'atc_ngml']).agg(('mean', 'sem'))
+temp_summary['fluor1_low'] = temp_summary['fluor1_mean_sub']['mean'] - temp_summary['fluor1_mean_sub']['sem']
+temp_summary['fluor1_high'] = temp_summary['fluor1_mean_sub']['mean'] + temp_summary['fluor1_mean_sub']['sem']
+temp_summary['fluor2_low'] = temp_summary['fluor2_mean_sub']['mean'] - temp_summary['fluor2_mean_sub']['sem']
+temp_summary['fluor2_high'] = temp_summary['fluor2_mean_sub']['mean'] + temp_summary['fluor2_mean_sub']['sem']
+
+
+p.circle(carb_summary['fluor1_mean_sub']['mean'], y=carb_summary['fluor2_mean_sub']['mean'],
+         size=4, alpha=0.5, color=colors['purple'])
+p.segment(x0=carb_summary['fluor1_mean_sub']['mean'], x1=carb_summary['fluor1_mean_sub']['mean'],
+          y0=carb_summary['fluor2_low'], y1=carb_summary['fluor2_high'], color=colors['purple'])
+p.segment(x0=carb_summary['fluor1_low'], x1=carb_summary['fluor1_high'],
+          y0=carb_summary['fluor2_mean_sub']['mean'], y1=carb_summary['fluor2_mean_sub']['mean'], color=colors['purple'])
+p.circle(temp_summary['fluor1_mean_sub']['mean'], y=temp_summary['fluor2_mean_sub']['mean'],
+         size=4, alpha=0.5, color=colors['orange'])
+p.segment(x0=temp_summary['fluor1_mean_sub']['mean'], x1=temp_summary['fluor1_mean_sub']['mean'],
+          y0=temp_summary['fluor2_low'], y1=temp_summary['fluor2_high'], color=colors['orange'])
+p.segment(x0=temp_summary['fluor1_low'], x1=temp_summary['fluor1_high'],
+          y0=temp_summary['fluor2_mean_sub']['mean'], y1=temp_summary['fluor2_mean_sub']['mean'], color=colors['orange'])
+bokeh.io.show(p)
+#%%[markdown]
 # ## Exploring the Lineage Data
 # Now that the snapshot data seems to jibe with my intuition of how things
 # should behave, I can now more on and work with examining the fluctuations. To
 # begin, we will load the lineage data set and examine the area distributions.
 # They should hopefully be similar to the snapshots, although maybe a bit wider
 # as we are actually letting them divide (as is part of the experiment.)
-
 #%%
 # Load the lineages.
 lineages = pd.read_csv('../../data/raw_compiled_lineages.csv')
@@ -370,14 +429,14 @@ temp_plot.xaxis.axis_label = 'area [sq. µm]'
 row = bokeh.layouts.row(carb_plot, temp_plot)
 bokeh.io.show(row)
 
-#%%[markdown]
+ #%%[markdown]
 # As I expected, the distribution is a bit wider than for the snapshots. For
 # this reason, we'll expand the bounds a bit such that we get everything that is
 # important. We'll go with bounds of 0.5 to 8 sq µm.
 #%%
 # Morphologically filter the cells
-lin_filt = lineages[(lineages['area_1_um'] >= 0) & (lineages['area_2_um'] >= 0) 
-       & (lineages['area_1_um'] <= 50) & (lineages['area_2_um'] <= 50)].copy()
+lin_filt = lineages[(lineages['area_1_um'] >= 0.5) & (lineages['area_2_um'] >= 0.5) 
+       & (lineages['area_1_um'] <= 5) & (lineages['area_2_um'] <= 5)].copy()
 # %%
 # With the lineages filtered, let's now look at the distribution of fluorescence
 # between the two daughter cells. As is demanded by our assumption of binomial
@@ -385,7 +444,7 @@ lin_filt = lineages[(lineages['area_1_um'] >= 0) & (lineages['area_2_um'] >= 0)
 # half of the summation. We can check this in the mCherry fluorescence channel. 
 #%%
 # Only consider the pairs where there was partitioned intensities.
-lin_int = lin_filt[(lin_filt['I_1'] > 0) & (lin_filt['I_2'] > 0)]
+lin_int = lin_filt[(lin_filt['I_1'] > 0) & (lin_filt['I_2'] > 0)].copy()
 
 # Compute the total integrated cell intensities.
 lin_int['I_1_tot'] = lin_int['I_1'] * lin_int['area_1']
@@ -421,7 +480,7 @@ bokeh.io.show(p)
 #%%
 # Subtract off the autofluorescence from the `lin_int` datastructure
 subtracted_lineages = []
-for g, d in lin_int.groupby(['date', 'carbon', 'temp']):
+for g, d in lin_int.groupby(['date', 'carbon', 'temp', 'run_number']):
     d = d.copy()
     # Isolate the autofluorescence sample from approved snaps
     auto = approved_snaps[(approved_snaps['date']==g[0]) & 
@@ -430,7 +489,7 @@ for g, d in lin_int.groupby(['date', 'carbon', 'temp']):
                           (approved_snaps['strain']=='auto')]
 
     # Compute the median mcherry pixel intensity 
-    median_mch = auto['fluor2_mean_death'].median()
+    median_mch = auto['fluor2_mean_death'].mean()
 
     # Subtract it from both daughter cells. 
     d['I_1_sub'] = (d['I_1']  -  median_mch)  * d['area_1']
@@ -440,7 +499,7 @@ for g, d in lin_int.groupby(['date', 'carbon', 'temp']):
     subtracted_lineages.append(d)
 lin_sub = pd.concat(subtracted_lineages)
 #%%[markdown]
-# With the autofluorescence backbground subtracted, let's take a look at the
+# With the autofluorescence background subtracted, let's take a look at the
 # total distribution of intensities (for daughter 1 and 2) to see what fraction
 # of intensities we have below zero.
 
@@ -466,10 +525,10 @@ bokeh.io.show(p)
 # least one of the daughter cells drops below zero in its intensity. 
 #%%
 # Drop the negative cells. 
-lin_final = lin_sub[(lin_sub['I_1_sub'] >= 0) & (lin_sub['I_2_sub'] >= 0) &
-                    ((lin_sub['I_1_sub'] != 0) & (lin_sub['I_2_sub'] !=0))]
+lin_final = lin_sub[(lin_sub['I_1_sub'] >= 0) & (lin_sub['I_2_sub'] >= 0)]
+                    # ((lin_sub['I_1_sub'] != 0) & (lin_sub['I_2_sub'] !=0))].copy()
 
-
+lin_final.to_csv('../../data/analyzed_lineages.csv', index=False)
 #%%[markdown]
 # ## Estimating a Fluorescence Calibration Factor
 # With a thoroughly explored data set in place,we can now turn towards trying to
@@ -564,7 +623,7 @@ def log_posterior(alpha, I1, I2, negative=False):
             scipy.special.gammaln(n2 + 1).sum()
 
     # Define the log prior
-    # log_prior = scipy.stats.halfnorm(0, 100).logpdf(alpha)
+    # log_prior = scipy.stats.halfnorm(0, 500).logpdf(alpha)
 
     # Compute the partitioning probability portion
     prob = -ntot.sum() * np.log(2)
@@ -573,7 +632,7 @@ def log_posterior(alpha, I1, I2, negative=False):
     cov = -len(I1) * np.log(alpha)
 
     # Compute the entire log posterior 
-    logp = prefactor * (prob + cov + binom ) #+ log_prior)
+    logp = prefactor * (prob + cov + binom) #+ log_prior)
     return logp
 
 # Define the range of alpha values over which to iterate
@@ -583,7 +642,7 @@ alpha_range = np.logspace(0, 4.01, 500)
 post_dfs = []
 
 # Iterate through each unique replicate and evaluate the log posterior. 
-for g, d in lin_final.groupby(['carbon', 'temp', 'date']):
+for g, d in lin_final.groupby(['carbon', 'temp', 'date', 'run_number']):
     # evaluate the log posterior
     logp = np.zeros(len(alpha_range))
     for i, a in enumerate(alpha_range):
@@ -600,6 +659,7 @@ for g, d in lin_final.groupby(['carbon', 'temp', 'date']):
     df['carbon'] = g[0]
     df['temp'] = g[1]
     df['date'] = g[2] 
+    df['run_number'] = g[-1]
 
     # Append the dataframe to the list and move on. 
     post_dfs.append(df)
@@ -629,7 +689,7 @@ for g, d in post_df[post_df['temp']==37].groupby(['carbon']):
     iter = 0
 
     # Iterate through each date and plot the posteriors
-    for _g, _d in d.groupby(['date']):
+    for _g, _d in d.groupby(['date', 'run_number']):
         ax.line(_d['alpha'], _d['post'], line_width=1, color=pal[iter])
         iter +=1
     
@@ -663,7 +723,7 @@ bokeh.io.show(bokeh.layouts.row(temps, carbs))
 # 
 #%%
 # Find the MAP through minimization
-for g, d in lin_final.groupby(['date', 'carbon', 'temp']):
+for g, d in lin_final.groupby(['carbon', 'temp']):
     popt = scipy.optimize.minimize_scalar(log_posterior, [1, 2**12], args=(d['I_1_sub'], d['I_2_sub'], True))
     alpha_mu = popt.x
     hess = smnd.approx_hess([alpha_mu], log_posterior, args=(d['I_1_sub'], d['I_2_sub'], False))
@@ -671,13 +731,15 @@ for g, d in lin_final.groupby(['date', 'carbon', 'temp']):
     alpha_std = np.sqrt(cov[0])[0]
 
     # Add the alpha information to the lineage dataframe. 
-    lin_final.loc[(lin_final['date']==g[0]) & 
-                  (lin_final['carbon']==g[1]) &
-                  (lin_final['temp']==g[2]), 
+    lin_final.loc[ #(lin_final['date']==g[0]) & 
+                  (lin_final['carbon']==g[0]) &
+                  (lin_final['temp']==g[1]), #&
+                #   (lin_final['run_number']==g[-1]), 
                   'alpha_opt'] = alpha_mu
-    lin_final.loc[(lin_final['date']==g[0]) & 
-                  (lin_final['carbon']==g[1]) &
-                  (lin_final['temp']==g[2]), 
+    lin_final.loc[ #(lin_final['date']==g[0]) & 
+                  (lin_final['carbon']==g[0]) &
+                  (lin_final['temp']==g[1]),  #&
+                #   (lin_final['run_number']==g[-1]),
                   'alpha_std'] = alpha_std
 #%%[markdown]
 # Now that we've found the map, we can see how well it describes the average
@@ -691,7 +753,8 @@ for g, d in lin_final.groupby(['date', 'carbon', 'temp']):
 # this first just by choosing a single condition. 
 #%%
 # Look only at glucose 37.
-glucose_37 = lin_final[(lin_final['temp']==37) & (lin_final['carbon']=='glucose')]
+glucose_37 = lin_final[(lin_final['temp']==37) &
+                       (lin_final['carbon']=='glucose')].copy()
 
 # Compute the squared differences and the sum total. 
 glucose_37['fluct'] = (glucose_37['I_1_sub'] - glucose_37['I_2_sub'])**2
@@ -737,13 +800,13 @@ p.circle(x='summed', y='fluct', size=1, alpha=0.5, color=colors['black'],
         source=glucose_37, legend='division')
 
 global_min, global_max = glucose_37['summed'].min(), glucose_37['summed'].max()
-I_tot_range = np.logspace(-5, np.log10(global_max) + 0.5)
+I_tot_range = np.logspace(np.log10(global_min) -0.5, np.log10(global_max) + 0.5)
 # Iterate through each date, bin the data, and plot the means. 
-pal = bokeh.palettes.viridis(11)
+pal = bokeh.palettes.viridis(30)
 iter = 0
-for g, d in glucose_37.groupby(['date', 'alpha_opt']):
+for g, d in glucose_37.groupby(['carbon', 'alpha_opt']):
     min_val, max_val = np.min(d['summed']) , np.max(d['summed'])
-    bins = np.logspace(np.log10(min_val), np.log10(max_val), 10)
+    bins = np.logspace(np.log10(min_val), np.log10(max_val), 5)
     binned = bin_by_value(d, bins)
 
     # # Plot the  errors
@@ -755,17 +818,115 @@ for g, d in glucose_37.groupby(['date', 'alpha_opt']):
     # Plot the means
     p.circle(x='summed_mean', y='fluct_mean', size=6, fill_color='white', line_color=pal[iter],
             source=binned, line_width=2, fill_alpha=0.5)
-    print(d['alpha_opt'].unique())
+
     # Plot the line of best fit. 
-    p.line(I_tot_range, I_tot_range * g[-1], color=pal[iter]) 
+    std = d['alpha_std'].unique() 
+    low = I_tot_range * (g[-1] - std)
+    high= I_tot_range * (g[-1] + std)
+    err = bokeh.models.Band(base='itot', lower='low', upper='high', 
+                           fill_color=pal[iter], fill_alpha=0.5, source=bokeh.models.ColumnDataSource({'itot':I_tot_range,
+                                                                                            'low':low, 'high':high})) 
+    p.add_layout(err)
     iter += 1
 p.legend.location = 'top_left'
 bokeh.io.show(p)
+#%%
+for g, d in approved_snaps.groupby(['carbon', 'temp', 'date', 'run_number']):
+    # Get the calibration factor. 
+    samp_lineages = lin_final[(lin_final['date']==g[2]) & (lin_final['carbon']==g[0]) &
+                    (lin_final['temp']==g[1]) & (lin_final['run_number']==g[3])].copy()
+    # Insert the cal factors. 
+    approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[2]) & 
+                        (approved_snaps['temp']==g[1]) & (approved_snaps['run_number']==g[-1]), 'alpha_mean'] = samp_lineages['alpha_opt'].values[0]
+    approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[2]) & 
+                        (approved_snaps['temp']==g[1])  & (approved_snaps['run_number']==g[3]), 'alpha_max'] = samp_lineages['alpha_opt'].values[0] - samp_lineages['alpha_std'].values[0]
+    approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[2]) & 
+                        (approved_snaps['temp']==g[1]) & (approved_snaps['run_number']==g[3]), 'alpha_min'] = samp_lineages['alpha_opt'].values[0] + samp_lineages['alpha_std'].values[0]
+
 #%%[markdown]
-# Wow that seems pretty bad! There is either something wrong with the way that
-# I've figured out the statistical model or in some way that I've processed the
-# data. 
-#
+# Now that the calibration factors have been assigned, we can move forward and
+# do the proper background subtraction, like we did with the lineages. 
+# Now, compute the mean, min, and max repressor count. 
+
+#%%
+# Iterate through, perform the background subtraction, and compute the
+# fold-change
+fc_dfs = []
+for g, d in approved_snaps.groupby(['carbon', 'temp', 'date', 'run_number']):
+    d = d.copy()
+    # Isolate the autofluorescence samples. 
+    auto = d[d['strain']=='auto']
+    median_auto_mch = auto['fluor2_mean_death'].mean()
+    median_auto_yfp = auto['fluor1_mean_death'].mean()
+
+    # Compute the integrated intensities for each. 
+    d['mcherry_sub']= d['area_death'] * (d['fluor2_mean_death'] - median_auto_mch)
+    d['yfp_sub']= d['area_death'] * (d['fluor1_mean_death'] - median_auto_yfp)
+
+    # compute the mean, min, and max number of repressors. 
+    d['rep_mean'] = d['mcherry_sub'] / d['alpha_mean']
+    d['rep_min'] = d['mcherry_sub'] / d['alpha_max']
+    d['rep_max'] = d['mcherry_sub'] / d['alpha_min']
+
+    # Isolate delta and compute the mean yfp
+    delta = d[d['strain']=='delta']
+    delta_yfp = delta['yfp_sub'].mean()
+
+    # Compute the fold-change
+    d['fold_change'] = d['yfp_sub'] / delta_yfp
+
+    # Reduce the dataframe to the informative columns and append to the storage
+    # list. 
+    d = d[['carbon', 'temp', 'date', 'atc_ngml', 'alpha_mean', 'rep_mean', 'rep_min', 'rep_max', 'fold_change', 'strain']]
+    fc_dfs.append(d)
+
+# Concatenate the fold-change dataframe
+fc_df = pd.concat(fc_dfs)
+#%%
+fc_df.to_csv('../../data/analyzed_foldchange_improper.csv', index=False)
+#%%
+carb_var = fc_df[(fc_df['temp']==37) & (fc_df['strain']=='dilution') & (fc_df['date']!=20181021)]
+
+iter = 0
+p = bokeh.plotting.figure(x_axis_type='log', y_axis_type='log')
+for g, d in carb_var.groupby(['carbon']):
+
+    # round by the repressor copy number and compute the mean
+    d['rep'] = np.round(d['rep_mean'])
+    grouped = d.groupby('rep').agg(('mean', 'sem')).reset_index()
+    grouped['low'] = (grouped['fold_change']['mean'] - grouped['fold_change']['sem'])
+    grouped['high'] = (grouped['fold_change']['mean'] + grouped['fold_change']['sem'])
+    # grouped = grouped[grouped['rep']['mean'] <= 500]
+    p.circle(2 * grouped['rep'],  grouped['fold_change']['mean'], size=5, color=color_list[iter], 
+    legend=g)
+    # p.segment(x0=grouped['rep'], x1=grouped['rep'], y0=grouped['low'], y1=grouped['high'], line_width=1, color=color_list[iter],
+    # legend=g)
+    iter += 1
+
+rep_range = np.logspace(0, 3, 200)
+fc = (1 + 0.99 * (rep_range/4.6E6) * np.exp(13.9))**-1
+p.line(rep_range, fc, color='tomato', legend='theory')
+
+p.legend.click_policy='hide'
+bokeh.io.show(p)
+
+#%%
+_df = carb_var[carb_var['carbon']=='glucose']
+p = bokeh.plotting.figure(x_axis_type='log', y_axis_type='log') 
+iter = 0
+for g, d in _df.groupby(['date']):
+    d['rep'] = np.round(d['rep_mean'], decimals=-1)
+    grouped = d.groupby('rep').agg(('mean', 'sem')).reset_index()
+    p.circle(grouped['rep'], grouped['fold_change']['mean'], color=color_list[iter], 
+            legend=str(g))
+    iter += 1
+
+p.line(rep_range, 1/ fc, color='tomato', legend='theory')
+p.legend.click_policy='hide'
+bokeh.io.show(p)
+
+
+
 
 #%%[markdown]
 # Let's try a more proper approach factoring in all of the error in the data. 
@@ -798,8 +959,8 @@ bokeh.io.show(p)
 model = mwc.bayes.StanModel('../stan/proper_calibration_factor.stan', force_compile=True)
 #%%
 # Choose a single date to benchmark it and make sure things are at least
-chosen_date = glucose_37['date'].unique()[1]
-glucose_sel = glucose_37[glucose_37['date']==chosen_date]
+chosen_date = glucose_37['date'].unique()[3]
+glucose_sel = glucose_37[(glucose_37['date']==chosen_date) & (glucose_37['run_number']==1)]
 # Assemble the data dictionary. 
 data_dict = {'N':len(glucose_sel), 
              'I1':glucose_sel['I_1_sub'], 
@@ -810,7 +971,11 @@ if SAMPLE:
     fit, samples = model.sample(data_dict, iter=2000)
 # %%
 p = bokeh.plotting.figure(x_axis_type='log', y_axis_type='log')
-bins = np.logspace(2, 8, 10)
+I_tot_range = np.logspace(np.log10(glucose_sel['summed'].min()) - 0.5,
+                   np.log10(glucose_sel['summed'].max()) + 0.5)
+bins = np.logspace(np.log10(glucose_sel['summed'].min() - 1), 
+                   np.log10(glucose_sel['summed'].max() + 1),
+                   15)
 binned = bin_by_value(glucose_sel, bins)
 p.circle(glucose_sel['summed'], glucose_sel['fluct'], color='black', size=0.5)
 p.circle(binned['summed_mean'], binned['fluct_mean'])
@@ -829,15 +994,22 @@ for g, d in tqdm.tqdm(lin_final.groupby(['date', 'carbon', 'temp', 'run_number']
     mean_alpha = np.mean(samples['alpha'])
     alpha_min,alpha_max = mwc.stats.compute_hpd(samples['alpha'], 0.95)
 
-    lin_final.loc[(lin_final['carbon']==g[1]) & (lin_final['date']==g[0]) &
-                (lin_final['temp']==g[2]) & (lin_final['run_number']==g[-1]), 'alpha_mean'] = mean_alpha
-    lin_final.loc[(lin_final['carbon']==g[1]) & (lin_final['date']==g[0]) &
-                (lin_final['temp']==g[2]) & (lin_final['run_number']==g[-1]), 'alpha_min'] = alpha_min
-    lin_final.loc[(lin_final['carbon']==g[1]) & (lin_final['date']==g[0]) &
-                (lin_final['temp']==g[2]) & (lin_final['run_number']==g[-1]), 'alpha_max'] = alpha_max
+    lin_final.loc[(lin_final['carbon']==g[1]) & 
+                  (lin_final['date']==g[0]) &
+                  (lin_final['temp']==g[2]) & 
+                  (lin_final['run_number']==g[-1]), 'alpha_mean'] = mean_alpha
+    lin_final.loc[(lin_final['carbon']==g[1]) & 
+                  (lin_final['date']==g[0]) &
+                  (lin_final['temp']==g[2]) & 
+                  (lin_final['run_number']==g[-1]), 'alpha_min'] = alpha_min
+    lin_final.loc[(lin_final['carbon']==g[1]) & 
+                  (lin_final['date']==g[0]) &
+                  (lin_final['temp']==g[2]) & 
+                  (lin_final['run_number']==g[-1]), 'alpha_max'] = alpha_max
 
 #%%
-glucose_37 = lin_final[(lin_final['temp']==37) & (lin_final['carbon']=='glycerol')]
+glucose_37 = lin_final[(lin_final['temp']==37) & 
+                       (lin_final['carbon']=='glucose')].copy()
 
 # Compute the squared differences and the sum total. 
 glucose_37['fluct'] = (glucose_37['I_1_sub'] - glucose_37['I_2_sub'])**2
@@ -854,25 +1026,25 @@ p.circle(x='summed', y='fluct', size=1, alpha=0.5, color=colors['black'],
 
 global_min, global_max = glucose_37['summed'].min(), glucose_37['summed'].max()
 I_tot_range = np.logspace(np.log10(global_min)-0.5, np.log10(global_max) + 0.5)
-# Iterate through eachjdate, bin the data, and plot the means. 
-pal = bokeh.palettes.Category20_20
+# Iterate through each date, bin the data, and plot the means. 
+pal = bokeh.palettes.viridis(20)
 iter = 0
 for g, d in glucose_37.groupby(['date', 'run_number']):
     min_val, max_val = np.min(d['summed']) , np.max(d['summed'])
-    bins = np.logspace(np.log10(min_val), np.log10(max_val), 10)
-    binned = mwc.stats.bin_by_events(d, 100)
+    bins = np.logspace(np.log10(min_val), np.log10(max_val), 8)
+    binned = bin_by_value(d, bins)
 
-    # # Plot the  errors
-    # p.segment(x0='summed_mean', x1='summed_mean', y0='fluct_min', y1='fluct_max',
-            # line_width=1, color=pal[iter], source=binned)
-    # p.segment(x0='summed_min', x1='summed_max', y0='fluct_mean', y1='fluct_mean',
-            # line_width=1, color=pal[iter], source=binned)
+    # Plot the  errors
+    p.segment(x0='summed_mean', x1='summed_mean', y0='fluct_min', y1='fluct_max',
+            line_width=1, color=pal[iter], source=binned)
+    p.segment(x0='summed_min', x1='summed_max', y0='fluct_mean', y1='fluct_mean',
+            line_width=1, color=pal[iter], source=binned)
 
     # Plot the means
-    p.circle(x='summed', y='fluct', size=6, fill_color='white', line_color=pal[iter],
+    p.circle(x='summed_mean', y='fluct_mean', size=6, fill_color='white', line_color=pal[iter],
             source=bokeh.models.ColumnDataSource(binned), line_width=2, fill_alpha=0.5)
     # Plot the line of best fit. 
-    p.line(I_tot_range, I_tot_range * g[-1], color=pal[iter]) 
+    p.line(I_tot_range, I_tot_range * d['alpha_mean'].unique(), color=pal[iter]) 
     iter += 1
 p.legend.location = 'top_left'
 bokeh.io.show(p)
@@ -887,25 +1059,25 @@ bokeh.io.show(p)
 # again all of the time. 
 #
 #%%
-lin_final.to_csv('../../data/analyzed_lineages_proper.csv', index=False)
+# lin_final.to_csv('../../data/analyzed_lineages_proper.csv', index=False)
 
-
+lin_final = pd.read_csv('../../data/analyzed_lineages_proper.csv')
 #%%[markdown] To look at the protein expression, we'll make a LUT for the
 #calibration factor based on the condition. 
 #%%
 # Insert the alpha and credible regions into the approved snaps df. 
 for g, d in approved_snaps.groupby(['carbon', 'temp', 'date', 'run_number']):
     # Get the calibration factor. 
-    samp_lineages = lin_final[(lin_final['date']==g[-1]) & (lin_final['carbon']==g[0]) &
-                    (lin_final['temp']==g[1])]
+    samp_lineages = lin_final[(lin_final['date']==g[2]) & (lin_final['carbon']==g[0]) &
+                    (lin_final['temp']==g[1]) & (lin_final['run_number']==g[3])].copy()
     
     # Insert the cal factors. 
-    approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[-1]) & 
-                        (approved_snaps['temp']==g[1]), 'alpha_mean'] = samp_lineages['alpha_mean'].values[0]
-    approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[-1]) & 
-                        (approved_snaps['temp']==g[1]), 'alpha_max'] = samp_lineages['alpha_max'].values[0]
-    approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[-1]) & 
-                        (approved_snaps['temp']==g[1]), 'alpha_min'] = samp_lineages['alpha_min'].values[0]
+    approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[2]) & 
+                        (approved_snaps['temp']==g[1]) & (approved_snaps['run_number']==g[-1]), 'alpha_mean'] = samp_lineages['alpha_mean'].values[0]
+    approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[2]) & 
+                        (approved_snaps['temp']==g[1])  & (approved_snaps['run_number']==g[3]), 'alpha_max'] = samp_lineages['alpha_max'].values[0]
+    approved_snaps.loc[(approved_snaps['carbon']==g[0]) & (approved_snaps['date']==g[2]) & 
+                        (approved_snaps['temp']==g[1]) & (approved_snaps['run_number']==g[3]), 'alpha_min'] = samp_lineages['alpha_min'].values[0]
 
 #%%[markdown]
 # Now that the calibration factors have been assigned, we can move forward and
@@ -920,8 +1092,8 @@ for g, d in approved_snaps.groupby(['carbon', 'temp', 'date', 'run_number']):
     d = d.copy()
     # Isolate the autofluorescence samples. 
     auto = d[d['strain']=='auto']
-    median_auto_mch = auto['fluor2_mean_death'].median()
-    median_auto_yfp = auto['fluor1_mean_death'].median()
+    median_auto_mch = auto['fluor2_mean_death'].mean()
+    median_auto_yfp = auto['fluor1_mean_death'].mean()
 
     # Compute the integrated intensities for each. 
     d['mcherry_sub']= d['area_death'] * (d['fluor2_mean_death'] - median_auto_mch)
@@ -949,23 +1121,45 @@ fc_df = pd.concat(fc_dfs)
 #%%
 fc_df.to_csv('../../data/analyzed_foldchange_proper.csv', index=False)
 #%%
-carb_var = fc_df[(fc_df['temp']==37) & (fc_df['strain']=='dilution')]
+carb_var = fc_df[(fc_df['temp']==37) & (fc_df['strain']=='dilution') & (fc_df['date']!=20181021)]
+
 iter = 0
 p = bokeh.plotting.figure(x_axis_type='log', y_axis_type='log')
 for g, d in carb_var.groupby(['carbon']):
 
     # round by the repressor copy number and compute the mean
-    # d['rep'] = np.round(d['rep_mean'], decimals=-1)
+    d['rep'] = np.round(d['rep_mean'])
     grouped = d.groupby('rep').agg(('mean', 'sem')).reset_index()
-    p.circle(grouped['rep'], grouped['fold_change']['mean'], size=5, color=color_list[iter], 
+    grouped['low'] = 1/ (grouped['fold_change']['mean'] - grouped['fold_change']['sem'])
+    grouped['high'] = 1/(grouped['fold_change']['mean'] + grouped['fold_change']['sem'])
+    grouped = grouped[grouped['rep'] <= 500]
+    p.circle(2 * grouped['rep'], grouped['fold_change']['mean'], size=5, color=color_list[iter], 
     legend=g)
+    # p.segment(x0=grouped['rep'], x1=grouped['rep'], y0=grouped['low'], y1=grouped['high'], line_width=1, color=color_list[iter],
+    # legend=g)
     iter += 1
 
-rep_range = np.logspace(0, 4, 200)
-fc = (1 + (rep_range/4.6E6) * np.exp(13.9))**-1
+rep_range = np.logspace(0, 3, 200)
+fc = (1 + 0.99 * (rep_range/4.6E6) * np.exp(13.9))**-1
 p.line(rep_range, fc, color='tomato', legend='theory')
 
 p.legend.click_policy='hide'
 bokeh.io.show(p)
+
+#%%
+_df = carb_var[carb_var['carbon']=='glucose']
+p = bokeh.plotting.figure(x_axis_type='log', y_axis_type='log') 
+iter = 0
+for g, d in _df.groupby(['date']):
+    d['rep'] = np.round(d['rep_mean'], decimals=-1)
+    grouped = d.groupby('rep').agg(('mean', 'sem')).reset_index()
+    p.circle(2 * grouped['rep'], grouped['fold_change']['mean'], color=color_list[iter], 
+            legend=str(g))
+    iter += 1
+
+p.line(rep_range, 1/ fc, color='tomato', legend='theory')
+p.legend.click_policy='hide'
+bokeh.io.show(p)
+
 
 #%%
