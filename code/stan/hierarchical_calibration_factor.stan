@@ -24,9 +24,11 @@ functions{
 }
 data {
     // Dimensional parameters for calibration factor determination
-    int<lower=1> J_exp; // Number of unique experiments across entire data set
+    int<lower=1> J_day; // Number of unique days of experiments
+    int<lower=1> K_rep; // Number of unique replicates for that day
     int<lower=1> N_fluct; // Total number of measurements for fluctuations
-    int<lower=1, upper=J_exp> index_1[N_fluct]; // Indices for fluctuation measurements
+    int<lower=1, upper=J_day> day_idx[K_rep]; // Indices for the days 
+    int<lower=1, upper=K_rep> rep_idx[N_fluct];
  
     // Experimental data for calibration factor determination
     vector<lower=0>[N_fluct] I_1; // Observed mean pixel intensity of daughter cell 1
@@ -38,30 +40,32 @@ parameters {
     real tau_alpha; 
     
     // Top-level parameters
-    real<lower=0> log_alpha_1; // Calibration factor for particular growth medium 
+    real<lower=1, upper=2^16> alpha_1; // Calibration factor for particular growth medium 
     
     // Level-1 Parameters
-    vector[J_exp] alpha_2_raw; // Non-centered parameterization for cal factor
+    vector[J_day] alpha_2_raw; // Non-centered parameterization for day cal factor
+    vector[K_rep] alpha_3_raw; // Non-centered parameterization for replicate factor
 }
 
 transformed parameters {
     // Non-centered parameterization for means
-    real alpha_1 = exp(log_alpha_1); 
-    vector[J_exp] alpha_2 = alpha_1 + tau_alpha * alpha_2_raw; 
+    vector[J_day] alpha_2 = alpha_1 + tau_alpha * alpha_2_raw; 
+    vector[K_rep] alpha_3 = alpha_2[day_idx] + tau_alpha * alpha_3_raw; 
     }
   
 model {
     // Define the hyperpriors.
-    log_alpha_1 ~ gamma(2, 0.6); 
+    alpha_1 ~ normal(0, 1000); 
    
     // Priors on hyperparameter variation
     tau_alpha ~ normal(0, 1); 
     
     // Define priors on non-centering
     alpha_2_raw ~ normal(0, 10);    
+    alpha_3_raw ~ normal(0, 10);
 
     //  Likelihood for calibration factor
-    I_1[index_1] ~ GammaApproxBinom(I_2[index_1], alpha_2[index_1], N_fluct);        
+    I_1[rep_idx] ~ GammaApproxBinom(I_2[rep_idx], alpha_3[rep_idx], N_fluct);        
 }
 
  

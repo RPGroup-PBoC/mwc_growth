@@ -1,3 +1,4 @@
+
 #%%
 import numpy as np
 import pandas as pd
@@ -53,32 +54,50 @@ data = data[data['repressors'] > 0]
 # Convert tetramer counts to dimers. 
 data['repressors'] *= 2
 data['repressors_err'] *= 2
+# Sort values by their repressors to ensure correct mapping. 
+data.sort_values('repressors', inplace=True)
 
 # Add unique identifiers for the repressor IDs and oeprator IDs
 data['rep_idx'] = data.groupby('rbs').ngroup() + 1
 data['op_idx'] = data.groupby('operator').ngroup() + 1
 #%%
 # Load the stan model. 
-model = mwc.bayes.StanModel('../stan/global_glucose_param_estimation.stan',
-                           force_compile=True)
-
+model = mwc.bayes.StanModel('../stan/global_glucose_param_estimation.stan', force_compile=True)
 
 #%%
+# Generate a mapping of repressor IDX to copy number
+rep_idx = {R:data.loc[data['repressors']==R]['rep_idx'].values[0] for R in data['repressors'].unique()}
+op_idx = {o:data.loc[data['operator']==o]['op_idx'].values[0] for o in data['operator'].unique()}
+
 # Assemble the data dictionary. 
 data_dict = {'N':len(data), 'NR': np.max(data['rep_idx'].unique()),
              'Nep':np.max(data['op_idx'].unique()), 
-             'R_idx':data['rep_idx'], 'ep_idx':data['op_idx'],
-             'R_mu':data['repressors'].unique(), 
+             'R_idx':data['rep_idx'].values, 'ep_idx':data['op_idx'].values,
+             'R_mu':[r for r in rep_idx.keys()], 
              'R_sig':data['repressors_err'].unique(),
-             'ep_ai':4.5, 'n_sites':2, 'n_ns':4.6E6, 'fc_obs':data['fold_change'],
-             'c':data['IPTGuM']}
+             'ep_ai':4.5, 'n_sites':2, 'n_ns':4.6E6, 'fc_obs':data['fold_change'].values,
+             'c':data['IPTGuM'].values}
 
-# Sample!
-fit, sample = model.sample(data_dict, iter=5000, control=dict(adapt_delta=0.99))
+#%% Sample!
+fit, sample = model.sample(data_dict) #, iter=2000 ) #, control=dict(adapt_delta=0.99))
 
+#%% Rename the columns to 
+new_reps = {f'R[{v}]': f'R[{int(k)}]' for k, v in rep_idx.items()}
+new_ops = {f'ep_r[{v}]': f'ep_r[{k}]' for k, v in op_idx.items()}
+sample.rename(columns=new_reps, inplace=True)
+sample.rename(columns=new_ops, inplace=True)
+sample.to_csv('../../data/global_induction_fit_samples.csv')
 #%%
-p = bokeh.plotting.figure(x_axis_type='log')
-p.circle(data['IPTGuM'], data['fold_change'])
-bokeh.io.show(p)
+import imp
+imp.reload(mwc.stats)
+#%% Compute the summary statistics. 
+varnames = [k for k in new_reps.values()]
+for k in new_ops.values():
+      varnames.append(k)
+varnames.append('ka')
+varnames.append('ki')
+
+summary = mwc.stats.compute_statistics(sample, varnames=varnames, logprob_name='lp__')
+#%%
 
 #%%

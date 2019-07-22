@@ -1,0 +1,31 @@
+parameter,value,well_id,carbon,strain
+max df,0.0071814536271657846,29,apromycin,delta
+lag time std,3.737729848197271,29,apromycin,delta
+lag time,631.8582147771574,29,apromycin,delta
+max y stderr,0.0001317107606489222,29,apromycin,delta
+max y std,0.001317107606489222,29,apromycin,delta
+max y,0.24350762157974645,29,apromycin,delta
+inverse max df stderr,0.10615532790904628,29,apromycin,delta
+lag time stderr,0.3737729848197271,29,apromycin,delta
+inverse max df,96.53083723613695,29,apromycin,delta
+time of max df stderr,2.0705805949056897,29,apromycin,delta
+time of max df std,20.7058059490569,29,apromycin,delta
+time of max df,807.8066666666666,29,apromycin,delta
+max df stderr,7.96624623413079e-06,29,apromycin,delta
+max df std,7.96624623413079e-05,29,apromycin,delta
+inverse max df std,1.0615532790904627,29,apromycin,delta
+lag time,710.4797410203937,65,apromycin,delta
+max y stderr,7.192987702256566e-05,65,apromycin,delta
+max y std,0.0007192987702256566,65,apromycin,delta
+max y,0.07585257824410199,65,apromycin,delta
+inverse max df stderr,0.5320195188478988,65,apromycin,delta
+inverse max df std,5.320195188478988,65,apromycin,delta
+time of max df,923.0966666666665,65,apromycin,delta
+time of max df stderr,0.0696491205974634,65,apromycin,delta
+time of max df std,0.6964912059746339,65,apromycin,delta
+max df stderr,4.008651252581291e-05,65,apromycin,delta
+max df std,0.0004008651252581291,65,apromycin,delta
+max df,0.007352288182543188,65,apromycin,delta
+lag time std,11.322987686522206,65,apromycin,delta
+inverse max df,94.56490057059953,65,apromycin,delta
+lag time stderr,1.1322987686522206,65,apromycin,delta

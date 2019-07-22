@@ -85,6 +85,11 @@ data {
     vector<lower=0>[N] c; // IPTG concentration
 }
 
+transformed data {
+    vector[NR] logR_mu = log(R_mu);
+    vector[NR] logR_sig = log(R_sig);
+}
+
 parameters {
     vector<lower=0>[NR] log_R; // Number of repressors
     vector[Nep] ep_r; // DNA binding affinity
@@ -101,10 +106,10 @@ model {
     vector[N] mu;
 
     // Priors
-    log_R ~ normal(log(R_mu), log(R_sig));
+    log_R ~ normal(logR_mu, logR_sig);
     ep_r ~ normal(-12, 6);
-    ep_a ~ normal(0, 1);
-    ep_i ~ normal(0, 1);
+    ep_a ~ normal(0, 10);
+    ep_i ~ normal(0, 10);
     sigma ~ normal(0, 0.1);
 
     // Likelihood
@@ -114,4 +119,9 @@ model {
 
     }
     fc_obs ~ normal(mu, sigma); 
+}
+
+generated quantities {
+    real ka = exp(ep_a);
+    real ki = exp(ep_i);
 }

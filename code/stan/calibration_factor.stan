@@ -42,11 +42,15 @@ data {
 
 
 parameters {
-    real alpha;
+    real<lower=0> log_alpha;
+}
+
+transformed parameters {
+    real alpha = 10^log_alpha;
 }
 
 
 model {   
-    alpha ~ normal(0, 500);
+    log_alpha ~ normal(5, 3);
     I1 ~ GammaApproxBinom(I2, alpha, N);  
 }

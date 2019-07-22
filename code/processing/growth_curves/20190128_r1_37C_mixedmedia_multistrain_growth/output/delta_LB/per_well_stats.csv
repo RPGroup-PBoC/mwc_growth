@@ -1,0 +1,121 @@
+parameter,value,well_id,carbon,strain
+max df,0.026842699769845567,51,LB,delta
+lag time std,1.4038478573974245,51,LB,delta
+lag time,78.04021874448208,51,LB,delta
+max y stderr,0.0007979450489130719,51,LB,delta
+max y std,0.00797945048913072,51,LB,delta
+max y,0.30511932716584395,51,LB,delta
+inverse max df stderr,0.03027919483311094,51,LB,delta
+lag time stderr,0.14038478573974245,51,LB,delta
+inverse max df,25.826108714390003,51,LB,delta
+time of max df stderr,0.3174019533651297,51,LB,delta
+time of max df std,3.1740195336512973,51,LB,delta
+time of max df,145.32666666666665,51,LB,delta
+max df stderr,3.147840634063469e-05,51,LB,delta
+max df std,0.0003147840634063469,51,LB,delta
+inverse max df std,0.3027919483311094,51,LB,delta
+max df std,0.00036578125325057456,52,LB,delta
+max df stderr,3.6578125325057455e-05,52,LB,delta
+time of max df,144.13666666666666,52,LB,delta
+time of max df std,3.871575906526953,52,LB,delta
+time of max df stderr,0.3871575906526953,52,LB,delta
+inverse max df,26.494191842840436,52,LB,delta
+max y,0.32974311657745525,52,LB,delta
+inverse max df stderr,0.03714080477619446,52,LB,delta
+max y std,0.009274744508820267,52,LB,delta
+max y stderr,0.0009274744508820267,52,LB,delta
+lag time,79.70463557730088,52,LB,delta
+max df,0.026167357823614817,52,LB,delta
+inverse max df std,0.37140804776194464,52,LB,delta
+lag time std,1.6331712643840834,52,LB,delta
+lag time stderr,0.16331712643840834,52,LB,delta
+lag time stderr,0.15359137375864196,53,LB,delta
+max y std,0.0074769275255607455,53,LB,delta
+max y,0.339017487388987,53,LB,delta
+inverse max df stderr,0.0347193011614664,53,LB,delta
+inverse max df std,0.347193011614664,53,LB,delta
+inverse max df,26.06112198571843,53,LB,delta
+time of max df stderr,0.3338787204959309,53,LB,delta
+time of max df std,3.3387872049593095,53,LB,delta
+time of max df,141.61666666666667,53,LB,delta
+max df stderr,3.5289713269752e-05,53,LB,delta
+max df std,0.00035289713269752,53,LB,delta
+max df,0.0266016822608402,53,LB,delta
+lag time std,1.5359137375864196,53,LB,delta
+max y stderr,0.0007476927525560745,53,LB,delta
+lag time,80.13239972812818,53,LB,delta
+lag time std,1.4484821269388006,54,LB,delta
+lag time stderr,0.14484821269388007,54,LB,delta
+max df std,0.0003064247202918444,54,LB,delta
+max df stderr,3.064247202918444e-05,54,LB,delta
+time of max df,142.59666666666666,54,LB,delta
+time of max df std,3.499299929985996,54,LB,delta
+time of max df stderr,0.3499299929985996,54,LB,delta
+max df,0.02571730557662594,54,LB,delta
+inverse max df std,0.32085822254357993,54,LB,delta
+inverse max df stderr,0.03208582225435799,54,LB,delta
+max y,0.34142895977632337,54,LB,delta
+max y std,0.008843490182008883,54,LB,delta
+max y stderr,0.0008843490182008883,54,LB,delta
+lag time,75.33463288311674,54,LB,delta
+inverse max df,26.95638114453185,54,LB,delta
+lag time,77.66716660179969,55,LB,delta
+max y stderr,0.0008649851315198035,55,LB,delta
+max y std,0.008649851315198034,55,LB,delta
+max y,0.3501472861075049,55,LB,delta
+inverse max df stderr,0.03138384349218477,55,LB,delta
+max df,0.02877964435183998,55,LB,delta
+inverse max df,24.08872352778881,55,LB,delta
+time of max df stderr,0.333878720495931,55,LB,delta
+time of max df,136.71666666666667,55,LB,delta
+max df stderr,3.751413799067062e-05,55,LB,delta
+max df std,0.0003751413799067062,55,LB,delta
+inverse max df std,0.31383843492184765,55,LB,delta
+time of max df std,3.33878720495931,55,LB,delta
+lag time stderr,0.12818508230421533,55,LB,delta
+lag time std,1.2818508230421533,55,LB,delta
+lag time stderr,0.11323572498491434,56,LB,delta
+lag time,79.6250703709822,56,LB,delta
+max y stderr,0.0006984452091821317,56,LB,delta
+max y std,0.006984452091821317,56,LB,delta
+max y,0.350291921696781,56,LB,delta
+inverse max df stderr,0.02342672760353303,56,LB,delta
+inverse max df std,0.2342672760353303,56,LB,delta
+inverse max df,25.157157510358896,56,LB,delta
+time of max df stderr,0.09899494936611666,56,LB,delta
+time of max df std,0.9899494936611666,56,LB,delta
+time of max df,139.16666666666666,56,LB,delta
+max df stderr,2.565808149026534e-05,56,LB,delta
+max df std,0.0002565808149026534,56,LB,delta
+max df,0.02755507191615065,56,LB,delta
+lag time std,1.1323572498491434,56,LB,delta
+max df,0.02890246721313364,57,LB,delta
+lag time std,1.103641590983559,57,LB,delta
+max df std,0.0003833864132183889,57,LB,delta
+max df stderr,3.8338641321838894e-05,57,LB,delta
+time of max df,144.55666666666667,57,LB,delta
+time of max df std,2.945827557750114,57,LB,delta
+time of max df stderr,0.2945827557750114,57,LB,delta
+inverse max df,23.98650676268808,57,LB,delta
+inverse max df std,0.3183731416929439,57,LB,delta
+inverse max df stderr,0.03183731416929439,57,LB,delta
+max y,0.35669860059246994,57,LB,delta
+max y std,0.007843871377806696,57,LB,delta
+max y stderr,0.0007843871377806696,57,LB,delta
+lag time,78.08972289053611,57,LB,delta
+lag time stderr,0.11036415909835591,57,LB,delta
+lag time,80.20951428936719,58,LB,delta
+max df,0.0261476542409576,58,LB,delta
+max df std,0.0002809783455304623,58,LB,delta
+max df stderr,2.809783455304623e-05,58,LB,delta
+time of max df,147.00666666666666,58,LB,delta
+time of max df std,2.848578592912612,58,LB,delta
+time of max df stderr,0.28485785929126123,58,LB,delta
+inverse max df,26.512016438895788,58,LB,delta
+inverse max df std,0.2842533121231045,58,LB,delta
+inverse max df stderr,0.028425331212310452,58,LB,delta
+max y,0.34781847394039345,58,LB,delta
+max y std,0.008404733228107161,58,LB,delta
+max y stderr,0.0008404733228107161,58,LB,delta
+lag time std,1.42232153798404,58,LB,delta
+lag time stderr,0.14223215379840398,58,LB,delta

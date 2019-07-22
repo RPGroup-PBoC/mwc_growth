@@ -177,7 +177,7 @@ def family_reunion(dilution_df, multi_xy=True, fluo_channel=2):
     for g, d in grouped:
         if len(d) == 2:  # Ensure only single successful divisions.
             ints = d[f'fluor{fluo_channel}_mean_death'].values
-            if (ints >= 0).all() == True:
+            if sum(ints) > 0:
                 I_1, I_2 = ints
                 family_dict = {'I_1': I_1, 'I_2': I_2, 
                                'error_frame': d['error_frame'].values[0],

@@ -1,0 +1,151 @@
+parameter,value,well_id,carbon,strain
+max df,0.010310255652405696,14,glucose,manuel_delta
+lag time stderr,0.1258168937015345,14,glucose,manuel_delta
+lag time,185.44355649014867,14,glucose,manuel_delta
+max y stderr,0.0001826530678336297,14,glucose,manuel_delta
+max y std,0.0018265306783362971,14,glucose,manuel_delta
+max y,0.19871689584572189,14,glucose,manuel_delta
+inverse max df stderr,0.042283061145927524,14,glucose,manuel_delta
+lag time std,1.258168937015345,14,glucose,manuel_delta
+inverse max df,67.23156744364753,14,glucose,manuel_delta
+time of max df stderr,0.5619217027309058,14,glucose,manuel_delta
+time of max df std,5.619217027309058,14,glucose,manuel_delta
+time of max df,269.7866666666667,14,glucose,manuel_delta
+max df stderr,6.496441826249335e-06,14,glucose,manuel_delta
+max df std,6.496441826249335e-05,14,glucose,manuel_delta
+inverse max df std,0.42283061145927525,14,glucose,manuel_delta
+max df std,0.00012402740106276248,15,glucose,manuel_delta
+max df stderr,1.2402740106276248e-05,15,glucose,manuel_delta
+time of max df,234.08666666666662,15,glucose,manuel_delta
+time of max df std,11.515797844700122,15,glucose,manuel_delta
+time of max df stderr,1.1515797844700122,15,glucose,manuel_delta
+max y,0.2092063377915244,15,glucose,manuel_delta
+inverse max df std,0.7041588410519956,15,glucose,manuel_delta
+inverse max df stderr,0.07041588410519956,15,glucose,manuel_delta
+max y std,0.002273826351730928,15,glucose,manuel_delta
+max y stderr,0.0002273826351730928,15,glucose,manuel_delta
+max df,0.011012461162024596,15,glucose,manuel_delta
+inverse max df,62.950006263328184,15,glucose,manuel_delta
+lag time stderr,0.05231118018906557,15,glucose,manuel_delta
+lag time std,0.5231118018906556,15,glucose,manuel_delta
+lag time,181.9904554039483,15,glucose,manuel_delta
+max df,0.011732051277699052,16,glucose,manuel_delta
+max df std,0.00028940879617830054,16,glucose,manuel_delta
+max df stderr,2.8940879617830055e-05,16,glucose,manuel_delta
+time of max df,189.77666666666664,16,glucose,manuel_delta
+time of max df std,10.185180410773292,16,glucose,manuel_delta
+time of max df stderr,1.0185180410773291,16,glucose,manuel_delta
+inverse max df std,1.4484621038384975,16,glucose,manuel_delta
+inverse max df stderr,0.14484621038384976,16,glucose,manuel_delta
+max y,0.2136381351482525,16,glucose,manuel_delta
+max y std,0.0032251166835964564,16,glucose,manuel_delta
+max y stderr,0.00032251166835964567,16,glucose,manuel_delta
+lag time,181.1852671705309,16,glucose,manuel_delta
+lag time std,0.039483713388801314,16,glucose,manuel_delta
+inverse max df,59.11721373924258,16,glucose,manuel_delta
+lag time stderr,0.003948371338880131,16,glucose,manuel_delta
+lag time std,1.5673643074752148,17,glucose,manuel_delta
+lag time stderr,0.15673643074752147,17,glucose,manuel_delta
+max y stderr,0.0003084574870438273,17,glucose,manuel_delta
+max y std,0.003084574870438273,17,glucose,manuel_delta
+max y,0.2209129411101471,17,glucose,manuel_delta
+inverse max df stderr,0.07865352480627015,17,glucose,manuel_delta
+inverse max df std,0.7865352480627015,17,glucose,manuel_delta
+lag time,186.74804615443537,17,glucose,manuel_delta
+time of max df stderr,0.49985097779238413,17,glucose,manuel_delta
+time of max df std,4.998509777923841,17,glucose,manuel_delta
+time of max df,254.59666666666664,17,glucose,manuel_delta
+max df stderr,1.450570409351376e-05,17,glucose,manuel_delta
+max df std,0.0001450570409351376,17,glucose,manuel_delta
+inverse max df,61.151407650803364,17,glucose,manuel_delta
+max df,0.011336799545160137,17,glucose,manuel_delta
+max df,0.01084839999603294,18,glucose,manuel_delta
+max df std,0.00013180021587485652,18,glucose,manuel_delta
+max df stderr,1.3180021587485652e-05,18,glucose,manuel_delta
+time of max df,231.9166666666666,18,glucose,manuel_delta
+time of max df std,12.299898373563906,18,glucose,manuel_delta
+inverse max df,63.90334572344093,18,glucose,manuel_delta
+inverse max df std,0.7730947975287387,18,glucose,manuel_delta
+inverse max df stderr,0.07730947975287386,18,glucose,manuel_delta
+max y,0.2235222224048809,18,glucose,manuel_delta
+lag time,181.98795338725176,18,glucose,manuel_delta
+time of max df stderr,1.2299898373563907,18,glucose,manuel_delta
+lag time std,0.5115300098065665,18,glucose,manuel_delta
+max y stderr,0.0002351852446516506,18,glucose,manuel_delta
+max y std,0.002351852446516506,18,glucose,manuel_delta
+lag time stderr,0.05115300098065665,18,glucose,manuel_delta
+max df,0.01162733994553534,19,glucose,manuel_delta
+max df std,0.0003059178336040431,19,glucose,manuel_delta
+max df stderr,3.0591783360404314e-05,19,glucose,manuel_delta
+time of max df,181.51666666666665,19,glucose,manuel_delta
+time of max df std,2.070627924084865,19,glucose,manuel_delta
+time of max df stderr,0.20706279240848652,19,glucose,manuel_delta
+inverse max df stderr,0.15591832147241744,19,glucose,manuel_delta
+max y,0.22590066654295055,19,glucose,manuel_delta
+max y std,0.003192269595125516,19,glucose,manuel_delta
+max y stderr,0.0003192269595125516,19,glucose,manuel_delta
+lag time,181.1669027363675,19,glucose,manuel_delta
+inverse max df,59.654561881594844,19,glucose,manuel_delta
+inverse max df std,1.5591832147241744,19,glucose,manuel_delta
+lag time stderr,0.00016474335900697217,19,glucose,manuel_delta
+lag time std,0.0016474335900697218,19,glucose,manuel_delta
+lag time stderr,0.005241997327490523,20,glucose,manuel_delta
+lag time std,0.05241997327490523,20,glucose,manuel_delta
+lag time,181.1791044077892,20,glucose,manuel_delta
+max y stderr,0.00023084739733198622,20,glucose,manuel_delta
+max y std,0.0023084739733198623,20,glucose,manuel_delta
+max y,0.22234534863109226,20,glucose,manuel_delta
+max df,0.011741712291217178,20,glucose,manuel_delta
+inverse max df,59.06878946213328,20,glucose,manuel_delta
+time of max df stderr,0.9475631905049922,20,glucose,manuel_delta
+time of max df std,9.475631905049921,20,glucose,manuel_delta
+time of max df,186.34666666666664,20,glucose,manuel_delta
+max df stderr,2.9036790701464523e-05,20,glucose,manuel_delta
+max df std,0.00029036790701464523,20,glucose,manuel_delta
+inverse max df std,1.4526482910655891,20,glucose,manuel_delta
+inverse max df stderr,0.1452648291065589,20,glucose,manuel_delta
+max df,0.01018545563497352,21,glucose,manuel_delta
+max df std,0.00013997813974013807,21,glucose,manuel_delta
+max df stderr,1.3997813974013807e-05,21,glucose,manuel_delta
+time of max df,247.59666666666664,21,glucose,manuel_delta
+time of max df std,4.0205845346168285,21,glucose,manuel_delta
+time of max df stderr,0.40205845346168284,21,glucose,manuel_delta
+inverse max df,68.06541397964003,21,glucose,manuel_delta
+inverse max df std,0.9294951250532687,21,glucose,manuel_delta
+inverse max df stderr,0.09294951250532688,21,glucose,manuel_delta
+max y,0.22046967274257587,21,glucose,manuel_delta
+max y std,0.0023749961046867375,21,glucose,manuel_delta
+max y stderr,0.00023749961046867375,21,glucose,manuel_delta
+lag time,190.72169475023927,21,glucose,manuel_delta
+lag time stderr,0.15739014258021286,21,glucose,manuel_delta
+lag time std,1.5739014258021287,21,glucose,manuel_delta
+lag time,184.861046164662,22,glucose,manuel_delta
+lag time std,1.034743248736735,22,glucose,manuel_delta
+lag time stderr,0.1034743248736735,22,glucose,manuel_delta
+max df,0.010039091636987043,22,glucose,manuel_delta
+max y stderr,0.00017361585383984863,22,glucose,manuel_delta
+max y std,0.0017361585383984864,22,glucose,manuel_delta
+max y,0.20618117206031883,22,glucose,manuel_delta
+inverse max df stderr,0.044074877895158654,22,glucose,manuel_delta
+inverse max df std,0.44074877895158654,22,glucose,manuel_delta
+inverse max df,69.04762360662947,22,glucose,manuel_delta
+time of max df stderr,0.49551891992132846,22,glucose,manuel_delta
+time of max df std,4.955189199213285,22,glucose,manuel_delta
+time of max df,269.8566666666667,22,glucose,manuel_delta
+max df stderr,6.407459815380139e-06,22,glucose,manuel_delta
+max df std,6.407459815380139e-05,22,glucose,manuel_delta
+max df stderr,5.743955916173287e-05,23,glucose,manuel_delta
+time of max df,184.38666666666666,23,glucose,manuel_delta
+lag time stderr,0.008641967415592774,23,glucose,manuel_delta
+lag time std,0.08641967415592774,23,glucose,manuel_delta
+lag time,181.18367288555277,23,glucose,manuel_delta
+max y stderr,0.00024439101469599735,23,glucose,manuel_delta
+max y std,0.0024439101469599734,23,glucose,manuel_delta
+max y,0.198146378117675,23,glucose,manuel_delta
+inverse max df stderr,0.2986801973973815,23,glucose,manuel_delta
+max df std,0.0005743955916173287,23,glucose,manuel_delta
+inverse max df,60.07915339360325,23,glucose,manuel_delta
+time of max df stderr,1.0307841675151979,23,glucose,manuel_delta
+time of max df std,10.307841675151979,23,glucose,manuel_delta
+max df,0.011565730747313964,23,glucose,manuel_delta
+inverse max df std,2.9868019739738147,23,glucose,manuel_delta
