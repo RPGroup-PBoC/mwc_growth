@@ -55,7 +55,7 @@ transformed parameters {
   
 model {
     // Define the hyperpriors.
-    alpha_1 ~ normal(0, 1000); 
+    alpha_1 ~ normal(0, 500); 
    
     // Priors on hyperparameter variation
     tau_alpha ~ normal(0, 1); 
