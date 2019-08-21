@@ -22,7 +22,7 @@ import tqdm
 lineages, intensities = [], []
 
 # Define the list of experiments
-expts = glob.glob('../../data/preprocessed/*')
+expts = glob.glob('../../data/preprocessed/201*')
 
 # Iterate through each experiment.
 for run in tqdm.tqdm(expts, desc="Parsing experiments"):
@@ -49,13 +49,10 @@ for run in tqdm.tqdm(expts, desc="Parsing experiments"):
     lineages.append(families)
 
     # Parse all of the snapshots
-    samps = glob.glob(f'{run}/snaps/*')
+    samps = glob.glob(f'{run}/snaps/*ng*')
     for s in samps:
         strain, conc = s.split('/')[-1].split('_')
         conc = float(conc.split('ngml')[0])
-        if strain is 'autoM':
-            strain = 'auto' 
-
         clists = glob.glob(f'{s}/*/*.mat') 
         parsed = mwc.process.parse_clists(clists)
 
