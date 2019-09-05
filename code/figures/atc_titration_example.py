@@ -32,8 +32,9 @@ dilution = pd.concat(dfs)
 
 # %%
 # Group by the atc concentration
-# Set up the figure. 
 n = dilution.groupby(['date', 'run_number']).ngroups
+
+# Instantiate figure
 fig, ax = plt.subplots(1, 1, figsize=(2.5, 2.5), sharex=True, sharey=True)
 
 ax2 = ax.twinx()

@@ -16,97 +16,113 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from scipy.signal import gaussian, convolve
 
-# Thematic settings
-def set_style(holoviews=False):
-    theme = bokeh.themes.theme.Theme(
-        json={
-        'attrs': {
-            'Figure': {
-                'background_fill_color': '#EEEEEE'},
-            'Grid': {
-                'grid_line_width': 1,
-                'grid_line_color': '#ffffff'},
-        'Text' : {
-            'text_font': "Cabin"},
-        'Axis': {
-            'axis_label_text_font': "Open Sans",
-            'axis_label_text_font_style': "normal",
-            'major_label_text_font': "Open Sans"}
-        }
-        })
-    if holoviews == True:
-        hv.renderer('bokeh').theme = theme
-
-def pub_style(return_colors=True):
-    """
-    Sets the style to the publication style
-
-    Parameters
-    ----------
-    return_colors: Bool
-        If True, this will also return a dictionary
-
-    """
-    rc = {'axes.facecolor': '#E3DCD0',
-          'font.family': 'Lucida Sans Unicode',
-          'grid.linestyle': '-',
-          'grid.linewidth': 0.5,
-          'grid.alpha': 0.75,
-          'grid.color': '#ffffff',
-          'mathtext.fontset': 'stixsans',
-          'mathtext.sf': 'sans',
-          'legend.frameon': True,
-          'legend.facecolor': '#FFEDCE',
-          'figure.dpi': 150}
-
-    plt.rc('text.latex', preamble=r'\usepackage{sfmath}')
-    plt.rc('mathtext', fontset='stixsans', sf='sans')
-    sns.set_style('darkgrid', rc=rc)
-    colors = ['#D56C55', '#738FC1', '#7AA974', '#D4C2D9', '#F1D4C9', '#C9D7EE',
-              '#DCECCB']
-    if return_colors:
-        return colors
-
-    
 def personal_style():
     """
     Sets the plotting style to my preference
-    """ 
-    rc = {'axes.facecolor': '#f1f2f6',  #'#EAECEE',
+    """   
+    rc = {'axes.facecolor': '#EFEFEF', # '#F5F9FC', #E5E8EA', #DFE8EF', #EAEAEA', #E0E1E2', 
           'font.family': 'sans-serif',
-          'font.style': 'italic',
-          'axes.grid': True,
-          'axes.edgecolor': 'slategray',
+          'font.family': 'Arial',
+          'font.style': 'normal',
+          'axes.edgecolor': '#444147',
+          'axes.labelcolor': '#444147',
           'axes.spines.right': False,
           'axes.spines.top': False,
+          'axes.spines.left':True,
+          'axes.spines.bottom': True,
           'axes.axisbelow': True,
-          'axes.linewidth': 1,
+          'axes.linewidth': 0.45,
           'axes.titlesize': 8,
+          'text.color': '#444147',
           'axes.grid': True,
-          'lines.linewidth': 2,
+          'lines.linewidth': 0.75,
           'lines.dash_capstyle': 'round',
           'grid.linestyle': '-',
           'grid.linewidth': 0.75,
-          'grid.alpha': 0.5,
-          'grid.color': '#B9BBBC',
+          'grid.color': '#ffffff',
           'axes.labelsize': 8,
-          'xtick.labelsize': 8,
-          'ytick.labelsize': 8,
-          'legend.fontsize': 8,
+          'xtick.color': '#444147',
+          'ytick.color': '#444147',
+          'xtick.labelsize': 6,
+          'ytick.labelsize': 6,
+          'xtick.major.size': 0,
+          'ytick.major.size': 0,
+          'xtick.major.pad': 6,
+          'ytick.major.pad': 6,
+          'xtick.minor.size': 0,
+          'ytick.minor.size': 0,
+          'legend.fontsize': 6,
           'legend.frameon': True,
-          'xtick.color': '#4b4b4b',
-          'ytick.color': '#4b4b4b',
           'axes.xmargin': 0.01,
           'axes.ymargin': 0.01,
-          'figure.dpi': 100}
+          'figure.facecolor': 'white',
+          'figure.dpi': 300,
+          'errorbar.capsize': 1,
+          'savefig.bbox': 'tight'}
 
-    # plt.rc('mathtext', fontset='dejavuserif', sf='sans')
     plt.rc('text.latex', preamble=r'\usepackage{mathpazo}')
     matplotlib.style.use(rc)
-    flat = ['#64767C', '#484B3E','#95B7D8', '#699FCE','#6B5E86','#8389B4',  '#A6DCE8', '#72A2B6',
-            '#6D7960']
-    sns.set_palette(flat)
-    return flat      
+    colors = {'dark_purple': '#5F2E88', 'dark_orange':'#F38227', 'black':'#444147',
+               'blue': '#7292C7','dark_blue': '#3F60AC', 'dark_red':'#9C372F', 'dark_green':'#395A34',
+              'purple': '#7E59A2', 'orange':'#E39943',  'red':'#C76A6A',
+               'green':'#688A2F', 'light_purple':'#A17DB8', 'light_orange':'#EEBA7F',
+               'light_blue':'#A5B3CC', 'light_red':'#E39C9D', 'light_green':'#B3CD86', 
+               'grey': '#EFEFEF', 'gray': '#EFEFEF', 'light_grey':'#6D6F72'}
+    color_items = [v for v in colors.values()]
+    palette = [v for k, v in colors.items() if v not in ['grey', 'gray', 'dark_purple', 'light_grey']]
+    sns.set_palette(palette)
+    return colors, color_items     
+
+def bokeh_theme(return_color_list=True):
+    theme_json =  {
+    'attrs' : {
+        'Figure' : {
+            'background_fill_color': '#EEEEEE',
+        },
+        'Axis': {
+            'axis_line_color': 'slategray',
+            'major_tick_line_color': None,
+            'minor_tick_line_color': None,
+        },
+        'Legend': {
+            'border_line_color': 'slategray',
+            'background_fill_color': '#EEEEEE',
+            'border_line_width': 0.75,
+            'background_fill_alpha': 0.75,
+        },
+        'Grid': {
+            'grid_line_color': '#FFFFFF',
+            'grid_line_width': 0.75,
+        },
+        'Text': {
+            'text_font_style': 'italic',
+            'text_font': 'Arial', 
+            'text_font_size':10,
+        },
+        'Title': {
+            'background_fill_color': '#EEEEEE',
+            'text_color': '#3c3c3c',
+            'align': 'center',
+            'text_font': 'Arial',
+            'offset': 2,
+         }
+    }
+    }
+
+    colors = {'dark_purple': '#5F2E88', 'dark_orange':'#F38227', 'black':'#444147',
+        'dark_blue': '#3F60AC', 'dark_red':'#9C372F', 'dark_green':'#395A34',
+        'purple': '#7E59A2', 'orange':'#E39943', 'blue': '#7292C7', 'red':'#C76A6A',
+        'green':'#688A2F', 'light_purple':'#A17DB8', 'light_orange':'#EEBA7F',
+        'light_blue':'#A5B3CC', 'light_red':'#E39C9D', 'light_green':'#B3CD86', 
+        'grey': '#EFEFEF', 'gray': '#EFEFEF', 'light_grey':'#6D6F72'}
+        
+    color_items = [v for v in colors.values()]
+    theme = bokeh.themes.Theme(json=theme_json)
+    bokeh.io.curdoc().theme = theme
+    if return_color_list:
+        return [colors, color_items]
+    else:
+        return colors
 
 
 def pboc_style(grid=True):
