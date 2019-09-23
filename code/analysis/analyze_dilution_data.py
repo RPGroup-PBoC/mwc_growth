@@ -4,7 +4,12 @@ import numpy as np
 import pandas as pd
 import mwc.bayes
 import mwc.stats
+import bokeh.io
+import bokeh.plotting
+import mwc.viz
+color, color_list = mwc.viz.bokeh_theme()
 import tqdm
+bokeh.io.output_notebook()
 
 # Load in the compiled data
 fluct_data = pd.read_csv('../../data/compiled_fluctuations.csv')
@@ -12,9 +17,13 @@ fc_data = pd.read_csv('../../data/compiled_fold_change.csv')
 
 # Constants and bounds for size
 IP_DIST = 0.065 # In nm / pix
-min_size = 0.25 / IP_DIST**2 # Number is in µm 
-max_size = 5 / IP_DIST**2 # Number is in µm
+min_size = 0.25 / IP_DIST**2 # Number is in µm^2
+max_size = 5 / IP_DIST**2 # Number is in µm^2
 
+# Load the stan model
+model = mwc.bayes.StanModel('../stan/calibration_factor.stan')
+
+#%%
 # Filter the cells on area
 fluct_data = fluct_data[(fluct_data['area_1'] >= min_size) & 
                         (fluct_data['area_2'] >= min_size) &
@@ -25,8 +34,6 @@ fc_data = fc_data[(fc_data['area_pix'] >= min_size) &
                  (fc_data['area_pix'] <= max_size)].copy()
 
 # Instantiate storage lists for calfactor samples
-mean_yfp = {37: 175, 42:375, 32:375}
-mean_mch = {37: 195, 42:230, 32:230}
 fc_dfs = []
 fluct_dfs = []
 for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
@@ -38,8 +45,8 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
     # Compute the mean autofluorescence for each channel. 
     auto = _fc_data[_fc_data['strain']=='auto']
     delta = _fc_data[_fc_data['strain']=='delta']
-    mean_auto_mch = np.median(delta['mean_mCherry'])
-    mean_auto_yfp = np.median(auto['mean_yfp'])
+    mean_auto_mch = np.mean(delta['mean_mCherry'])
+    mean_auto_yfp = np.mean(auto['mean_yfp'])
 
     # Perform necessary background subtraction for fluctuation measurements. 
     d['I_1_sub'] = (d['I_1']- mean_auto_mch) * d['area_1']
@@ -53,14 +60,15 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
     _fc_data['mch_sub'] = (_fc_data['mean_mCherry'] - mean_auto_mch) * _fc_data['area_pix']
 
     # Estimate the calibration factor
-    opt, err = mwc.bayes.estimate_calibration_factor(d['I_1_sub'], d['I_2_sub'])
+    fit, samples = model.sample(dict(I1=d['I_1_sub'], I2=d['I_2_sub'], N=len(d)))
+    # opt, err = mwc.bayes.estimate_calibration_factor(d['I_1_sub'], d['I_2_sub'])
 
     # Generate a dataframe with all of the fluctuations
     fluct_df = pd.DataFrame([])
     fluct_df['summed'] = d['I_1_sub'].values + d['I_2_sub'].values
     fluct_df['fluct'] = (d['I_1_sub'].values - d['I_2_sub'].values)**2
-    fluct_df['alpha_mu'] = opt
-    fluct_df['alpha_std'] = err
+    fluct_df['alpha_mean'] = samples['alpha'].mean()
+    fluct_df['alpha_std'] = np.std(samples['alpha']) 
     fluct_df['carbon'] = g[0]
     fluct_df['temp'] = g[1]
     fluct_dfs.append(fluct_df)
@@ -80,13 +88,13 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
     _fc['temp'] = g[1]
     _fc['strain'] = _fc_data['strain']
     fc_dfs.append(_fc)
-    
+
+
 # Concatenate the summary df and save to disk. 
 fc_df = pd.concat(fc_dfs)
 fc_df.to_csv('../../data/analyzed_foldchange.csv', index=False)
 fluct_df = pd.concat(fluct_dfs)
 fluct_df.to_csv('../../data/analyzed_fluctuations.csv', index=False)
     
-
 
 #%%
