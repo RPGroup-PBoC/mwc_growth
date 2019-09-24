@@ -45,7 +45,7 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
     # Compute the mean autofluorescence for each channel. 
     auto = _fc_data[_fc_data['strain']=='auto']
     delta = _fc_data[_fc_data['strain']=='delta']
-    mean_auto_mch = np.mean(delta['mean_mCherry'])
+    mean_auto_mch = np.mean(auto['mean_mCherry'])
     mean_auto_yfp = np.mean(auto['mean_yfp'])
 
     # Perform necessary background subtraction for fluctuation measurements. 
@@ -71,6 +71,8 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
     fluct_df['alpha_std'] = np.std(samples['alpha']) 
     fluct_df['carbon'] = g[0]
     fluct_df['temp'] = g[1]
+    fluct_df['date'] = g[2]
+    fluct_df['run_no'] = g[-1]
     fluct_dfs.append(fluct_df)
 
     # Compute the fold-change
@@ -78,12 +80,12 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
     _fc['atc_ngml'] = _fc_data['atc_ngml']
     _fc['date'] = _fc_data['date']
     _fc['run_number'] = _fc_data['run_number']
-    _fc['repressors'] = _fc_data['mch_sub'] / opt
-    _fc['repressors_max'] = _fc_data['mch_sub'] / (opt - err)
-    _fc['repressors_min'] = _fc_data['mch_sub'] / (opt + err)
+    _fc['repressors'] = 2 * _fc_data['mch_sub'] / samples['alpha'].mean()
+    _fc['repressors_max'] = 2 * _fc_data['mch_sub'] / (samples['alpha'].mean() - samples['alpha'].std())
+    _fc['repressors_min'] = 2 * _fc_data['mch_sub'] / (samples['alpha'].mean()  + samples['alpha'].std())
     _fc['fold_change'] = _fc_data['yfp_sub'].values / (_fc_data[_fc_data['strain']=='delta']['yfp_sub'].values).mean()
-    _fc['alpha_mu'] = opt
-    _fc['alpha_std'] = err
+    _fc['alpha_mu'] = samples['alpha'].mean()
+    _fc['alpha_std'] = samples['alpha'].std()
     _fc['carbon'] = g[0]
     _fc['temp'] = g[1]
     _fc['strain'] = _fc_data['strain']
