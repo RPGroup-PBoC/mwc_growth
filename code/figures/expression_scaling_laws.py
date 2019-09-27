@@ -25,7 +25,7 @@ edge_colors = {'acetate': '#764f2a', 'glycerol': colors['green'],
 
 # Assign atc color
 sorted_atc = np.sort(foldchange['atc_ngml'].unique())
-_colors = sns.cubehelix_palette(len(sorted_atc), start=.5, rot=-.75)
+_colors = sns.color_palette('gist_heat', n_colors=len(sorted_atc) + 2)
 atc_colors = {atc:cor for atc, cor in zip(sorted_atc, _colors)}
 
 # Determine doubling times
@@ -100,15 +100,20 @@ for g, d in fc.groupby(['atc_ngml']):
     # Isolate temps
     d_carb = d[d['temp']==37]
     d_temp = d[d['carbon']=='glucose']
-    d_carb_grouped = d_carb.groupby('carbon').agg(('mean', 'sem')).reset_index()
-    d_carb_grouped.sort_values(('dbl_mean', 'mean'), inplace=True)
-    d_temp_grouped = d_temp.groupby('temp').agg(('mean', 'sem')).reset_index()
-    d_temp_grouped.sort_values(('dbl_mean', 'mean'), inplace=True)
+    d_carb_grouped = d_carb.groupby(['carbon', 'date', 'run_number']).mean()
+    d_carb_grouped = d_carb_grouped.groupby(['carbon']).agg(('mean', 'sem'))
+    d_carb_grouped.sort_values(('rate_mean', 'mean'), inplace=True)
+    d_temp_grouped = d_temp.groupby(['temp', 'date', 'run_number']).mean()
+    d_temp_grouped = d_temp_grouped.groupby('temp').agg(('mean', 'sem')).reset_index()
+    d_temp_grouped.sort_values(('rate_mean', 'mean'), inplace=True)
 
-    ax2.errorbar(d_carb_grouped['dbl_mean']['mean'], d_carb_grouped['repressors']['mean'],
-                d_carb_grouped['repressors']['sem'], capsize=1.5, lw=0.5, color=atc_colors[g])
-    ax4.errorbar(d_temp_grouped['dbl_mean']['mean'], d_temp_grouped['repressors']['mean'],
-                d_temp_grouped['repressors']['sem'], capsize=1.5, lw=0.5, color=atc_colors[g])
+    ax2.errorbar(d_carb_grouped['rate_mean']['mean'], d_carb_grouped['repressors']['mean'],
+                d_carb_grouped['repressors']['sem'], capsize=1.5, lw=0.5, color=atc_colors[g],
+                fmt='.', linestyle='-', label=g,
+                markeredgecolor='k', markeredgewidth=0.25)
+    ax4.errorbar(d_temp_grouped['rate_mean']['mean'], d_temp_grouped['repressors']['mean'],
+                d_temp_grouped['repressors']['sem'], capsize=1.5, lw=0.5, color=atc_colors[g],
+                fmt='.', linestyle='-', markeredgecolor='k', markeredgewidth=0.25)
 
 
 for a in [ax1, ax3]:
@@ -119,5 +124,13 @@ for a in [ax1, ax3]:
     a.set_xlabel('repressors per cell', fontsize=8)
     a.set_ylabel('frequency', fontsize=8)
 
+for a in [ax2, ax4]:
+    a.set_ylabel('repressors per cell', fontsize=8)
+    a.set_xlabel('growth rate [min$^{-1}$]', fontsize=8)
+    a.set_xlim([0.15, 0.7])
+
 plt.tight_layout()
  #%%
+
+
+#%%

@@ -19,7 +19,7 @@ data = data[(data['strain']=='dilution') & (data['repressors'] > 10) & (data['fo
 
 #%%
 # Define the reference state 
-ref_rep = 100 # ARrbitrary choice
+ref_rep = 100 # Arbitrary choice
 EP_RA = -13.9 # in kT
 IPTG = 0 # in µM
 EP_AI = 4.5 # in kT
@@ -37,23 +37,26 @@ data['empirical_deltaF'] = data['empirical_bohr'] - bohr_ref
 #%%
 # Start with only the carbon variants
 carb = data[data['temp']==37]
-temp = data[data['carbon']=='glucose']
+temp = data[(data['carbon']=='glucose') & (data['temp']!=37)]
 # Compute the theory curve
 rep_range = np.logspace(0, 6, 500)
 theo_bohr = -np.log(ref_rep / rep_range)
 
 # Set up a figure canvas
-fig, ax = plt.subplots(2, 3, figsize=(6, 4), dpi=150) 
+fig, ax = plt.subplots(3, 3, figsize=(5.5, 5.5), dpi=150) 
 for i, a in enumerate(ax.ravel()):
     a.set_xscale('log')
     a.set_xlim([10, 2000])
     a.set_ylim([-6, 6])
-    a.set_xlabel('repressors per cell')
-    a.set_ylabel('$\Delta F$ [$k_BT$]')
+    a.set_xlabel('repressors per cell', fontsize=8)
+    a.set_ylabel('$\Delta F$ [$k_BT$]', fontsize=8)
 
-    if i <=2:
+    if i in [0, 2, 4, 6, 8]:
         a.plot(rep_range, -np.log(ref_rep / rep_range), 'k-', lw=0.5, zorder=100)
-    
+
+# Turn off unnecessary axes
+ax[0,1].set_visible(False)
+ax[2,1].set_visible(False)
 # Set a dummy legend
 ax[0,0].plot([], [], 'k-',  color='#C2C2C2', label='theory')
 ax[0,0].plot([], [], '.', ms=2, color='#C2C2C2', label='single cell')
@@ -63,8 +66,8 @@ ax[0,0].errorbar([], [], [], fmt='.', ms=2, markeredgecolor='k', markeredgewidth
 # ax[0, 0].legend(ncol=3, bbox_to_anchor=(0.5, 0.5))
 
 # Assign the axes
-carb_ax = {'glucose':ax[0,0], 'glycerol':ax[0, 1], 'acetate':ax[0, 2]}
-temp_ax = {42: ax[1, 0], 37:ax[1, 1], 32:ax[1, 2]}
+carb_ax = {'glucose':ax[1,1], 'glycerol':ax[0, 0], 'acetate':ax[0, 2]}
+temp_ax = {42: ax[2, 0], 32:ax[2, 2]}
 carb_colors = {'glucose':colors['purple'], 'glycerol':colors['green'],
                 'acetate':colors['orange']}
 temp_colors = {37: colors['purple'], 32: colors['blue'], 42: colors['red']}
@@ -83,7 +86,7 @@ for g, d in carb.groupby(['carbon']):
                 xerr=grouped['repressors']['sem'], yerr=grouped['empirical_deltaF']['sem'], fmt='o', ms=3, 
                 color=c, linestyle='none', lw=0.75, capsize=1, label='induction condition',
                 markeredgecolor='k', markeredgewidth=0.15, zorder=99)
-    _ax.set_title(f'{g}, 37°C', loc='left', style='italic')
+    _ax.set_title(f'{g}, 37°C', loc='left', style='italic', fontsize=8)
 
 
 
@@ -93,7 +96,7 @@ for g, d in temp.groupby(['temp']):
     T_exp = g + 273
     delta_T = TEMP_REF / T_exp
     theo = -np.log(ref_rep/rep_range) + EP_RA * (1 - (TEMP_REF/T_exp)) - np.log((1 + np.exp(-EP_AI * delta_T)) / (1 + np.exp(-EP_AI)))
-    _ax.plot(rep_range, theo, 'k-', lw=0.5, zorder=100)
+    # _ax.plot(rep_range, theo, 'k-', lw=0.5, zorder=100)
     d = d.copy()
     c = temp_colors[g]
     _ax.plot(d['repressors'], d['empirical_deltaF'], '.', ms=0.3, 
@@ -106,16 +109,17 @@ for g, d in temp.groupby(['temp']):
                 xerr=grouped['repressors']['sem'], yerr=grouped['empirical_deltaF']['sem'], fmt='o', ms=3, 
                 color=c, linestyle='none', lw=0.75, capsize=1, label='induction condition',
                 markeredgecolor='k', markeredgewidth=0.25, zorder=99)
-    _ax.set_title(f'glucose, {g}°C', loc='left', style='italic')
+    _ax.set_title(f'glucose, {g}°C', loc='left', style='italic', fontsize=8)
 
-plt.tight_layout()
-plt.savefig('deltaF_variations.pdf', facecolor='w', bbox_inches='tight')
+# plt.tight_layout()
+plt.savefig('deltaF_variations.svg', facecolor='w', bbox_inches='tight')
+
 #%% Make the fold-change plots
 rep_range = np.logspace(0, 4)
 ref_fc = mwc.model.SimpleRepression(rep_range, ep_r=EP_RA, ep_ai=4.5, ka=139, ki=0.53,
                                     effector_conc=0).fold_change()
 
-fig, ax = plt.subplots(2, 3, figsize=(6, 4), dpi=150)
+fig, ax = plt.subplots(2, 3, figsize=(5, 5), dpi=150)
 for i, a in enumerate(ax.ravel()):
     a.set_xscale('log')
     a.set_yscale('log')
