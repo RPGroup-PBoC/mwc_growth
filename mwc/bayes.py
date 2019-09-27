@@ -163,7 +163,7 @@ class StanModel(object):
                     defined by the mass fraction
         """
         # Extract the sampling information and find the mode
-        samples = self.model
+        samples = self.samples
         fit = samples.extract()
         mode_ind = np.argmax(fit['lp__'])
         
