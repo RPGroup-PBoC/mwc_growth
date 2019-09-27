@@ -88,13 +88,14 @@ for k_fit, v_fit in temp_key.items():
 
         # Compute the rescaled temperature adn relative temp
         temp_K = k_pred + 273.15
+        rel_temp = ref_temp / temp_K
         _samples = samples[samples['temp']==k_fit]
 
         # Compute the corrected energies. 
-        epRA_star =  ref_epRA -\
-             temp_K * _samples[_samples['parameter']=='delta_S_DNA']['value'].values
-        epAI_star = rel_temp * ref_epAI -\
-             temp_K * _samples[_samples['parameter']=='delta_S_ALLO']['value'].values
+        epRA_star =  rel_temp * (ref_epRA -\
+             temp_K * _samples[_samples['parameter']=='delta_S_DNA']['value'].values)
+        epAI_star = rel_temp * (ref_epAI -\
+             temp_K * _samples[_samples['parameter']=='delta_S_ALLO']['value'].values)
 
         # Define a vector to plot the credible region
         cred_region = np.zeros((2, len(rep_range)))
