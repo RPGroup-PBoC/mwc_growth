@@ -53,38 +53,3 @@ def scrape_frontmatter(dirname, file='README.md'):
         info = {}
     return info
 
-
-def yank_clist(src, username, port, dest, server='delbruck'):
-    """
-    Pulls the clist files from a target directory on delbrück to local.
-
-    Parameters
-    ----------
-    src: str
-        Relative path to the root diriectory for the experiment.
-    dst: str
-        Target directory on local. If None, the clists will be pulled into
-        `data/images` with the same folder name.
-    username: str
-        Username to access the data.
-    port : int
-        Super secret port number.
-    """
-    prefix = 'git/mwc_growth/data/images/'
-
-    # Avoid very stupid errors with the provided source directory.
-    if src[-1] == '/':
-        src = src[:-1]
-
-    # Define the source pattern.
-    src = '{}{}xy\*/clist.mat'.format(prefix, src)
-    # Connect to the remote server.
-    client = _create_SSHclient(username, port, server=server)
-    scp_obj = scp.SCPClient(client.get_transport())
-
-    # Transfer the files.
-    scp_obj.get(src, dest)
-
-    # Kill the connection
-    client.close()
-    print("clist files successfully transferred.")

@@ -41,4 +41,4 @@ model {
 
     // Evaluate the likelihood. 
     foldchange ~ normal(mu, sigma[idx]);
-    }
+}

@@ -88,20 +88,20 @@ for k_fit, v_fit in temp_key.items():
 
         # Compute the rescaled temperature adn relative temp
         temp_K = k_pred + 273.15
-        rel_temp = ref_temp / temp_K
+        rel_temp = temp_K / ref_temp
         _samples = samples[samples['temp']==k_fit]
 
         # Compute the corrected energies. 
-        epRA_star =  rel_temp * (ref_epRA -\
-             temp_K * _samples[_samples['parameter']=='delta_S_DNA']['value'].values)
-        epAI_star = rel_temp * (ref_epAI -\
-             temp_K * _samples[_samples['parameter']=='delta_S_ALLO']['value'].values)
+        epRA_star =  ref_epRA -\
+              temp_K * _samples[_samples['parameter']=='delta_S_DNA']['value'].values
+        # epAI_star = rel_temp * (ref_epAI -\
+            #  temp_K * _samples[_samples['parameter']=='delta_S_ALLO']['value'].values)
 
         # Define a vector to plot the credible region
         cred_region = np.zeros((2, len(rep_range)))
         for i, r in enumerate(rep_range):
-            pact = (1 + np.exp(-epAI_star))**-1
-            fc = (1 + pact * (r / 4.6E6) * np.exp(-epRA_star))**-1
+            # pact = (1 + np.exp(-epAI_star))**-1
+            fc = (1 + (r / 4.6E6) * np.exp(-epRA_star))**-1
             cred_region[:, i] = mwc.stats.compute_hpd(fc, mass_frac=0.95)
 
         # Plot a shaded band for the credible region
@@ -110,6 +110,7 @@ for k_fit, v_fit in temp_key.items():
 plt.subplots_adjust(wspace=0.1, hspace=0.1)
 plt.savefig('../../figs/entropic_parameter_pairwise_prediction.pdf',
             bbox_inches='tight', facecolor='w')
+
 
 
 #%%

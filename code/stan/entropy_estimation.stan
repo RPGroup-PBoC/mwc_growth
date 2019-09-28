@@ -32,31 +32,31 @@ data {
 
 transformed data {
     // Compute the relative temperature difference. 
-    vector[J] rel_T = (ref_temp + 273.15) ./ (temp + 273.15); 
+    vector[J] rel_T = (temp + 273.15) ./ (ref_temp + 273.15); 
 }
 
 parameters { 
     vector[J] delta_S_DNA; // Change in entropy for DNA binding
-    vector[J] delta_S_ALLO; // Change in entropy for allosteric energy difference
+    // vector[J] delta_S_ALLO; // Change in entropy for allosteric energy difference
     vector<lower=0>[J]  sigma; // Homoscedastic error
 }
 
 transformed parameters { 
     // Compute the modified binding energies
     vector[J] epRA_star = rel_T .* (ref_epRA - (temp + 273.15) .* delta_S_DNA);
-    vector[J] epAI_star = rel_T .* (ref_epAI - (temp + 273.15) .* delta_S_ALLO);
+    // vector[J] epAI_star = rel_T .* (ref_epAI - delta_S_ALLO);
 }
 
 model { 
      // probability of a repressor being active
-    vector[N] pact = 1 ./ (1 + exp(-epAI_star[idx]));
+    // vector[N] pact = 1 ./ (1 + exp(-epAI_star[idx]));
 
     // Compute the mean fold-change in gene expression
-    vector[N] mu = 1 ./ (1 + pact .* (repressors ./ Nns) .* exp(-epRA_star[idx])); 
+    vector[N] mu = 1 ./ (1 + (repressors ./ Nns) .* exp(-epRA_star[idx])); 
 
     // Define the priors
-    delta_S_DNA ~ normal(0, 0.1);
-    delta_S_ALLO ~ normal(0, 0.1);
+    delta_S_DNA ~ normal(0, 1);
+    // delta_S_ALLO ~ normal(0, 0.1);
     sigma ~ normal(0, 0.1);
 
     // Evaluate the likelihood
