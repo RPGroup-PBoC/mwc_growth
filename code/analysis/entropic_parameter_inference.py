@@ -22,7 +22,7 @@ grouped = data.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
 # Determine the number of unique temperatures and add an identifier. 
 grouped['idx'] = grouped.groupby('temp').ngroup() + 1
 
-# Load the inferrential model. 
+# Load the inferential model. 
 model = mwc.bayes.StanModel('../stan/entropy_estimation.stan', force_compile=True)
 #%%
 # Assign the data dictionary. 
@@ -38,7 +38,7 @@ data_dict = {'J': grouped['idx'].max(),
              'foldchange': grouped['fold_change']}
 
 # Sample the model.
-fit, samples = model.sample(data_dict, control=dict(adapt_delta=0.9))
+fit, samples = model.sample(data_dict, iter=5000, control=dict(adapt_delta=0.99))
 
 #%%
 # Extract and summarize the parameters
@@ -52,15 +52,18 @@ for dim, temp in zip(grouped['idx'].unique(), grouped['temp'].unique()):
     params.loc[params['dimension']==dim, 'temp'] = temp
     keymap[dim] = temp
 
-renamed_params = ['delta_S_DNA',  'sigma']
+renamed_params = ['delta_S_DNA', 'sigma', 'true_epRA']
 samples_dfs = []
 for k, v in keymap.items():
     for p in renamed_params:
         df = pd.DataFrame()
-        # if p == 'delta_S_DNA':
+        # if (p == 'delta_S_DNA') | (p=='delta_S_ALLO'):
             # df['value'] = samples[f'{p}']
         # else:
-        df['value'] = samples[f'{p}[{k}]']
+        if (p == 'true_epRA'):
+            df['value'] = samples[f'{p}']
+        else:
+            df['value'] = samples[f'{p}[{k}]']
         df['lp__'] = samples['lp__']
         df['parameter'] = p
         df['temp'] = v
@@ -70,9 +73,13 @@ for k, v in keymap.items():
 # Concatenate the sampling info and save
 lf_samples = pd.concat(samples_dfs)
 lf_samples.to_csv('../../data/entropic_parameter_samples.csv')
+
 # Add the carbon information and save to dis,. 
 params['carbon'] = 'glucose'
 params.to_csv('../../data/entropic_parameter_summary.csv')
+
+
+#%%
 
 
 #%%

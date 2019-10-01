@@ -61,7 +61,6 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
 
     # Estimate the calibration factor
     fit, samples = model.sample(dict(I1=d['I_1_sub'], I2=d['I_2_sub'], N=len(d)))
-    # opt, err = mwc.bayes.estimate_calibration_factor(d['I_1_sub'], d['I_2_sub'])
 
     # Generate a dataframe with all of the fluctuations
     fluct_df = pd.DataFrame([])
@@ -84,6 +83,9 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
     _fc['repressors_max'] = 2 * _fc_data['mch_sub'] / (samples['alpha'].mean() - samples['alpha'].std())
     _fc['repressors_min'] = 2 * _fc_data['mch_sub'] / (samples['alpha'].mean()  + samples['alpha'].std())
     _fc['fold_change'] = _fc_data['yfp_sub'].values / (_fc_data[_fc_data['strain']=='delta']['yfp_sub'].values).mean()
+    _fc['yfp_sub'] = _fc_data['yfp_sub']
+    _fc['mch_sub'] = _fc_data['mch_sub']
+    _fc['area'] = _fc_data['area_pix'] * IP_DIST**2
     _fc['alpha_mu'] = samples['alpha'].mean()
     _fc['alpha_std'] = samples['alpha'].std()
     _fc['carbon'] = g[0]

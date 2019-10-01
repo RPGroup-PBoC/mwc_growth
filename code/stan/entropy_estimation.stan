@@ -36,6 +36,7 @@ transformed data {
 }
 
 parameters { 
+    real true_epRA;
     vector[J] delta_S_DNA; // Change in entropy for DNA binding
     // vector[J] delta_S_ALLO; // Change in entropy for allosteric energy difference
     vector<lower=0>[J]  sigma; // Homoscedastic error
@@ -43,8 +44,8 @@ parameters {
 
 transformed parameters { 
     // Compute the modified binding energies
-    vector[J] epRA_star = rel_T .* (ref_epRA - (temp + 273.15) .* delta_S_DNA);
-    // vector[J] epAI_star = rel_T .* (ref_epAI - delta_S_ALLO);
+    vector[J] epRA_star = rel_T .* (true_epRA - (temp + 273.15) .* delta_S_DNA);
+    // vector[J] epAI_star = rel_T .* (true_epRA - (temp + 273.15) .* delta_S_ALLO);
 }
 
 model { 
@@ -55,8 +56,9 @@ model {
     vector[N] mu = 1 ./ (1 + (repressors ./ Nns) .* exp(-epRA_star[idx])); 
 
     // Define the priors
-    delta_S_DNA ~ normal(0, 1);
-    // delta_S_ALLO ~ normal(0, 0.1);
+    true_epRA ~ normal(-12, 6);
+    delta_S_DNA ~ normal(0, .1);
+    // delta_S_ALLO ~ normal(0, .1);
     sigma ~ normal(0, 0.1);
 
     // Evaluate the likelihood
