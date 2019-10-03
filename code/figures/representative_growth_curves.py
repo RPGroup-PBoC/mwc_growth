@@ -2,11 +2,10 @@
 import numpy as np 
 import pandas as pd 
 import mwc.viz
-import phd.viz  
 import mwc.stats
 import matplotlib.pyplot as plt
 colors, color_list = mwc.viz.bokeh_theme()
-_ = phd.viz.phd_style()
+_ = mwc.viz.personal_style()
 np.random.seed(666)
 
 #%%
@@ -73,10 +72,11 @@ edge_colors = {'acetate': '#764f2a', 'glycerol': colors['green'],
                'glucose':colors['purple'], 37: colors['purple'],
                32:colors['blue'], 42:colors['red']}
 
-fig, ax = plt.subplots(1, 1, figsize=(3, 1.5), dpi=300)
+fig, ax = plt.subplots(1, 1, figsize=(3.25, 1.5), dpi=300)
 ax.xaxis.set_tick_params(labelsize=8)
 ax.yaxis.set_tick_params(labelsize=8)
 ax.set_xticks([0, 100, 300, 500])
+ax.set_yticks([1, 50, 100])
 
 labels = ['acetate, 37°C', 'glycerol, 37°C','glucose, 37°C', 'glucose, 32°C', 'glucose, 42°C']
 carbs = ['acetate', 'glycerol', 'glucose', 'glucose', 'glucose']
@@ -92,13 +92,13 @@ for c, t, l, v in zip(carbs, temps, labels, vals):
 ax.legend(handlelength=1, fontsize=8)
 ax.set_xlabel('time [min]', style='italic', fontsize=10)
 ax.set_ylabel('relative OD$_{600nm}$', style='italic', fontsize=10)
-plt.savefig('../../figs/Fig1_growth_curve_comparison.pdf', bbox_inches='tight', facecolor='white')
+plt.savefig('../../figs/Fig1_growth_curve_comparison.svg', bbox_inches='tight', facecolor='white')
 
 
 
 #%%
 # Instantiate the figure canvas
-fig, ax = plt.subplots(1, 1, figsize=(3, 1.5))
+fig, ax = plt.subplots(1, 1, figsize=(3.25, 1.5))
 ax.xaxis.set_tick_params(labelsize=6)
 ax.yaxis.set_tick_params(labelsize=8)
 
@@ -113,28 +113,30 @@ temps.loc[temps['temp_C']==32, 'pos'] = 2
 # Plot the scatters
 for g, d in carbs.groupby(['carbon', 'pos']):
     if g[0] != 'glucose':
-        ax.errorbar(np.random.normal(g[1], 0.1, len(d)), d['dbl_time'], d['dbl_err'], fmt='.', 
+        ax.errorbar(np.random.normal(g[1], 0.1, len(d)), d['growth_rate'], d['growth_err'], fmt='.', 
                 alpha=0.75, markerfacecolor=fill_colors[g[0]], markeredgecolor=edge_colors[g[0]],
                 markeredgewidth=0.75, ms=8, linestyle='none', capsize=1.5, color=edge_colors[g[0]])
 for g, d in temps.groupby(['temp_C', 'pos']):
-    ax.errorbar(np.random.normal(g[1], 0.1, len(d)), d['dbl_time'], d['dbl_err'], fmt='.', 
+    ax.errorbar(np.random.normal(g[1], 0.1, len(d)), d['growth_rate'], d['growth_err'], fmt='.', 
                 alpha=0.75, markerfacecolor=fill_colors[g[0]], markeredgecolor=edge_colors[g[0]],
                 markeredgewidth=0.75, ms=8, linestyle='none', capsize=1.5, color=edge_colors[g[0]])
 
 glu = carbs[carbs['carbon']=='glucose']
-ax.errorbar(np.random.normal(4, 0.1, len(glu)), glu['dbl_time'], glu['dbl_err'], fmt='.',
+ax.errorbar(np.random.normal(4, 0.1, len(glu)), glu['growth_rate'], glu['growth_err'], fmt='.',
            alpha=0.75, markerfacecolor=fill_colors['glucose'], markeredgecolor=edge_colors['glucose'],
            color=edge_colors['glucose'], markeredgewidth=0.75, ms=8, linestyle='none', capsize=1.5)
 
-ax.set_ylabel('doubling time [min]', style='italic', fontsize=10)
+ax.set_ylabel('growth rate [hr$^{-1}$]', style='italic', fontsize=10)
 ax.set_xticks([0, 1, 2, 3, 4])
-ax.set_xticklabels(['acetate\n37° C', 'glycerol\n37 °C', 'glucose\n37 °C',
-                    'glucose\n42° C', 'glucose\n 32°C'], style='italic', rotation=45)
+ax.set_xticklabels(['acetate\n37° C', 'glycerol\n37 °C', 'glucose\n32 °C',
+                    'glucose\n42° C', 'glucose\n 37°C'], style='italic', rotation=90,
+                    fontsize=10)
 # ax.set_xlabel('growth condition', style='italic', fontsize=10)
 ax.xaxis.grid(False)
 ax.set_xlim([-0.5, 4.5])
-ax.set_ylim([50, 225])
-plt.savefig('../../figs/Fig1_growth_rate_jitter.pdf', facecolor='white', bbox_inches='tight')
+# ax.set_yscale('log')
+ax.set_ylim([0.15, 0.7])
+plt.savefig('../../figs/Fig1_growth_rate_jitter.svg', facecolor='white', bbox_inches='tight')
 #%%
 
 

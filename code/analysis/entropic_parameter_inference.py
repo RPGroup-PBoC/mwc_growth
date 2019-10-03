@@ -57,10 +57,9 @@ samples_dfs = []
 for k, v in keymap.items():
     for p in renamed_params:
         df = pd.DataFrame()
-        # if (p == 'delta_S_DNA') | (p=='delta_S_ALLO'):
-            # df['value'] = samples[f'{p}']
-        # else:
-        if (p == 'true_epRA'):
+        if (p == 'delta_S_DNA') | (p=='delta_S_ALLO'):
+            df['value'] = samples[f'{p}']
+        else if (p == 'true_epRA'):
             df['value'] = samples[f'{p}']
         else:
             df['value'] = samples[f'{p}[{k}]']

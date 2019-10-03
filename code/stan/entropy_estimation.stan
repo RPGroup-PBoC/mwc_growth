@@ -44,7 +44,7 @@ parameters {
 
 transformed parameters { 
     // Compute the modified binding energies
-    vector[J] epRA_star = rel_T .* (true_epRA - (temp + 273.15) .* delta_S_DNA);
+    vector[J] epRA_star = true_epRA - temp .* delta_S_DNA;
     // vector[J] epAI_star = rel_T .* (true_epRA - (temp + 273.15) .* delta_S_ALLO);
 }
 

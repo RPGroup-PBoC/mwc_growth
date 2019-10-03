@@ -92,8 +92,8 @@ for k_fit, v_fit in temp_key.items():
         _samples = samples[samples['temp']==k_fit]
 
         # Compute the corrected energies. 
-        epRA_star =  rel_temp * (_samples[_samples['parameter']=='true_epRA']['value'].values -\
-              temp_K * _samples[_samples['parameter']=='delta_S_DNA']['value'].values)
+        epRA_star =  _samples[_samples['parameter']=='true_epRA']['value'].values -\
+              temp_K * _samples[_samples['parameter']=='delta_S_DNA']['value'].values
         # epAI_star = rel_temp * (ref_epAI -\
             #  temp_K * _samples[_samples['parameter']=='delta_S_ALLO']['value'].values)
 
