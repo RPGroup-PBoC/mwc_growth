@@ -67,7 +67,8 @@ def personal_style():
               'purple': '#7E59A2', 'orange':'#E39943',  'red':'#C76A6A',
                'green':'#688A2F', 'light_purple':'#A17DB8', 'light_orange':'#EEBA7F',
                'light_blue':'#A5B3CC', 'light_red':'#E39C9D', 'light_green':'#B3CD86', 
-               'grey': '#EFEFEF', 'gray': '#EFEFEF', 'light_grey':'#6D6F72'}
+               'grey': '#EFEFEF', 'gray': '#EFEFEF', 'light_grey':'#6D6F72',
+               'dark_brown':'#764f2a', 'light_brown':'#e1bb96'}
     color_items = [v for v in colors.values()]
     palette = [v for k, v in colors.items() if v not in ['grey', 'gray', 'dark_purple', 'light_grey']]
     sns.set_palette(palette)

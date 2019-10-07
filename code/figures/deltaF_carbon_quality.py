@@ -52,9 +52,9 @@ fig, ax = plt.subplots(2, 4, figsize=(7, 3.5), dpi=100)
 # Define the axes and colors
 ax_map = {'glucose':1, 'glycerol':2, 'acetate':3}
 edgecolors = {'glucose':colors['dark_purple'], 'glycerol':colors['dark_green'],
-              'acetate':colors['orange']}
+              'acetate':colors['dark_brown']}
 facecolors = {'glucose':colors['light_purple'], 'glycerol':colors['light_green'],
-              'acetate':colors['light_orange']}
+              'acetate':colors['light_brown']}
 
 for g, d in summary.groupby(['carbon']):
     ax[0, ax_map[g]].errorbar(d['repressors']['mean'], d['fold_change']['mean'], 
@@ -90,6 +90,16 @@ for a in ax.ravel():
 
 
 # Plot the explanatory points. 
+ax[0, 0].grid(False)
+ax[1, 0].grid(False)
+ax[0, 0].fill_between(rep_range, example_fc[2], 1.05, color=colors['light_red'],
+            alpha=0.5)
+ax[0, 0].fill_between(rep_range, example_fc[2], -.05, color=colors['light_green'],
+            alpha=0.5)
+ax[1, 0].fill_betweenx(np.linspace(-5, 5, 100), 100, 8000, 
+                    color=colors['light_green'], alpha=0.5)
+ax[1, 0].fill_betweenx(np.linspace(-5, 5, 100), 0, 99, 
+                    color=colors['light_red'], alpha=0.5)
 for i, r in enumerate(example_reps):
     ax[0, 0].plot(r, example_fc[i], 'o', markerfacecolor=example_facecolors[r],
             markeredgecolor=example_edgecolors[r], markeredgewidth=0.75)
@@ -98,6 +108,26 @@ for i, r in enumerate(example_reps):
 
 # ax[0, 0].grid(False)
 plt.tight_layout()
-plt.savefig('../../figs/Fig_delF_carbon_quality.svg', bbox_inches='tight', 
+plt.savefig('../../figs/Fig_delF_carbon_quality.pdf', bbox_inches='tight', 
             facecolor='white')
+#%%
+fig, ax = plt.subplots(1, 1, figsize=(2, 2), dpi=100)
+ax.set_xscale('log')
+ax.set_yscale('log')
+
+# Define the axes and colors
+ax_map = {'glucose':1, 'glycerol':2, 'acetate':3}
+edgecolors = {'glucose':colors['dark_purple'], 'glycerol':colors['dark_green'],
+              'acetate':colors['dark_brown']}
+facecolors = {'glucose':colors['light_purple'], 'glycerol':colors['light_green'],
+              'acetate':colors['light_brown']}
+
+ax.plot(rep_range, fc, 'k-')
+for g, d in summary.groupby(['carbon']):
+    ax.errorbar(d['repressors']['mean'], d['fold_change']['mean'], 
+                      xerr=d['repressors']['sem'], yerr=d['fold_change']['sem'],
+                      fmt='.', ms=8, color=edgecolors[g], 
+                      markerfacecolor=facecolors[g], markeredgewidth=0.25)
+plt.savefig('../../figs/all_carbon_titration.pdf', bbox_inches='tight',
+facecolor='white')
 #%%
