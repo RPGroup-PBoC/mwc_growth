@@ -65,7 +65,7 @@ for g, d in tidy_stats.groupby(['carbon', 'temp_C']):
 
 # Restrict the fold-change measurements to the dilution circuit
 fc = foldchange[(foldchange['strain']=='dilution')]
-fc = fc[fc['repressors'] >= 10]
+fc = fc[fc['repressors'] >= 20]
 
 # Set up the kind of complicated figure canvas
 fig = plt.figure( figsize=(5, 4.5), dpi=100)
@@ -89,27 +89,28 @@ for g, d in high_conc.groupby(['carbon', 'temp']):
                 markerfacecolor=fill_colors[g[1]], markeredgecolor=edge_colors[g[1]], alpha=0.75)
 
 
+i = 1
 for g, d in fc.groupby(['atc_ngml']):
     d.sort_values('dbl_mean', inplace=True)
+    if i%2 == 0:
+        # Isolate temps
+        d_carb = d[d['temp']==37]
+        d_temp = d[d['carbon']=='glucose']
+        d_carb_grouped = d_carb.groupby(['carbon', 'date', 'run_number']).mean()
+        d_carb_grouped = d_carb_grouped.groupby(['carbon']).agg(('mean', 'sem'))
+        d_carb_grouped.sort_values(('rate_mean', 'mean'), inplace=True)
+        d_temp_grouped = d_temp.groupby(['temp', 'date', 'run_number']).mean()
+        d_temp_grouped = d_temp_grouped.groupby('temp').agg(('mean', 'sem')).reset_index()
+        d_temp_grouped.sort_values(('rate_mean', 'mean'), inplace=True)
 
-    # Isolate temps
-    d_carb = d[d['temp']==37]
-    d_temp = d[d['carbon']=='glucose']
-    d_carb_grouped = d_carb.groupby(['carbon', 'date', 'run_number']).mean()
-    d_carb_grouped = d_carb_grouped.groupby(['carbon']).agg(('mean', 'sem'))
-    d_carb_grouped.sort_values(('rate_mean', 'mean'), inplace=True)
-    d_temp_grouped = d_temp.groupby(['temp', 'date', 'run_number']).mean()
-    d_temp_grouped = d_temp_grouped.groupby('temp').agg(('mean', 'sem')).reset_index()
-    d_temp_grouped.sort_values(('rate_mean', 'mean'), inplace=True)
-
-    ax2.errorbar(d_carb_grouped['rate_mean']['mean'], d_carb_grouped['repressors']['mean'],
-                d_carb_grouped['repressors']['sem'], capsize=2, lw=0.5, color=atc_colors[g],
-                fmt='.', linestyle='-', label=g,
-                markeredgecolor='k', markeredgewidth=0.25)
-    ax4.errorbar(d_temp_grouped['rate_mean']['mean'], d_temp_grouped['repressors']['mean'],
-                d_temp_grouped['repressors']['sem'], capsize=2, lw=0.5, color=atc_colors[g],
-                fmt='.', linestyle='-', markeredgecolor='k', markeredgewidth=0.25)
-
+        ax2.errorbar(d_carb_grouped['rate_mean']['mean'], d_carb_grouped['repressors']['mean'],
+                    d_carb_grouped['repressors']['sem'], capsize=2, lw=0.5, color=atc_colors[g],
+                    fmt='.', linestyle='-', label=g,
+                    markeredgecolor='k', markeredgewidth=0.25)
+        ax4.errorbar(d_temp_grouped['rate_mean']['mean'], d_temp_grouped['repressors']['mean'],
+                    d_temp_grouped['repressors']['sem'], capsize=2, lw=0.5, color=atc_colors[g],
+                    fmt='.', linestyle='-', markeredgecolor='k', markeredgewidth=0.25)
+    i += 1
 
 for a in [ax1, ax3]:
     a.legend(fontsize=6, handlelength=1)
