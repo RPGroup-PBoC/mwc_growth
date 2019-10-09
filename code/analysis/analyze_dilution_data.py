@@ -17,8 +17,8 @@ fc_data = pd.read_csv('../../data/compiled_fold_change.csv')
 
 # Constants and bounds for size
 IP_DIST = 0.065 # In nm / pix
-min_size = 0.25 / IP_DIST**2 # Number is in µm^2
-max_size = 5 / IP_DIST**2 # Number is in µm^2
+min_size =  0 # 0.25 / IP_DIST**2 # Number is in µm^2
+max_size = 10000000 # / IP_DIST**2 # Number is in µm^2
 
 # Load the stan model
 model = mwc.bayes.StanModel('../stan/calibration_factor.stan')
