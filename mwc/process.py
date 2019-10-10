@@ -5,7 +5,7 @@ import tqdm
 
 
 def clist_to_dataframe(clist_file, desired_props='default', added_props={},
-                       excluded_props=None):
+                       excluded_props=None, ip_dist=0.065):
     """
     Reads in a SuperSegger `clist` file and extracts the desired properties.
 
@@ -46,8 +46,10 @@ def clist_to_dataframe(clist_file, desired_props='default', added_props={},
         desired_props = ['Area birth', 'Area death', 'Cell ID',
                          'Cell birth time', 'Cell death time', 'Daughter1 ID',
                          'Daughter2 ID', 'Fluor1 mean death',
-                         'Fluor2 mean death', 'Mother ID', 'Long axis (L) death',
-                         'Short axis death', 'Fluor1 bg death', 'Fluor2 bg death',
+                         'Fluor2 mean death', 'Mother ID', 
+                         'Long axis (L) death', 'Long axis (L) birth',
+                         'Short axis death', 'Short axis birth', 
+                         'Fluor1 bg death', 'Fluor2 bg death',
                          'Error frame', 'Cell Dist to Edge']
 
     defs = {key: value for value, key in enumerate(
@@ -69,18 +71,30 @@ def clist_to_dataframe(clist_file, desired_props='default', added_props={},
                 cell_dict[k] = v
             df = df.append(cell_dict, ignore_index=True)
 
-    # Rename the columns to accomodate pep8 style.
+    # Rename the columns to accommodate pep8 style.
     if excluded_props is not None:
         for x in excluded_props:
             df.drop(x, axis=1, inplace=True)
     new_cols = {nom: '_'.join(nom.split(' ')).lower() for nom in df.keys()}
     new_cols['Long axis (L) death'] = 'long_axis_death'
+    new_cols['Long axis (L) birth'] = 'long_axis_birth'
     df.rename(columns=new_cols, inplace=True)
 
     # Compute the aspect ratio.
-    df.loc[:, 'aspect_ratio'] = df['short_axis_death'] / df['long_axis_death']
-    return df
+    df['short_axis_death'] = df['short_axis_death'] * ip_dist
+    df['long_axis_death'] = df['long_axis_death'] * ip_dist
+    df['short_axis_birth'] = df['short_axis_death'] * ip_dist
+    df['long_axis_birth'] = df['long_axis_death'] * ip_dist
 
+    df.loc[:, 'aspect_ratio'] = df['short_axis_death'] / df['long_axis_death']
+    df.loc[:, 'volume_death'] = 0.5 * np.pi * df['short_axis_death'].values**2 *\
+           ((2 * df['short_axis_death'].values / 3) + df['long_axis_death'].values
+            - df['short_axis_death'].values)
+    df.loc[:, 'volume_birth'] = 0.5 * np.pi * df['short_axis_birth'].values**2 *\
+           ((2 * df['short_axis_birth'].values / 3) + df['long_axis_birth'].values
+            - df['short_axis_birth'].values)
+
+    return df
 
 def parse_clists(clists, parse_position=True, added_props={},
                  verbose=False, **kwargs):
@@ -127,7 +141,7 @@ def parse_clists(clists, parse_position=True, added_props={},
     return pd.concat(dfs, ignore_index=True)
 
 
-def morphological_filter(df, ip_dist, area_bounds=[1, 4], ar_bounds=[0.1, 0.5]):
+def morphological_filter(df, ip_dist, area_bounds=[0, 50], ar_bounds=[0, 1]):
     """
     """
     # Calculate areas.
@@ -143,7 +157,7 @@ def morphological_filter(df, ip_dist, area_bounds=[1, 4], ar_bounds=[0.1, 0.5]):
 
 def family_reunion(dilution_df, multi_xy=True, fluo_channel=2):
     """"
-    Generates a new DataFrame containing the indivudual sister intensities,
+    Generates a new DataFrame containing the individual sister intensities,
     summed fluorescence, and square fluctuations.
 
     Parameters
@@ -164,7 +178,8 @@ def family_reunion(dilution_df, multi_xy=True, fluo_channel=2):
         A DataFrame with the two intensity measurements, sum total, and square fluctuations.
     """
     # Set up the DataFrame.
-    family_df = pd.DataFrame([], columns=['I_1', 'I_2', 'area_1', 'area_2', 'bg_val'])
+    family_df = pd.DataFrame([], columns=['I_1', 'I_2', 'area_1', 'area_2'
+                                          'volume_1', 'volume_2'])
 
     # Determine what to groupby.
     if multi_xy == True:
@@ -183,7 +198,8 @@ def family_reunion(dilution_df, multi_xy=True, fluo_channel=2):
                                'error_frame': d['error_frame'].values[0],
                                'area_1':d['area_death'].values[0], 
                                'area_2':d['area_death'].values[1],
-                               'bg_val': d[f'fluor{fluo_channel}_bg_death'].unique()[0],
+                               'volume_1': d['volume_birth'].values[0],
+                               'volume_2': d['volume_birth'].values[1],
                                'fractional_birth_area':d['area_birth'].values[0] / np.sum(d['area_birth'].values)}
 
                 family_df = family_df.append(family_dict, ignore_index=True)

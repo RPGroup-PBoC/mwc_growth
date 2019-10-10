@@ -50,12 +50,22 @@ for run in tqdm.tqdm(expts, desc="Parsing experiments"):
 
     # Parse all of the snapshots
     samps = glob.glob(f'{run}/snaps/*ng*')
+    _intensities = []
     for s in samps:
         strain, conc = s.split('/')[-1].split('_')
         conc = float(conc.split('ngml')[0])
         clists = glob.glob(f'{s}/*/*.mat') 
         parsed = mwc.process.parse_clists(clists)
-
+        parsed = mwc.process.morphological_filter(parsed, ip_dist=0.065,
+                                                area_bounds=[0.5, 10],
+                                                ar_bounds=[0, 0.75])
+        parsed['valid'] = parsed['error_frame'].isnull()
+        parsed = parsed[parsed['valid']==True]
+        if (strain == 'auto'):
+            mean_auto_yfp = parsed['fluor1_mean_death'].mean() 
+        if (strain == 'delta'):
+            mean_delta_yfp = parsed['fluor1_mean_death'].values.mean()
+        
         # Assign the identifiers.
         parsed['strain'] = strain 
         parsed['carbon'] = carbon 
@@ -64,12 +74,28 @@ for run in tqdm.tqdm(expts, desc="Parsing experiments"):
         parsed['temp'] = temp
         parsed['operator'] = operator 
         parsed['date'] = date
-        intensities.append(parsed) 
-
+        _intensities.append(parsed) 
+    _intensities = pd.concat(_intensities)
+    _intensities['fold_change'] = (_intensities['fluor1_mean_death'] - mean_auto_yfp) / \
+                               (mean_delta_yfp - mean_auto_yfp) 
+    intensities.append(_intensities)
 
 # Concatenate all of the dataframes and save to disk. 
 lineages = pd.concat(lineages)
 intensities = pd.concat(intensities)
+
+# Rename the columns to useful quantities
+lineages = lineages[['I_1', 'I_2', 'area_1', 'area_2', 
+                        'carbon', 'run_number', 'temp', 'date', 'volume_1', 'volume_2']]
+intensities = intensities[['area_death', 'fluor1_mean_death', 'fluor2_mean_death', 
+                           'strain', 'date', 'run_number', 'temp',
+                           'atc_ngml', 'carbon', 'long_axis_death', 
+                           'short_axis_death', 'volume_birth', 'volume_death', 
+                           'area_birth']]
+intensities.rename(columns={'fluor1_mean_death': 'mean_yfp', 
+                        'fluor2_mean_death':'mean_mCherry',
+                        'area_death':'area_pix', 'long_axis_death':'length_um',
+                        'short_axis_death':'width_um'}, inplace=True)
 lineages.to_csv('../../data/raw_compiled_lineages.csv')
 intensities.to_csv('../../data/raw_compiled_snaps.csv')
 #%%

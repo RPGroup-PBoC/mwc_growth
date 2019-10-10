@@ -43,3 +43,6 @@ plt.savefig('../../figs/Fig2_fluct_example.svg', bbox_inches='tight', facecolor=
 
 
 #%%
+
+
+#%%

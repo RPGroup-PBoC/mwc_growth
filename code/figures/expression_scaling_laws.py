@@ -11,8 +11,16 @@ mwc.viz.personal_style()
 
 # Load the fold-change data and growth rate stats
 foldchange = pd.read_csv('../../data/analyzed_foldchange.csv')
+foldchange = foldchange[foldchange['repressors'] > 0]
+_flucts =  pd.read_csv('../../data/analyzed_fluctuations.csv')
 stats = pd.read_csv('../../data/compiled_growth_statistics.csv')
 
+# Reform the  fluctuations df to remove lineages.
+flucts_1 = _flucts[['temp', 'carbon', 'date', 'run_no', 'volume_1']]
+flucts_2 = _flucts[['temp', 'carbon', 'date', 'run_no', 'volume_2']]
+flucts_1.rename({'volume_birth':'volume_birth', 'run_no':'run_number'}, inplace=True)
+flucts_2.rename({'volume_birth':'volume_birth', 'run_no':'run_number'}, inplace=True)
+flucts = pd.concat([flucts_1, flucts_2])
 
 # Define the colors for the conditions
 fill_colors = {'acetate': '#e1bb96', 'glycerol': colors['light_green'],
@@ -56,14 +64,16 @@ for g, d in tidy_stats.groupby(['carbon', 'temp_C']):
                    'rate_mean'] = d['growth_rate']['mean'].values[0]
     foldchange.loc[(foldchange['carbon']==g[0]) & (foldchange['temp']==g[1]),
                    'rate_sem'] = d['growth_rate']['sem'].values[0]
-    foldchange.loc[(foldchange['carbon']==g[0]) & (foldchange['temp']==g[1]),
-                   'dbl_mean'] = d['dbl_time']['mean'].values[0]
-    foldchange.loc[(foldchange['carbon']==g[0]) & (foldchange['temp']==g[1]),
-                   'dbl_sem'] = d['dbl_time']['sem'].values[0]
+
+    flucts.loc[(flucts['carbon']==g[0]) & (flucts['temp']==g[1]),
+                   'rate_mean'] = d['growth_rate']['mean'].values[0]
+    flucts.loc[(flucts['carbon']==g[0]) & (flucts['temp']==g[1]),
+                   'rate_sem'] = d['growth_rate']['sem'].values[0]
+
 
 
 # Restrict the fold-change measurements to the dilution circuit
-fc = foldchange[(foldchange['strain']=='dilution')]
+fc = foldchange[(foldchange['strain']=='dilution') & (foldchange['volume_death'] < 8)]
 fc = fc[fc['repressors'] >=10]
 
 # Set up the kind of complicated figure canvas
@@ -75,6 +85,19 @@ ax1 = fig.add_subplot(gs[0:3, 0:2])
 ax2 = fig.add_subplot(gs[4:, 0:2])
 ax3 = fig.add_subplot(gs[0:3, 2:4])
 ax4 = fig.add_subplot(gs[4:, 2:4])
+
+fluct_grouped = flucts.groupby(['date', 'carbon', 'run_no', 'temp']).mean().reset_index()
+fluct_summarized = fluct_grouped.groupby(['carbon', 'temp']).agg(('mean', 'sem')).reset_index()
+fluct_temp = fluct_summarized[fluct_summarized['carbon']=='glucose']
+fluct_carb = fluct_summarized[fluct_summarized['temp']==37]
+
+ax1.errorbar(fluct_carb['rate_mean']['mean'], fluct_carb['volume_birth']['mean'],
+        fluct_carb['volume_birth']['sem'], capsize=2, lw=0.5, color='black',
+        fmt='.', linestyle='-', label=g,
+        markeredgecolor='k', markeredgewidth=0.25)
+ax3.errorbar(fluct_temp['rate_mean']['mean'], fluct_temp['volume_birth']['mean'],
+        fluct_temp['volume_birth']['sem'], capsize=2, lw=0.5, color='black',
+        fmt='.', linestyle='-', markeredgecolor='k', markeredgewidth=0.25)
 
 
 
@@ -99,20 +122,19 @@ for g, d in fc.groupby(['atc_ngml']):
         ax4.errorbar(d_temp_grouped['rate_mean']['mean'], d_temp_grouped['repressors']['mean'],
                     d_temp_grouped['repressors']['sem'], capsize=2, lw=0.5, color=atc_colors[g],
                     fmt='.', linestyle='-', markeredgecolor='k', markeredgewidth=0.25)
-        ax1.errorbar(d_carb_grouped['rate_mean']['mean'], d_carb_grouped['area']['mean'],
-                    d_carb_grouped['area']['sem'], capsize=2, lw=0.5, color=atc_colors[g],
-                    fmt='.', linestyle='-', label=g,
-                    markeredgecolor='k', markeredgewidth=0.25)
-        ax3.errorbar(d_temp_grouped['rate_mean']['mean'], d_temp_grouped['area']['mean'],
-                    d_temp_grouped['area']['sem'], capsize=2, lw=0.5, color=atc_colors[g],
-                    fmt='.', linestyle='-', markeredgecolor='k', markeredgewidth=0.25)
+        # ax1.errorbar(d_carb_grouped['rate_mean']['mean'], d_carb_grouped['volume']['mean'],
+        #             d_carb_grouped['volume']['sem'], capsize=2, lw=0.5, color=atc_colors[g],
+        #             fmt='.', linestyle='-', label=g,
+        #             markeredgecolor='k', markeredgewidth=0.25)
+        # ax3.errorbar(d_temp_grouped['rate_mean']['mean'], d_temp_grouped['volume']['mean'],
+        #             d_temp_grouped['volume']['sem'], capsize=2, lw=0.5, color=atc_colors[g],
+        #             fmt='.', linestyle='-', markeredgecolor='k', markeredgewidth=0.25)
  
     i += 1
 
 for a in [ax1, ax3]:
-    a.set_ylim([1.6, 2.8])
     a.set_xlabel('growth rate [hr$^{-1}$]', fontsize=8, style='italic')
-    a.set_ylabel('projected cell area [µm$^2$]', fontsize=8, style='italic')
+    a.set_ylabel('cell volume [fL]', fontsize=8, style='italic')
 
 for a in [ax2, ax4]:
     a.set_ylabel('repressors per cell', fontsize=8, style='italic')
@@ -132,4 +154,7 @@ plt.subplots_adjust(hspace=0.5, wspace=0.6)
 plt.savefig('../../figs/Fig_expression_scaling.svg', bbox_inches='tight', 
             facecolor='white')
 
-%il%
+
+
+
+#%%

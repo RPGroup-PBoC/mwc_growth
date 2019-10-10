@@ -76,8 +76,8 @@ samples_df.rename(columns={'lp__':'log_prob'}, inplace=True)
 samples_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_cal_factor_samples.csv', index=False)
 
 # Generate the dilution summary figure. 
-_ = mwc.validation.dilution_summary(family_df, mean_auto, samples_df['alpha'], ip_dist=IP_DIST, fname='dilution_summary',
-                                    title=f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}')
+# _ = mwc.validation.dilution_summary(family_df, mean_auto, samples_df['alpha'], ip_dist=IP_DIST, fname='dilution_summary',
+                                    # title=f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}')
 
 # Compute the fold-change. 
 # --------------------------
@@ -129,7 +129,7 @@ for i, c in enumerate(concs):
     dfs.append(_df[['strain', 'area_pix', 'mean_yfp', 'mean_mCherry', 
                    'atc_ngml', 'date', 'carbon', 'temp', 'operator', 'run_number', 'yfp_bg_val', 'mCherry_bg_val',
                    'alpha_mode', 'alpha_mean', 'alpha_median', 'alpha_hpd_min', 'alpha_hpd_max',
-                   'fold_change']])
+                   'fold_change', 'short_axis_death', 'long_axis_death', 'volume']])
 fc_df = pd.concat(dfs)
 
 # Save to disk. 

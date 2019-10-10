@@ -12,31 +12,20 @@ import tqdm
 bokeh.io.output_notebook()
 
 # Load in the compiled data
-fluct_data = pd.read_csv('../../data/compiled_fluctuations.csv')
-fc_data = pd.read_csv('../../data/compiled_fold_change.csv')
+fluct_data = pd.read_csv('../../data/raw_compiled_lineages.csv')
+fc_data = pd.read_csv('../../data/raw_compiled_snaps.csv')
 
 # Constants and bounds for size
 IP_DIST = 0.065 # In nm / pix
-min_size =  0 # 0.25 / IP_DIST**2 # Number is in µm^2
-max_size = 10000000 # / IP_DIST**2 # Number is in µm^2
 
 # Load the stan model
 model = mwc.bayes.StanModel('../stan/calibration_factor.stan')
 
 #%%
-# Filter the cells on area
-fluct_data = fluct_data[(fluct_data['area_1'] >= min_size) & 
-                        (fluct_data['area_2'] >= min_size) &
-                        (fluct_data['area_1'] <= max_size) & 
-                        (fluct_data['area_2'] <= max_size)].copy()
-
-fc_data = fc_data[(fc_data['area_pix'] >= min_size) & 
-                 (fc_data['area_pix'] <= max_size)].copy()
-
 # Instantiate storage lists for calfactor samples
 fc_dfs = []
 fluct_dfs = []
-for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
+for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_number'])):
     d = d.copy()
     # Isolate the fold-change data. 
     _fc_data = fc_data[(fc_data['carbon']==g[0]) & (fc_data['temp']==g[1]) & 
@@ -72,6 +61,8 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
     fluct_df['temp'] = g[1]
     fluct_df['date'] = g[2]
     fluct_df['run_no'] = g[-1]
+    fluct_df['volume_1'] = d['volume_1']
+    fluct_df['volume_2'] = d['volume_2']
     fluct_dfs.append(fluct_df)
 
     # Compute the fold-change
@@ -91,6 +82,8 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_no'])):
     _fc['carbon'] = g[0]
     _fc['temp'] = g[1]
     _fc['strain'] = _fc_data['strain']
+    _fc['volume_birth'] = _fc_data['volume_birth']
+    _fc['volume_death'] = _fc_data['volume_death']
     fc_dfs.append(_fc)
 
 

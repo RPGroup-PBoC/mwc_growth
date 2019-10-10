@@ -73,8 +73,8 @@ samples_df.rename(columns={'lp__':'log_prob'}, inplace=True)
 samples_df.to_csv(f'output/{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}_cal_factor_samples.csv', index=False)
 
 # Generate the dilution summary figure. 
-_ = mwc.validation.dilution_summary(family_df, samples_df['alpha'], ip_dist=IP_DIST, fname='dilution_summary',
-                                    title=f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}')
+# _ = mwc.validation.dilution_summary(family_df, samples_df['alpha'], ip_dist=IP_DIST, fname='dilution_summary',
+                                    # title=f'{DATE}_r{RUN_NO}_{TEMP}C_{CARBON}_{OPERATOR}')
 # Compute the fold-change. 
 # --------------------------
 # Load delta data.
@@ -87,7 +87,7 @@ mean_delta_yfp = (delta_df['fluor1_mean_death'] - delta_df['fluor1_bg_death']).m
 
 # Compute the mode and hpd of the calibration factor. 
 alpha_mode = samples_df.iloc[np.argmax(samples_df['log_prob'].values)]['alpha']
-hpd_min, hpd_max = mwc.stats.compute_hpd(samples_df['alpha'])
+alpha_hpd_min, alpha_hpd_max = mwc.stats.compute_hpd(samples_df['alpha'])
 
 # Iterate through all concentrations. 
 concs = glob.glob(f'{data_dir}snaps/*')
@@ -95,7 +95,8 @@ dfs = []
 for i, c in enumerate(concs):
     clists = glob.glob(f'{c}/xy*/clist.mat')
     _df = mwc.process.parse_clists(clists)
-    _df = mwc.process.morphological_filter(_df, ip_dist=IP_DIST)
+    _df = mwc.process.morphological_filter(_df, ip_dist=IP_DIST, area_bounds=[0, 50],
+                ar_bounds=[0, 1])
     strain, atc= c.split('/')[-1].split('_')
     atc = float(atc.split('ngml')[0])
 
@@ -120,7 +121,8 @@ for i, c in enumerate(concs):
     _df['alpha_hpd_max'] = alpha_hpd_max
     dfs.append(_df[['strain', 'area_pix', 'mean_yfp', 'mean_mCherry', 'fold_change',
                    'atc_ngml', 'date', 'carbon', 'temp', 'operator', 'run_number',
-                   'yfp_bg_val', 'mCherry_bg_val', 'alpha_mode', 'alpha_hpd_min', 'alpha_hpd_max']])
+                   'yfp_bg_val', 'mCherry_bg_val', 'alpha_mode', 'alpha_hpd_min', 'alpha_hpd_max',
+                   'volume', 'long_axis_death', 'short_axis_death']])
 fc_df = pd.concat(dfs)
 
 # Save to disk. 

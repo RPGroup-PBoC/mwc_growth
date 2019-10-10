@@ -67,16 +67,14 @@ for f in folders:
             ind = np.where(_conts_y == 0)[0][0]
             perm_conts_y = np.roll(_conts_y, -ind)
             perm_conts_x = np.roll(_conts_x, -ind)
-            filt_conts_x = scipy.signal.savgol_filter(perm_conts_x, 15, 2)
-            filt_conts_y = scipy.signal.savgol_filter(perm_conts_y, 15, 2)
-            _df = pd.DataFrame().from_dict({'x':filt_conts_x, 'idx':np.arange(len(conts)),
-                                          'y':filt_conts_y * 0.065})
+            _df = pd.DataFrame().from_dict({'x':perm_conts_x, 'idx':np.arange(len(conts)),
+                                          'y':perm_conts_y * 0.065})
             _df['cell_id'] = j
             dfs.append(_df)
             for i, a in enumerate(_ax):
-                a.plot(filt_conts_x + loc[i], 
-                    filt_conts_y * 0.065,
-                    lw=0.25, alpha=0.5, color=color)
+                a.plot(perm_conts_x * 0.065, 
+                    perm_conts_y * 0.065,
+                    lw=0.25, alpha=0.5, color='k')
 
            # Compute the average profile
     # df = pd.concat(dfs)

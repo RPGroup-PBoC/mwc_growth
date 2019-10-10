@@ -7,7 +7,7 @@ import mwc.stats
 colors, color_list = mwc.viz.personal_style()
 
 # Define the repressor copy number range. 
-rep_range = np.logspace(0, 3.75, 200)
+rep_range = np.linspace(1, 800, 500)
 
 # Define the target points for the explanation
 example_reps = np.array([10, 30, 100, 500, 1000])
@@ -34,6 +34,8 @@ deltaF = -np.log(ref_rep / rep_range) # in kT
 # Load the actual data. 
 fc_data = pd.read_csv('../../data/analyzed_foldchange.csv')
 inferred_F = pd.read_csv('../../data/inferred_empirical_F.csv')
+fc_data = fc_data[(fc_data['carbon'] != 'RDM') & (fc_data['fold_change'] > -0.01)]
+inferred_F = inferred_F[inferred_F['carbon'] != 'RDM']
 
 # Isolate the fc data to the relevant measurements 
 fc_data = fc_data[(fc_data['temp']==37) &
@@ -110,24 +112,4 @@ for i, r in enumerate(example_reps):
 plt.tight_layout()
 plt.savefig('../../figs/Fig_delF_carbon_quality.pdf', bbox_inches='tight', 
             facecolor='white')
-#%%
-fig, ax = plt.subplots(1, 1, figsize=(2, 2), dpi=100)
-ax.set_xscale('log')
-ax.set_yscale('log')
-
-# Define the axes and colors
-ax_map = {'glucose':1, 'glycerol':2, 'acetate':3}
-edgecolors = {'glucose':colors['dark_purple'], 'glycerol':colors['dark_green'],
-              'acetate':colors['dark_brown']}
-facecolors = {'glucose':colors['light_purple'], 'glycerol':colors['light_green'],
-              'acetate':colors['light_brown']}
-
-ax.plot(rep_range, fc, 'k-')
-for g, d in summary.groupby(['carbon']):
-    ax.errorbar(d['repressors']['mean'], d['fold_change']['mean'], 
-                      xerr=d['repressors']['sem'], yerr=d['fold_change']['sem'],
-                      fmt='.', ms=8, color=edgecolors[g], 
-                      markerfacecolor=facecolors[g], markeredgewidth=0.25)
-plt.savefig('../../figs/all_carbon_titration.pdf', bbox_inches='tight',
-facecolor='white')
 #%%

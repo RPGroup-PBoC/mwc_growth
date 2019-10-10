@@ -152,7 +152,7 @@ def compute_statistics(df, varnames=None, logprob_name='logp'):
     return stat_df
 
 
-def compute_hpd(trace, mass_frac):
+def compute_hpd(trace, mass_frac=0.95):
     R"""
     Returns highest probability density region given by
     a set of samples.
