@@ -57,8 +57,8 @@ for run in tqdm.tqdm(expts, desc="Parsing experiments"):
         clists = glob.glob(f'{s}/*/*.mat') 
         parsed = mwc.process.parse_clists(clists)
         parsed = mwc.process.morphological_filter(parsed, ip_dist=0.065,
-                                                area_bounds=[0.5, 10],
-                                                ar_bounds=[0, 0.75])
+                                                area_bounds=[0.1, 8],
+                                                ar_bounds=[0.1, 1])
         parsed['valid'] = parsed['error_frame'].isnull()
         parsed = parsed[parsed['valid']==True]
         if (strain == 'auto'):

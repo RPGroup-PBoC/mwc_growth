@@ -83,8 +83,8 @@ def clist_to_dataframe(clist_file, desired_props='default', added_props={},
     # Compute the aspect ratio.
     df['short_axis_death'] = df['short_axis_death'] * ip_dist
     df['long_axis_death'] = df['long_axis_death'] * ip_dist
-    df['short_axis_birth'] = df['short_axis_death'] * ip_dist
-    df['long_axis_birth'] = df['long_axis_death'] * ip_dist
+    df['short_axis_birth'] = df['short_axis_birth'] * ip_dist
+    df['long_axis_birth'] = df['long_axis_birth'] * ip_dist
 
     df.loc[:, 'aspect_ratio'] = df['short_axis_death'] / df['long_axis_death']
     df.loc[:, 'volume_death'] = 0.5 * np.pi * df['short_axis_death'].values**2 *\

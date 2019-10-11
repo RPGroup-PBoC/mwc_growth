@@ -35,7 +35,7 @@ ax.plot(bins['summed'], bins['fluct'], 'o', markeredgecolor=colors['dark_red'],
         markerfacecolor=colors['light_red'], ms=3, label='50 events / bin',
         markeredgewidth=0.5)
 ax.plot(summed_range, alpha_mean * summed_range, lw=0.75, color=colors['dark_red'], 
-        label=r'$\alpha$ ' + f'= {int(alpha_mean)} ± {int(alpha_std)} [a.u. / LacI]')
+        label=r'$\alpha$ ' + f'= {int(np.round(alpha_mean, decimals=-1))} ± {int(np.round(alpha_std, decimals=-1))} [a.u. / LacI]')
 ax.fill_between(summed_range, (alpha_mean + alpha_std) * summed_range, 
                 (alpha_mean - alpha_std) * summed_range, color=colors['red'], alpha=0.25)
 ax.legend(loc='lower right', fontsize=6)

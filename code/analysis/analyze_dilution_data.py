@@ -61,8 +61,8 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_number'
     fluct_df['temp'] = g[1]
     fluct_df['date'] = g[2]
     fluct_df['run_no'] = g[-1]
-    fluct_df['volume_1'] = d['volume_1']
-    fluct_df['volume_2'] = d['volume_2']
+    fluct_df['volume_1'] = d['volume_1'].values
+    fluct_df['volume_2'] = d['volume_2'].values
     fluct_dfs.append(fluct_df)
 
     # Compute the fold-change
