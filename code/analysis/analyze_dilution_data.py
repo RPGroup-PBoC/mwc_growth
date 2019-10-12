@@ -34,7 +34,7 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_number'
     # Compute the mean autofluorescence for each channel. 
     auto = _fc_data[_fc_data['strain']=='auto']
     delta = _fc_data[_fc_data['strain']=='delta']
-    mean_auto_mch = np.mean(auto['mean_mCherry'])
+    mean_auto_mch = np.mean(delta['mean_mCherry'])
     mean_auto_yfp = np.mean(auto['mean_yfp'])
 
     # Perform necessary background subtraction for fluctuation measurements. 

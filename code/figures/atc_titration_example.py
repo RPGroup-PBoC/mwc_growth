@@ -51,6 +51,4 @@ plt.savefig(f'../../figs/Fig2_atc_titration.pdf', bbox_inches='tight',
             facecolor='none')
 
 
-
-
 #%%

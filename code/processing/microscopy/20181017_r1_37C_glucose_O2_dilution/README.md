@@ -1,6 +1,6 @@
 ---
-status: Rejected
-reason: analysis not finished
+status: Accepted 
+reason: Nothing suspect
 ---
 
 # 2018-10-17 37C Glucose O2 Dilution

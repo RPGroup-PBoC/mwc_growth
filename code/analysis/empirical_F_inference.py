@@ -9,7 +9,7 @@ import tqdm
 data = pd.read_csv('../../data/analyzed_foldchange.csv')
 
 # Isolate the data to the "true" strains and compute the summary statistics
-data = data[(data['strain']=='dilution') & (data['repressors'] >= 10) & (data['fold_change'] > -0.01)]
+data = data[(data['strain']=='dilution') & (data['repressors'] >= 10) & (data['fold_change'] > -0.001)]
 
 # Compute the replicate summary statistics
 replicate = data.groupby(['date', 'run_number', 

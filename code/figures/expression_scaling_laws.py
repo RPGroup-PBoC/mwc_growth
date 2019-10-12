@@ -153,7 +153,9 @@ handles, labels = ax2.get_legend_handles_labels()
 leg = ax3.legend(reversed(handles), reversed(labels), title='   ATC\n[ng / mL]', 
                 fontsize=6, bbox_to_anchor=(1.15, 1))
 leg.get_title().set_fontsize(6)
-plt.subplots_adjust(hspace=0.5, wspace=0.6)
+ax1.set_title('carbon quality variation', loc='left', style='italic')
+ax3.set_title('temperature variation', loc='left', style='italic')
+plt.subplots_adjust(hspace=0.2, wspace=0.6)
 plt.savefig('../../figs/Fig_expression_scaling.svg', bbox_inches='tight', 
             facecolor='white')
 

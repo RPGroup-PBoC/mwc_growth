@@ -14,7 +14,7 @@ samples = pd.read_csv('../../data/entropic_parameter_samples.csv')
 # Restrict the fold-change data
 foldchange = foldchange[(foldchange['strain'] == 'dilution') & 
                         (foldchange['carbon'] == 'glucose') & 
-                        (foldchange['repressors'] > 10)].copy()
+                        (foldchange['repressors'] > 10) & (foldchange['fold_change'] > -0.1)].copy()
 
 # Define the range of repressors. 
 rep_range = np.logspace(1, 4, 100)
@@ -107,6 +107,7 @@ for k_fit, v_fit in temp_key.items():
         # Plot a shaded band for the credible region
         _ax.fill_between(rep_range, cred_region[0, :], cred_region[1, :],
                         color=fill_colors[k_fit], alpha=0.75, zorder=99)
+        _ax.set_xlim([1, 1000])
 plt.subplots_adjust(wspace=0.1, hspace=0.1)
 plt.savefig('../../figs/entropic_parameter_pairwise_prediction.pdf',
             bbox_inches='tight', facecolor='w')
