@@ -213,8 +213,12 @@ class StanModel(object):
         return df 
 
    
-def loadStanModel(fname, force=False):
+def loadStanModel(fname, force=False, set_environ=True):
     """Loads a precompiled Stan model. If no compiled model is found, one will be saved."""
+    if set_environ == True:
+        os.environ['CC'] = 'gcc-9'
+        os.environ['CXX'] = 'g++-9'
+
     # Identify the model name and directory structure
     rel, sm_dir = fname.split('/stan/')
     sm_name = sm_dir.split('.stan')[0]

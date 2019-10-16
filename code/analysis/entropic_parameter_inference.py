@@ -33,7 +33,7 @@ data_dict = {'J': grouped['idx'].max(),
              'ref_epRA': -13.9,
              'ref_epAI': 4.5,
              'Nns': 4.6E6,
-             'temp': grouped['temp'].unique(),
+             'temp': grouped['temp'].values,
              'repressors': grouped['repressors'],
              'foldchange': grouped['fold_change']}
 
@@ -43,6 +43,7 @@ fit, samples = model.sample(data_dict, iter=5000, control=dict(adapt_delta=0.99)
 #%%
 # Extract and summarize the parameters
 params = model.summarize_parameters()
+params
 
 #%%
 # Rename the dimensions to the correct temperatures. 
@@ -59,7 +60,7 @@ for k, v in keymap.items():
         df = pd.DataFrame()
         if (p == 'delta_S_DNA') | (p=='delta_S_ALLO'):
             df['value'] = samples[f'{p}']
-        else if (p == 'true_epRA'):
+        elif (p == 'true_epRA'):
             df['value'] = samples[f'{p}']
         else:
             df['value'] = samples[f'{p}[{k}]']
