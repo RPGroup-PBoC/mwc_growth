@@ -3,10 +3,9 @@
 import numpy as np 
 import matplotlib.pyplot as plt
 import pandas as pd
-import phd.viz
 import mwc.stats
 import mwc.viz
-colors = phd.viz.phd_style()
+colors, color_list = mwc.viz.personal_style()
 
 #%% Load the lineages and isolate the glucose samples
 carbon = 'glucose'
@@ -30,9 +29,9 @@ ax.xaxis.set_tick_params(labelsize=6)
 ax.yaxis.set_tick_params(labelsize=6, labelcolor=colors['dark_orange'])
 ax2.yaxis.set_tick_params(labelsize=6, labelcolor=colors['dark_red'])
 ax.set_xlabel('ATC [ng / mL]', style='italic', fontsize=8)
-ax.set_ylabel('relative YFP intensity', style='italic', fontsize=8, 
+ax.set_ylabel('relative YFP intensity', style='italic', fontsize=10, 
               color=colors['dark_orange'])
-ax2.set_ylabel('relative mCherry intensity', style='italic', fontsize=8, rotation=-90,
+ax2.set_ylabel('relative mCherry intensity', style='italic', fontsize=10, rotation=-90,
                labelpad=10, color=colors['dark_red'])
 
 # Set the maximum to normalize

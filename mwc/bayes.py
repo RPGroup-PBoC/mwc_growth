@@ -230,7 +230,7 @@ def loadStanModel(fname, force=False, set_environ=True):
         print('finished!')
     else:
         print('Precompiled model not found. Compiling model...')
-        model = pystan.StanModel(fname) #, extra_compile_args=['-stdlib=libc++'])
+        model = pystan.StanModel(fname, extra_compile_args=['-stdlib=libc++'])
         print('finished!')
         with open(pkl_name, 'wb') as f:
             pickle.dump(model, f)      
