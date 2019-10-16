@@ -16,8 +16,8 @@ replicate = data.groupby(['date', 'run_number',
                           'carbon', 'temp', 'atc_ngml']).mean().reset_index()
 
 # Load the statistical model and compile if need be
-model = mwc.bayes.StanModel('../stan/empirical_F_inference.stan') 
-                            # force_compile=True)
+model = mwc.bayes.StanModel('../stan/empirical_F_inference.stan',
+                            force_compile=True)
 #%%
 # Instantiate storage vectors and begin the inference for each condition
 summary_dfs = []

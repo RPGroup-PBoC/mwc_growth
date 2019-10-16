@@ -22,6 +22,7 @@ grouped = data.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
 # Determine the number of unique temperatures and add an identifier. 
 grouped['idx'] = grouped.groupby('temp').ngroup() + 1
 
+#%%
 # Load the inferential model. 
 model = mwc.bayes.StanModel('../stan/entropy_estimation.stan', force_compile=True)
 #%%
