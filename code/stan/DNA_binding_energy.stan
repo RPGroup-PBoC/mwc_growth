@@ -19,7 +19,7 @@ data {
     int<lower=1, upper=J> idx[N]; // ID vector for condition
 
     // Input parameters
-    vector<lower=1>[N] repressors; // Number of repressors per cell
+    vector<lower=0>[N] repressors; // Number of repressors per cell
     real<lower=1> Nns; // Number of nonspecific binding sites
 
     // Observed quantities
@@ -27,16 +27,19 @@ data {
 }
 
 parameters {
+    vector[J] epAI; // allosteric binding energy
     vector[J] epRA; // DNA binding energy
     vector<lower=0>[J] sigma; // Homoscedastic error
 }
 
 model {
     // Compute the mean fold-change in gene expression. 
-    vector[N] mu = 1 ./ (1 + (repressors ./ Nns) .* exp(-epRA[idx]));
+    vector[N] pact = 1 ./ (1 + exp(-epAI[idx]));
+    vector[N] mu = 1 ./ (1 + pact .* (repressors ./ Nns) .* exp(-epRA[idx]));
 
     // Define the priors. 
-    epRA ~ normal(12, 6); // Same prior as used in Chure et al 2019 PNAS 
+    epRA ~ normal(-12, 6); // Same prior as used in Chure et al 2019 PNAS 
+    epAI ~ normal(4.5, 2);
     sigma ~ normal(0, 0.1); // Sampe prior as used in Chure et al 2019 PNAS
 
     // Evaluate the likelihood. 

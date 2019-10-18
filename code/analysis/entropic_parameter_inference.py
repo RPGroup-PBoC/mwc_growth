@@ -13,28 +13,29 @@ _data = pd.read_csv('../../data/analyzed_foldchange.csv')
 
 # Keep only the dilution strain and the glucose samples as well as >0 reps
 data = _data[(_data['strain']=='dilution') &
-            (_data['carbon']=='glucose') &
-            (_data['repressors'] > 10)].copy()
+            (_data['carbon']=='glucose') & (_data['fold_change'] >= 0) &
+            (_data['repressors'] >= 0) & (_data['temp'] != 37)].copy()
 
+data['repressors'] = data['repressors'].round()
 # Group by date, run_number, and ATC concentration to compute the mean fc
-grouped = data.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
+grouped = data.groupby(['date', 'run_number', 'atc_ngml', 'temp']).mean().reset_index()
 
 # Determine the number of unique temperatures and add an identifier. 
 grouped['idx'] = grouped.groupby('temp').ngroup() + 1
 
 #%%
 # Load the inferential model. 
-model = mwc.bayes.StanModel('../stan/entropy_estimation.stan', force_compile=True)
+model = mwc.bayes.StanModel('../stan/entropy_estimation.stan') #, force_compile=True)
 #%%
 # Assign the data dictionary. 
 data_dict = {'J': grouped['idx'].max(), 
              'N':len(grouped), 
              'idx': grouped['idx'],
-             'ref_temp': 37,
+             'ref_temp': 37 + 273.15,
              'ref_epRA': -13.9,
              'ref_epAI': 4.5,
              'Nns': 4.6E6,
-             'temp': grouped['temp'].values,
+             'temp': grouped['temp'].unique() + 273.15,
              'repressors': grouped['repressors'],
              'foldchange': grouped['fold_change']}
 
@@ -54,14 +55,16 @@ for dim, temp in zip(grouped['idx'].unique(), grouped['temp'].unique()):
     params.loc[params['dimension']==dim, 'temp'] = temp
     keymap[dim] = temp
 
-renamed_params = ['delta_S_DNA', 'sigma', 'true_epRA']
+renamed_params = ['delta_S_ALLO', 'epRA_star', 'epAI_star', 'delta_S_DNA',  'sigma']
 samples_dfs = []
 for k, v in keymap.items():
     for p in renamed_params:
         df = pd.DataFrame()
         if (p == 'delta_S_DNA') | (p=='delta_S_ALLO'):
             df['value'] = samples[f'{p}']
-        elif (p == 'true_epRA'):
+        elif (p == 'true_epRA') | (p == 'true_epAI'):
+            df['value'] = samples[f'{p}']
+        elif (p == 'sigma'):
             df['value'] = samples[f'{p}']
         else:
             df['value'] = samples[f'{p}[{k}]']

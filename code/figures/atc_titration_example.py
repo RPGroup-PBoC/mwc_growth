@@ -11,9 +11,8 @@ colors, color_list = mwc.viz.personal_style()
 carbon = 'glucose'
 temp = 37 
 snaps = pd.read_csv('../../data/analyzed_foldchange.csv')
-# snaps.loc[snaps['atc_ngml']<1, 'atc_ngml'] *= 10
 glucose = snaps[(snaps['carbon']==carbon) & (snaps['temp']==temp) & 
-                (snaps['strain']=='dilution')]
+                (snaps['strain']=='dilution') & (snaps['fold_change']>=0) & (snaps['repressors']>=0)]
 
 replicates = glucose.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
 summarized = replicates.groupby(['atc_ngml']).agg(('mean', 'sem')).reset_index()

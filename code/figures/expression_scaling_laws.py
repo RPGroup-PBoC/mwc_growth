@@ -11,7 +11,7 @@ mwc.viz.personal_style()
 
 # Load the fold-change data and growth rate stats
 foldchange = pd.read_csv('../../data/analyzed_foldchange.csv')
-foldchange = foldchange[foldchange['repressors'] > 0]
+foldchange = foldchange[(foldchange['repressors'] >= 0) & (foldchange['fold_change']>=0)]
 _flucts =  pd.read_csv('../../data/analyzed_fluctuations.csv')
 stats = pd.read_csv('../../data/compiled_growth_statistics.csv')
 
@@ -134,7 +134,7 @@ for g, d in fc.groupby(['atc_ngml']):
     i += 1
 
 for a in [ax1, ax3]:
-    a.set_ylim([0.8, 4])
+    a.set_ylim([1.5, 3.5])
     a.set_xlabel('growth rate [hr$^{-1}$]', fontsize=8, style='italic')
     a.set_ylabel('cell volume [fL]', fontsize=8, style='italic')
 

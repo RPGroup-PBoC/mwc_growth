@@ -8,7 +8,7 @@ data {
 
     // Define the observables. 
     vector[N] foldchange; 
-    vector<lower=1>[N] repressors;
+    vector<lower=0>[N] repressors;
 }
 
 parameters {

@@ -9,15 +9,16 @@ import tqdm
 data = pd.read_csv('../../data/analyzed_foldchange.csv')
 
 # Isolate the data to the "true" strains and compute the summary statistics
-data = data[(data['strain']=='dilution') & (data['repressors'] >= 10) & (data['fold_change'] > -0.001)]
+data['repressors'] = data['repressors'].round()
+data = data[(data['strain']=='dilution') & (data['repressors'] >= 0) & (data['fold_change'] >= 0)]
 
 # Compute the replicate summary statistics
 replicate = data.groupby(['date', 'run_number', 
                           'carbon', 'temp', 'atc_ngml']).mean().reset_index()
 
 # Load the statistical model and compile if need be
-model = mwc.bayes.StanModel('../stan/empirical_F_inference.stan',
-                            force_compile=True)
+model = mwc.bayes.StanModel('../stan/empirical_F_inference.stan')
+
 #%%
 # Instantiate storage vectors and begin the inference for each condition
 summary_dfs = []
@@ -36,7 +37,7 @@ for g, d in  tqdm.tqdm(replicate.groupby(['carbon', 'temp'])):
                  'idx':d['idx'], 'foldchange':d['fold_change'],
                  'repressors':d['repressors']}
     fit, samples = model.sample(data_dict, iter=5000, 
-                                control=(dict(adapt_delta=0.99)))
+                                control=(dict(adapt_delta=0.9)))
 
     # Summarize the parameters
     params = model.summarize_parameters()

@@ -36,12 +36,13 @@ deltaF = -np.log(ref_rep / rep_range) # in kT
 # Load the actual data. 
 fc_data = pd.read_csv('../../data/analyzed_foldchange.csv')
 inferred_F = pd.read_csv('../../data/inferred_empirical_F.csv')
-fc_data = fc_data[(fc_data['carbon'] != 'RDM') & (fc_data['fold_change'] > -0.001)]
 
 # Isolate the fc data to the relevant measurements 
 fc_data = fc_data[(fc_data['temp']==37) &
                   (fc_data['strain']=='dilution') & 
-                  (fc_data['repressors'] >= 10)].copy()
+                  (fc_data['repressors'] >= 0) & 
+                  (fc_data['fold_change'] >= 0)].copy()
+fc_data['repressors'] = fc_data['repressors'].round()
 inferred_F = inferred_F[inferred_F['temp']==37].copy()
 
 # Compute the summary statistics
@@ -53,7 +54,7 @@ summary = rep_summary.groupby(['atc_ngml', 'carbon']).agg(('mean', 'sem')).reset
 fig, ax = plt.subplots(2, 4, figsize=(7, 3.5), dpi=100)
 
 # Define the axes and colors
-ax_map = {'glucose':1, 'glycerol':2, 'acetate':3}
+ax_map = {'glucose':0, 'glycerol':1, 'acetate':2}
 edgecolors = {'glucose':colors['dark_purple'], 'glycerol':colors['dark_green'],
               'acetate':colors['dark_brown']}
 facecolors = {'glucose':colors['light_purple'], 'glycerol':colors['light_green'],
@@ -97,29 +98,34 @@ for i, a in enumerate(ax.ravel()):
 
 
 # Plot the explanatory points. 
-ax[0, 0].grid(False)
-ax[1, 0].grid(False)
-ax[0, 0].fill_between(rep_range, example_fc[2], 1.05, color=colors['light_red'],
+ax[0, -1].grid(False)
+ax[1, -1].grid(False)
+ax[0, -1].fill_between(rep_range, example_fc[2], 1.05, color=colors['light_red'],
             alpha=0.5)
-ax[0, 0].fill_between(rep_range, example_fc[2], -.05, color=colors['light_green'],
+ax[0, -1].fill_between(rep_range, example_fc[2], -.05, color=colors['light_green'],
             alpha=0.5)
-ax[1, 0].fill_betweenx(np.linspace(-5, 5, 200), 1, 4.5, 
+ax[1, -1].fill_betweenx(np.linspace(-5, 5, 200), 1, 4.5, 
                     color=colors['light_green'], alpha=0.5)
-ax[1, 0].fill_betweenx(np.linspace(-5, 5, 100), 0, 0.99, 
+ax[1, -1].fill_betweenx(np.linspace(-5, 5, 100), 0, 0.99, 
                     color=colors['light_red'], alpha=0.5)
 for i, r in enumerate(example_reps):
-    ax[0, 0].plot(r, example_fc[i], 'o', markerfacecolor=example_facecolors[r],
+    ax[0, -1].plot(r, example_fc[i], 'o', markerfacecolor=example_facecolors[r],
             markeredgecolor=example_edgecolors[r], markeredgewidth=0.75)
-    ax[1, 0].plot(r / ref_rep, example_delF[i], 'o', markerfacecolor=example_facecolors[r],
+    ax[1, -1].plot(r / ref_rep, example_delF[i], 'o', markerfacecolor=example_facecolors[r],
             markeredgecolor=example_edgecolors[r], markeredgewidth=0.75)
 
+ax[1, -1].set_xscale('log')
 for i in range(2):
-    for j in range(1, 4):
-        ax[0, j].set_xlim([10, 300])
-        ax[1, j].set_xlim([.1, 2])
+    for j in range(0, 3):
+        ax[0, j].set_xlim([5, 300])
+        ax[1, j].set_xlim([.05, 2.5])
+        ax[1, j].set_xscale('log')
         ax[1, j].set_xticks([0.1, 0.5, 1, 1.5, 2])
         ax[0, j].set_ylim([1E-3, 1.1])
-ax[1, 0].set_xlim([0, 4.5])
+for i in range(4):
+    ax[1, i].set_xticks([0.1, 1, 10])
+
+ax[1, -1].set_xlim([0.1, 5])
 
 plt.tight_layout()
 plt.savefig('../../figs/Fig_delF_carbon_quality.svg', bbox_inches='tight', 
