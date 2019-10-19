@@ -77,10 +77,12 @@ for T, i in temp_axes.items():
     fc = (1 + pact * rep_range * np.exp(-rel_T * ep_RA) / Nns)**-1
 
     # Compute the deltaF 
-    delF = -np.log(pact / ref_pact) - np.log(rep_range / ref_rep) + (ep_RA * (1 - rel_T))
-    ax[0, i].plot(rep_range, ref_fc, 'k', linestyle=':', linewidth=0.75, label='∆ε')
+    bohr = -np.log(pact) - np.log(rep_range / 4E6) + (rel_T * ep_RA)
+    ref_bohr = -np.log(ref_pact) - np.log(ref_rep / 4E6) + (ep_RA)
+    delF = bohr - ref_bohr
+    ax[0, i].plot(rep_range, ref_fc, 'k', linestyle=':', linewidth=0.75, label=r'$\Delta\varepsilon_{ref}$')
     ax[1, i].plot(rep_range / ref_rep, np.log(rep_range / ref_rep), 'k', linestyle=':', linewidth=0.75)
-    ax[0, i].plot(rep_range, fc, 'k', linestyle='-', linewidth=0.5, label=r'$\left(\frac{T_{ref}}{T_{exp}}\right)$' +  '∆ε') 
+    ax[0, i].plot(rep_range, fc, 'k', linestyle='-', linewidth=0.5, label=r'$\frac{T_{ref}}{T_{exp}}$ ' +  '∆ε') 
     ax[1, i].plot(rep_range / ref_rep, -delF, 'k', linestyle='-', linewidth=0.5)
 
 ax[0, 0].set_xlim([1, 500]) 
@@ -111,7 +113,7 @@ for g, d in params.groupby(['temp']):
         delF_cred[:, i] = mwc.stats.compute_hpd(dBohr, 0.95)
         
     fc_ax.fill_between(rep_range, fc_cred[0, :], fc_cred[1, :], 
-                    facecolor='white', alpha=0.75, edgecolor='k', hatch='------', lw=0.5, label = '∆ε + ΤΔS')
+                    facecolor='white', alpha=0.75, edgecolor='k', hatch='------', lw=0.5, label = r'$\frac{T_{ref}}{T_{exp}}\Delta\varepsilon_{ref} + T_{exp}\Delta S$')
     delF_ax.fill_between(rep_range / ref_rep, delF_cred[0, :], delF_cred[1, :], 
                     facecolor='white', edgecolor='k', hatch='-----', lw=0.5,
                     alpha=0.75)
@@ -142,8 +144,13 @@ for g, d in inferred_F.groupby(['temp']):
                 linestyle='none', color=colors_edge[g], markerfacecolor=colors_fill[g],
                 markeredgecolor=colors_edge[g], markeredgewidth=0.75, ms=8, fmt='.')
 
-
-ax[0, 0].legend(fontsize=7, handlelength=0.5)
 plt.subplots_adjust(wspace=0.3, hspace=0.4)
-plt.savefig('../../figs/Fig_deltaF_temp.pdf', facecolor='white')
+ax[0, 0].legend(fontsize=7.5, handlelength=1, ncol=3, bbox_to_anchor=(0.4, 1.02))
+plt.savefig('../../figs/Fig_deltaF_temp.svg', facecolor='white', bbox_inches='tight')
+
+
+
+ #%%
+
+
 #%%

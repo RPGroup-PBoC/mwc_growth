@@ -128,7 +128,7 @@ for i in range(4):
 ax[1, -1].set_xlim([0.1, 5])
 
 plt.tight_layout()
-plt.savefig('../../figs/Fig_delF_carbon_quality.svg', bbox_inches='tight', 
+plt.savefig('../../figs/Fig_delF_carbon_quality.pdf', bbox_inches='tight', 
             facecolor='white')
 
 
