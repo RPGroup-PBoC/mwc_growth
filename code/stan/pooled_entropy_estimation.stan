@@ -1,5 +1,5 @@
 /* *****************************************************************************
-* Estimation of Temperature Dependent Entropic Change
+* Pooled Estimation of Temperature Dependent Entropic Change
 * ------------------------------------------------------------------------------- 
 * Author: Griffin Chure
 * Last Modified: October 19, 2019
@@ -9,7 +9,7 @@
 * ------------------------------------------------------------------------------- 
 * This model infers a temperature dependent entropic term for the DNA binding
 * energy and the allosteric energy, given measurements of the fold-change in 
-* gene expression. This model can be run hierarchically if J > 1
+* gene expression. It does so using all supplied data.
 * *****************************************************************************/
 data {
     // Define dimensional parameters
@@ -30,17 +30,15 @@ data {
 }
 
 parameters { 
-    vector[J] delta_S_DNA;
-    vector[J] delta_S_ALLO;
-    vector<lower=0>[J] sigma; // Homoscedastic error
+    real delta_S;
+    real<lower=0> sigma; // Homoscedastic error
 }
 
 transformed parameters { 
     // Compute the modified binding energies;
-    vector<upper=0>[J] true_epRA = ref_epRA + delta_S_DNA * ref_temp;
-    vector<lower=0>[J] true_epAI = ref_epAI + delta_S_ALLO * ref_temp;
-    vector[J] epRA_star =  (ref_temp ./ temp) .* true_epRA - delta_S_DNA  .* temp;
-    vector[J] epAI_star = (ref_temp ./ temp) .* true_epAI - delta_S_ALLO .* temp;
+    real true_epRA = ref_epRA + delta_S * ref_temp;
+    vector[J] epRA_star =  (ref_temp ./ temp) * true_epRA - delta_S  * temp;
+    vector[J] epAI_star = (ref_temp ./ temp) * ref_epAI;
 }
 
 model { 
@@ -52,11 +50,10 @@ model {
      vector[N] mu = 1 ./ (1 + pact .* (repressors ./ Nns) .* exp(-epRA_star[idx])); 
 
      // Define the priors
-     delta_S_DNA ~ normal(0, 0.1);
-     delta_S_ALLO ~ normal(0, 0.1);
+     delta_S ~ normal(0, 0.1);
      sigma ~ normal(0, 0.1);
 
      // Evaluate the likelihood
-     foldchange ~ normal(mu, sigma[idx]);
+     foldchange ~ normal(mu, sigma);
 
  }

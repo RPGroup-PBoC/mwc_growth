@@ -8,6 +8,10 @@ import mwc.bayes
 colors, color_list = mwc.viz.bokeh_theme()
 bokeh.io.output_notebook()
 
+# Define whether the analysis should be pooled or not. 
+pooled = 1
+force_compile = True
+
 # Load the fluctuation data
 _data = pd.read_csv('../../data/analyzed_foldchange.csv')
 
@@ -25,7 +29,11 @@ grouped['idx'] = grouped.groupby('temp').ngroup() + 1
 
 #%%
 # Load the inferential model. 
-model = mwc.bayes.StanModel('../stan/entropy_estimation.stan') #, force_compile=True)
+if pooled == 1:
+    model = mwc.bayes.StanModel('../stan/pooled_entropy_estimation.stan', force_compile=force_compile)
+
+else:
+    model = mwc.bayes.StanModel('../stan/entropy_estimation.stan', force_compile=force_compile)
 #%%
 # Assign the data dictionary. 
 data_dict = {'J': grouped['idx'].max(), 
@@ -55,17 +63,16 @@ for dim, temp in zip(grouped['idx'].unique(), grouped['temp'].unique()):
     params.loc[params['dimension']==dim, 'temp'] = temp
     keymap[dim] = temp
 
-renamed_params = ['delta_S_ALLO', 'epRA_star', 'epAI_star', 'delta_S_DNA',  'sigma']
+renamed_params = ['epRA_star', 'epAI_star', 'delta_S',  'sigma']
 samples_dfs = []
 for k, v in keymap.items():
     for p in renamed_params:
         df = pd.DataFrame()
-        if (p == 'delta_S_DNA') | (p=='delta_S_ALLO'):
-            df['value'] = samples[f'{p}']
-        elif (p == 'true_epRA') | (p == 'true_epAI'):
-            df['value'] = samples[f'{p}']
-        elif (p == 'sigma'):
-            df['value'] = samples[f'{p}']
+        if pooled == 1:
+            if (p == 'delta_S') | (p=='sigma'):
+                df['value'] = samples[f'{p}']
+            else:
+                df['value'] = samples[f'{p}[{k}]']
         else:
             df['value'] = samples[f'{p}[{k}]']
         df['lp__'] = samples['lp__']
@@ -76,11 +83,17 @@ for k, v in keymap.items():
 
 # Concatenate the sampling info and save
 lf_samples = pd.concat(samples_dfs)
-lf_samples.to_csv('../../data/entropic_parameter_samples.csv')
+if pooled==1:
+    name = 'pooled_entropic_parameter'
+else:
+    name = 'entropic_parameter'
+lf_samples.to_csv(f'../../data/{name}_samples.csv')
 
-# Add the carbon information and save to dis,. 
+# Add the carbon information and save to disk. 
 params['carbon'] = 'glucose'
-params.to_csv('../../data/entropic_parameter_summary.csv')
+params.to_csv('../../data/{name}_summary.csv')
+
+
 
 
 #%%
