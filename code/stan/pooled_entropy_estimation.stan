@@ -31,14 +31,16 @@ data {
 
 parameters { 
     real delta_S;
+    real delta_S_vib;
     real<lower=0> sigma; // Homoscedastic error
 }
 
 transformed parameters { 
     // Compute the modified binding energies;
     real true_epRA = ref_epRA + delta_S * ref_temp;
+    real true_epAI = ref_epAI + delta_S_vib * ref_temp;
     vector[J] epRA_star =  (ref_temp ./ temp) * true_epRA - delta_S  * temp;
-    vector[J] epAI_star = (ref_temp ./ temp) * ref_epAI;
+    vector[J] epAI_star = (ref_temp ./ temp) * true_epAI - delta_S_vib * temp;
 }
 
 model { 
@@ -51,6 +53,7 @@ model {
 
      // Define the priors
      delta_S ~ normal(0, 0.1);
+     delta_S_vib ~ normal(0, 0.1);
      sigma ~ normal(0, 0.1);
 
      // Evaluate the likelihood

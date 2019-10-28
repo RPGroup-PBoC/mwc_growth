@@ -64,7 +64,6 @@ for i in range(2):
     ax[1, i].set_xlabel('$R_{T} / R_{ref}$', fontsize=8)
     ax[1, i].set_ylabel('$\Delta F$ [$k_BT$]')
 
-
 # Define the axes for temperatures.
 temp_axes = {32:0, 42:1}
 
@@ -80,11 +79,12 @@ for T, i in temp_axes.items():
     bohr = -np.log(pact) - np.log(rep_range / 4E6) + (rel_T * ep_RA)
     ref_bohr = -np.log(ref_pact) - np.log(ref_rep / 4E6) + (ep_RA)
     delF = bohr - ref_bohr
-    ax[0, i].plot(rep_range, ref_fc, 'k', linestyle=':', linewidth=0.75, label=r'$\Delta\varepsilon_{ref}$')
-    ax[1, i].plot(rep_range / ref_rep, np.log(rep_range / ref_rep), 'k', linestyle=':', linewidth=0.75)
-    ax[0, i].plot(rep_range, fc, 'k', linestyle='-', linewidth=0.5, label=r'$\frac{T_{ref}}{T_{exp}}$ ' +  '∆ε') 
-    ax[1, i].plot(rep_range / ref_rep, -delF, 'k', linestyle='-', linewidth=0.5)
-
+    ax[0, i].plot(rep_range, ref_fc, 'k', linestyle='-', linewidth=0.75, label=r'$\Delta\varepsilon_{ref}$', color=colors['purple'])
+    ax[1, i].plot(rep_range / ref_rep, np.log(rep_range / ref_rep), linestyle='-', linewidth=1, color=colors['purple'])
+    ax[0, i].plot(rep_range, fc, linestyle='-', linewidth=0.5, label=r'$\frac{T_{ref}}{T_{exp}}$ ' +  '∆ε', color=colors['orange']) 
+    ax[1, i].plot(rep_range / ref_rep, -delF,  linestyle='-', linewidth=0.5, color=colors['orange'])
+ax[0, 0].set_title('32°C', color=colors['blue'], fontsize=8, y=1.03, bbox=dict(facecolor='none', edgecolor=colors['blue'], lw=0.5))
+ax[0, 1].set_title('42°C', color=colors['red'], fontsize=8, y=1.03, bbox=dict(facecolor='none', edgecolor=colors['red'], lw=0.5))
 ax[0, 0].set_xlim([1, 500]) 
 ax[0, 1].set_xlim([10, 800]) 
 ax[0, 0].set_ylim([1E-3, 1])
@@ -99,8 +99,8 @@ for g, d in params.groupby(['temp']):
     fc_ax = ax[0, temp_axes[g]]
     delF_ax = ax[1, temp_axes[g]]
     # Extract the relevant parameters. 
-    epRA_star = d[d['parameter']=='epRA_star']['value'].values
-    epAI_star = d[d['parameter']=='epAI_star']['value'].values
+    epRA_star = d[(d['parameter']=='epRA_star')]['value'].values
+    epAI_star = d[(d['parameter']=='epAI_star')]['value'].values
     pact = (1 + np.exp(-epAI_star))**-1
     # Compute the credible regions for the delta F and fold-change
     fc_cred = np.zeros((2, len(rep_range)))
@@ -113,10 +113,10 @@ for g, d in params.groupby(['temp']):
         delF_cred[:, i] = mwc.stats.compute_hpd(dBohr, 0.95)
         
     fc_ax.fill_between(rep_range, fc_cred[0, :], fc_cred[1, :], 
-                    facecolor='white', alpha=0.75, edgecolor='k', hatch='------', lw=0.5, label = r'$\frac{T_{ref}}{T_{exp}}\Delta\varepsilon_{ref} + T_{exp}\Delta S$')
+                    facecolor=colors['green'], alpha=0.5, label = r'$\frac{T_{ref}}{T_{exp}}\Delta\varepsilon_{ref} + T_{exp}\Delta S$')
     delF_ax.fill_between(rep_range / ref_rep, delF_cred[0, :], delF_cred[1, :], 
-                    facecolor='white', edgecolor='k', hatch='-----', lw=0.5,
-                    alpha=0.75)
+                    facecolor=colors['green'],  lw=0.5,
+                    alpha=0.5)
 
 # Plot the data
 for g, d in summary.groupby(['temp']):
@@ -146,7 +146,7 @@ for g, d in inferred_F.groupby(['temp']):
 
 plt.subplots_adjust(wspace=0.3, hspace=0.4)
 # ax[0, 0].legend(fontsize=7.5, handlelength=1, ncol=3, bbox_to_anchor=(0.4, 1.02))
-plt.savefig('../../figs/Fig_deltaF_temp.pdf', facecolor='white', bbox_inches='tight')
+plt.savefig('../../figs/Fig_deltaF_temp_entropycorr.pdf', facecolor='white', bbox_inches='tight')
 
 
 

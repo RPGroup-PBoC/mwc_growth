@@ -62,78 +62,18 @@ class StanModel(object):
             return self.samples
     
     # Pickling objects
-    def dump(fname):
+    def dump(self, fname):
         """Saves StanFit4Model object and sampling summary as a pickled dictionary."""
         with open(f"{fname.split('.')[0]}.pkl", 'wb') as _file:
             pickle.dump({'model' : self.model, 'fit' : self.samples}, _file, protocol=-1)
                   
-    def _load(fname):
+    def _load(self, fname):
         with open(file, 'rb') as _file:
             fit_dict = pickle.load(_file)
         self.model = fit_dict[0]
         self.samples = fit_dict[1]
         return [self.model, self.samples]
     
-    # Diagnostics
-    def check_divergence(self, thresh=0.0005, return_values=True, quiet=False):
-        """
-        Computes the fraction of diverging samples
-        """
-        if self.samples == None:
-            raise RuntimeError('Divergence is not defined without sampling. Please sample your model first')
-        if self.df == None:
-            self.df = self.samples.to_datframe(diagnostics=True)
-
-        n_div = np.sum(self.df['divergent__']) 
-        div_frac = n_div / len(self.df) * 100
-        if div_frac == 0:
-            statement = "No diverging samples found. Nicely done."
-        if div_frac < thresh:
-            statement = "Diverging samples below {} % ({} of {} samples diverging).".format(thresh * 100, n_div, len(self.df)) 
-        else:
-            statement = "Warning, {} % of samples are diverging. Reparameterize your model or adjust adapt_delta above 0.8.".format(div_frac)
-        
-        if quiet is not False:
-            print(statement)
-        if return_values:
-            return {'statement':statement, 'n_diverging':n_div, 'n_samples': len(self.df), 'diverging_fraction':div_frac}
-        else:
-            return statement
-
-    def check_rhat(self, return_values=True, quiet=False):
-        """
-        Determines the Gelman-Rubin statistic (R-hat). If 0.9 < r-hat < 1.1, the sampler has converged. 
-        """
-        if self.samples == None:
-            raise RuntimeError('R-hat not defined without sampling. Please sample your model first.')
-        if self.df == None:
-            self.df = self.samples.to_dataframe(diagnostics=True)
-        raise RuntimeError('Not yet implemented!')
-
-    def check_n_effective(self, thresh=0.001, return_values=True, quiet=False):
-        if self.samples == None: 
-           raise RuntimeError('n_effective / N not defined without sampling. Please sample your model first.')
-        if self.df == None:
-            self.df = self.samples.to_dataframe(diagnostics=True)
-        raise RuntimeError('Not yet implemented!')
-
-    def check_diagnostics(self, save_summary=False, fname=None, return_values=True, quiet=False):
-        """
-        Checks all sampling diagnostics. 
-
-        Parameters
-        ----------
-        save_summary: bool
-            If True, a summary file will be saved. fname is required. 
-        fname: str
-            Desired filename of summary file. Only required if save_summary is True.
-        return_values: bool
-            If True, a dictionary of diagnostics is returned.
-        quiet: bool
-            If True, summary will not be printed to screen. Default is False.
-        """
-        raise RuntimeError('Not yet implemented!')
-                  
     def summarize_parameters(self, parnames=[], mass_frac=0.95):
         """
         Summarizes all or a subset of parameters from a Stan model. 
@@ -230,7 +170,7 @@ def loadStanModel(fname, force=False, set_environ=True):
         print('finished!')
     else:
         print('Precompiled model not found. Compiling model...')
-        model = pystan.StanModel(fname, verbose=True) # , extra_compile_args=['-stdlib=libc++'])
+        model = pystan.StanModel(file=fname, verbose=True)#  , extra_compile_args=['-stdlib=libc++'])
         print('finished!')
         with open(pkl_name, 'wb') as f:
             pickle.dump(model, f)      

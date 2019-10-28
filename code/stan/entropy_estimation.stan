@@ -30,33 +30,33 @@ data {
 }
 
 parameters { 
-    vector[J] delta_S_DNA;
-    vector[J] delta_S_ALLO;
+    vector[J] delta_S;
     vector<lower=0>[J] sigma; // Homoscedastic error
 }
 
 transformed parameters { 
     // Compute the modified binding energies;
-    vector<upper=0>[J] true_epRA = ref_epRA + delta_S_DNA * ref_temp;
-    vector<lower=0>[J] true_epAI = ref_epAI + delta_S_ALLO * ref_temp;
-    vector[J] epRA_star =  (ref_temp ./ temp) .* true_epRA - delta_S_DNA  .* temp;
-    vector[J] epAI_star = (ref_temp ./ temp) .* true_epAI - delta_S_ALLO .* temp;
+    vector[J] true_epRA; // =  ref_epRA + ref_temp .* delta_S;
+    vector[J] epRA_star; // = delta_S;// (ref_temp ./ temp) .* true_epRA - delta_S .* temp;
+    vector[J] epAI_star; // = delta_S; //(ref_temp ./ temp) .* ref_epAI;
+    for (i in 1:J) { 
+        true_epRA[i] = ref_epRA + ref_temp * delta_S[i];
+        epRA_star[i] = (ref_temp / temp[i]) * true_epRA[i] - delta_S[i] * temp[i];
+        epAI_star[i] = (ref_temp / temp[i]) * ref_epAI;
+    }
 }
 
 model { 
-
     //  probability of a repressor being active
-     vector[N] pact = 1 ./ (1 + exp(-epAI_star[idx]));
+    vector[N] pact = 1 ./ (1 + exp(-epAI_star[idx]));
 
      // Compute the mean fold-change in gene expression
-     vector[N] mu = 1 ./ (1 + pact .* (repressors ./ Nns) .* exp(-epRA_star[idx])); 
+     vector[N] mu = 1 ./ (1 + pact .* (repressors ./ Nns) .* exp(-epRA_star[idx]));
 
      // Define the priors
-     delta_S_DNA ~ normal(0, 0.1);
-     delta_S_ALLO ~ normal(0, 0.1);
+     delta_S ~ normal(0, 0.1);
      sigma ~ normal(0, 0.1);
 
      // Evaluate the likelihood
      foldchange ~ normal(mu, sigma[idx]);
-
  }

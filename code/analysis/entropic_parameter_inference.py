@@ -69,7 +69,7 @@ for k, v in keymap.items():
     for p in renamed_params:
         df = pd.DataFrame()
         if pooled == 1:
-            if (p == 'delta_S') | (p=='sigma'):
+            if (p == 'delta_S') | (p == 'sigma'):
                 df['value'] = samples[f'{p}']
             else:
                 df['value'] = samples[f'{p}[{k}]']
