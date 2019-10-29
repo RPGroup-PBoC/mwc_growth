@@ -54,7 +54,7 @@ for i in range(2):
     ax[0, i].set_xscale('log')
     ax[0, i].set_yscale('log')
     ax[0, i].set_xlim([1, 700])
-    ax[0, i].set_ylim([1E-3, 1])
+    ax[0, i].set_ylim([5E-3, 1])
     ax[1, i].set_xscale('log')
 
 # Add labels.
@@ -81,13 +81,13 @@ for T, i in temp_axes.items():
     delF = bohr - ref_bohr
     ax[0, i].plot(rep_range, ref_fc, 'k', linestyle='-', linewidth=0.75, label=r'$\Delta\varepsilon_{ref}$', color=colors['purple'])
     ax[1, i].plot(rep_range / ref_rep, np.log(rep_range / ref_rep), linestyle='-', linewidth=1, color=colors['purple'])
-    ax[0, i].plot(rep_range, fc, linestyle='-', linewidth=0.5, label=r'$\frac{T_{ref}}{T_{exp}}$ ' +  '∆ε', color=colors['orange']) 
+    ax[0, i].plot(rep_range, fc, linestyle='-', linewidth=0.5, label=r'$\frac{T_{ref}}{T_{exp}}$ ' +  r'$\Delta\varepsilon_{ref}$', color=colors['orange']) 
     ax[1, i].plot(rep_range / ref_rep, -delF,  linestyle='-', linewidth=0.5, color=colors['orange'])
-ax[0, 0].set_title('32°C', color=colors['blue'], fontsize=8, y=1.03, bbox=dict(facecolor='none', edgecolor=colors['blue'], lw=0.5))
-ax[0, 1].set_title('42°C', color=colors['red'], fontsize=8, y=1.03, bbox=dict(facecolor='none', edgecolor=colors['red'], lw=0.5))
+# ax[0, 0].set_title('32°C', color=colors['blue'], fontsize=8, y=1.03, bbox=dict(facecolor='none', edgecolor=colors['blue'], lw=0.5))
+# ax[0, 1].set_title('42°C', color=colors['red'], fontsize=8, y=1.03, bbox=dict(facecolor='none', edgecolor=colors['red'], lw=0.5))
 ax[0, 0].set_xlim([1, 500]) 
 ax[0, 1].set_xlim([10, 800]) 
-ax[0, 0].set_ylim([1E-3, 1])
+ax[0, 0].set_ylim([2E-4, 1])
 ax[0, 1].set_ylim([1E-2, 1])
 ax[1, 0].set_xlim([0.05, 10])
 ax[1, 1].set_xlim([0.05, 10])
@@ -145,8 +145,8 @@ for g, d in inferred_F.groupby(['temp']):
                 markeredgecolor=colors_edge[g], markeredgewidth=0.75, ms=8, fmt='.')
 
 plt.subplots_adjust(wspace=0.3, hspace=0.4)
-# ax[0, 0].legend(fontsize=7.5, handlelength=1, ncol=3, bbox_to_anchor=(0.4, 1.02))
-plt.savefig('../../figs/Fig_deltaF_temp_entropycorr.pdf', facecolor='white', bbox_inches='tight')
+ax[0, 0].legend(fontsize=6, handlelength=1, ncol=1)
+plt.savefig('../../figs/Fig_deltaF_temp.pdf', facecolor='white', bbox_inches='tight')
 
 
 
