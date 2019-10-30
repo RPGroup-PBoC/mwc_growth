@@ -63,12 +63,12 @@ def personal_style():
     plt.rc('text.latex', preamble=r'\usepackage{mathpazo}')
     matplotlib.style.use(rc)
     colors = {'dark_purple': '#5F2E88', 'dark_orange':'#F38227', 'black':'#444147',
-               'blue': '#7292C7','dark_blue': '#3F60AC', 'dark_red':'#9C372F', 'dark_green':'#395A34',
-              'purple': '#7E59A2', 'orange':'#E39943',  'red':'#C76A6A',
+              'dark_blue': '#3F60AC', 'dark_red':'#9C372F', 'dark_green':'#395A34',
+              'purple': '#7E59A2', 'orange':'#E39943', 'blue': '#7292C7', 'red':'#C76A6A',
                'green':'#688A2F', 'light_purple':'#A17DB8', 'light_orange':'#EEBA7F',
                'light_blue':'#A5B3CC', 'light_red':'#E39C9D', 'light_green':'#B3CD86', 
                'grey': '#EFEFEF', 'gray': '#EFEFEF', 'light_grey':'#6D6F72',
-               'dark_brown':'#764f2a', 'light_brown':'#e1bb96'}
+               'dark_brown': '#764f2a', 'brown':'#c2996c', 'light_brown':'#e1bb96'}
     color_items = [v for v in colors.values()]
     palette = [v for k, v in colors.items() if v not in ['grey', 'gray', 'dark_purple', 'light_grey']]
     sns.set_palette(palette)
@@ -194,7 +194,8 @@ def phd_style():
               'purple': '#7E59A2', 'orange':'#E39943', 'blue': '#7292C7', 'red':'#C76A6A',
                'green':'#688A2F', 'light_purple':'#A17DB8', 'light_orange':'#EEBA7F',
                'light_blue':'#A5B3CC', 'light_red':'#E39C9D', 'light_green':'#B3CD86', 
-               'grey': '#EFEFEF', 'gray': '#EFEFEF', 'light_grey':'#6D6F72'}
+               'grey': '#EFEFEF', 'gray': '#EFEFEF', 'light_grey':'#6D6F72',
+               'dark_brown': '#764f2a', 'brown':'#c2996c', 'light_brown':'#e1bb96'}
     palette = [v for k, v in colors.items() if v not in ['grey', 'gray', 'dark_purple', 'light_grey']]
     sns.set_palette(palette)
     return colors     
