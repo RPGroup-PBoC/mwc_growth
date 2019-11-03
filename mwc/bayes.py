@@ -220,7 +220,7 @@ def deterministic_log_posterior(alpha, I_1, I_2, p=0.5, neg=False):
         raise ValueError('p must be on the domain [0, 1]')
 
     # Define the log prior
-    # lp = scipy.stats.gamma(2, loc=0, scale=1/0.6).logpdf(np.log(alpha))
+    lp = scipy.stats.halfnorm(loc=1, scale=1000).logpdf(alpha)
 
     # Convert the intensities to protein number.
     n_1 = I_1 / alpha
@@ -235,7 +235,7 @@ def deterministic_log_posterior(alpha, I_1, I_2, p=0.5, neg=False):
     change_of_var = -k * np.log(alpha)
 
     # Assemble the log posterior.
-    logpost = change_of_var + binom + prob # + lp 
+    logpost = change_of_var + binom + prob + lp 
     return prefactor * logpost
 
 

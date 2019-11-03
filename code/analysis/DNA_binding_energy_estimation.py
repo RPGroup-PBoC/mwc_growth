@@ -5,7 +5,7 @@ import mwc.bayes
 
 #  Load the data.
 data = pd.read_csv('../../data/analyzed_foldchange.csv')
-data = data[(data['strain']=='dilution') & (data['repressors'] >= 0) & (data['fold_change'] >= 0)]
+data = data[(data['strain']=='dilution') & (data['repressors'] > 0) & (data['fold_change'] >= 0)]
 
 # Group the data by each date, run number, replicate, and ATC to compute the means. 
 grouped = data.groupby(['carbon', 'temp', 'date', 
@@ -15,7 +15,7 @@ grouped = data.groupby(['carbon', 'temp', 'date',
 grouped['idx'] = grouped.groupby(['carbon', 'temp']).ngroup() + 1
 #
 # Load the stan model 
-model = mwc.bayes.StanModel('../stan/DNA_binding_energy.stan') #, force_compile=True)
+model = mwc.bayes.StanModel('../stan/DNA_binding_energy.stan') #force_compile=True)
 
 #%%
 # Assign the data dictionary and sample the model. 
@@ -26,15 +26,15 @@ data_dict = {'J':grouped['idx'].max(),
              'Nns':4.6E6,
              'foldchange':grouped['fold_change']}
 
-fit, samples = model.sample(data_dict, iter=5000, control=dict(adapt_delta=0.95))
+fit, samples = model.sample(data_dict, iter=5000, control=dict(adapt_delta=0.99))
 params = model.summarize_parameters()
 #%%
 # Update the dimensions and parameter entries. 
 rename_params = ['epRA', 'sigma']
 sample_dfs = []
 for g, d in grouped.groupby(['idx']):
-    params.loc[params['dimension']==g, 'carbon'] = d['carbon'].unique()[0]
-    params.loc[params['dimension']==g, 'temp'] = d['temp'].unique()[0]
+    params.loc[params['dimension']==g, 'carbon'] = d['carbon'].unique()
+    params.loc[params['dimension']==g, 'temp'] = d['temp'].unique()
     for r in rename_params:
         df = pd.DataFrame([])
         df['value'] = samples[f'{r}[{g}]']

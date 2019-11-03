@@ -15,6 +15,66 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from scipy.signal import gaussian, convolve
+from matplotlib.path import Path
+from matplotlib.patches import BoxStyle
+from matplotlib.offsetbox import AnchoredText
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+
+class ExtendedTextBox(BoxStyle._Base):
+    """
+    An Extended Text Box that expands to the axes limits 
+    if set in the middle of the axes. This is copied from a stack overflow post:
+    https://stackoverflow.com/questions/40796117/how-do-i-make-the-width-of-the-title-box-span-the-entire-plot
+    """
+
+    def __init__(self, pad=0.3, width=500.):
+        """
+        width: 
+            width of the textbox. 
+            Use `ax.get_window_extent().width` 
+                   to get the width of the axes.
+        pad: 
+            amount of padding (in vertical direction only)
+        """
+        self.width=width
+        self.pad = pad
+        super(ExtendedTextBox, self).__init__()
+
+    def transmute(self, x0, y0, width, height, mutation_size):
+        """
+        x0 and y0 are the lower left corner of original text box
+        They are set automatically by matplotlib
+        """
+        # padding
+        pad = mutation_size * self.pad
+
+        # we add the padding only to the box height
+        height = height + 2.*pad
+        # boundary of the padded box
+        y0 = y0 - pad
+        y1 = y0 + height
+        _x0 = x0
+        x0 = _x0 +width /2. - self.width/2.
+        x1 = _x0 +width /2. + self.width/2.
+
+        cp = [(x0, y0),
+              (x1, y0), (x1, y1), (x0, y1),
+              (x0, y0)]
+
+        com = [Path.MOVETO,
+               Path.LINETO, Path.LINETO, Path.LINETO,
+               Path.CLOSEPOLY]
+
+        path = Path(cp, com)
+
+        return path
+
+
+
+# register the custom style
+
+
 
 def personal_style():
     """
@@ -22,7 +82,7 @@ def personal_style():
     """   
     rc = {'axes.facecolor': '#EFEFEF', # '#F5F9FC', #E5E8EA', #DFE8EF', #EAEAEA', #E0E1E2', 
           'font.family': 'sans-serif',
-          'font.family': 'Arial',
+          'font.family': 'Heebo',
           'font.style': 'normal',
           'axes.edgecolor': '#444147',
           'axes.labelcolor': '#444147',
@@ -61,6 +121,7 @@ def personal_style():
           'savefig.bbox': 'tight'}
 
     plt.rc('text.latex', preamble=r'\usepackage{mathpazo}')
+    BoxStyle._style_list["ext"] = ExtendedTextBox 
     matplotlib.style.use(rc)
     colors = {'dark_purple': '#5F2E88', 'dark_orange':'#F38227', 'black':'#444147',
               'dark_blue': '#3F60AC', 'dark_red':'#9C372F', 'dark_green':'#395A34',
@@ -73,6 +134,37 @@ def personal_style():
     palette = [v for k, v in colors.items() if v not in ['grey', 'gray', 'dark_purple', 'light_grey']]
     sns.set_palette(palette)
     return colors, color_items     
+
+def titlebox(ax, text, color,  size=8, **kwargs):
+    """Sets a colored box about the title with the width of the plot"""
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("top", size="10%", pad=0.02)
+    cax.get_xaxis().set_visible(False)
+    cax.get_yaxis().set_visible(False)
+    cax.spines['top'].set_visible(True)
+    cax.spines['right'].set_visible(True)
+    plt.setp(cax.spines.values(), color=color)
+    cax.set_facecolor('white')
+    at = AnchoredText(text, loc=10, frameon=False, prop=dict(size=size, color=color))
+    cax.add_artist(at)
+
+    # title = ax.set_title(text, bbox=bbox, **kwargs)
+    # title.get_bbox_patch().set_boxstyle('ext', 
+            # width=ax.get_window_extent().transformed(ax.get_figure().dpi_scale_trans.inverted()).width * ax.get_figure().dpi)
+def ylabelbox(ax, text, color,  size=8, **kwargs):
+    """Sets a colored box about the title with the width of the plot"""
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("left", size="10%", pad=0.02)
+    cax.get_xaxis().set_visible(False)
+    cax.get_yaxis().set_visible(False)
+    cax.spines['top'].set_visible(True)
+    cax.spines['right'].set_visible(True)
+    plt.setp(cax.spines.values(), color=color)
+    cax.set_facecolor('white')
+    at = AnchoredText(text, loc=10, frameon=False, prop=dict(rotation='vertical', 
+                    size=size, color=color))
+    cax.add_artist(at)
+
 
 def bokeh_theme(return_color_list=True):
     theme_json =  {
@@ -124,140 +216,6 @@ def bokeh_theme(return_color_list=True):
         return [colors, color_items]
     else:
         return colors
-
-
-def pboc_style(grid=True):
-    """
-    Sets the style to the publication style
-    """
-    rc = {'axes.facecolor': '#E3DCD0',
-          'font.family': 'Lucida Sans Unicode',
-          'grid.linestyle': '-',
-          'grid.linewidth': 0.5,
-          'grid.alpha': 0.75,
-          'grid.color': '#ffffff',
-          'axes.grid': grid,
-          'ytick.direction': 'in',
-          'xtick.direction': 'in',
-          'xtick.gridOn': True,
-          'ytick.gridOn': True,
-          'ytick.major.width':5,
-          'xtick.major.width':5,
-          'ytick.major.size': 5,
-          'xtick.major.size': 5,
-          'mathtext.fontset': 'stixsans',
-          'mathtext.sf': 'sans',
-          'legend.frameon': True,
-          'legend.facecolor': '#FFEDCE',
-          'figure.dpi': 150,
-           'xtick.color': 'k',
-           'ytick.color': 'k'}
-    plt.rc('text.latex', preamble=r'\usepackage{sfmath}')
-    plt.rc('mathtext', fontset='stixsans', sf='sans')
-    sns.set_style('darkgrid', rc=rc)
-
-
-def phd_style():
-    """
-    Sets the plotting style to my preference
-    """   
-    rc = {'axes.facecolor': '#EFEFEF', # '#F5F9FC', #E5E8EA', #DFE8EF', #EAEAEA', #E0E1E2', 
-          'font.family': 'sans-serif',
-          'font.style': 'italic',
-          'font.weight': 400,
-          'font.family': 'Arial',
-          'axes.edgecolor': 'slategray',
-          'axes.spines.right': False,
-          'axes.spines.top': False,
-          'axes.axisbelow': True,
-          'axes.linewidth': 0.75,
-          'axes.titlesize': 6,
-          'axes.grid': True,
-          'lines.linewidth': 0.75,
-          'lines.dash_capstyle': 'round',
-          'grid.linestyle': '-',
-          'grid.linewidth': 0.35,
-          'grid.color': '#ffffff',
-          'axes.labelsize': 6,
-          'xtick.labelsize': 5,
-          'ytick.labelsize': 5,
-          'legend.fontsize': 6,
-          'legend.frameon': True,
-          'axes.xmargin': 0.02,
-          'axes.ymargin': 0.02,
-          'figure.dpi': 200}
-
-    plt.rc('text.latex', preamble=r'\usepackage{mathpazo}')
-    matplotlib.style.use(rc)
-    colors = {'dark_purple': '#5F2E88', 'dark_orange':'#F38227', 'black':'#444147',
-              'dark_blue': '#3F60AC', 'dark_red':'#9C372F', 'dark_green':'#395A34',
-              'purple': '#7E59A2', 'orange':'#E39943', 'blue': '#7292C7', 'red':'#C76A6A',
-               'green':'#688A2F', 'light_purple':'#A17DB8', 'light_orange':'#EEBA7F',
-               'light_blue':'#A5B3CC', 'light_red':'#E39C9D', 'light_green':'#B3CD86', 
-               'grey': '#EFEFEF', 'gray': '#EFEFEF', 'light_grey':'#6D6F72',
-               'dark_brown': '#764f2a', 'brown':'#c2996c', 'light_brown':'#e1bb96'}
-    palette = [v for k, v in colors.items() if v not in ['grey', 'gray', 'dark_purple', 'light_grey']]
-    sns.set_palette(palette)
-    return colors     
-
-def bokeh_theme(return_color_list=True):
-    theme_json =  {
-    'attrs' : {
-        'Figure' : {
-            'background_fill_color': '#EEEEEE',
-        },
-        'Axis': {
-            'axis_line_color': 'black',
-            'major_tick_line_color': None,
-            'minor_tick_line_color': None,
-        },
-        'Legend': {
-            'border_line_color': 'slategray',
-            'background_fill_color': '#EEEEEE',
-            'border_line_width': 0.75,
-            'background_fill_alpha': 0.75,
-        },
-        'Grid': {
-            'grid_line_color': '#FFFFFF',
-            'grid_line_width': 0.75,
-        },
-        'Text': {
-            'text_font_style': 'italic',
-            'text_font': 'Stone Sans', 
-            'text_font_size':10,
-        },
-        'Title': {
-            'text_color': 'black',
-            'align': 'left',
-            'text_font_style': 'italic',
-            'text_font': 'Helvetica',
-            'offset': 2,
-         }
-    }
-    }
-
-    colors = {'dark_purple': '#5F2E88', 'dark_orange':'#F38227', 'black':'#444147',
-        'dark_blue': '#3F60AC', 'dark_red':'#9C372F', 'dark_green':'#395A34',
-        'purple': '#7E59A2', 'orange':'#E39943', 'blue': '#7292C7', 'red':'#C76A6A',
-        'green':'#688A2F', 'light_purple':'#A17DB8', 'light_orange':'#EEBA7F',
-        'light_blue':'#A5B3CC', 'light_red':'#E39C9D', 'light_green':'#B3CD86', 
-        'grey': '#EFEFEF', 'gray': '#EFEFEF', 'light_grey':'#6D6F72'}
-        
-    color_items = [v for v in colors.values()]
-    theme = bokeh.themes.Theme(json=theme_json)
-    bokeh.io.curdoc().theme = theme
-    if return_color_list:
-        return [colors, color_items]
-    else:
-        return colors
-
-def format_axes(pub_style=False):
-    """
-    Executes a seaborn despining function with my prefered offset and trimming.
-    """
-    if pub_style == False:
-        sns.despine(offset=7)
-
 
 def growth_animation(images, fname, contours=None, descriptors={'bar_length':10,
     'ip_dist':0.07, 'temperature':'', 'carbon':'', 'time_interval':0}):

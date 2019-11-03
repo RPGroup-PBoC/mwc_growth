@@ -53,6 +53,8 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_number'
 
     # Generate a dataframe with all of the fluctuations
     fluct_df = pd.DataFrame([])
+    fluct_df['I_1'] = d['I_1_sub'].values
+    fluct_df['I_2'] = d['I_2_sub'].values
     fluct_df['summed'] = d['I_1_sub'].values + d['I_2_sub'].values
     fluct_df['fluct'] = (d['I_1_sub'].values - d['I_2_sub'].values)**2
     fluct_df['alpha_mean'] = samples['alpha'].mean()
