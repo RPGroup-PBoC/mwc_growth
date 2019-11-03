@@ -39,7 +39,8 @@ ax.plot(summed_range, alpha_mean * summed_range, lw=0.75, color=colors['dark_red
 ax.fill_between(summed_range, (alpha_mean + alpha_std) * summed_range, 
                 (alpha_mean - alpha_std) * summed_range, color=colors['red'], alpha=0.25)
 ax.legend(loc='lower right', fontsize=6)
-plt.savefig('../../figs/Fig2_fluct_example.svg', bbox_inches='tight', facecolor='white')
+mwc.viz.titlebox(ax, 'glucose, 37 °C', color=colors['purple'])
+plt.savefig('../../figs/Fig2_fluct_example.pdf', bbox_inches='tight', facecolor='white')
 
 
 #%%

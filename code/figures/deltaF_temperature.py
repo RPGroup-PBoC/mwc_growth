@@ -82,7 +82,7 @@ for T, i in temp_axes.items():
     ax[0, i].plot(rep_range, ref_fc, 'k', linestyle='-', linewidth=0.75, label=r'$\Delta\varepsilon_{ref}$', color=colors['purple'])
     ax[1, i].plot(rep_range / ref_rep, np.log(rep_range / ref_rep), linestyle='-', linewidth=1, color=colors['purple'])
     ax[0, i].plot(rep_range, fc, linestyle='-', linewidth=0.5, label=r'$\frac{T_{ref}}{T_{exp}}$ ' +  r'$\Delta\varepsilon_{ref}$', color=colors['orange']) 
-    ax[1, i].plot(rep_range / ref_rep, -delF,  linestyle='-', linewidth=0.5, color=colors['orange'])
+    ax[1, i].plot(rep_range / ref_rep, -delF,  linestyle='-', linewidth=1, color=colors['orange'])
 # ax[0, 0].set_title('32°C', color=colors['blue'], fontsize=8, y=1.03, bbox=dict(facecolor='none', edgecolor=colors['blue'], lw=0.5))
 # ax[0, 1].set_title('42°C', color=colors['red'], fontsize=8, y=1.03, bbox=dict(facecolor='none', edgecolor=colors['red'], lw=0.5))
 ax[0, 0].set_xlim([1, 500]) 

@@ -27,11 +27,12 @@ ax.set_xscale('log')
 ax.xaxis.set_tick_params(labelsize=6)
 ax.yaxis.set_tick_params(labelsize=6, labelcolor=colors['dark_orange'])
 ax2.yaxis.set_tick_params(labelsize=6, labelcolor=colors['dark_red'])
-ax.set_xlabel('ATC [ng / mL]', style='italic', fontsize=8)
-ax.set_ylabel('relative YFP intensity', style='italic', fontsize=10, 
+ax.set_xlabel('ATC [ng / mL]',  fontsize=8)
+ax.set_ylabel('relative YFP intensity',  fontsize=8, 
               color=colors['dark_orange'])
-ax2.set_ylabel('relative mCherry intensity', style='italic', fontsize=10, rotation=-90,
+ax2.set_ylabel('relative mCherry intensity', fontsize=8, rotation=-90,
                labelpad=10, color=colors['dark_red'])
+mwc.viz.titlebox(ax2, 'glucose, 37 °C', color=colors['purple'])
 
 # Set the maximum to normalize
 max_yfp = 2.5E5
@@ -43,8 +44,12 @@ ax2.errorbar(summarized['atc_ngml'], summarized['mch_sub']['mean']/max_mch, summ
                     color=colors['dark_red'], label='__nolegend__', markerfacecolor=colors['light_red'],
                     capsize=2, lw=0.75, ms=8, markeredgewidth=0.75)
 
-ax.set_title(f'{carbon}, {temp}° C', style='italic', loc='left', fontsize=8)
 plt.tight_layout()
+ax.set_ylim([ax.get_ylim()[0], 1.2])
+ax2.set_ylim([ax2.get_ylim()[0], 1.2])
+ax.yaxis.set_ticks([0.2, 0.4, 0.6, 0.8, 1.0])
+ax2.yaxis.set_ticks([0.2, 0.4, 0.6, 0.8, 1.0])
+
 plt.savefig(f'../../figs/Fig2_atc_titration.pdf', bbox_inches='tight',
             facecolor='none')
 

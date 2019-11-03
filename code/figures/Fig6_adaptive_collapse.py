@@ -80,7 +80,7 @@ for g, d in old_data.groupby('author'):
                                       ka=0.53, ki=139, ep_ai=4.5, 
                                       effector_conc=0).bohr_parameter()
         ax.plot(bohr, d['fold_change'], marker=glyphs[g], alpha=0.4,
-                color=auth_colors[g], linestyle='none', ms=5, label=label)
+                color=auth_colors[g], linestyle='none', ms=5, label=label, zorder=99)
 
 
 # ##############################################################################
@@ -92,7 +92,7 @@ bohr = -mwc.model.SimpleRepression(R=ind_data['repressors'], ep_r=ops,
                                 effector_conc=ind_data['IPTGuM'], 
                                 ep_ai=constants['ep_ai']).bohr_parameter()
 ax.errorbar(bohr, ind_data['mean'], ind_data['sem'], fmt=glyphs['razomejia'],
-            color=auth_colors['razomejia'], ms=4, linestyle='none', alpha=0.4,
+            color=auth_colors['razomejia'], ms=3, linestyle='none', alpha=0.4,
             label='inducer concentration')
 
 

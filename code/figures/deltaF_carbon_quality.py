@@ -86,14 +86,14 @@ for i in range(4):
     # ax[1, i].set_xscale('log')
     ax[1, i].plot(rep_range / ref_rep, deltaF, 'k-')
     ax[0, i].set_yscale('log')
-    ax[0, i].set_ylabel('fold-change', style='italic', fontsize=8)
-    ax[1, i].set_ylabel('∆F [k$_B$T]', style='italic', fontsize=8)
+    ax[0, i].set_ylabel('fold-change', fontsize=8)
+    ax[1, i].set_ylabel('$\Delta F$ [k$_B$T]', fontsize=8)
 
 for i, a in enumerate(ax.ravel()):
     if i <= 3:
-        a.set_xlabel('repressors per cell', fontsize=8, style='italic')
+        a.set_xlabel('repressors per cell', fontsize=8)
     else: 
-        a.set_xlabel('$R_C / R_{ref}$', fontsize=8, style='italic')
+        a.set_xlabel('$R_C / R_{ref}$', fontsize=8)
 
 
 

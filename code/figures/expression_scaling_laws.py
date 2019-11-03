@@ -6,8 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 import mwc.viz
 import seaborn as sns
-colors, color_list = mwc.viz.bokeh_theme()
-mwc.viz.personal_style()
+colors, color_list = mwc.viz.personal_style()
 
 # Load the fold-change data and growth rate stats
 foldchange = pd.read_csv('../../data/analyzed_foldchange.csv')
@@ -153,8 +152,10 @@ handles, labels = ax2.get_legend_handles_labels()
 leg = ax3.legend(reversed(handles), reversed(labels), title='   ATC\n[ng / mL]', 
                 fontsize=6, bbox_to_anchor=(1.15, 1))
 leg.get_title().set_fontsize(6)
-ax1.set_title('carbon quality variation', loc='left', style='italic')
-ax3.set_title('temperature variation', loc='left', style='italic')
+mwc.viz.titlebox(ax1, 'carbon quality variation', color=colors['black'])
+mwc.viz.titlebox(ax2, 'carbon quality variation', color=colors['black'])
+mwc.viz.titlebox(ax3, 'temperature variation', color=colors['black'])
+mwc.viz.titlebox(ax4, 'temperature  variation', color=colors['black'])
 plt.subplots_adjust(hspace=0.2, wspace=0.6)
 plt.savefig('../../figs/Fig_expression_scaling.svg', bbox_inches='tight', 
             facecolor='white')

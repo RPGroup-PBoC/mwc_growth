@@ -4,7 +4,7 @@ import pandas as pd
 import mwc.viz
 import mwc.stats
 import matplotlib.pyplot as plt
-colors, color_list = mwc.viz.bokeh_theme()
+colors, color_list = mwc.viz.personal_style()
 _ = mwc.viz.personal_style()
 np.random.seed(666)
 
@@ -89,10 +89,10 @@ for c, t, l, v in zip(carbs, temps, labels, vals):
                 lw=.75, label=l, linestyle='-', markerfacecolor=fill_colors[v],
                 color=edge_colors[v], markeredgewidth=0.5)
 
-ax.legend(handlelength=1, fontsize=8)
-ax.set_xlabel('time [min]', style='italic', fontsize=10)
-ax.set_ylabel('relative OD$_{600nm}$', style='italic', fontsize=10)
-plt.savefig('../../figs/Fig1_growth_curve_comparison.svg', bbox_inches='tight', facecolor='white')
+ax.legend(handlelength=1, fontsize=6)
+ax.set_xlabel('time [min]', fontsize=8)
+ax.set_ylabel('relative OD$_{600nm}$', fontsize=8)
+plt.savefig('../../figs/Fig1_growth_curve_comparison.pdf', facecolor='white')
 
 
 
@@ -126,17 +126,17 @@ ax.errorbar(np.random.normal(4, 0.1, len(glu)), glu['growth_rate'], glu['growth_
            alpha=0.75, markerfacecolor=fill_colors['glucose'], markeredgecolor=edge_colors['glucose'],
            color=edge_colors['glucose'], markeredgewidth=0.75, ms=8, linestyle='none', capsize=1.5)
 
-ax.set_ylabel('growth rate [hr$^{-1}$]', style='italic', fontsize=10)
+ax.set_ylabel('growth rate [hr$^{-1}$]', fontsize=8)
 ax.set_xticks([0, 1, 2, 3, 4])
 ax.set_xticklabels(['acetate\n37° C', 'glycerol\n37 °C', 'glucose\n32 °C',
-                    'glucose\n42° C', 'glucose\n 37°C'], style='italic', rotation=90,
-                    fontsize=10)
-# ax.set_xlabel('growth condition', style='italic', fontsize=10)
+                    'glucose\n42° C', 'glucose\n 37°C'], 
+                    fontsize=8)
+ax.set_xlabel('growth condition', fontsize=8)
 ax.xaxis.grid(False)
 ax.set_xlim([-0.5, 4.5])
 # ax.set_yscale('log')
 ax.set_ylim([0.15, 0.7])
-plt.savefig('../../figs/Fig1_growth_rate_jitter.svg', facecolor='white', bbox_inches='tight')
+plt.savefig('../../figs/Fig1_growth_rate_jitter.pdf', facecolor='white', bbox_inches='tight')
 #%%
 
 
