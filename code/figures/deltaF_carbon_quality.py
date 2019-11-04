@@ -29,9 +29,9 @@ fc = (1 + pact * (rep_range / Nns) * np.exp(-ep_RA))**-1
 fc_min = (1 + pact * (rep_range / Nns) * np.exp(-(ep_RA + sigma)))**-1 
 fc_max = (1 + pact * (rep_range / Nns) * np.exp(-(ep_RA - sigma)))**-1 
 example_fc = (1 + pact * (example_reps/ Nns) * np.exp(-(ep_RA - sigma)))**-1 
-example_delF = -np.log(ref_rep / example_reps)
+example_delF = -np.log(example_reps / ref_rep)
 F_ref = -np.log(pact) - np.log(ref_rep/Nns) + ep_RA;
-deltaF = -np.log(ref_rep / rep_range) # in kT
+deltaF = -np.log(rep_range / ref_rep) # in kT
 
 # Load the actual data. 
 fc_data = pd.read_csv('../../data/analyzed_foldchange.csv')
@@ -74,10 +74,10 @@ for g, d in inferred_F.groupby(['carbon']):
         delF = F - F_ref   
         delF_max = F_max - F_ref   
         delF_min = F_min - F_ref   
-        ax[1, ax_map[g]].errorbar(_reps['repressors']['mean'] / ref_rep, -delF, xerr=_reps['repressors']['sem'] / ref_rep, 
+        ax[1, ax_map[g]].errorbar(_reps['repressors']['mean'] / ref_rep, delF, xerr=_reps['repressors']['sem'] / ref_rep, 
         fmt='.', color=edgecolors[g], markerfacecolor=facecolors[g], linestyle='none', linewidth=1,
         ms=8, markeredgewidth=0.75)
-        ax[1, ax_map[g]].vlines(_reps['repressors']['mean'] / ref_rep, -delF_max, -delF_min, lw=0.75,
+        ax[1, ax_map[g]].vlines(_reps['repressors']['mean'] / ref_rep, delF_max, delF_min, lw=0.75,
                         color=edgecolors[g])
 
 for i in range(4):
@@ -87,7 +87,7 @@ for i in range(4):
     ax[1, i].plot(rep_range / ref_rep, deltaF, 'k-')
     ax[0, i].set_yscale('log')
     ax[0, i].set_ylabel('fold-change', fontsize=8)
-    ax[1, i].set_ylabel('$\Delta F$ [k$_B$T]', fontsize=8)
+    ax[1, i].set_ylabel('$\Delta F$ [$k_BT$]', fontsize=8)
 
 for i, a in enumerate(ax.ravel()):
     if i <= 3:
@@ -105,9 +105,9 @@ ax[0, -1].fill_between(rep_range, example_fc[2], 1.05, color=colors['light_red']
 ax[0, -1].fill_between(rep_range, example_fc[2], -.05, color=colors['light_green'],
             alpha=0.5)
 ax[1, -1].fill_betweenx(np.linspace(-5, 5, 200), 1, 4.5, 
-                    color=colors['light_green'], alpha=0.5)
-ax[1, -1].fill_betweenx(np.linspace(-5, 5, 100), 0, 0.99, 
                     color=colors['light_red'], alpha=0.5)
+ax[1, -1].fill_betweenx(np.linspace(-5, 5, 100), 0, 0.99, 
+                    color=colors['light_green'], alpha=0.5)
 for i, r in enumerate(example_reps):
     ax[0, -1].plot(r, example_fc[i], 'o', markerfacecolor=example_facecolors[r],
             markeredgecolor=example_edgecolors[r], markeredgewidth=0.75)

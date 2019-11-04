@@ -80,11 +80,10 @@ for T, i in temp_axes.items():
     ref_bohr = -np.log(ref_pact) - np.log(ref_rep / 4E6) + (ep_RA)
     delF = bohr - ref_bohr
     ax[0, i].plot(rep_range, ref_fc, 'k', linestyle='-', linewidth=0.75, label=r'$\Delta\varepsilon_{ref}$', color=colors['purple'])
-    ax[1, i].plot(rep_range / ref_rep, np.log(rep_range / ref_rep), linestyle='-', linewidth=1, color=colors['purple'])
+    ax[1, i].plot(rep_range / ref_rep, -np.log(rep_range / ref_rep), linestyle='-', linewidth=1, color=colors['purple'])
     ax[0, i].plot(rep_range, fc, linestyle='-', linewidth=0.5, label=r'$\frac{T_{ref}}{T_{exp}}$ ' +  r'$\Delta\varepsilon_{ref}$', color=colors['orange']) 
-    ax[1, i].plot(rep_range / ref_rep, -delF,  linestyle='-', linewidth=1, color=colors['orange'])
-# ax[0, 0].set_title('32°C', color=colors['blue'], fontsize=8, y=1.03, bbox=dict(facecolor='none', edgecolor=colors['blue'], lw=0.5))
-# ax[0, 1].set_title('42°C', color=colors['red'], fontsize=8, y=1.03, bbox=dict(facecolor='none', edgecolor=colors['red'], lw=0.5))
+    ax[1, i].plot(rep_range / ref_rep, delF,  linestyle='-', linewidth=1, color=colors['orange'])
+
 ax[0, 0].set_xlim([1, 500]) 
 ax[0, 1].set_xlim([10, 800]) 
 ax[0, 0].set_ylim([2E-4, 1])
@@ -108,14 +107,14 @@ for g, d in params.groupby(['temp']):
     for i, r in enumerate(rep_range):
         fc = (1 + pact * r * np.exp(-epRA_star) / 4.6E6)**-1
         bohr = -np.log(pact) - np.log(r / 4.6E6) + epRA_star
-        dBohr = -1 * (bohr - bohr_ref)
+        dBohr = bohr - bohr_ref
         fc_cred[:, i] = mwc.stats.compute_hpd(fc, 0.95)
         delF_cred[:, i] = mwc.stats.compute_hpd(dBohr, 0.95)
         
     fc_ax.fill_between(rep_range, fc_cred[0, :], fc_cred[1, :], 
-                    facecolor=colors['green'], alpha=0.5, label = r'$\frac{T_{ref}}{T_{exp}}\Delta\varepsilon_{ref} + T_{exp}\Delta S$')
+                    facecolor=colors['light_grey'], alpha=0.5, label = r'$\frac{T_{ref}}{T_{exp}}\Delta\varepsilon_{ref} + T_{exp}\Delta S$')
     delF_ax.fill_between(rep_range / ref_rep, delF_cred[0, :], delF_cred[1, :], 
-                    facecolor=colors['green'],  lw=0.5,
+                    facecolor=colors['light_grey'],  lw=0.5,
                     alpha=0.5)
 
 # Plot the data
@@ -138,9 +137,9 @@ for g, d in inferred_F.groupby(['temp']):
     delF_max = F_max - F_theo
     delF_min = F_min - F_theo
 
-    ax[1, temp_axes[g]].vlines(_reps['mean'] / ref_rep, -delF_min, -delF_max, linewidth=0.75,
+    ax[1, temp_axes[g]].vlines(_reps['mean'] / ref_rep, delF_min, delF_max, linewidth=0.75,
                             color=colors_edge[g])
-    ax[1, temp_axes[g]].errorbar(_reps['mean'] / ref_rep, -delF_median, xerr=_reps['sem'] / ref_rep,
+    ax[1, temp_axes[g]].errorbar(_reps['mean'] / ref_rep, delF_median, xerr=_reps['sem'] / ref_rep,
                 linestyle='none', color=colors_edge[g], markerfacecolor=colors_fill[g],
                 markeredgecolor=colors_edge[g], markeredgewidth=0.75, ms=8, fmt='.')
 

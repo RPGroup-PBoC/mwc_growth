@@ -72,7 +72,7 @@ edge_colors = {'acetate': '#764f2a', 'glycerol': colors['green'],
                'glucose':colors['purple'], 37: colors['purple'],
                32:colors['blue'], 42:colors['red']}
 
-fig, ax = plt.subplots(1, 1, figsize=(3.25, 1.5), dpi=300)
+fig, ax = plt.subplots(1, 1, figsize=(3.25, 2), dpi=300)
 ax.xaxis.set_tick_params(labelsize=8)
 ax.yaxis.set_tick_params(labelsize=8)
 ax.set_xticks([0, 100, 300, 500])
@@ -92,13 +92,13 @@ for c, t, l, v in zip(carbs, temps, labels, vals):
 ax.legend(handlelength=1, fontsize=6)
 ax.set_xlabel('time [min]', fontsize=8)
 ax.set_ylabel('relative OD$_{600nm}$', fontsize=8)
-plt.savefig('../../figs/Fig1_growth_curve_comparison.pdf', facecolor='white')
+plt.savefig('../../figs/Fig1_growth_curve_comparison.pdf', facecolor='none')
 
 
 
 #%%
 # Instantiate the figure canvas
-fig, ax = plt.subplots(1, 1, figsize=(3.25, 1.5))
+fig, ax = plt.subplots(1, 1, figsize=(3.25, 2))
 ax.xaxis.set_tick_params(labelsize=6)
 ax.yaxis.set_tick_params(labelsize=8)
 
@@ -136,7 +136,7 @@ ax.xaxis.grid(False)
 ax.set_xlim([-0.5, 4.5])
 # ax.set_yscale('log')
 ax.set_ylim([0.15, 0.7])
-plt.savefig('../../figs/Fig1_growth_rate_jitter.pdf', facecolor='white', bbox_inches='tight')
+plt.savefig('../../figs/Fig1_growth_rate_jitter.pdf', facecolor='none', bbox_inches='tight')
 #%%
 
 

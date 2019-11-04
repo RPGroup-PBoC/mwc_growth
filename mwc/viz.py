@@ -21,71 +21,19 @@ from matplotlib.offsetbox import AnchoredText
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
-class ExtendedTextBox(BoxStyle._Base):
-    """
-    An Extended Text Box that expands to the axes limits 
-    if set in the middle of the axes. This is copied from a stack overflow post:
-    https://stackoverflow.com/questions/40796117/how-do-i-make-the-width-of-the-title-box-span-the-entire-plot
-    """
-
-    def __init__(self, pad=0.3, width=500.):
-        """
-        width: 
-            width of the textbox. 
-            Use `ax.get_window_extent().width` 
-                   to get the width of the axes.
-        pad: 
-            amount of padding (in vertical direction only)
-        """
-        self.width=width
-        self.pad = pad
-        super(ExtendedTextBox, self).__init__()
-
-    def transmute(self, x0, y0, width, height, mutation_size):
-        """
-        x0 and y0 are the lower left corner of original text box
-        They are set automatically by matplotlib
-        """
-        # padding
-        pad = mutation_size * self.pad
-
-        # we add the padding only to the box height
-        height = height + 2.*pad
-        # boundary of the padded box
-        y0 = y0 - pad
-        y1 = y0 + height
-        _x0 = x0
-        x0 = _x0 +width /2. - self.width/2.
-        x1 = _x0 +width /2. + self.width/2.
-
-        cp = [(x0, y0),
-              (x1, y0), (x1, y1), (x0, y1),
-              (x0, y0)]
-
-        com = [Path.MOVETO,
-               Path.LINETO, Path.LINETO, Path.LINETO,
-               Path.CLOSEPOLY]
-
-        path = Path(cp, com)
-
-        return path
-
-
-
-# register the custom style
-
-
 
 def personal_style():
     """
     Sets the plotting style to my preference
     """   
-    rc = {'axes.facecolor': '#EFEFEF', # '#F5F9FC', #E5E8EA', #DFE8EF', #EAEAEA', #E0E1E2', 
-          'font.family': 'sans-serif',
-          'font.family': 'Heebo',
+    rc = {'axes.facecolor': '#EFEFEF',
+          'font.family': 'Arial',
+          'font.weight': 'regular',
           'font.style': 'normal',
+          'font.serif': 'Gentium Plus',
           'axes.edgecolor': '#444147',
           'axes.labelcolor': '#444147',
+          'axes.labelweight': 400,
           'axes.spines.right': False,
           'axes.spines.top': False,
           'axes.spines.left':True,
@@ -118,10 +66,11 @@ def personal_style():
           'figure.facecolor': 'white',
           'figure.dpi': 300,
           'errorbar.capsize': 1,
-          'savefig.bbox': 'tight'}
-
-    plt.rc('text.latex', preamble=r'\usepackage{mathpazo}')
-    BoxStyle._style_list["ext"] = ExtendedTextBox 
+          'savefig.bbox': 'tight',
+          'mathtext.fontset': 'custom',
+          'mathtext.rm': 'Gentium Plus',
+          'mathtext.it':'Gentium Plus:italic',
+          'mathtext.bf': 'Gentium Plus:bold'}
     matplotlib.style.use(rc)
     colors = {'dark_purple': '#5F2E88', 'dark_orange':'#F38227', 'black':'#444147',
               'dark_blue': '#3F60AC', 'dark_red':'#9C372F', 'dark_green':'#395A34',

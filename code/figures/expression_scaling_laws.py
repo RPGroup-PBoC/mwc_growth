@@ -134,12 +134,12 @@ for g, d in fc.groupby(['atc_ngml']):
 
 for a in [ax1, ax3]:
     a.set_ylim([1.5, 3.5])
-    a.set_xlabel('growth rate [hr$^{-1}$]', fontsize=8, style='italic')
-    a.set_ylabel('cell volume [fL]', fontsize=8, style='italic')
+    a.set_xlabel('growth rate [hr$^{-1}$]', fontsize=8)
+    a.set_ylabel('cell volume [fL]', fontsize=8)
 
 for a in [ax2, ax4]:
-    a.set_ylabel('repressors per cell', fontsize=8, style='italic')
-    a.set_xlabel('growth rate [hr$^{-1}$]', fontsize=8, style='italic')
+    a.set_ylabel('repressors per cell', fontsize=8)
+    a.set_xlabel('growth rate [hr$^{-1}$]', fontsize=8)
 
 for a in [ax1, ax2]:
     a.set_xlim([0.18, 0.65])
