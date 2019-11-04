@@ -29,6 +29,10 @@ data {
     vector[N] foldchange; // Observed fold-change in gene expression
 }
 
+transformed data { 
+    vector[N] log_fc = log(foldchange);
+}
+
 parameters { 
     real delta_S;
     real delta_S_vib;
@@ -49,7 +53,7 @@ model {
      vector[N] pact = 1 ./ (1 + exp(-epAI_star[idx]));
 
      // Compute the mean fold-change in gene expression
-     vector[N] mu = 1 ./ (1 + pact .* (repressors ./ Nns) .* exp(-epRA_star[idx])); 
+     vector[N] mu = -1 * log(1 + pact .* (repressors ./ Nns) .* exp(-epRA_star[idx])); 
 
      // Define the priors
      delta_S ~ normal(0, 0.1);
@@ -57,6 +61,6 @@ model {
      sigma ~ normal(0, 0.1);
 
      // Evaluate the likelihood
-     foldchange ~ normal(mu, sigma);
+     log_fc ~ normal(mu, sigma);
 
  }

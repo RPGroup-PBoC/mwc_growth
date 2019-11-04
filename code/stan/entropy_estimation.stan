@@ -29,20 +29,28 @@ data {
     vector[N] foldchange; // Observed fold-change in gene expression
 }
 
+transformed data {
+    vector[N] log_fc = log(foldchange);
+}
+
+
 parameters { 
     vector[J] delta_S;
+    vector[J] delta_S_vib;
     vector<lower=0>[J] sigma; // Homoscedastic error
 }
 
 transformed parameters { 
     // Compute the modified binding energies;
-    vector[J] true_epRA; // =  ref_epRA + ref_temp .* delta_S;
-    vector[J] epRA_star; // = delta_S;// (ref_temp ./ temp) .* true_epRA - delta_S .* temp;
-    vector[J] epAI_star; // = delta_S; //(ref_temp ./ temp) .* ref_epAI;
+    vector[J] true_epRA; 
+    vector[J] true_epAI;
+    vector[J] epRA_star; 
+    vector[J] epAI_star; 
     for (i in 1:J) { 
         true_epRA[i] = ref_epRA + ref_temp * delta_S[i];
+        true_epAI[i] = ref_epAI + ref_temp * delta_S_vib[i];
         epRA_star[i] = (ref_temp / temp[i]) * true_epRA[i] - delta_S[i] * temp[i];
-        epAI_star[i] = (ref_temp / temp[i]) * ref_epAI;
+        epAI_star[i] = (ref_temp / temp[i]) * true_epAI[i] - delta_S_vib[i] * temp[i];
     }
 }
 
@@ -51,12 +59,13 @@ model {
     vector[N] pact = 1 ./ (1 + exp(-epAI_star[idx]));
 
      // Compute the mean fold-change in gene expression
-     vector[N] mu = 1 ./ (1 + pact .* (repressors ./ Nns) .* exp(-epRA_star[idx]));
+     vector[N] mu = -log(1 + pact .* (repressors ./ Nns) .* exp(-epRA_star[idx]));
 
      // Define the priors
      delta_S ~ normal(0, 0.1);
+     delta_S_vib ~ normal(0, 0.1);
      sigma ~ normal(0, 0.1);
 
      // Evaluate the likelihood
-     foldchange ~ normal(mu, sigma[idx]);
+     log_fc ~ normal(mu, sigma[idx]);
  }

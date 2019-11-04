@@ -14,9 +14,7 @@
 * *****************************************************************************/ 
 data { 
     // Dimensional parameters
-    int<lower=1> J; // Number of unique conditions
     int<lower=1> N; // Total number of measurements
-    int<lower=1, upper=J> idx[N]; // ID vector for condition
 
     // Input parameters
     vector<lower=0>[N] repressors; // Number of repressors per cell
@@ -26,22 +24,23 @@ data {
     vector[N] foldchange;
 }
 
+transformed data {
+    vector[N] log_fc = log(foldchange);
+}
+
 parameters {
-    // vector[J] epAI; // allosteric binding energy
-    vector[J] epRA; // DNA binding energy
-    vector<lower=0>[J] sigma; // Homoscedastic error
+    real epRA; // DNA binding energy
+    real<lower=0> sigma; // Homoscedastic error
 }
 
 model {
     // Compute the mean fold-change in gene expression. 
-    // vector[N] pact = 1 ./ (1 + exp(-epAI[idx]));
-    vector[N] mu = 1 ./ (1 + (repressors ./ Nns) .* exp(-epRA[idx]));
+    vector[N] mu = -1 * log(1 + (repressors ./ Nns) * exp(-epRA));
 
     // Define the priors. 
-    epRA ~ normal(0, 10); // Same prior as used in Chure et al 2019 PNAS 
-    // epAI ~ normal(4.5, 2);
+    epRA ~ normal(-12, 6); // Same prior as used in Chure et al 2019 PNAS 
     sigma ~ normal(0, 0.1); // Sampe prior as used in Chure et al 2019 PNAS
 
     // Evaluate the likelihood. 
-    foldchange ~ normal(mu, sigma[idx]);
+    log_fc ~ cauchy(mu, sigma);
 }
