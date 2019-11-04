@@ -9,7 +9,7 @@ colors, color_list = mwc.viz.bokeh_theme()
 bokeh.io.output_notebook()
 
 # Define whether the analysis should be pooled or not. 
-pooled = 1
+pooled = 0
 force_compile = True
 
 # Load the fluctuation data
@@ -63,13 +63,13 @@ for dim, temp in zip(grouped['idx'].unique(), grouped['temp'].unique()):
     params.loc[params['dimension']==dim, 'temp'] = temp
     keymap[dim] = temp
 
-renamed_params = ['epRA_star', 'epAI_star', 'delta_S',  'sigma']
+renamed_params = ['epRA_star', 'epAI_star', 'delta_S', 'delta_S_vib', 'sigma']
 samples_dfs = []
 for k, v in keymap.items():
     for p in renamed_params:
         df = pd.DataFrame()
         if pooled == 1:
-            if (p == 'delta_S') | (p == 'sigma'):
+            if (p == 'delta_S') | (p == 'sigma') | (p == 'delta_S_vib'):
                 df['value'] = samples[f'{p}']
             else:
                 df['value'] = samples[f'{p}[{k}]']
