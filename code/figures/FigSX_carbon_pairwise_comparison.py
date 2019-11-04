@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib
 import mwc.viz
 import mwc.model
 import mwc.stats
@@ -22,11 +23,12 @@ stats = stats[(stats['temp']==37)]
 rep_range = np.logspace(0, 3, 100)
 # %%
 # Set up the figure canvas
-fig, ax = plt.subplots(3, 3, figsize=(6, 6), sharex=True, sharey=True, 
+fig, ax = plt.subplots(3, 3, figsize=(5.5, 5.5), sharex=True, sharey=True, 
                         dpi=100)
 for a in ax.ravel():
     a.set_xscale('log')
     a.set_yscale('log')
+    a.set_xlim([1, 800])
 
 for i in range(3):
     ax[-1, i].set_xlabel('repressors per cell')
@@ -38,9 +40,18 @@ for i in range(3):
 
 titles = ['acetate', 'glycerol', 'glucose']
 title_colors = [colors['dark_brown'], colors['dark_green'], colors['dark_purple']]
-# for i in range(3):
-#     mwc.viz.ylabelbox(ax[i, 0], titles[i], title_colors[i])
-#     mwc.viz.titlebox(ax[0, i], titles[i], title_colors[i])
+face_colors = [colors['brown'], colors['light_green'], colors['light_purple']]
+for i in range(3):
+    mwc.viz.ylabelbox(ax[i, 0], titles[i], title_colors[i])
+    mwc.viz.titlebox(ax[0, i], titles[i], title_colors[i])
+    
+    if i > 0:
+        # apply offset transform to all y ticklabels.
+        dx = -13 / fig.dpi
+        dy = 0
+        offset = matplotlib.transforms.ScaledTranslation(dx, dy, fig.dpi_scale_trans)
+        for label in ax[i, 0].yaxis.get_majorticklabels():
+            label.set_transform(label.get_transform() + offset)
 
 
 # Plot the predictions
@@ -64,14 +75,14 @@ for i, carb in enumerate(titles):
         if i == j:
             fill  = 'white'
         else:
-            fill = title_colors[i]
+            fill = face_colors[i]
         # Isolate the data. 
         d = summary[summary['carbon']==carb]
         ax[j, i].errorbar(d['repressors']['mean'], d['fold_change']['mean'],
                         xerr=d['repressors']['sem'], yerr=d['fold_change']['sem'],
-                        color=title_colors[i], fmt='.', ms=6, markerfacecolor=fill,
-                        alpha=0.5, markeredgewidth=0.75, linestyle='none', capsize=1,
+                        color=title_colors[i], fmt='.', ms=8, markerfacecolor=fill,
+                        markeredgewidth=0.75, linestyle='none', capsize=1,
                         lw=0.75)
-
 plt.subplots_adjust(wspace=0.05, hspace=0.05)
-# %%
+plt.savefig('../../figs/FigS_carbon_binding_energy_pairwise_fc.pdf', 
+            bbox_inches='tight', facecolor='white')

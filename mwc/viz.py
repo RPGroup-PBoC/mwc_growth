@@ -84,10 +84,10 @@ def personal_style():
     sns.set_palette(palette)
     return colors, color_items     
 
-def titlebox(ax, text, color,  size=8, **kwargs):
+def titlebox(ax, text, color,  size=8, boxsize="10%", pad=0.02, **kwargs):
     """Sets a colored box about the title with the width of the plot"""
     divider = make_axes_locatable(ax)
-    cax = divider.append_axes("top", size="10%", pad=0.02)
+    cax = divider.append_axes("top", size=boxsize, pad=pad)
     cax.get_xaxis().set_visible(False)
     cax.get_yaxis().set_visible(False)
     cax.spines['top'].set_visible(True)
