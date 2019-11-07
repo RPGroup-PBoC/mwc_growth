@@ -75,4 +75,6 @@ for g, d in _samples.groupby(['date', 'run_no']):
 plt.tight_layout()
 fig.text(0.01, 0.9, '(A)', fontsize=10)
 fig.text(0.5, 0.9, '(B)', fontsize=10)
+plt.savefig('../../figs/FigSX_cal_factor_posteriors.pdf', bbox_inches='tight',
+            facecolor='white')
 # %%
