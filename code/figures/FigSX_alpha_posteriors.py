@@ -42,13 +42,13 @@ ax[0].set_xlabel('calibration factor [a.u. / LacI]')
 ax[1].set_xlabel('calibration factor [a.u. / LacI]')
 # ax[0].set_xscale('log')
 ax[0].set_ylabel('empirical cumulative distribution')
-ax[1].set_ylabel('frequency')
+ax[1].set_ylabel('posterior probability')
 ax[0].set_xlim([100, 1200])
 mwc.viz.titlebox(ax[0], 'glucose, 37°C', color=colors['black'], size=8, boxsize="15%")
 mwc.viz.titlebox(ax[1], 'glucose, 37°C', color=colors['black'], size=8, boxsize="15%")
 
-# _samples = samples[(samples['date'] == 20181002) | (samples['date'] == 20190102) |
-#                    (samples['date'] == 20181011)]
+_samples = samples[(samples['date'] == 20181002) | (samples['date'] == 20190102) |
+                   (samples['date'] == 20181011)]
 
 # Iterate through each identifier in the sampling and compute the ecdf. 
 iter = 0

@@ -2,6 +2,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib
 import mwc.viz
 import scipy.io
 import mwc.image
@@ -13,6 +14,7 @@ import skimage.measure
 import skimage.io
 import glob
 colors, color_list = mwc.viz.personal_style()
+IP_DIST = 0.065 # in nm per pixel
 
 #%%
 # Find the root folders for each snapshot
@@ -27,6 +29,8 @@ locs = {32:0, 37: 20, 42: 40, 'acetate': 0, 'glycerol': 20, 'glucose': 40}
 temp_colors = {32: colors['blue'], 37:colors['purple'], 42: colors['red']}
 carb_colors = {'acetate':colors['dark_brown'], 'glucose':colors['purple'], 
                'glycerol':colors['green']}
+lengths = {'glucose':[], 'glycerol':[], 'acetate':[], 37:[], 42:[], 32:[]}
+widths = {'glucose':[], 'glycerol':[], 'acetate':[], 37:[], 42:[], 32:[]}
 for f in folders:
     # Determine the temperature
     carbon, temp, _ = f.split('/')[-1].split('_')
@@ -51,9 +55,15 @@ for f in folders:
 
     # Instantiate a data frame for easy calculation of the mean. 
     dfs = [] 
+    _lengths = []
+    _widths = []
     for j, m in enumerate(mats):
         mat = scipy.io.loadmat(m)
-        seg = mat['CellA'][0][0][0][0][3]
+        cellA = mat['CellA'][0][0][0][0]
+        seg = cellA[3]
+        length, width = cellA[9][0]
+        _lengths.append(length)
+        _widths.append(width)
         lab = skimage.measure.label(seg)
         props = skimage.measure.regionprops(lab)
         prop = [p for p in props]
@@ -70,23 +80,41 @@ for f in folders:
             filt_conts_y = scipy.signal.savgol_filter(perm_conts_y, polyorder=2, window_length=15)
             perm_conts_x = np.roll(_conts_x, -ind)
             filt_conts_x = scipy.signal.savgol_filter(perm_conts_x, polyorder=2, window_length=15)
-            _df = pd.DataFrame().from_dict({'x':filt_conts_x, 'idx':np.arange(len(conts)),
-                                          'y':filt_conts_y * 0.065})
+            _df = pd.DataFrame().from_dict({'x':perm_conts_x, 'idx':np.arange(len(conts)),
+                                          'y':perm_conts_y * IP_DIST})
             _df['cell_id'] = j
             dfs.append(_df)
             for i, a in enumerate(_ax):
-                a.plot(filt_conts_x + loc[i], filt_conts_y * 0.065, lw=0.15, 
-                        alpha=1, color=color)
+                a.plot(perm_conts_x + loc[i], perm_conts_y * IP_DIST, lw=0.1, 
+                        alpha=0.75, color=color)
+    # Compute the average lengths and widths
+    avg_length = np.mean(np.array(_lengths))
+    avg_width = np.mean(np.array(_widths)) 
+    for k, a in enumerate(_ax):
+        a.vlines(loc[k], IP_DIST * avg_width/2,  (avg_length -  avg_width) * IP_DIST, 'k', lw=2, zorder=1000)
+        a.vlines(loc[k] + avg_width, IP_DIST * avg_width/2,  (avg_length - avg_width) * IP_DIST, 'k', lw=2, zorder=1000)
+        bottom_arc = matplotlib.patches.Arc((loc[k] + avg_width/2, IP_DIST * avg_width/2), 
+                      width=avg_width, height=IP_DIST * avg_width, theta1=180, 
+                      theta2=0, color='k', zorder=1000, lw=2) 
+        top_arc = matplotlib.patches.Arc((loc[k] + avg_width/2, IP_DIST * (avg_length - avg_width)), 
+                      width=avg_width, height=IP_DIST * avg_width, theta1=0, 
+                      theta2=180, color='k', zorder=1000, lw=2) 
+        a.add_patch(bottom_arc)
+        a.add_patch(top_arc)
 
 
-ax[0].set_xlim([0, 60])    
+# Compute the average shape parameters
+
+ax[0].set_xlim([-5, 65])    
 ax[0].set_xticks([10, 30, 50])
 ax[0].set_xticklabels(['acetate', 'glycerol', 'glucose'], fontsize=8)
-ax[1].set_xlim([0, 60])    
+ax[1].set_xlim([-5, 65])    
 ax[1].set_xticks([10, 30, 50])
 ax[1].set_xticklabels(['32° C', '37° C', '42° C'], fontsize=8)
 plt.tight_layout()
-plt.savefig('../../figs/cell_length_traces.svg', bbox_inches='tight')
+fig.text(0, 0.9, '(A)', fontsize=10)
+fig.text(0.5, 0.9, '(B)', fontsize=10)
+plt.savefig('../../figs/FigSX_cell_shape.pdf', bbox_inches='tight', facecolor='white')
 
 
-#%%
+# %%
