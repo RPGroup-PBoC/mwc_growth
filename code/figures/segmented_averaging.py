@@ -34,8 +34,7 @@ widths = {'glucose':[], 'glycerol':[], 'acetate':[], 37:[], 42:[], 32:[]}
 for f in folders:
     # Determine the temperature
     carbon, temp, _ = f.split('/')[-1].split('_')
-    temp = int(temp[:-1])
-
+    temp = int(temp[:-1]) 
     # Determine the axis
     if carbon != 'glucose':
         _ax = [ax[0]]
@@ -117,4 +116,4 @@ fig.text(0.5, 0.9, '(B)', fontsize=10)
 plt.savefig('../../figs/FigSX_cell_shape.pdf', bbox_inches='tight', facecolor='white')
 
 
-# %%
+
