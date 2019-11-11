@@ -46,6 +46,6 @@ parameters {
 }
 
 model {   
-    alpha ~ normal(0, 1000);
+    alpha ~ normal(0, 500);
     I1 ~ GammaApproxBinom(I2, alpha, N);  
 }

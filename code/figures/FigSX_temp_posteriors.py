@@ -65,8 +65,11 @@ ax[2, 1].plot(pooled_S_AI, pooled_sigma, 'k.', ms=0.4, alpha=0.5)
 
 # Marginals
 ax[0, 0].step(RA_bins[:-1], pSRA_hist, 'k-', lw=1)
+ax[0, 0].fill_between(RA_bins[:-1], pSRA_hist, color='k', alpha=0.25)
 ax[1, 1].step(AI_bins[:-1], pSAI_hist, 'k-', lw=1)
+ax[1, 1].fill_between(AI_bins[:-1], pSAI_hist, color='k', alpha=0.25)
 ax[2, 2].step(sigma_bins[:-1], sig_hist, 'k-', lw=1)
+ax[2, 2].fill_between(sigma_bins[:-1], sig_hist, color='k', alpha=0.25)
 
 # Plot the 32 results
 S_RA_32 = entropy[(entropy['parameter']=='delta_S') & 
@@ -86,8 +89,11 @@ ax[2, 1].plot(S_AI_32, sigma_32, '.', color=colors['blue'], ms=0.4, alpha=0.5)
 
 # Marginals
 ax[0, 0].step(RA_bins[:-1], SRA32_hist, '-', color=colors['dark_blue'], lw=1)
+ax[0, 0].fill_between(RA_bins[:-1], SRA32_hist, color=colors['dark_blue'], alpha=0.25)
 ax[1, 1].step(AI_bins[:-1], SAI32_hist, '-', color=colors['dark_blue'], lw=1)
+ax[1, 1].fill_between(AI_bins[:-1], SAI32_hist,  color=colors['dark_blue'], alpha=0.25)
 ax[2, 2].step(sigma_bins[:-1], sigma32_hist, '-', color=colors['dark_blue'], lw=1)
+ax[2, 2].fill_between(sigma_bins[:-1], sigma32_hist, color=colors['dark_blue'], alpha=0.25)
 
 
 # Plot the 42 results
@@ -108,9 +114,18 @@ ax[2, 1].plot(S_AI_42, sigma_42, '.', color=colors['red'], ms=0.4, alpha=0.5)
 
 # Marginals
 ax[0, 0].step(RA_bins[:-1], SRA42_hist, '-', color=colors['dark_red'], lw=1)
+ax[0, 0].fill_between(RA_bins[:-1], SRA42_hist, color=colors['dark_red'], alpha=0.25)
 ax[1, 1].step(AI_bins[:-1], SAI42_hist, '-', color=colors['dark_red'], lw=1)
+ax[1, 1].fill_between(AI_bins[:-1], SAI42_hist, color=colors['dark_red'], lw=1, alpha=0.25)
 ax[2, 2].step(sigma_bins[:-1], sigma42_hist, '-', color=colors['dark_red'], lw=1)
+ax[2, 2].fill_between(sigma_bins[:-1], sigma42_hist, color=colors['dark_red'], lw=1, alpha=0.25)
 
+
+# Add a blank legend
+ax[0, 2].plot([], [], '-', lw=2, color=colors['dark_blue'], label='32° C only')
+ax[0, 2].plot([], [], '-', lw=2, color=colors['dark_red'], label='42° C only')
+ax[0, 2].plot([], [], '-', lw=2, color=colors['black'], label='pooled 32° C and 42° C')
+ax[0, 2].legend(loc='center right', fontsize=8)
 plt.subplots_adjust(wspace=0.05, hspace=0.05)
 plt.savefig('../../figs/FigSX_entropy_cornerplot.pdf', bbox_inches='tight', 
             facecolor='white')
@@ -118,3 +133,6 @@ plt.savefig('../../figs/FigSX_entropy_cornerplot.pdf', bbox_inches='tight',
 
 
 
+
+
+# %%

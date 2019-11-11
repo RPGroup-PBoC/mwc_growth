@@ -19,7 +19,7 @@ fc_data = pd.read_csv('../../data/raw_compiled_snaps.csv')
 IP_DIST = 0.065 # In nm / pix
 
 # Load the stan model
-model = mwc.bayes.StanModel('../stan/calibration_factor.stan')
+model = mwc.bayes.StanModel('../stan/calibration_factor.stan', force_compile=True)
 
 #%%
 # Instantiate storage lists for calfactor samples
