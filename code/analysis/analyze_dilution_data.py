@@ -19,7 +19,7 @@ fc_data = pd.read_csv('../../data/raw_compiled_snaps.csv')
 IP_DIST = 0.065 # In nm / pix
 
 # Load the stan model
-model = mwc.bayes.StanModel('../stan/calibration_factor.stan', force_compile=True)
+model = mwc.bayes.StanModel('../stan/calibration_factor.stan') #, force_compile=True)
 
 #%%
 # Instantiate storage lists for calfactor samples
@@ -63,9 +63,16 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_number'
     fluct_df['temp'] = g[1]
     fluct_df['date'] = g[2]
     fluct_df['run_no'] = g[-1]
-    fluct_df['volume_1'] = d['volume_1'].values
-    fluct_df['volume_2'] = d['volume_2'].values
+    fluct_df['length_1_death'] = d['length_1_death'].values 
+    fluct_df['length_1_birth'] = d['length_1_birth'].values 
+    fluct_df['length_2_death'] = d['length_2_death'].values 
+    fluct_df['length_2_birth'] = d['length_2_birth'].values 
+    fluct_df['volume_1_birth'] = d['volume_1_birth'].values
+    fluct_df['volume_2_birth'] = d['volume_2_birth'].values
+    fluct_df['volume_1_death'] = d['volume_1_death'].values
+    fluct_df['volume_2_death'] = d['volume_2_death'].values
     fluct_dfs.append(fluct_df)
+
 
     # Compute the fold-change
     _fc = pd.DataFrame([])
@@ -84,6 +91,8 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_number'
     _fc['carbon'] = g[0]
     _fc['temp'] = g[1]
     _fc['strain'] = _fc_data['strain']
+    _fc['length_um'] = _fc_data['length_um']
+    _fc['width_um'] = _fc_data['width_um']
     _fc['volume_birth'] = _fc_data['volume_birth']
     _fc['volume_death'] = _fc_data['volume_death']
     fc_dfs.append(_fc)
