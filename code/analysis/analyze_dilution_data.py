@@ -65,10 +65,10 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_number'
     fluct_df['temp'] = g[1]
     fluct_df['date'] = g[2]
     fluct_df['run_no'] = g[-1]
-    fluct_df['length_1_death'] = d['length_1_death'].values / IP_DIST
-    fluct_df['length_1_birth'] = d['length_1_birth'].values / IP_DIST
-    fluct_df['length_2_death'] = d['length_2_death'].values / IP_DIST
-    fluct_df['length_2_birth'] = d['length_2_birth'].values / IP_DIST
+    fluct_df['length_1_death'] = d['length_1_death'].values 
+    fluct_df['length_1_birth'] = d['length_1_birth'].values 
+    fluct_df['length_2_death'] = d['length_2_death'].values 
+    fluct_df['length_2_birth'] = d['length_2_birth'].values 
     fluct_df['volume_1_birth'] = d['volume_1_birth'].values
     fluct_df['volume_2_birth'] = d['volume_2_birth'].values
     fluct_df['volume_1_death'] = d['volume_1_death'].values
@@ -121,6 +121,7 @@ for g, d in fc_df.groupby(['carbon', 'temp']):
     d['repressors'] = d['raw_repressors']
     d['repressors_max'] = d['raw_repressors_max']
     d['repressors_min'] = d['raw_repressors_min']
+    d['threshold'] = thresh
     d.loc[d['size']=='small', 'repressors'] *= 2
     d.loc[d['size']=='small', 'repressors_max'] *= 2
     d.loc[d['size']=='small', 'repressors_min'] *= 2
