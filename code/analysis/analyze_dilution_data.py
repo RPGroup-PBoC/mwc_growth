@@ -110,8 +110,9 @@ for g, d in fc_df.groupby(['carbon', 'temp']):
     growth = fluct_df[(fluct_df['carbon']==g[0]) & (fluct_df['temp']==g[1])]
 
     # Find the birth length threshold 
-    ind = np.where(np.linspace(0, 1, 2 * len(growth)) >= BIRTHFRAC)[0][0]
-    thresh = np.sort(growth[['length_1_birth', 'length_2_birth']].values.flatten())[ind] 
+    lengths = growth[['length_1_birth', 'length_2_birth']].values.flatten()
+    # ind = np.where((np.arange(1, len(lengths)+1)/ len(lengths)) >= BIRTHFRAC)[0][0]
+    thresh = np.percentile(lengths, BIRTHFRAC * 100)
 
      # Designate the cells as "small" or "large"
     d.loc[d['length_um'] < thresh, 'size'] = 'small'
@@ -125,8 +126,8 @@ for g, d in fc_df.groupby(['carbon', 'temp']):
     d.loc[d['size']=='small', 'repressors'] *= 2
     d.loc[d['size']=='small', 'repressors_max'] *= 2
     d.loc[d['size']=='small', 'repressors_min'] *= 2
+    d = d[(d['repressors']>0) & (d['fold_change']>=0)]
     fcs.append(d)
-
 fc_df = pd.concat(fcs)
 
 # Concatenate the summary df and save to disk. 

@@ -11,7 +11,6 @@ colors, _ = mwc.viz.personal_style()
 # %%
 # Load the various data sets. 
 data = pd.read_csv('../../data/analyzed_foldchange.csv')
-data['repressors'] *= 0.5
 data = data[(data['carbon']=='glucose') & (data['temp']==37) & 
             (data['strain']=='dilution') & (data['repressors'] > 0) & 
             (data['fold_change'] >= 0)]
@@ -42,9 +41,11 @@ model = mwc.bayes.StanModel('../stan/DNA_binding_energy.stan')
 summ_dfs = []
 desc = ['no_correction', 'correction', 'garcia', 'brewster',
         'razo-mejia']
-src = [data, garcia, brewster, ind_data]
+src = [data, data, garcia, brewster, ind_data]
+data_dict = {'no_correction':data, 'correction':data, 'garcia':garcia,
+            'brewster':brewster, 'razo-mejia':ind_data}
 src.append(pd.concat(src))
-for d, s  in zip(desc, src):
+for d, s  in data_dict.items():
     # Define the data dictionary. 
     if d == 'no_correction':
         key = 'raw_repressors'

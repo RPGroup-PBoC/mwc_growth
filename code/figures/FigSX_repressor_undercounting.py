@@ -14,6 +14,7 @@ old_gods = pd.read_csv('../../data/Garcia2011_Brewster2014.csv', comment='#')
 new_gods = pd.read_csv('../../data/RazoMejia_2018.csv', comment='#')
 data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
 
+
 # Prune the data as necessary
 old_gods.rename(columns={'repressor':'repressors'}, inplace=True)
 old_gods = old_gods[old_gods['operator']=='O2']
@@ -22,7 +23,8 @@ new_gods = new_gods[(new_gods['repressors'] > 0) & (new_gods['IPTG_uM']==0) &
                     (new_gods['operator']=='O2')]
 new_gods.rename(columns={'fold_change_A':'fold_change'}, inplace=True)
 new_gods['repressors'] *= 2
-data = data[(data['carbon']=='glucose') & (data['temp']==37)]
+data = data[(data['carbon']=='glucose') & (data['temp']==37) & 
+            (data['strain']=='dilution')]
 
 # Group the data for display. 
 new_gods = new_gods.groupby('repressors').agg(('mean', 'sem')).reset_index()

@@ -21,8 +21,11 @@ iter = 0
 for g, d in snaps.groupby(['carbon', 'temp']):
     # Get the corresponding fluctuations
     _flucts = flucts[(flucts['carbon']==g[0]) & (flucts['temp']==g[1])]
+    if g[0] == 'acetate':
+        tc = colors['dark_brown']
+        fc = colors['pale_brown']
 
-    if g[1] == 37:
+    elif g[1] == 37:
         tc = colors[condition_colors[g[0]]]
         fc = colors[f'pale_{condition_colors[g[0]]}']
     else:
@@ -38,7 +41,15 @@ for g, d in snaps.groupby(['carbon', 'temp']):
                         bins=bins, histtype='stepfilled',
                         edgecolor=colors['black'], facecolor=colors['black'], 
                         alpha=0.25, density=True)
-    # Plot the ecdf. 
+    # Plot the ecdfs. 
+    lengths = _flucts[['length_1_birth', 'length_2_birth']].values.flatten()
+    xb, yb = np.zeros(len(lengths) + 2), np.zeros(len(lengths) + 2)
+    xb[-1] = 100
+    yb[-1] = 1
+    _x, _y = np.sort(lengths), np.arange(1, len(lengths)+1, 1) / len(lengths)
+    xb[1:-1] = _x
+    yb[1:-1] = _y
+
 
     # Plot the ecdf. 
     x, y = np.zeros(len(d) + 2), np.zeros(len(d) + 2)
@@ -49,6 +60,8 @@ for g, d in snaps.groupby(['carbon', 'temp']):
     y[1:-1] = _y
 
     _ = ax[1, iter].step(x, y, color=tc)
+    _ = ax[1, iter].step(xb, yb, color=colors['black'])
+    _ = 
     iter += 1
 
 for a in ax.ravel():
