@@ -55,7 +55,7 @@ for a in ax.ravel():
     a.set_xlim([0, 6])
 for i in range(5):
     ax[0, i].set_xticklabels([])
-    ax[0, i].set_ylim([0, 0.7])
+    ax[0, i].set_ylim([0, 1.1])
     if i > 0:
         for j in range(2):
             ax[j, i].set_yticklabels([])

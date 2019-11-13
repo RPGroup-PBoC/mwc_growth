@@ -18,7 +18,7 @@ fc_data = pd.read_csv('../../data/raw_compiled_snaps.csv')
 
 # Constants and bounds for size
 IP_DIST = 0.065 # In nm / pix
-BIRTHFRAC = 0.9 # Fraction of birth lengths to define as "divided" cells.
+BIRTHFRAC = 0.95 # Fraction of birth lengths to define as "divided" cells.
 
 # Load the stan model
 model = mwc.bayes.StanModel('../stan/calibration_factor.stan') #, force_compile=True)
@@ -111,7 +111,7 @@ for g, d in fc_df.groupby(['carbon', 'temp']):
 
     # Find the birth length threshold 
     ind = np.where(np.linspace(0, 1, 2 * len(growth)) >= BIRTHFRAC)[0][0]
-    thresh = growth[['length_1_birth', 'length_2_birth']].values.flatten()[ind] 
+    thresh = np.sort(growth[['length_1_birth', 'length_2_birth']].values.flatten())[ind] 
 
      # Designate the cells as "small" or "large"
     d.loc[d['length_um'] < thresh, 'size'] = 'small'
