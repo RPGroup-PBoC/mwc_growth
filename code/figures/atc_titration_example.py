@@ -29,10 +29,11 @@ ax.yaxis.set_tick_params(labelsize=6, labelcolor=colors['dark_orange'])
 ax2.yaxis.set_tick_params(labelsize=6, labelcolor=colors['dark_red'])
 ax.set_xlabel('ATC [ng / mL]',  fontsize=8)
 ax.set_ylabel('relative YFP intensity',  fontsize=8, 
-              color=colors['dark_orange'])
+             color=colors['dark_orange'])
 ax2.set_ylabel('relative mCherry intensity', fontsize=8, rotation=-90,
                labelpad=10, color=colors['dark_red'])
-mwc.viz.titlebox(ax2, 'glucose, 37 °C', color=colors['purple'])
+mwc.viz.titlebox(ax2, 'GLUCOSE, 37 °C', size=6, color=colors['purple'],
+                 bgcolor=colors['pale_purple'], pad=0.3)
 
 # Set the maximum to normalize
 max_yfp = 2.5E5

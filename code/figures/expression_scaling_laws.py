@@ -15,10 +15,10 @@ _flucts =  pd.read_csv('../../data/analyzed_fluctuations.csv')
 stats = pd.read_csv('../../data/compiled_growth_statistics.csv')
 
 # Reform the  fluctuations df to remove lineages.
-flucts_1 = _flucts[['temp', 'carbon', 'date', 'run_no', 'volume_1']]
-flucts_2 = _flucts[['temp', 'carbon', 'date', 'run_no', 'volume_2']]
-flucts_1.rename(columns={'volume_1':'volume_birth', 'run_no':'run_number'}, inplace=True)
-flucts_2.rename(columns={'volume_2':'volume_birth', 'run_no':'run_number'}, inplace=True)
+flucts_1 = _flucts[['temp', 'carbon', 'date', 'run_no', 'volume_1_birth']]
+flucts_2 = _flucts[['temp', 'carbon', 'date', 'run_no', 'volume_2_birth']]
+flucts_1.rename(columns={'volume_1_birth':'volume_birth', 'run_no':'run_number'}, inplace=True)
+flucts_2.rename(columns={'volume_2_birth':'volume_birth', 'run_no':'run_number'}, inplace=True)
 flucts = pd.concat([flucts_1, flucts_2])
 
 # Define the colors for the conditions
@@ -152,8 +152,8 @@ handles, labels = ax2.get_legend_handles_labels()
 leg = ax3.legend(reversed(handles), reversed(labels), title='   ATC\n[ng / mL]', 
                 fontsize=6, bbox_to_anchor=(1.15, 1))
 leg.get_title().set_fontsize(6)
-mwc.viz.titlebox(ax1, 'carbon quality variation', color=colors['black'])
-mwc.viz.titlebox(ax2, 'carbon quality variation', color=colors['black'])
+mwc.viz.titlebox(ax1, 'CARBON QUALITY VARIATION', size=6, color='#4b4b4b')
+mwc.viz.titlebox(ax2, 'CARBON QUALITY VARIATION', size=6, color=colors['black'])
 mwc.viz.titlebox(ax3, 'temperature variation', color=colors['black'])
 mwc.viz.titlebox(ax4, 'temperature  variation', color=colors['black'])
 plt.subplots_adjust(hspace=0.2, wspace=0.6)

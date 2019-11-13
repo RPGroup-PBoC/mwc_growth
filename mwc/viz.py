@@ -72,19 +72,29 @@ def personal_style():
           'mathtext.it':'Gentium Plus:italic',
           'mathtext.bf': 'Gentium Plus:bold'}
     matplotlib.style.use(rc)
-    colors = {'dark_purple': '#5F2E88', 'dark_orange':'#F38227', 'black':'#444147',
-              'dark_blue': '#3F60AC', 'dark_red':'#9C372F', 'dark_green':'#395A34',
-              'purple': '#7E59A2', 'orange':'#E39943', 'blue': '#7292C7', 'red':'#C76A6A',
-               'green':'#688A2F', 'light_purple':'#A17DB8', 'light_orange':'#EEBA7F',
-               'light_blue':'#A5B3CC', 'light_red':'#E39C9D', 'light_green':'#B3CD86', 
-               'grey': '#EFEFEF', 'gray': '#EFEFEF', 'light_grey':'#6D6F72',
-               'dark_brown': '#764f2a', 'brown':'#c2996c', 'light_brown':'#e1bb96'}
+    colors = {'dark_purple': '#5F2E88', 'purple': '#7E59A2', 
+              'light_purple':'#A17DB8', 'pale_purple':'#dfd6e5',
+              'dark_orange':'#F38227', 'orange':'#E39943', 
+              'light_orange':'#EEBA7F', 'pale_orange': '#f2d4b6',
+              'dark_blue': '#3F60AC', 'blue': '#7292C7',
+              'light_blue':'#A5B3CC', 'pale_blue': '#dae4f1',
+              'dark_red':'#9C372F', 'red':'#C76A6A',
+              'light_red':'#E39C9D', 'pale_red':'#edcccc',
+              'dark_green':'#395A34', 'green':'#688A2F', 
+              'light_green':'#B3CD86', 'pale_green':  '#d8e2c3',
+              'dark_brown': '#764f2a', 'brown':'#c2996c', 
+              'light_brown':'#e1bb96', 'pale_brown': '#efccaf',
+              'black':'#444147', 'grey': '#EFEFEF', 'gray': '#EFEFEF', 
+              'light_grey':'#6D6F72', 'light_gray':'#6D6F72'}
     color_items = [v for v in colors.values()]
-    palette = [v for k, v in colors.items() if v not in ['grey', 'gray', 'dark_purple', 'light_grey']]
+    palette = [v for k, v in colors.items() if (v not in ['grey', 'gray',
+                                                         'dark_purple',
+                                                         'light_grey']) and
+               ('pale' not in [v])]
     sns.set_palette(palette)
     return colors, color_items     
 
-def titlebox(ax, text, color,  size=8, boxsize="10%", pad=0.02, **kwargs):
+def titlebox(ax, text, color,  bgcolor=None, size=8, boxsize="10%", pad=0.02, **kwargs):
     """Sets a colored box about the title with the width of the plot"""
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("top", size=boxsize, pad=pad)
@@ -93,11 +103,14 @@ def titlebox(ax, text, color,  size=8, boxsize="10%", pad=0.02, **kwargs):
     cax.spines['top'].set_visible(True)
     cax.spines['right'].set_visible(True)
     plt.setp(cax.spines.values(), color=color)
-    cax.set_facecolor('white')
-    at = AnchoredText(text, loc=10, frameon=False, prop=dict(size=size, color=color))
+    if bgcolor != None:
+        cax.set_facecolor(bgcolor) 
+    else:
+        cax.set_facecolor('white')
+    at = AnchoredText(text, loc=10, frameon=False, prop=dict(size=size, fontweight='bold', color=color))
     cax.add_artist(at)
 
-def ylabelbox(ax, text, color,  size=8, boxsize="15%", pad=0.02, **kwargs):
+def ylabelbox(ax, text, color,  bgcolor=None, size=8, boxsize="15%", pad=0.02, **kwargs):
     """Sets a colored box about the title with the width of the plot"""
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("left", size=boxsize, pad=pad)
@@ -106,8 +119,12 @@ def ylabelbox(ax, text, color,  size=8, boxsize="15%", pad=0.02, **kwargs):
     cax.spines['top'].set_visible(True)
     cax.spines['right'].set_visible(True)
     plt.setp(cax.spines.values(), color=color)
-    cax.set_facecolor('white')
-    at = AnchoredText(text, loc=10, frameon=False, prop=dict(rotation='vertical', 
+    if bgcolor != None:
+        cax.set_facecolor(bgcolor) 
+    else:
+        cax.set_facecolor('white')
+
+    at = AnchoredText(text, loc=10, frameon=False, prop=dict(fontweight='bold', rotation='vertical', 
                     size=size, color=color))
     cax.add_artist(at)
 

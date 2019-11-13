@@ -86,12 +86,15 @@ intensities = pd.concat(intensities)
 
 # Rename the columns to useful quantities
 lineages = lineages[['I_1', 'I_2', 'area_1', 'area_2', 
-                        'carbon', 'run_number', 'temp', 'date', 'volume_1', 'volume_2']]
+                        'carbon', 'run_number', 'temp', 'date', 'volume_1_birth', 
+                        'volume_2_birth', 'volume_1_death', 'volume_2_death', 
+                        'length_1_birth', 'length_2_birth',
+                        'length_1_death', 'length_2_death']]
 intensities = intensities[['area_death', 'fluor1_mean_death', 'fluor2_mean_death', 
                            'strain', 'date', 'run_number', 'temp',
-                           'atc_ngml', 'carbon', 'long_axis_death', 
+                           'atc_ngml', 'carbon', 'long_axis_death',
                            'short_axis_death', 'volume_birth', 'volume_death', 
-                           'area_birth']]
+                           'area_birth',]]
 intensities.rename(columns={'fluor1_mean_death': 'mean_yfp', 
                         'fluor2_mean_death':'mean_mCherry',
                         'area_death':'area_pix', 'long_axis_death':'length_um',

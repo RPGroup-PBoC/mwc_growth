@@ -198,8 +198,14 @@ def family_reunion(dilution_df, multi_xy=True, fluo_channel=2):
                                'error_frame': d['error_frame'].values[0],
                                'area_1':d['area_death'].values[0], 
                                'area_2':d['area_death'].values[1],
-                               'volume_1': d['volume_birth'].values[0],
-                               'volume_2': d['volume_birth'].values[1],
+                               'length_1_birth': d['long_axis_birth'].values[0],
+                               'length_2_birth': d['long_axis_birth'].values[1],
+                               'length_1_death': d['long_axis_death'].values[0],
+                               'length_2_death': d['long_axis_death'].values[1],
+                               'volume_1_birth': d['volume_birth'].values[0],
+                               'volume_2_birth': d['volume_birth'].values[1],
+                               'volume_1_death': d['volume_death'].values[0],
+                               'volume_2_death': d['volume_death'].values[1],
                                'fractional_birth_area':d['area_birth'].values[0] / np.sum(d['area_birth'].values)}
 
                 family_df = family_df.append(family_dict, ignore_index=True)

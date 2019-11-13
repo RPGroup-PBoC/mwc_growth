@@ -89,7 +89,7 @@ for c, t, l, v in zip(carbs, temps, labels, vals):
                 lw=.75, label=l, linestyle='-', markerfacecolor=fill_colors[v],
                 color=edge_colors[v], markeredgewidth=0.5)
 
-ax.legend(handlelength=1, fontsize=6)
+ax.legend(handlelength=1, fontsize=6, fontweight='bold')
 ax.set_xlabel('time [min]', fontsize=8)
 ax.set_ylabel('relative OD$_{600nm}$', fontsize=8)
 plt.savefig('../../figs/Fig1_growth_curve_comparison.pdf', facecolor='none')

@@ -6,8 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import mwc.viz
 import mwc.stats
-colors, color_list = mwc.viz.bokeh_theme()
-mwc.viz.personal_style()
+colors, color_list = mwc.viz.personal_style()
 
 
 # Load an example data set. 
@@ -15,7 +14,6 @@ fluct_data = pd.read_csv('../../data/analyzed_fluctuations.csv')
 fluct_data = fluct_data[fluct_data['date']==20181002]
 alpha_mean = np.round(fluct_data['alpha_mean'].unique(), -1)[0]
 alpha_std = np.round(fluct_data['alpha_std'].unique())[0]
-print(alpha_mean, alpha_std)
 
 #%%
 # Compute bins of 50 events each. 
@@ -39,7 +37,7 @@ ax.plot(summed_range, alpha_mean * summed_range, lw=0.75, color=colors['dark_red
 ax.fill_between(summed_range, (alpha_mean + alpha_std) * summed_range, 
                 (alpha_mean - alpha_std) * summed_range, color=colors['red'], alpha=0.25)
 ax.legend(loc='lower right', fontsize=6)
-mwc.viz.titlebox(ax, 'glucose, 37 °C', color=colors['purple'])
+mwc.viz.titlebox(ax, 'GLUCOSE, 37 °C', size=6, color=colors['purple'], bgcolor=colors['pale_purple'])
 plt.savefig('../../figs/Fig2_fluct_example.pdf', bbox_inches='tight', facecolor='white')
 
 

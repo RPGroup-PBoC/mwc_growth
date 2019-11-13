@@ -170,24 +170,23 @@ plt.subplots_adjust(wspace=0.05, hspace=0.05)
 
 # %%
 data = pd.read_csv('../../data/analyzed_foldchange.csv')
-data = data[data['strain']=='dilution']
+data = data[(data['date'] != 20190307) & (data['fold_change'] >= 0) & 
+            (data['repressors'] > 0)]
+
 # Load the cell size distributions. 
 sizes = pd.read_csv('../../data/analyzed_fluctuations.csv')
 
 data['repressors'] /= 2
 carbon = 'glucose'
-temp = 42
+temp = 42 
 dfs = []
 for g, d in data.groupby(['date', 'run_number', 'carbon', 'temp', 'strain', 'atc_ngml']):
     d = d.copy()
     birth_length = sizes[(sizes['date']==int(g[0])) & (sizes['run_no']==g[1]) & 
                          (sizes['carbon']==g[2]) & (sizes['temp']==g[3]) 
                          ][['length_1_birth', 'length_2_birth']].values.flatten() / 0.065
-    thresh_ind = np.where(np.linspace(0, 1, len(birth_length)) >=0.80)[0][0]
+    thresh_ind = np.where(np.linspace(0, 1, len(birth_length)) >=0.90)[0][0]
     thresh = np.sort(birth_length)[thresh_ind]
-    data = data[(data['carbon']==carbon) & (data['temp']==temp) & 
-            (data['repressors'] > 0) & 
-            (data['fold_change'] >= 0)]
     d.loc[d['volume_birth'] < thresh, 'size'] = 'small'
     d.loc[d['volume_birth'] >= thresh, 'size'] = 'large'
     d.loc[d['size']=='small', 'repressors'] *= 2
@@ -200,7 +199,8 @@ data = pd.concat(dfs)
 # _ = ax.vlines(thresh, 0, ax.get_ylim()[1], color=colors['red'], lw=2, label=thresh)
 # ax.legend()
 
-data = data[data['strain']=='dilution']
+data = data[(data['strain']=='dilution') & 
+            (data['carbon']==carbon) & (data['temp']==temp)]
 grouped = data.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
 grouped = grouped.groupby(['atc_ngml']).agg(('mean', 'sem')).reset_index()
 
@@ -215,43 +215,63 @@ ax.errorbar(grouped['repressors']['mean'], grouped['fold_change']['mean'],
 
 ax.legend()
 ax.set_yscale('log')
-
 #%%
-fig, ax = plt.subplots(1, 1, dpi=100)
-small = data[data['size']=='small']['repressors'].mean()
-large = data[data['size']=='large']['repressors'].mean()
-print(large / small)
+# Redo the inference for the glucose case. 
+# %%
+# Perform the inference. 
+
+summ_dfs = []
+desc = ['present work', 'Garcia & Phillips 2011', 'Brewster et al. 2014',
+        'Razo-Mejia et al. 2018', 'pooled']
+_data = data.groupby(['date', 'run_number', 'atc_ngml']).mean()
+src = [_data, garcia, brewster, ind_data]
+src.append(pd.concat(src))
+for d, s  in zip(desc, src):
+    # Define the data dictionary. 
+    data_dict = {'N':len(s), 'foldchange':s['fold_change'],
+                'repressors':s['repressors'], 'Nns':4.6E6}
+    fit, samples = model.sample(data_dict)
+    params = model.summarize_parameters()
+    params['source'] = d
+    summ_dfs.append(params)
+
+refit_stats = pd.concat(summ_dfs)
 
 
 # %%
-thresh = np.linspace(0.1, 5, 100)
-means = []
-sems = []
+# Set up a figure to plot the binding energy values
+fig, ax = plt.subplots(1, 1, figsize=(4, 3), dpi=100)
 
-for t in thresh:
-    data = pd.read_csv('../../data/analyzed_foldchange.csv')
-    data['repressors'] /= 2
-    carbon = 'glucose'
-    temp = 37
-    data = data[(data['carbon']==carbon) & (data['temp']==temp) & 
-                (data['repressors'] > 0) & 
-                (data['fold_change'] >= 0)]
-    data.loc[data['volume_birth'] < t, 'size'] = 'small'
-    data.loc[data['volume_birth'] >= t, 'size'] = 'large'
-    dfs = []
-    for g, d in data.groupby(['date', 'run_number', 'size']):
-        d['fold_change'] = d['yfp_sub'].values / (d[d['strain']=='delta']['yfp_sub'].mean())
-        dfs.append(d)
-    data = pd.concat(dfs)
-    data = data[(data['size']=='large') & (data['atc_ngml']==3)]
-    grouped = data.groupby(['date', 'run_number']).mean().reset_index()
-    grouped['carbon'] = carbon
-    grouped = grouped.groupby(['carbon']).agg(('mean', 'sem'))
-    means.append(grouped['repressors']['mean'].values[0])
-    sems.append(grouped['repressors']['sem'].values[0])
+# Adjust the axes. 
+ax.set_ylim([-16, -12])
+ax.set_xlabel('data set')
+ax.set_ylabel('DNA binding energy [$k_BT$]')
+mwc.viz.titlebox(ax, r'operator O2, $\Delta\varepsilon_{AI} \rightarrow \infty$', color=colors['black'], boxsize="15%")
+
+position = {'present work':0, 'Garcia & Phillips 2011':1, 
+           'Brewster et al. 2014':2, 'Razo-Mejia et al. 2018': 3, 'pooled':4}
+edge_colors = {'present work':colors['dark_purple'], 
+               'Garcia & Phillips 2011':colors['dark_orange'], 
+                'Brewster et al. 2014':colors['dark_blue'], 
+                'Razo-Mejia et al. 2018': colors['dark_red'],'pooled':colors['black']}
+
+face_colors = {'present work':colors['light_purple'], 
+               'Garcia & Phillips 2011':colors['light_orange'], 
+                'Brewster et al. 2014':colors['light_blue'], 
+                'Razo-Mejia et al. 2018': colors['light_red'], 'pooled':colors['black']}
 
 
-fig, ax = plt.subplots(1, 1, dpi=100)
-ax.errorbar(thresh, means, sems, fmt='.')
+for g, d in refit_stats.groupby('source'):
+    median, low, high = d[d['parameter']=='epRA'][['median', 
+                                                'hpd_min', 'hpd_max']].values[0]
+    ax.vlines(position[g], low, high, lw=1, color=edge_colors[g])
+    ax.plot(position[g], median, '.', ms=8, markeredgecolor=edge_colors[g],
+            markerfacecolor=face_colors[g], markeredgewidth=0.75, label=g)
+
+ax.set_xticks([v for _, v in position.items()])
+ax.set_xticklabels([k for k, _ in position.items()])
+plt.savefig('../../figs/FigSX_refit_DNA_binding_energy_comparison.pdf', 
+            bbox_inches='tight', dpi=300, facecolor='white')
+#
+
 # %%
-thresh = np.linspace(0, 6, 1000)

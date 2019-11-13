@@ -49,7 +49,15 @@ colors_edge = {32:colors['dark_blue'], 42:colors['dark_red']}
 #%%
 # Set up the figure canvas
 fig, ax = plt.subplots(2, 2, figsize=(4.9, 4.5), dpi=150)
-mpl.rcParams['hatch.linewidth'] = 0.5  # previous pdf hatch linewidth
+
+# Add the titles
+for i in range(2):
+    mwc.viz.titlebox(ax[i, 0], '32° C', color=colors['blue'],
+            bgcolor=colors['pale_blue'], size=6, boxsize="15%")
+    
+    mwc.viz.titlebox(ax[i, 1], '42° C', color=colors['red'],
+            bgcolor=colors['pale_red'], size=6, boxsize="15%")
+
 for i in range(2):
     ax[0, i].set_xscale('log')
     ax[0, i].set_yscale('log')

@@ -15,8 +15,10 @@ bokeh.io.output_notebook()
 fluct_data = pd.read_csv('../../data/raw_compiled_lineages.csv')
 fc_data = pd.read_csv('../../data/raw_compiled_snaps.csv')
 
+
 # Constants and bounds for size
 IP_DIST = 0.065 # In nm / pix
+BIRTHFRAC = 0.9 # Fraction of birth lengths to define as "divided" cells.
 
 # Load the stan model
 model = mwc.bayes.StanModel('../stan/calibration_factor.stan') #, force_compile=True)
@@ -63,25 +65,24 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_number'
     fluct_df['temp'] = g[1]
     fluct_df['date'] = g[2]
     fluct_df['run_no'] = g[-1]
-    fluct_df['length_1_death'] = d['length_1_death'].values 
-    fluct_df['length_1_birth'] = d['length_1_birth'].values 
-    fluct_df['length_2_death'] = d['length_2_death'].values 
-    fluct_df['length_2_birth'] = d['length_2_birth'].values 
+    fluct_df['length_1_death'] = d['length_1_death'].values / IP_DIST
+    fluct_df['length_1_birth'] = d['length_1_birth'].values / IP_DIST
+    fluct_df['length_2_death'] = d['length_2_death'].values / IP_DIST
+    fluct_df['length_2_birth'] = d['length_2_birth'].values / IP_DIST
     fluct_df['volume_1_birth'] = d['volume_1_birth'].values
     fluct_df['volume_2_birth'] = d['volume_2_birth'].values
     fluct_df['volume_1_death'] = d['volume_1_death'].values
     fluct_df['volume_2_death'] = d['volume_2_death'].values
     fluct_dfs.append(fluct_df)
 
-
     # Compute the fold-change
     _fc = pd.DataFrame([])
     _fc['atc_ngml'] = _fc_data['atc_ngml']
     _fc['date'] = _fc_data['date']
     _fc['run_number'] = _fc_data['run_number']
-    _fc['repressors'] = 2 * _fc_data['mch_sub'] / samples['alpha'].mean()
-    _fc['repressors_max'] = 2 * _fc_data['mch_sub'] / (samples['alpha'].mean() - samples['alpha'].std())
-    _fc['repressors_min'] = 2 * _fc_data['mch_sub'] / (samples['alpha'].mean()  + samples['alpha'].std())
+    _fc['raw_repressors'] = _fc_data['mch_sub'] / samples['alpha'].mean()
+    _fc['raw_repressors_max'] =  _fc_data['mch_sub'] / (samples['alpha'].mean() - samples['alpha'].std())
+    _fc['raw_repressors_min'] =  _fc_data['mch_sub'] / (samples['alpha'].mean()  + samples['alpha'].std())
     _fc['fold_change'] = _fc_data['yfp_sub'].values / (_fc_data[_fc_data['strain']=='delta']['yfp_sub'].values).mean()
     _fc['yfp_sub'] = _fc_data['yfp_sub']
     _fc['mch_sub'] = _fc_data['mch_sub']
@@ -97,12 +98,38 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_number'
     _fc['volume_death'] = _fc_data['volume_death']
     fc_dfs.append(_fc)
 
+# Make everythign into one dataframe
+fc_df = pd.concat(fc_dfs)
+fluct_df = pd.concat(fluct_dfs)
+
+fcs = []
+# Make the cell size correction
+for g, d in fc_df.groupby(['carbon', 'temp']):
+    d = d.copy()
+    # Get the birth sizes from the fluctuation data
+    growth = fluct_df[(fluct_df['carbon']==g[0]) & (fluct_df['temp']==g[1])]
+
+    # Find the birth length threshold 
+    ind = np.where(np.linspace(0, 1, 2 * len(growth)) >= BIRTHFRAC)[0][0]
+    thresh = growth[['length_1_birth', 'length_2_birth']].values.flatten()[ind] 
+
+     # Designate the cells as "small" or "large"
+    d.loc[d['length_um'] < thresh, 'size'] = 'small'
+    d.loc[d['length_um'] >= thresh, 'size'] = 'large'
+
+    # Generate the final repressor count
+    d['repressors'] = d['raw_repressors']
+    d['repressors_max'] = d['raw_repressors_max']
+    d['repressors_min'] = d['raw_repressors_min']
+    d.loc[d['size']=='small', 'repressors'] *= 2
+    d.loc[d['size']=='small', 'repressors_max'] *= 2
+    d.loc[d['size']=='small', 'repressors_min'] *= 2
+    fcs.append(d)
+
+fc_df = pd.concat(fcs)
 
 # Concatenate the summary df and save to disk. 
-fc_df = pd.concat(fc_dfs)
 fc_df.to_csv('../../data/analyzed_foldchange.csv', index=False)
-fluct_df = pd.concat(fluct_dfs)
 fluct_df.to_csv('../../data/analyzed_fluctuations.csv', index=False)
-    
 
 #%%
