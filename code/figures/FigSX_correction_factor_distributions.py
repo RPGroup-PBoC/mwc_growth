@@ -16,20 +16,21 @@ condition_colors = {'glucose':'purple', 'glycerol':'green', 'acetate':'brown',
 #%%
 bins = np.linspace(0, 10, 50)
 fig, ax = plt.subplots(2, 5, figsize=(7, 3), dpi=100)
+for i in range(5):
+    ax[1, i].set_xlabel('cell birth length [µm]', fontsize=8)
 
+ax[0, 0].set_ylabel('$\propto$ probability', fontsize=8)
+ax[1, 0].set_ylabel('cumulative distribution', fontsize=8)
 iter = 0
 for g, d in snaps.groupby(['carbon', 'temp']):
     # Get the corresponding fluctuations
     _flucts = flucts[(flucts['carbon']==g[0]) & (flucts['temp']==g[1])]
-    if g[0] == 'acetate':
-        tc = colors['dark_brown']
-        fc = colors['pale_brown']
 
-    elif g[1] == 37:
-        tc = colors[condition_colors[g[0]]]
+    if g[1] == 37:
+        tc = colors[f'dark_{condition_colors[g[0]]}']
         fc = colors[f'pale_{condition_colors[g[0]]}']
     else:
-        tc = colors[condition_colors[g[1]]]
+        tc = colors[f'dark_{condition_colors[g[1]]}']
         fc = colors[f'pale_{condition_colors[g[1]]}']
     mwc.viz.titlebox(ax[0,iter], text=f'{g[0].upper()}, {g[1]}° C',
                      size=6, color=tc, bgcolor=fc, boxsize="15%")
@@ -61,7 +62,8 @@ for g, d in snaps.groupby(['carbon', 'temp']):
 
     _ = ax[1, iter].step(x, y, color=tc)
     _ = ax[1, iter].step(xb, yb, color=colors['black'])
-    _ = 
+    _ = ax[1, iter].vlines(xb[np.where(yb >= 0.975)[0][0]], 0, 2, color=colors['dark_red'], lw=1)
+    _ = ax[0, iter].vlines(xb[np.where(yb >= 0.975)[0][0]], 0, 2, color=colors['dark_red'], lw=1)
     iter += 1
 
 for a in ax.ravel():
@@ -69,10 +71,13 @@ for a in ax.ravel():
 for i in range(5):
     ax[0, i].set_xticklabels([])
     ax[0, i].set_ylim([0, 1.1])
+    ax[1, i].set_ylim([0, 1])
     if i > 0:
         for j in range(2):
             ax[j, i].set_yticklabels([])
 
 plt.subplots_adjust(wspace=0.1, hspace=0.1)
+plt.savefig('../../figs/FigSX_length_distributions.pdf', bbox_inches='tight', 
+        facecolor='white')
 
 # %%

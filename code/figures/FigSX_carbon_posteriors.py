@@ -14,8 +14,8 @@ summary = pd.read_csv('../../data/DNA_binding_energy_summary.csv')
 summary = summary[summary['temp']==37]
 
 # Define the bins for the histograms
-ep_bins = np.linspace(-15, -13.5, 75)
-sig_bins = np.linspace(0.2, 0.7, 75)
+ep_bins = np.linspace(-15, -14.25, 75)
+sig_bins = np.linspace(0.2, 0.6, 75)
 
 # %%
 # Set up the figure canvas
@@ -29,7 +29,7 @@ ax[1, 1].yaxis.grid(False)
 ax[1, 1].set_yticks([])
 ax[0, 0].set_xticklabels([])
 ax[1, 0].set_xlim([ep_bins[0], ep_bins[-1]])
-ax[1, 0].set_xticks([-14.75, -14.25, -13.75])
+# ax[1, 0].set_xticks([-14.75, -14.25, ])
 ax[1, 0].set_ylim([sig_bins[0], sig_bins[-1]])
 
 # Set the titles of the marginals for clarity

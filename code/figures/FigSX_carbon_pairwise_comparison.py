@@ -40,10 +40,13 @@ for i in range(3):
 
 titles = ['acetate', 'glycerol', 'glucose']
 title_colors = [colors['dark_brown'], colors['dark_green'], colors['dark_purple']]
+bgcolors = [colors['pale_brown'], colors['pale_green'], colors['pale_purple']]
 face_colors = [colors['brown'], colors['light_green'], colors['light_purple']]
 for i in range(3):
-    mwc.viz.ylabelbox(ax[i, 0], titles[i], title_colors[i])
-    mwc.viz.titlebox(ax[0, i], titles[i], title_colors[i])
+    mwc.viz.ylabelbox(ax[i, 0], titles[i].upper(), title_colors[i], bgcolor=bgcolors[i],
+                size=6, boxsize="15%")
+    mwc.viz.titlebox(ax[0, i], titles[i].upper(), title_colors[i], bgcolor=bgcolors[i],
+                size=6, boxsize="15%")
     
     if i > 0:
         # apply offset transform to all y ticklabels.
@@ -86,3 +89,5 @@ for i, carb in enumerate(titles):
 plt.subplots_adjust(wspace=0.05, hspace=0.05)
 plt.savefig('../../figs/FigS_carbon_binding_energy_pairwise_fc.pdf', 
             bbox_inches='tight', facecolor='white')
+
+# %%

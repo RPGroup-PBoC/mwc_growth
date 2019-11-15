@@ -40,19 +40,18 @@ ax[1].vlines(0.5, 0, ax[1].get_ylim()[1], color=colors['orange'], label='even pa
 ax[1].vlines(avg_partitioning, 0, ax[1].get_ylim()[1], 
         color=colors['dark_purple'], label=f'average value\n({np.round(avg_partitioning, decimals=3)})')
         
-ax[2].plot(fluct_data['volume_1'], fluct_data['I_1'] / fluct_data['summed'],
+ax[2].plot(fluct_data['volume_1_birth'], fluct_data['I_1'] / fluct_data['summed'],
              'k.', ms=0.75, alpha=0.75)
-ax[2].plot(fluct_data['volume_2'], fluct_data['I_2'] / fluct_data['summed'],
+ax[2].plot(fluct_data['volume_2_birth'], fluct_data['I_2'] / fluct_data['summed'],
               'k.', ms=0.75,  alpha=0.75)
 
 ax[0].legend()
 ax[1].legend(handlelength=0.5, fontsize=5)
 ax[2].legend(handlelength=0.5, fontsize=5)
 plt.tight_layout()
-fig.text(0, 0.95, '(A)', fontsize=10)
-fig.text(0.34, 0.95, '(B)', fontsize=10)
-fig.text(0.66, 0.95, '(C)', fontsize=10)
-# fig.text(0.5, 0.46, '(D)', fontsize=10)
+fig.text(0, 0.95, '(A)', fontsize=9, fontweight='bold')
+fig.text(0.34, 0.95, '(B)', fontsize=9, fontweight='bold')
+fig.text(0.66, 0.95, '(C)', fontsize=9, fontweight='bold')
 plt.savefig('../../figs/FigSX_partitioning_statistics.pdf', bbox_inches='tight',
             facecolor='white')
 # %%

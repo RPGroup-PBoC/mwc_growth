@@ -14,7 +14,6 @@ old_gods = pd.read_csv('../../data/Garcia2011_Brewster2014.csv', comment='#')
 new_gods = pd.read_csv('../../data/RazoMejia_2018.csv', comment='#')
 data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
 
-
 # Prune the data as necessary
 old_gods.rename(columns={'repressor':'repressors'}, inplace=True)
 old_gods = old_gods[old_gods['operator']=='O2']
@@ -25,11 +24,14 @@ new_gods.rename(columns={'fold_change_A':'fold_change'}, inplace=True)
 new_gods['repressors'] *= 2
 data = data[(data['carbon']=='glucose') & (data['temp']==37) & 
             (data['strain']=='dilution')]
-
+large = data[data['size']=='large']
 # Group the data for display. 
 new_gods = new_gods.groupby('repressors').agg(('mean', 'sem')).reset_index()
 data = data.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
 data = data.groupby(['atc_ngml']).agg(('mean', 'sem')).reset_index()
+large = large.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
+large = large.groupby(['atc_ngml']).agg(('mean', 'sem')).reset_index()
+
 
 # Load the parameter estimate summary
 stats = pd.read_csv('../../data/R_correction_DNA_binding_energy_summary.csv')
@@ -58,8 +60,8 @@ ax = [ax1, ax0]
 ax[1].set_xscale('log')
 ax[1].set_yscale('log')
 ax[1].set_xlim([1, 2000])
-ax[0].set_ylim([-0.5, 4.5])
-ax[0].set_xlim([-15.5, -13])
+ax[0].set_ylim([-0.5, 5.5])
+ax[0].set_xlim([-16, -13])
 
 
 #Add the appropriate labels
@@ -69,12 +71,12 @@ mwc.viz.titlebox(ax[1], 'THEORETICAL PREDICTION', color=colors['black'],
                  size=6)
 
 # Define the positioning of the data sets. 
-position = {'correction': 0, 'no_correction':1, 'garcia':2, 'brewster':3, 
-            'razo-mejia':4}
+position = {'correction': 0, 'no_correction':1, 'large_only':2, 'garcia':3, 'brewster':4, 
+            'razo-mejia':5}
 
 # Define the colors. 
-fill_colors = ['purple', 'purple', 'blue', 'green', 'orange']
-edge_colors = ['dark_purple', 'dark_purple', 'dark_blue', 
+fill_colors = ['purple', 'purple', 'grey', 'blue', 'green', 'orange']
+edge_colors = ['dark_purple', 'dark_purple', 'black', 'dark_blue', 
                 'dark_green', 'dark_orange']
 
 fill_colors = {k:colors[v] for k, v in zip(position.keys(), fill_colors)}
@@ -82,9 +84,10 @@ edge_colors = {k:colors[v] for k, v in zip(position.keys(), edge_colors)}
 
 # Add axis labels. 
 ax[0].set_xlabel(r'DNA binding energy [$k_BT$]', fontsize=8)
-ax[0].set_yticks([0, 1, 2, 3, 4])
+ax[0].set_yticks([0, 1, 2, 3, 4, 5])
 ax[0].set_yticklabels(['this work\n(with correction)', 
                        'this work\n(without correction)',
+                       'this work\n(large cells only)',
                        'Garcia & Phillips\n2011',
                        'Brewster et al.\n 2014',
                        'Razo-Mejia et al.\n 2018'])
@@ -138,7 +141,7 @@ ax[1].errorbar(data['raw_repressors']['mean'], data['fold_change']['mean'],
             xerr=data['raw_repressors']['sem'], yerr=data['fold_change']['sem'],
             fmt='.', ms=8, lw=0.75, capsize=1, linestyle='none', 
             markerfacecolor=fill_colors['no_correction'],
-            markeredgecolor=edge_colors['no_correction'], markeredgewidth=0.75,
+            color=edge_colors['no_correction'], markeredgewidth=0.75,
             label='This work\n(without correction)', alpha=0.25, zorder=iter)
 
 iter += 1
@@ -147,8 +150,20 @@ ax[1].errorbar(data['repressors']['mean'], data['fold_change']['mean'],
             xerr=data['repressors']['sem'], yerr=data['fold_change']['sem'],
             fmt='.', ms=8, lw=0.75, capsize=1, linestyle='none', 
             markerfacecolor=fill_colors['correction'],
-            markeredgecolor=edge_colors['correction'], markeredgewidth=0.75,
+            color=edge_colors['correction'], markeredgewidth=0.75,
             label='This work\n(with correction)', zorder=iter)
+
+iter += 1
+# large only
+
+ax[1].errorbar(large['repressors']['mean'], large['fold_change']['mean'],
+            xerr=large['repressors']['sem'], yerr=large['fold_change']['sem'],
+            fmt='.', ms=8, lw=0.75, capsize=1, linestyle='none', 
+            markerfacecolor=fill_colors['large_only'],
+            color=edge_colors['large_only'], markeredgewidth=0.75,
+            label='This work\n(large cells only)', zorder=iter)
+
+
 
 # Add legends
 ax[1].legend()
@@ -162,6 +177,5 @@ ax[0].yaxis.tick_right()
 plt.tight_layout()
 plt.savefig('../../figs/FigSX_correction_factor_effect.pdf', bbox_inches='tight',
             facecolor='white')
-
 
 # %%

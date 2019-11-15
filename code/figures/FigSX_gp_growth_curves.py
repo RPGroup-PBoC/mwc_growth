@@ -54,15 +54,15 @@ ax[1].legend()
 ax[2].legend()
 
 # Add the titleboxes
-mwc.viz.titlebox(ax[0], 'growth curve', size=8, boxsize="15%", color=colors['black'])
-mwc.viz.titlebox(ax[1], 'exponential region', size=8, boxsize="15%", color=colors['black'])
-mwc.viz.titlebox(ax[2], 'growth rate', size=8, boxsize="15%", color=colors['black'])
+mwc.viz.titlebox(ax[0], 'GROWTH CURVE', size=6, boxsize="10%", color=colors['black'])
+mwc.viz.titlebox(ax[1], 'EXPONENTIAL REGION', size=6, boxsize="10%", color=colors['black'])
+mwc.viz.titlebox(ax[2], 'GROWTH RATE', size=6, boxsize="10%", color=colors['black'])
 plt.tight_layout()
 
 # Add panel labels
-fig.text(0.009, 0.9, '(A)', fontsize=10)
-fig.text(0.35, 0.9, '(B)', fontsize=10)
-fig.text(0.67, 0.9, '(C)', fontsize=10)
+fig.text(0.009, 0.9, '(A)', fontsize=9, fontweight='bold')
+fig.text(0.35, 0.9, '(B)', fontsize=9, fontweight='bold')
+fig.text(0.67, 0.9, '(C)', fontsize=9, fontweight='bold')
 
 # Add titles
 plt.savefig('../../figs/FigSX_gp_growth_fig.pdf', facecolor='white', dpi=300)

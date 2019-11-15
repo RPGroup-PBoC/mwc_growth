@@ -110,7 +110,7 @@ def titlebox(ax, text, color,  bgcolor=None, size=8, boxsize="10%", pad=0.02, **
     at = AnchoredText(text, loc=10, frameon=False, prop=dict(size=size, fontweight='bold', color=color))
     cax.add_artist(at)
 
-def ylabelbox(ax, text, color,  bgcolor=None, size=8, boxsize="15%", pad=0.02, **kwargs):
+def ylabelbox(ax, text, color,  bgcolor=None, size=6, boxsize="15%", pad=0.02, **kwargs):
     """Sets a colored box about the title with the width of the plot"""
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("left", size=boxsize, pad=pad)

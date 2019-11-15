@@ -22,6 +22,7 @@ bohr_ref = -np.log(pact_ref) - np.log(ref_rep/4.6E6) + ep_RA
 
 # Load the actual data. 
 fc_data = pd.read_csv('../../data/analyzed_foldchange.csv')
+fc_data = fc_data[fc_data['size']=='large']
 fc_data['repressors'] = fc_data['repressors'].round()
 inferred_F = pd.read_csv('../../data/inferred_empirical_F.csv')
 fc_data = fc_data[(fc_data['fold_change'] >= 0) & (fc_data['temp']!=37)]
@@ -52,10 +53,10 @@ fig, ax = plt.subplots(2, 2, figsize=(4.9, 4.5), dpi=150)
 
 # Add the titles
 for i in range(2):
-    mwc.viz.titlebox(ax[i, 0], '32° C', color=colors['blue'],
+    mwc.viz.titlebox(ax[i, 0], '32° C', color=colors['dark_blue'],
             bgcolor=colors['pale_blue'], size=6, boxsize="15%")
     
-    mwc.viz.titlebox(ax[i, 1], '42° C', color=colors['red'],
+    mwc.viz.titlebox(ax[i, 1], '42° C', color=colors['dark_red'],
             bgcolor=colors['pale_red'], size=6, boxsize="15%")
 
 for i in range(2):

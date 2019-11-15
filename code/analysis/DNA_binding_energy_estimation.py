@@ -15,7 +15,7 @@ grouped = data.groupby(['carbon', 'temp', 'date',
 
 #%%
 # Load the stan model 
-model = mwc.bayes.StanModel('../stan/DNA_binding_energy.stan', force_compile=True) 
+model = mwc.bayes.StanModel('../stan/DNA_binding_energy.stan')
 
 #%%
 # Assign the data dictionary and sample the model. 

@@ -2,25 +2,20 @@
 import numpy as np 
 import pandas as pd
 import bokeh.io
-import bokeh.plotting
-import mwc.viz
 import mwc.bayes
-colors, color_list = mwc.viz.bokeh_theme()
-bokeh.io.output_notebook()
 
 # Define whether the analysis should be pooled or not. 
 pooled = 0
 force_compile = True
 
 # Load the fluctuation data
-_data = pd.read_csv('../../data/analyzed_foldchange.csv')
+data = pd.read_csv('../../data/analyzed_foldchange.csv')
 
 # Keep only the dilution strain and the glucose samples as well as >0 reps
-data = _data[(_data['strain']=='dilution') &
-            (_data['carbon']=='glucose') & (_data['fold_change'] >= 0) &
-            (_data['repressors'] >= 0) & (_data['temp'] != 37)].copy()
+data = data[(data['strain']=='dilution') &
+            (data['carbon']=='glucose') & (data['fold_change'] >= 0) &
+            (data['repressors'] > 0) & (data['temp'] != 37)].copy()
 
-data['repressors'] = data['repressors'].round()
 # Group by date, run_number, and ATC concentration to compute the mean fc
 grouped = data.groupby(['date', 'run_number', 'atc_ngml', 'temp']).mean().reset_index()
 
@@ -63,13 +58,13 @@ for dim, temp in zip(grouped['idx'].unique(), grouped['temp'].unique()):
     params.loc[params['dimension']==dim, 'temp'] = temp
     keymap[dim] = temp
 
-renamed_params = ['epRA_star', 'epAI_star', 'delta_S', 'delta_S_vib', 'sigma']
+renamed_params = ['true_epRA', 'true_epAI', 'epRA_star', 'epAI_star', 'delta_S', 'delta_S_vib', 'sigma']
 samples_dfs = []
 for k, v in keymap.items():
     for p in renamed_params:
         df = pd.DataFrame()
         if pooled == 1:
-            if (p == 'delta_S') | (p == 'sigma') | (p == 'delta_S_vib'):
+            if ('true' in p) | (p == 'delta_S') | (p == 'sigma') | (p == 'delta_S_vib'):
                 df['value'] = samples[f'{p}']
             else:
                 df['value'] = samples[f'{p}[{k}]']

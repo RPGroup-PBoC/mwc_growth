@@ -10,7 +10,8 @@ colors, color_list = mwc.viz.personal_style()
 
 # Load the fold-change data and growth rate stats
 foldchange = pd.read_csv('../../data/analyzed_foldchange.csv')
-foldchange = foldchange[(foldchange['repressors'] >= 0) & (foldchange['fold_change']>=0)]
+foldchange = foldchange[(foldchange['repressors'] > 0) & (foldchange['fold_change']>=0) &
+            (foldchange['strain']=='dilution')]
 _flucts =  pd.read_csv('../../data/analyzed_fluctuations.csv')
 stats = pd.read_csv('../../data/compiled_growth_statistics.csv')
 
@@ -154,13 +155,10 @@ leg = ax3.legend(reversed(handles), reversed(labels), title='   ATC\n[ng / mL]',
 leg.get_title().set_fontsize(6)
 mwc.viz.titlebox(ax1, 'CARBON QUALITY VARIATION', size=6, color='#4b4b4b')
 mwc.viz.titlebox(ax2, 'CARBON QUALITY VARIATION', size=6, color=colors['black'])
-mwc.viz.titlebox(ax3, 'temperature variation', color=colors['black'])
-mwc.viz.titlebox(ax4, 'temperature  variation', color=colors['black'])
+mwc.viz.titlebox(ax3, 'TEMPERATURE VARIATION', size=6, color=colors['black'])
+mwc.viz.titlebox(ax4, 'TEMPERATURE VARIATION', size=6, color=colors['black'])
 plt.subplots_adjust(hspace=0.2, wspace=0.6)
 plt.savefig('../../figs/Fig_expression_scaling.svg', bbox_inches='tight', 
             facecolor='white')
-
-
-
 
 #%%

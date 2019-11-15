@@ -16,7 +16,10 @@ data = data[(data['carbon']=='glucose') & (data['temp']==37) &
             (data['fold_change'] >= 0)]
 
 # Summarize the data
+large_only = data[data['size']=='large']
 data = data.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
+large_only = large_only.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
+
 
 # Load the garcia and brewster O2 data
 old_gods = pd.read_csv('../../data/Garcia2011_Brewster2014.csv', comment='#')
@@ -39,23 +42,19 @@ model = mwc.bayes.StanModel('../stan/DNA_binding_energy.stan')
 # %%
 # Perform the inference. 
 summ_dfs = []
-desc = ['no_correction', 'correction', 'garcia', 'brewster',
-        'razo-mejia']
-src = [data, data, garcia, brewster, ind_data]
-data_dict = {'no_correction':data, 'correction':data, 'garcia':garcia,
+data_dict = {'no_correction':data, 'correction':data, 'large_only':large_only, 'garcia':garcia,
             'brewster':brewster, 'razo-mejia':ind_data}
-src.append(pd.concat(src))
-for d, s  in data_dict.items():
+for k, v in data_dict.items():
     # Define the data dictionary. 
-    if d == 'no_correction':
-        key = 'raw_repressors'
+    data_dict = {'N':len(v), 'foldchange':v['fold_change'],
+                'Nns':4.6E6}
+    if k == 'no_correction':
+        data_dict['repressors'] = v['raw_repressors']
     else:
-        key = 'repressors'
-    data_dict = {'N':len(s), 'foldchange':s['fold_change'],
-                'repressors':s[key], 'Nns':4.6E6}
+        data_dict['repressors'] = v['repressors']
     fit, samples = model.sample(data_dict)
     params = model.summarize_parameters()
-    params['source'] = d
+    params['source'] = k 
     summ_dfs.append(params)
 stats = pd.concat(summ_dfs)
 

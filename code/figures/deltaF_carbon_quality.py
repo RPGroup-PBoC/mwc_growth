@@ -41,7 +41,7 @@ inferred_F = pd.read_csv('../../data/inferred_empirical_F.csv')
 fc_data = fc_data[(fc_data['temp']==37) &
                   (fc_data['strain']=='dilution') & 
                   (fc_data['repressors'] > 0) & 
-                  (fc_data['fold_change'] >= 0)].copy()
+                  (fc_data['fold_change'] >= 0) & (fc_data['size']=='large')].copy()
 fc_data['repressors'] = fc_data['repressors'].round()
 inferred_F = inferred_F[inferred_F['temp']==37].copy()
 
