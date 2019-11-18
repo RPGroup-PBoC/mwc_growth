@@ -60,7 +60,7 @@ ax = [ax1, ax0]
 ax[1].set_xscale('log')
 ax[1].set_yscale('log')
 ax[1].set_xlim([1, 2000])
-ax[0].set_ylim([-0.5, 5.5])
+ax[0].set_ylim([-0.5, 6.5])
 ax[0].set_xlim([-16, -13])
 
 
@@ -71,12 +71,12 @@ mwc.viz.titlebox(ax[1], 'THEORETICAL PREDICTION', color=colors['black'],
                  size=6)
 
 # Define the positioning of the data sets. 
-position = {'correction': 0, 'no_correction':1, 'large_only':2, 'garcia':3, 'brewster':4, 
-            'razo-mejia':5}
+position = {'correction': 1, 'no_correction':0, 'large_only':2, 'all_divided': 3,
+            'garcia':4, 'brewster':5, 'razo-mejia':6}
 
 # Define the colors. 
-fill_colors = ['purple', 'purple', 'grey', 'blue', 'green', 'orange']
-edge_colors = ['dark_purple', 'dark_purple', 'black', 'dark_blue', 
+fill_colors = ['purple', 'purple', 'grey', 'red', 'blue', 'green', 'orange']
+edge_colors = ['dark_purple', 'dark_purple', 'black', 'dark_red', 'dark_blue', 
                 'dark_green', 'dark_orange']
 
 fill_colors = {k:colors[v] for k, v in zip(position.keys(), fill_colors)}
@@ -84,10 +84,11 @@ edge_colors = {k:colors[v] for k, v in zip(position.keys(), edge_colors)}
 
 # Add axis labels. 
 ax[0].set_xlabel(r'DNA binding energy [$k_BT$]', fontsize=8)
-ax[0].set_yticks([0, 1, 2, 3, 4, 5])
+ax[0].set_yticks([0, 1, 2, 3, 4, 5, 6])
 ax[0].set_yticklabels(['this work\n(with correction)', 
                        'this work\n(without correction)',
                        'this work\n(large cells only)',
+                       'this work\n(all cells divided)',
                        'Garcia & Phillips\n2011',
                        'Brewster et al.\n 2014',
                        'Razo-Mejia et al.\n 2018'])
@@ -155,15 +156,19 @@ ax[1].errorbar(data['repressors']['mean'], data['fold_change']['mean'],
 
 iter += 1
 # large only
-
 ax[1].errorbar(large['repressors']['mean'], large['fold_change']['mean'],
             xerr=large['repressors']['sem'], yerr=large['fold_change']['sem'],
             fmt='.', ms=8, lw=0.75, capsize=1, linestyle='none', 
             markerfacecolor=fill_colors['large_only'],
             color=edge_colors['large_only'], markeredgewidth=0.75,
             label='This work\n(large cells only)', zorder=iter)
-
-
+# all divided
+ax[1].errorbar(data['repressors']['mean'] * 2, data['fold_change']['mean'],
+            xerr=data['repressors']['sem']*2, yerr=data['fold_change']['sem'],
+            fmt='.', ms=8, lw=0.75, capsize=1, linestyle='none', 
+            markerfacecolor=fill_colors['all_divided'],
+            color=edge_colors['all_divided'], markeredgewidth=0.75,
+            label='This work\n(all cells divided)', zorder=iter)
 
 # Add legends
 ax[1].legend()

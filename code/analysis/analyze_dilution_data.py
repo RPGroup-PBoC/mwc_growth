@@ -15,12 +15,10 @@ bokeh.io.output_notebook()
 fluct_data = pd.read_csv('../../data/raw_compiled_lineages.csv')
 fc_data = pd.read_csv('../../data/raw_compiled_snaps.csv')
 
-
 # Constants and bounds for size
 IP_DIST = 0.065 # In nm / pix
 MIN_THRESH = 2.5
 MAX_THRESH = 3.5
-
 
 # Load the stan model
 model = mwc.bayes.StanModel('../stan/calibration_factor.stan') #, force_compile=True)

@@ -42,7 +42,8 @@ model = mwc.bayes.StanModel('../stan/DNA_binding_energy.stan')
 # %%
 # Perform the inference. 
 summ_dfs = []
-data_dict = {'no_correction':data, 'correction':data, 'large_only':large_only, 'garcia':garcia,
+data_dict = {'no_correction':data, 'correction':data, 'large_only':large_only, 
+            'all_divided':data, 'garcia':garcia,
             'brewster':brewster, 'razo-mejia':ind_data}
 for k, v in data_dict.items():
     # Define the data dictionary. 
@@ -50,6 +51,10 @@ for k, v in data_dict.items():
                 'Nns':4.6E6}
     if k == 'no_correction':
         data_dict['repressors'] = v['raw_repressors']
+
+    elif k == 'all_divided':
+        data_dict['repressors'] = v['raw_repressors'].values * 2
+
     else:
         data_dict['repressors'] = v['repressors']
     fit, samples = model.sample(data_dict)

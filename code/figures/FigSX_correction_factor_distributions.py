@@ -13,6 +13,8 @@ snaps = snaps[snaps['atc_ngml']==10]
 condition_colors = {'glucose':'purple', 'glycerol':'green', 'acetate':'brown',
                     42:'red', 32:'blue'}
 
+MIN_THRESH = 2.5
+MAX_THRESH = 3.5
 #%%
 bins = np.linspace(0, 10, 50)
 fig, ax = plt.subplots(2, 5, figsize=(7, 3), dpi=100)
@@ -62,8 +64,9 @@ for g, d in snaps.groupby(['carbon', 'temp']):
 
     _ = ax[1, iter].step(x, y, color=tc)
     _ = ax[1, iter].step(xb, yb, color=colors['black'])
-    _ = ax[1, iter].vlines(xb[np.where(yb >= 0.975)[0][0]], 0, 2, color=colors['dark_red'], lw=1)
-    _ = ax[0, iter].vlines(xb[np.where(yb >= 0.975)[0][0]], 0, 2, color=colors['dark_red'], lw=1)
+    for k in range(2):
+        _ = ax[k, iter].vlines(MIN_THRESH, 0, 2, color=colors['dark_red'], lw=1)
+        _ = ax[k, iter].vlines(MAX_THRESH, 0, 2, color=colors['dark_red'], lw=1)
     iter += 1
 
 for a in ax.ravel():
