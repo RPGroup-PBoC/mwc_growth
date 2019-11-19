@@ -63,8 +63,8 @@ for i in range(2):
     ax[0, i].set_xscale('log')
     ax[0, i].set_yscale('log')
     ax[0, i].set_xlim([1, 700])
-    ax[0, i].set_ylim([5E-3, 1])
     ax[1, i].set_xscale('log')
+    ax[1, i].set_xlim([1E-2, 5])
 
 # Add labels.
 for i in range(2):
@@ -97,10 +97,10 @@ ax[0, 0].set_xlim([1, 500])
 ax[0, 1].set_xlim([10, 800]) 
 ax[0, 0].set_ylim([2E-4, 1])
 ax[0, 1].set_ylim([1E-2, 1])
-ax[1, 0].set_xlim([0.05, 10])
-ax[1, 1].set_xlim([0.05, 10])
+
+ax[1, 1].set_xlim([1E-2, 5 ])
 ax[1, 0].set_ylim([-3, 3])
-ax[1, 1].set_ylim([-3, 3])
+ax[1, 1].set_ylim([-2, 4])
 
 
 for g, d in params.groupby(['temp']):

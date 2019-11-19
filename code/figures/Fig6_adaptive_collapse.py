@@ -12,7 +12,7 @@ constants = mwc.model.load_constants()
 # Load, restrict, and clean the various data sets. 
 data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
 data = data[(data['strain']=='dilution') & (data['repressors'] > 0) & 
-            (data['fold_change'] >= 0)]
+            (data['fold_change'] >= 0) & (data['size']=='large')]
 data = data.groupby(['date', 'carbon', 'temp', 
                     'atc_ngml'])[['fold_change', 'repressors']].mean()
 data = data.groupby(['carbon', 'temp', 'atc_ngml']).agg(

@@ -75,8 +75,8 @@ position = {'correction': 1, 'no_correction':0, 'large_only':2, 'all_divided': 3
             'garcia':4, 'brewster':5, 'razo-mejia':6}
 
 # Define the colors. 
-fill_colors = ['purple', 'purple', 'grey', 'red', 'blue', 'green', 'orange']
-edge_colors = ['dark_purple', 'dark_purple', 'black', 'dark_red', 'dark_blue', 
+fill_colors = ['purple', 'purple', 'grey', 'red', 'grey', 'blue', 'green', 'orange']
+edge_colors = ['dark_purple', 'dark_purple', 'black', 'dark_red', 'black', 'dark_blue', 
                 'dark_green', 'dark_orange']
 
 fill_colors = {k:colors[v] for k, v in zip(position.keys(), fill_colors)}
@@ -85,8 +85,8 @@ edge_colors = {k:colors[v] for k, v in zip(position.keys(), edge_colors)}
 # Add axis labels. 
 ax[0].set_xlabel(r'DNA binding energy [$k_BT$]', fontsize=8)
 ax[0].set_yticks([0, 1, 2, 3, 4, 5, 6])
-ax[0].set_yticklabels(['this work\n(with correction)', 
-                       'this work\n(without correction)',
+ax[0].set_yticklabels(['this work\n(no correction)', 
+                       'this work\n(with correction)',
                        'this work\n(large cells only)',
                        'this work\n(all cells divided)',
                        'Garcia & Phillips\n2011',

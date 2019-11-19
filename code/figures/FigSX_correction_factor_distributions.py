@@ -19,7 +19,7 @@ MAX_THRESH = 3.5
 bins = np.linspace(0, 10, 50)
 fig, ax = plt.subplots(2, 5, figsize=(7, 3), dpi=100)
 for i in range(5):
-    ax[1, i].set_xlabel('cell birth length [µm]', fontsize=8)
+    ax[1, i].set_xlabel('length [µm]', fontsize=8)
 
 ax[0, 0].set_ylabel('$\propto$ probability', fontsize=8)
 ax[1, 0].set_ylabel('cumulative distribution', fontsize=8)
