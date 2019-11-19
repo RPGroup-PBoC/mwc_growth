@@ -10,7 +10,8 @@ data = pd.read_csv('../../data/analyzed_foldchange.csv')
 
 # Isolate the data to the "true" strains and compute the summary statistics
 data['repressors'] = data['repressors'].round()
-data = data[(data['strain']=='dilution') & (data['repressors'] >= 0) & (data['fold_change'] >= 0)]
+data = data[(data['strain']=='dilution') & (data['repressors'] > 0) & 
+            (data['fold_change'] >= 0) & (data['size']=='large')]
 
 # Compute the replicate summary statistics
 replicate = data.groupby(['date', 'run_number', 

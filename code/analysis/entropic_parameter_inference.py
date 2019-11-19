@@ -5,7 +5,7 @@ import bokeh.io
 import mwc.bayes
 
 # Define whether the analysis should be pooled or not. 
-pooled = 0
+pooled = 1
 force_compile = True
 
 # Load the fluctuation data
