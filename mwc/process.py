@@ -190,14 +190,24 @@ def family_reunion(dilution_df, multi_xy=True, fluo_channel=2):
     # Group the growth dataframe and iterate.
     grouped = dilution_df.groupby(groupby)
     for g, d in grouped:
+        if multi_xy == True:
+            mom = g[-1]
+            pos = g[0]
+        else:
+            mom = g
+            pos = 0
         if len(d) == 2:  # Ensure only single successful divisions.
             ints = d[f'fluor{fluo_channel}_mean_death'].values
             if sum(ints) > 0:
                 I_1, I_2 = ints
                 family_dict = {'I_1': I_1, 'I_2': I_2, 
+                               'parent_ID': mom,
+                               'sibling_ID_1': d['cell_id'].values[0],
+                               'sibling_ID_2': d['cell_id'].values[1],
                                'error_frame': d['error_frame'].values[0],
                                'area_1':d['area_death'].values[0], 
                                'area_2':d['area_death'].values[1],
+                               'position':pos,
                                'length_1_birth': d['long_axis_birth'].values[0],
                                'length_2_birth': d['long_axis_birth'].values[1],
                                'length_1_death': d['long_axis_death'].values[0],

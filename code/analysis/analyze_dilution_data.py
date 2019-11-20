@@ -66,6 +66,10 @@ for g, d in tqdm.tqdm(fluct_data.groupby(['carbon', 'temp', 'date', 'run_number'
         fluct_df['temp'] = g[1]
         fluct_df['date'] = g[2]
         fluct_df['run_no'] = g[-1]
+        fluct_df['position'] = d['position'].values
+        fluct_df['parent_ID'] = d['parent_ID'].values
+        fluct_df['sibling_ID_1'] = d['sibling_ID_1'].values
+        fluct_df['sibling_ID_2'] = d['sibling_ID_2'].values
         fluct_df['length_1_death'] = d['length_1_death'].values 
         fluct_df['length_1_birth'] = d['length_1_birth'].values 
         fluct_df['length_2_death'] = d['length_2_death'].values 
