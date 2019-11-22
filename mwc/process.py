@@ -221,3 +221,61 @@ def family_reunion(dilution_df, multi_xy=True, fluo_channel=2):
                 family_df = family_df.append(family_dict, ignore_index=True)
 
     return family_df
+
+def condition_filter(df, strain='dilution', carbon=None, temp=None, fc_min=0, 
+                  rep_min=0, size='large'):
+    """
+    Filters the fold-change data frames based on passed parameters. This
+    function is used at the beginning of every script to ensure all data is
+    being processed the same way. 
+
+    Parameters
+    ----------
+    df : pandas DataFrame
+        The dataframe to be filtered.
+    strain : str, NoneType
+        The desired strain to be isolated. Default is 'dilution'. If None is
+        passed all strains will be returned. 
+    carbon: str, NoneType
+        The desired carbon source to be isolated. Default is None
+        and all carbon sources will be returned. 
+    temp: int, NoneType
+        The desired temperature to be isolated. Default is None
+        and all temperatures will be returned. 
+    fc_min: float   
+        The minimum (noise floor, inclusive) fold-change to be considered. Default is 0 
+    rep_min: float
+        The minimum (noise floor, exclusive) number of repressors to be considered. 
+        Default is 0.
+    size: str, ['large', 'medium', 'small']
+        Desired size of cells to be returned. Default is "large"
+
+    Returns
+    -------
+    filt_df : pandas DataFrame
+        A copy of the dataframe with filters applied. 
+    """
+
+    if strain not in [None, 'dilution', 'delta', 'auto']:
+       raise ValueError(f"Provided strain is {strain}. Must be either 'dilution', 'auto', 'delta', or None")
+    if carbon not in [None, 'glucose', 'glycerol', 'acetate']:
+       raise ValueError(f"Provided carbon is {carbon}. Must be either 'glucose', 'glycerol', 'acetate', or None")
+    if temp not in [None, 37, 32, 42]:
+       raise ValueError(f"Provided carbon is {temp}. Must be either 32, 37, 42, or None")
+    
+    # Make a copy of the data frame and apply fold-chagne and repressor filters.
+    filt_df = df.copy()
+    filt_df = filt_df[(filt_df['fold_change'] >= fc_min) & 
+              (filt_df['repressors'] > rep_min)]
+    
+    # Determine if the other filters should be applied. 
+    if carbon != None:
+        filt_df = filt_df[filt_df['carbon']==carbon]
+    if temp != None:
+        filt_df = filt_df[filt_df['temp']==temp]
+    if strain != None:
+        filt_df = filt_df[filt_df['strain']==strain]
+    if size != None:
+        filt_df = filt_df[filt_df['size']==size]
+    
+    return filt_df
