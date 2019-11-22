@@ -17,13 +17,8 @@ data = data[(data['carbon']=='glucose') & (data['temp']==37) &
 
 # Summarize the data
 large_only = data[data['size']=='large']
-medium_only = data[data['size']=='medium']
-small_only = data[data['size']=='medium']
 data = data.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
 large_only = large_only.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
-small_only = small_only.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
-medium_only = medium_only.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
-
 
 # Load the garcia and brewster O2 data
 old_gods = pd.read_csv('../../data/Garcia2011_Brewster2014.csv', comment='#')
@@ -47,7 +42,7 @@ model = mwc.bayes.StanModel('../stan/DNA_binding_energy.stan')
 # Perform the inference. 
 summ_dfs = []
 data_dict = {'no_correction':data, 'correction':data, 'large_only':large_only, 
-            'all_divided':data, 'medium_only':medium_only, 'small_only':small_only, 'garcia':garcia,
+            'all_divided':data,  'garcia':garcia,
             'brewster':brewster, 'razo-mejia':ind_data}
 for k, v in data_dict.items():
     # Define the data dictionary. 
