@@ -6,8 +6,7 @@ import tqdm
 
 #  Load the data.
 data = pd.read_csv('../../data/analyzed_foldchange.csv')
-data = data[(data['strain']=='dilution') & (data['repressors'] > 0) & 
-            (data['fold_change'] >= 0) & (data['size']=='large')]
+data = mwc.process.condition_filter(data)
 
 # Group the data by each date, run number, replicate, and ATC to compute the means. 
 grouped = data.groupby(['carbon', 'temp', 'date', 

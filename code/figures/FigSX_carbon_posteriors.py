@@ -14,7 +14,7 @@ summary = pd.read_csv('../../data/DNA_binding_energy_summary.csv')
 summary = summary[summary['temp']==37]
 
 # Define the bins for the histograms
-ep_bins = np.linspace(-15, -14.25, 75)
+ep_bins = np.linspace(-15.5, -13.5, 75)
 sig_bins = np.linspace(0.2, 0.6, 75)
 
 # %%

@@ -35,14 +35,10 @@ deltaF = -np.log(rep_range / ref_rep) # in kT
 
 # Load the actual data. 
 fc_data = pd.read_csv('../../data/analyzed_foldchange.csv')
+fc_data = mwc.process.condition_filter(fc_data, temp=37)
 inferred_F = pd.read_csv('../../data/inferred_empirical_F.csv')
 
 # Isolate the fc data to the relevant measurements 
-fc_data = fc_data[(fc_data['temp']==37) &
-                  (fc_data['strain']=='dilution') & 
-                  (fc_data['repressors'] > 0) & 
-                  (fc_data['fold_change'] >= 0) & (fc_data['size']=='large')].copy()
-fc_data['repressors'] = fc_data['repressors'].round()
 inferred_F = inferred_F[inferred_F['temp']==37].copy()
 
 # Compute the summary statistics
@@ -117,8 +113,8 @@ for i, r in enumerate(example_reps):
 ax[1, -1].set_xscale('log')
 for i in range(2):
     for j in range(0, 3):
-        ax[0, j].set_xlim([5, 300])
-        ax[1, j].set_xlim([.05, 2.5])
+        ax[0, j].set_xlim([2, 300])
+        ax[1, j].set_xlim([.01, 2.5])
         ax[1, j].set_xscale('log')
         ax[1, j].set_xticks([0.1, 0.5, 1, 1.5, 2])
         ax[0, j].set_ylim([1E-3, 1.1])
@@ -128,7 +124,7 @@ for i in range(4):
 ax[1, -1].set_xlim([0.1, 5])
 
 plt.tight_layout()
-plt.savefig('../../figs/Fig_delF_carbon_quality.pdf', bbox_inches='tight', 
+plt.savefig('../../figs/Fig4_delF_carbon_quality.pdf', bbox_inches='tight', 
             facecolor='white')
 
 

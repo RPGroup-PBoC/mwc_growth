@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import mwc.bayes
 import mwc.stats
+import mwc.process
 import tqdm
 
 # Load the data
@@ -10,8 +11,7 @@ data = pd.read_csv('../../data/analyzed_foldchange.csv')
 
 # Isolate the data to the "true" strains and compute the summary statistics
 data['repressors'] = data['repressors'].round()
-data = data[(data['strain']=='dilution') & (data['repressors'] > 0) & 
-            (data['fold_change'] >= 0) & (data['size']=='large')]
+data = mwc.process.condition_filter(data)
 
 # Compute the replicate summary statistics
 replicate = data.groupby(['date', 'run_number', 

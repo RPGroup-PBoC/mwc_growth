@@ -12,7 +12,8 @@ carbon = 'glucose'
 temp = 37 
 snaps = pd.read_csv('../../data/analyzed_foldchange.csv')
 glucose = snaps[(snaps['carbon']==carbon) & (snaps['temp']==temp) & 
-                (snaps['strain']=='dilution') & (snaps['fold_change']>=0) & (snaps['repressors']>=0)]
+                (snaps['strain']=='dilution') & (snaps['fold_change']>=0) & 
+                (snaps['repressors']> 0)]
 
 replicates = glucose.groupby(['date', 'run_number', 'atc_ngml']).mean().reset_index()
 summarized = replicates.groupby(['atc_ngml']).agg(('mean', 'sem')).reset_index()
@@ -33,7 +34,7 @@ ax.set_ylabel('relative YFP intensity',  fontsize=8,
 ax2.set_ylabel('relative mCherry intensity', fontsize=8, rotation=-90,
                labelpad=10, color=colors['dark_red'])
 mwc.viz.titlebox(ax2, 'GLUCOSE, 37 °C', size=6, color=colors['purple'],
-                 bgcolor=colors['pale_purple'], pad=0.3)
+                 bgcolor=colors['pale_purple'], pad=0.4)
 
 # Set the maximum to normalize
 max_yfp = 2.5E5

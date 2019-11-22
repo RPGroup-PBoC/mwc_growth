@@ -17,7 +17,8 @@ alpha_std = np.round(fluct_data['alpha_std'].unique())[0]
 
 #%%
 # Compute bins of 50 events each. 
-bins = mwc.stats.bin_by_events(fluct_data, average=['summed', 'fluct'], bin_size=50)
+BIN_SIZE = 75
+bins = mwc.stats.bin_by_events(fluct_data, average=['summed', 'fluct'], bin_size=BIN_SIZE)
 
 # Compute the theory line
 summed_range = np.logspace(1, 5.5, 200)
@@ -29,9 +30,9 @@ ax.set_xlim([1E2, 10**5.5])
 ax.set_xlabel(r'$I_1 + I_2$', fontsize=8)
 ax.set_ylabel(r'$(I_1 - I_2)^2$', fontsize=8)
 ax.plot(fluct_data['summed'], fluct_data['fluct'], '.', color=colors['black'], ms=0.75, label='division event')
-ax.plot(bins['summed'], bins['fluct'], 'o', markeredgecolor=colors['dark_red'], 
-        markerfacecolor=colors['light_red'], ms=3, label='50 events / bin',
-        markeredgewidth=0.5)
+ax.plot(bins['summed'], bins['fluct'], marker='o', markeredgecolor=colors['dark_red'], 
+        markerfacecolor=colors['light_red'], ms=3, label=f'{BIN_SIZE} events / bin',
+        markeredgewidth=0.5, linestyle='none' )
 ax.plot(summed_range, alpha_mean * summed_range, lw=0.75, color=colors['dark_red'], 
         label=r'$\alpha$ ' + f'= {int(np.round(alpha_mean, decimals=-1))} ± {int(np.round(alpha_std, decimals=-1))} [a.u. / LacI]')
 ax.fill_between(summed_range, (alpha_mean + alpha_std) * summed_range, 

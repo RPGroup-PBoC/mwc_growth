@@ -14,7 +14,7 @@ data = pd.read_csv('../../data/analyzed_foldchange.csv')
 stats = pd.read_csv('../../data/DNA_binding_energy_summary.csv')
 
 data = data[(data['strain']=='dilution') & (data['repressors'] > 0) & 
-            (data['fold_change'] >= 0) & (data['temp'] == 37)]
+            (data['fold_change'] >= 0) & (data['temp'] == 37) & (data['size']=='large')]
 summary = data.groupby(['carbon', 'date', 'run_number', 'atc_ngml']).mean().reset_index()
 summary = summary.groupby(['carbon', 'atc_ngml']).agg(('mean', 'sem')).reset_index()
 stats = stats[(stats['temp']==37)]

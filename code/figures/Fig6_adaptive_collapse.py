@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import mwc.stats
+import mwc.process
 import mwc.model
 import mwc.viz
 colors, color_list = mwc.viz.personal_style()
@@ -11,8 +12,7 @@ constants = mwc.model.load_constants()
 # %%
 # Load, restrict, and clean the various data sets. 
 data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
-data = data[(data['strain']=='dilution') & (data['repressors'] > 0) & 
-            (data['fold_change'] >= 0) & (data['size']=='large')]
+data = mwc.process.condition_filter(data)
 data = data.groupby(['date', 'carbon', 'temp', 
                     'atc_ngml'])[['fold_change', 'repressors']].mean()
 data = data.groupby(['carbon', 'temp', 'atc_ngml']).agg(
@@ -183,8 +183,4 @@ for g, d in temp.groupby(['temp']):
 
 # Plot the master curve. 
 ax.legend()
-plt.savefig('../../figs/Fig_adaptive_collapse.pdf', bbox_inches='tight', facecolor='white')
-
-
-
-# %%
+plt.savefig('../../figs/Fig6_adaptive_collapse.pdf', bbox_inches='tight', facecolor='white')

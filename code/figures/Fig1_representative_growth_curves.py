@@ -137,7 +137,3 @@ ax.set_xlim([-0.5, 4.5])
 # ax.set_yscale('log')
 ax.set_ylim([0.15, 0.7])
 plt.savefig('../../figs/Fig1_growth_rate_jitter.pdf', facecolor='none', bbox_inches='tight')
-#%%
-
-
-#%%

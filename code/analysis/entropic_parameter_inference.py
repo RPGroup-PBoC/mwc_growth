@@ -5,17 +5,15 @@ import bokeh.io
 import mwc.bayes
 
 # Define whether the analysis should be pooled or not. 
-pooled = 1
-force_compile = True
+pooled = 0
+force_compile = False
 
 # Load the fluctuation data
 data = pd.read_csv('../../data/analyzed_foldchange.csv')
 
 # Keep only the dilution strain and the glucose samples as well as >0 reps
-data = data[(data['strain']=='dilution') &
-            (data['carbon']=='glucose') & (data['fold_change'] >= 0) &
-            (data['repressors'] > 0) & (data['temp'] != 37)].copy()
-
+data = mwc.process.condition_filter(data, carbon='glucose')
+data = data[data['temp'] != 37]
 # Group by date, run_number, and ATC concentration to compute the mean fc
 grouped = data.groupby(['date', 'run_number', 'atc_ngml', 'temp']).mean().reset_index()
 
@@ -26,7 +24,6 @@ grouped['idx'] = grouped.groupby('temp').ngroup() + 1
 # Load the inferential model. 
 if pooled == 1:
     model = mwc.bayes.StanModel('../stan/pooled_entropy_estimation.stan', force_compile=force_compile)
-
 else:
     model = mwc.bayes.StanModel('../stan/entropy_estimation.stan', force_compile=force_compile)
 #%%
@@ -87,11 +84,3 @@ lf_samples.to_csv(f'../../data/{name}_samples.csv')
 # Add the carbon information and save to disk. 
 params['carbon'] = 'glucose'
 params.to_csv('../../data/{name}_summary.csv')
-
-
-
-
-#%%
-
-
-#%%

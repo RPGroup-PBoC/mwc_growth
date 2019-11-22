@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import mwc.viz
 import mwc.stats
+import mwc.process
 colors, color_list = mwc.viz.personal_style()
 # Define the repressor copy number range. 
 rep_range = np.logspace(0, 4, 200)
@@ -25,12 +26,11 @@ fc_data = pd.read_csv('../../data/analyzed_foldchange.csv')
 fc_data = fc_data[fc_data['size']=='large']
 fc_data['repressors'] = fc_data['repressors'].round()
 inferred_F = pd.read_csv('../../data/inferred_empirical_F.csv')
-fc_data = fc_data[(fc_data['fold_change'] >= 0) & (fc_data['temp']!=37)]
+fc_data = fc_data[(fc_data['fold_change'] >= 0) & (fc_data['temp']!=37) ]
 params = pd.read_csv('../../data/pooled_entropic_parameter_samples.csv')
 
 # Isolate the fc data to the relevant measurements 
-fc_data = fc_data[(fc_data['strain']=='dilution') & 
-                  (fc_data['repressors'] >= 0)].copy()
+fc_data = mwc.process.condition_filter(fc_data)
 inferred_F = inferred_F[inferred_F['temp']!=37].copy()
 
 # Compute the summary statistics
@@ -154,10 +154,4 @@ for g, d in inferred_F.groupby(['temp']):
 
 plt.subplots_adjust(wspace=0.3, hspace=0.4)
 ax[0, 0].legend(fontsize=6, handlelength=1, ncol=1)
-plt.savefig('../../figs/Fig_deltaF_temp.pdf', facecolor='white', bbox_inches='tight')
-
-
-
- #%%
-
-#%%
+plt.savefig('../../figs/Fig5_deltaF_temp.pdf', facecolor='white', bbox_inches='tight')
