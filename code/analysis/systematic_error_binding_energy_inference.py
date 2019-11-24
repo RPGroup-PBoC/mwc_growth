@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import mwc.bayes
 import mwc.stats
+import mwc.process
 import mwc.model
 import matplotlib.transforms
 colors, _ = mwc.viz.personal_style()
@@ -63,7 +64,7 @@ for k, v in data_dict.items():
 stats = pd.concat(summ_dfs)
 
 # Save the sampling summary to disk. 
-stats.to_csv('../../data/R_correction_DNA_binding_energy_summary.csv',
+stats.to_csv('../../data/systematic_error_DNA_binding_energy_summary.csv',
             index=False)
 
 # %%

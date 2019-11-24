@@ -30,7 +30,7 @@ fc_min = (1 + pact * (rep_range / Nns) * np.exp(-(ep_RA + sigma)))**-1
 fc_max = (1 + pact * (rep_range / Nns) * np.exp(-(ep_RA - sigma)))**-1 
 example_fc = (1 + pact * (example_reps/ Nns) * np.exp(-(ep_RA - sigma)))**-1 
 example_delF = -np.log(example_reps / ref_rep)
-F_ref = -np.log(pact) - np.log(ref_rep/Nns) + ep_RA;
+F_ref = -np.log(pact) - np.log(ref_rep/Nns) + ep_RA
 deltaF = -np.log(rep_range / ref_rep) # in kT
 
 # Load the actual data. 

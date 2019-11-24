@@ -34,7 +34,7 @@ large = large.groupby(['atc_ngml']).agg(('mean', 'sem')).reset_index()
 
 
 # Load the parameter estimate summary
-stats = pd.read_csv('../../data/R_correction_DNA_binding_energy_summary.csv')
+stats = pd.read_csv('../../data/systematic_error_DNA_binding_energy_summary.csv')
 
 # %%
 # Set teh expreimental parameters
@@ -66,9 +66,9 @@ ax[0].set_xlim([-16, -13])
 
 #Add the appropriate labels
 mwc.viz.titlebox(ax[0], 'DNA BINDING ENERGY ESTIMATION', color=colors['black'], 
-                 size=6)
+                 size=6, boxsize="5%")
 mwc.viz.titlebox(ax[1], 'THEORETICAL PREDICTION', color=colors['black'], 
-                 size=6)
+                 size=6, boxsize="5%")
 
 # Define the positioning of the data sets. 
 position = {'correction': 1, 'no_correction':0, 'large_only':2, 'all_divided': 3,

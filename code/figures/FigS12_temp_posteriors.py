@@ -40,20 +40,23 @@ mwc.viz.titlebox(ax[2, 2], '$\sigma$', boxsize="15%", pad=0.03, color=colors['bl
 # Add the axis labels
 ax[1, 0].set_ylabel('$\Delta S_{AI}$ [$k_BT / K$]')
 ax[2, 0].set_ylabel('$\sigma$')
-ax[2, 0].set_xlabel('$\Delta S_{RA}$ [$k_BT / K$]')
+ax[2, 0].set_xlabel('$\Delta S_{R}$ [$k_BT / K$]')
 ax[2, 1].set_xlabel('$\Delta S_{AI}$ [$k_BT / K$]')
 ax[2, 2].set_xlabel('$\sigma$')
 
 
 # Define the bins for the marginal histograms
-RA_bins = np.linspace(0, 0.3, 50)
-AI_bins = np.linspace(-0.3, 0.3, 50)
+RA_bins = np.linspace(-0.5, 0.05, 50)
+AI_bins = np.linspace(-0.8, 0.8, 50)
 sigma_bins = np.linspace(0.3, 0.9, 50)
 
+# Rescale the limits. 
+for i in range(3):
+    ax[i, 0].set_xlim([RA_bins[0], RA_bins[-1]])
 # Plot the pooled results
-pooled_S_RA = pooled_entropy[pooled_entropy['parameter']=='delta_S']['value'].values[::5]
+pooled_S_RA = pooled_entropy[pooled_entropy['parameter']=='delta_SR']['value'].values[::5]
 pSRA_hist, _= np.histogram(pooled_S_RA, RA_bins, density=True)
-pooled_S_AI = pooled_entropy[pooled_entropy['parameter']=='delta_S_vib']['value'].values[::5]
+pooled_S_AI = pooled_entropy[pooled_entropy['parameter']=='delta_SAI']['value'].values[::5]
 pSAI_hist, _ = np.histogram(pooled_S_AI, AI_bins, density=True)
 pooled_sigma = pooled_entropy[pooled_entropy['parameter']=='sigma']['value'].values[::5]
 sig_hist, _ = np.histogram(pooled_sigma, sigma_bins, density=True)
@@ -72,10 +75,10 @@ ax[2, 2].step(sigma_bins[:-1], sig_hist, 'k-', lw=1)
 ax[2, 2].fill_between(sigma_bins[:-1], sig_hist, color='k', alpha=0.25)
 
 # Plot the 32 results
-S_RA_32 = entropy[(entropy['parameter']=='delta_S') & 
+S_RA_32 = entropy[(entropy['parameter']=='delta_SR') & 
                   (entropy['temp']==32)]['value'].values[::5]
 SRA32_hist, _= np.histogram(S_RA_32, RA_bins, density=True)
-S_AI_32 = entropy[(entropy['parameter']=='delta_S_vib') & 
+S_AI_32 = entropy[(entropy['parameter']=='delta_SAI') & 
                   (entropy['temp']==32)]['value'].values[::5]
 SAI32_hist, _= np.histogram(S_AI_32, AI_bins, density=True)
 sigma_32 = entropy[(entropy['parameter']=='sigma') & 
@@ -97,10 +100,10 @@ ax[2, 2].fill_between(sigma_bins[:-1], sigma32_hist, color=colors['dark_blue'], 
 
 
 # Plot the 42 results
-S_RA_42 = entropy[(entropy['parameter']=='delta_S') & 
+S_RA_42 = entropy[(entropy['parameter']=='delta_SR') & 
                   (entropy['temp']==42)]['value'].values[::5]
 SRA42_hist, _= np.histogram(S_RA_42, RA_bins, density=True)
-S_AI_42 = entropy[(entropy['parameter']=='delta_S_vib') & 
+S_AI_42 = entropy[(entropy['parameter']=='delta_SAI') & 
                   (entropy['temp']==42)]['value'].values[::5]
 SAI42_hist, _= np.histogram(S_AI_42, AI_bins, density=True)
 sigma_42 = entropy[(entropy['parameter']=='sigma') & 
@@ -127,7 +130,7 @@ ax[0, 2].plot([], [], '-', lw=2, color=colors['dark_red'], label='42° C only')
 ax[0, 2].plot([], [], '-', lw=2, color=colors['black'], label='pooled 32° C and 42° C')
 ax[0, 2].legend(loc='center right', fontsize=8)
 plt.subplots_adjust(wspace=0.05, hspace=0.05)
-plt.savefig('../../figs/FigSX_entropy_cornerplot.pdf', bbox_inches='tight', 
+plt.savefig('../../figs/FigS12_entropy_cornerplot.pdf', bbox_inches='tight', 
             facecolor='white')
 
 

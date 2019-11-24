@@ -39,6 +39,7 @@ mwc.viz.titlebox(ax[1, 1], '$\sigma$', boxsize="15%", pad=0.03, color=colors['bl
 # Add the axis labels
 ax[1, 0].set_ylabel('$\sigma$')
 ax[1, 0].set_xlabel('$\epsilon$ [$k_BT$]')
+ax[1, 1].set_xlabel('$\sigma$')
 
 carb_colors = {'glucose':colors['purple'], 'glycerol':colors['green'], 
           'acetate':colors['brown']}

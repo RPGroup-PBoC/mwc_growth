@@ -86,21 +86,13 @@ ax2 = fig.add_subplot(gs[4:, 0:2])
 ax3 = fig.add_subplot(gs[0:3, 2:4])
 ax4 = fig.add_subplot(gs[4:, 2:4])
 
+# Restrict data as necessary
 fluct_grouped = flucts.groupby(['date', 'carbon', 'run_number', 'temp']).mean().reset_index()
 fluct_summarized = fluct_grouped.groupby(['carbon', 'temp']).agg(('median', 'mean', 'sem')).reset_index()
 fluct_temp = fluct_summarized[fluct_summarized['carbon']=='glucose']
 fluct_carb = fluct_summarized[fluct_summarized['temp']==37]
 fluct_carb.sort_values(by=('rate_mean', 'mean'), inplace=True)
 fluct_temp.sort_values(by=('rate_mean','mean'), inplace=True)
-# ax1.errorbar(fluct_carb['rate_mean']['mean'], fluct_carb['volume_birth']['mean'],
-        # fluct_carb['volume_birth']['sem'], capsize=2, lw=0.5, color='black',
-        # fmt='.', linestyle='-', label=g,
-        # markeredgecolor='k', markeredgewidth=0.25)
-# ax3.errorbar(fluct_temp['rate_mean']['mean'], fluct_temp['volume_birth']['mean'],
-        # fluct_temp['volume_birth']['sem'], capsize=2, lw=0.5, color='black',
-        # fmt='.', linestyle='-', markeredgecolor='k', markeredgewidth=0.25)
-
-
 
 i = 1
 for g, d in fc.groupby(['atc_ngml']):
@@ -158,7 +150,6 @@ mwc.viz.titlebox(ax2, 'CARBON QUALITY VARIATION', size=6, color=colors['black'])
 mwc.viz.titlebox(ax3, 'TEMPERATURE VARIATION', size=6, color=colors['black'])
 mwc.viz.titlebox(ax4, 'TEMPERATURE VARIATION', size=6, color=colors['black'])
 plt.subplots_adjust(hspace=0.2, wspace=0.6)
-plt.savefig('../../figs/Fig_expression_scaling.svg', bbox_inches='tight', 
-            facecolor='white')
+plt.savefig('../../figs/Fig3_scaling.svg', bbox_inches='tight', facecolor='white')
 
 #%%

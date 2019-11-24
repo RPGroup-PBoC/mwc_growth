@@ -54,7 +54,3 @@ fig.text(0.34, 0.95, '(B)', fontsize=9, fontweight='bold')
 fig.text(0.66, 0.95, '(C)', fontsize=9, fontweight='bold')
 plt.savefig('../../figs/FigSX_partitioning_statistics.pdf', bbox_inches='tight',
             facecolor='white')
-# %%
-
-
-# %%
