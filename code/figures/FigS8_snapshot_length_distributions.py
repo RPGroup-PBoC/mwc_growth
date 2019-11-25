@@ -1,4 +1,15 @@
-#%%
+"""
+Author: 
+    Griffin Chure
+License:
+    MIT
+Description:
+    Generates a single figure with eight subplots showing distributions of cell
+    lengths in snapshots for each condition. 
+Required Data Sets:
+    analyzed_fluctuations.csv
+    analyzed_foldchange.csv
+"""
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -7,8 +18,8 @@ colors, _ = mwc.viz.personal_style()
 
 
 #%% Load the fluctuations and the snap infos
-flucts = pd.read_csv('../../data/analyzed_fluctuations.csv')
-snaps = pd.read_csv('../../data/analyzed_foldchange.csv')
+flucts = pd.read_csv('../../data/analyzed_fluctuations.csv', comment='#')
+snaps = pd.read_csv('../../data/analyzed_foldchange.csv', comment="#")
 snaps = snaps[snaps['atc_ngml']==10]
 condition_colors = {'glucose':'purple', 'glycerol':'green', 'acetate':'brown',
                     42:'red', 32:'blue'}

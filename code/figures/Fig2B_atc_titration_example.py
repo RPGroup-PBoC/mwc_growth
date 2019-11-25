@@ -1,4 +1,14 @@
+"""
+Author: 
+    Griffin Chure
+License: 
+     MIT
+Description:
+    This script generates the example ATC titration shown in Fig. 1 
 
+Required Data Sets:
+    analyzed_foldchange.csv
+"""
 #%%
 import numpy as np 
 import matplotlib.pyplot as plt
@@ -10,7 +20,7 @@ colors, color_list = mwc.viz.personal_style()
 #%% Load the lineages and isolate the glucose samples
 carbon = 'glucose'
 temp = 37 
-snaps = pd.read_csv('../../data/analyzed_foldchange.csv')
+snaps = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
 glucose = snaps[(snaps['carbon']==carbon) & (snaps['temp']==temp) & 
                 (snaps['strain']=='dilution') & (snaps['fold_change']>=0) & 
                 (snaps['repressors']> 0)]

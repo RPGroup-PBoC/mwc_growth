@@ -1,3 +1,15 @@
+"""
+Author:
+    Griffin Chure
+License: 
+    MIT
+Description:
+    This scrpt makes a "corner plot" of the joint and marginal distrubions of
+    the DNA binding energy inference and the homoscedastic error
+Required Data Sets:
+    DNA_binding_energy_samples.csv
+    DNA_binding_energy_summary.csv
+"""
 #%%
 import numpy as np
 import pandas as pd
@@ -8,9 +20,9 @@ import mwc.stats
 colors, color_list = mwc.viz.personal_style()
 
 # Load the data sets and restrict
-samples = pd.read_csv('../../data/DNA_binding_energy_samples.csv')
+samples = pd.read_csv('../../data/DNA_binding_energy_samples.csv', comment='#')
 samples = samples[samples['temp'] == 37]
-summary = pd.read_csv('../../data/DNA_binding_energy_summary.csv')
+summary = pd.read_csv('../../data/DNA_binding_energy_summary.csv', comment='#')
 summary = summary[summary['temp']==37]
 
 # Define the bins for the histograms

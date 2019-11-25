@@ -1,4 +1,17 @@
-#%%
+"""
+Author: 
+    Griffin Chure
+License:
+    MIT
+Description:
+    This script produces a single figure with four subplots, each showing either
+    the fold-change in gene expression or the free energy shift for a given
+    temperature. 
+Required Data Sets:
+    analyzed_foldchange.csv
+    inferred_empirical_F.csv
+    pooled_entropic_parameter_samples.csv
+"""
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -22,12 +35,12 @@ pact_ref = (1 + np.exp(-ep_ai))**-1
 bohr_ref = -np.log(pact_ref) - np.log(ref_rep/4.6E6) + ep_RA
 
 # Load the actual data. 
-fc_data = pd.read_csv('../../data/analyzed_foldchange.csv')
+fc_data = pd.read_csv('../../data/analyzed_foldchange.csv', comment="#")
 fc_data = fc_data[fc_data['size']=='large']
 fc_data['repressors'] = fc_data['repressors'].round()
-inferred_F = pd.read_csv('../../data/inferred_empirical_F.csv')
+inferred_F = pd.read_csv('../../data/inferred_empirical_F.csv', comment='#')
 fc_data = fc_data[(fc_data['fold_change'] >= 0) & (fc_data['temp']!=37) ]
-params = pd.read_csv('../../data/pooled_entropic_parameter_samples.csv')
+params = pd.read_csv('../../data/pooled_entropic_parameter_samples.csv', comment='#')
 
 # Isolate the fc data to the relevant measurements 
 fc_data = mwc.process.condition_filter(fc_data)

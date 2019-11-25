@@ -1,3 +1,17 @@
+"""
+Author: 
+    Griffin Chure
+License:
+    MIT
+Description:
+    This generates a single figure with 8 subplots. They show the fold-change in
+    gene expression for each condition as well as the free energy shift plotted
+    over the predictions.
+Required Data Sets:
+    analyzed_foldchange.csv
+    inferred_empirical_F.csv
+
+"""
 #%%
 import numpy as np
 import pandas as pd
@@ -34,9 +48,9 @@ F_ref = -np.log(pact) - np.log(ref_rep/Nns) + ep_RA
 deltaF = -np.log(rep_range / ref_rep) # in kT
 
 # Load the actual data. 
-fc_data = pd.read_csv('../../data/analyzed_foldchange.csv')
+fc_data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
 fc_data = mwc.process.condition_filter(fc_data, temp=37)
-inferred_F = pd.read_csv('../../data/inferred_empirical_F.csv')
+inferred_F = pd.read_csv('../../data/inferred_empirical_F.csv', comment='#')
 
 # Isolate the fc data to the relevant measurements 
 inferred_F = inferred_F[inferred_F['temp']==37].copy()

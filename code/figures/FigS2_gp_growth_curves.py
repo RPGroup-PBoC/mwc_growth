@@ -1,3 +1,16 @@
+"""
+Author:
+        Griffin Chure
+License: 
+        MIT
+Description:
+        Generates a figure with three subplots showing the raw data from a
+        growth curve, a fit from Gaussian process modeling, and the plot of
+        maximum growth rate vs time.
+Required Data Sets:
+        glycerol_example_gp_output.csv
+        example_growth_plate.csv
+"""
 #%%
 import numpy as np 
 import pandas as pd
@@ -5,16 +18,9 @@ import matplotlib.pyplot as plt
 import mwc.viz
 colors, color_list = mwc.viz.personal_style()
 
-# %%
-plates = pd.read_csv('../../data/compiled_growth_plates.csv')
-stats = pd.read_csv('../../data/compiled_growth_statistics.csv')
-plates['temp_C'] = np.round(plates['temp_C'])
-plates['time_min'] = np.round(plates['time_min'])
-# plates = plates[plates['time_min'] <= 600]
-
 # Load specific examples of GP processing. 
-gp_output = pd.read_csv('../processing/growth_curves/20190206_r1_37C_mixedmedia_O2_growth/output/delta_glycerol/gp_output.csv')
-plate = pd.read_csv('../processing/growth_curves/20190206_r1_37C_mixedmedia_O2_growth/output/growth_plate.csv')
+gp_output = pd.read_csv('../data/glycerol_example_gp_output.csv', comment='#')
+plate = pd.read_csv('../data/example_growth_plate.csv', comment='#')
 glyc = plate[(plate['carbon']=='glycerol') & (plate['time_min']<1200)]
 
 # %%

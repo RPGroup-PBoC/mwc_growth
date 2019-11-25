@@ -1,3 +1,15 @@
+################################################################################
+# entropic_parameter_inference.py
+# ------------------------------------------------------------------------------
+# Author: Griffin Chure
+# License: MIT
+# 
+# Description
+# ------------------------------------------------------------------------------
+# This script infers the entropic parameters delta S_r and delta S_AI from
+# fold-change measurements. It can be run either on all temperature data
+# together or individually by toggling the "pooled" variable.
+# ##############################################################################
 #%%
 import numpy as np 
 import pandas as pd
@@ -9,7 +21,7 @@ pooled = 1
 force_compile = False
 
 # Load the fluctuation data
-data = pd.read_csv('../../data/analyzed_foldchange.csv')
+data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
 
 # Keep only the dilution strain and the glucose samples as well as >0 reps
 data = mwc.process.condition_filter(data, carbon='glucose')

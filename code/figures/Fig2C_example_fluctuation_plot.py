@@ -1,5 +1,15 @@
-# -*- coding: utf-8 -*-
-#%%
+"""
+Author: 
+        Griffin Chure
+License:
+        MIT     
+Description:
+        This script generates a plot of the variance in intensity between
+        siblings as a function of the summed intensity. This script also plots
+        the mean measurements of these data by binning every 75 events.
+Required Data Sets:
+        analyzed_fluctuations.csv
+"""
 import sys
 import numpy as np
 import pandas as pd
@@ -10,7 +20,7 @@ colors, color_list = mwc.viz.personal_style()
 
 
 # Load an example data set. 
-fluct_data = pd.read_csv('../../data/analyzed_fluctuations.csv')
+fluct_data = pd.read_csv('../../data/analyzed_fluctuations.csv', comment='#')
 fluct_data = fluct_data[fluct_data['date']==20181002]
 alpha_mean = np.round(fluct_data['alpha_mean'].unique(), -1)[0]
 alpha_std = np.round(fluct_data['alpha_std'].unique())[0]
@@ -40,9 +50,3 @@ ax.fill_between(summed_range, (alpha_mean + alpha_std) * summed_range,
 ax.legend(loc='lower right', fontsize=6)
 mwc.viz.titlebox(ax, 'GLUCOSE, 37 °C', size=6, color=colors['purple'], bgcolor=colors['pale_purple'])
 plt.savefig('../../figs/Fig2_fluct_example.pdf', bbox_inches='tight', facecolor='white')
-
-
-#%%
-
-
-#%%

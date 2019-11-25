@@ -1,3 +1,16 @@
+"""
+Author:
+    Griffin Chure
+License:
+    MIT
+Description:
+    This script performs an inference of the calibration factor of several
+    glucose growth series and plots their distributions
+Required Data Sets:
+    analyzed_fluctuations.csv
+Required Stan Models:
+    calibration_factor.stan
+"""
 #%%
 import numpy as np
 import pandas as pd
@@ -9,11 +22,11 @@ colors, color_list = mwc.viz.personal_style()
 
 #%%
 # Load the fluctuation data and restrict only to the glucose 37 measurements. 
-data = pd.read_csv('../../data/analyzed_fluctuations.csv')
+data = pd.read_csv('../../data/analyzed_fluctuations.csv', comment='#')
 data = data[(data['carbon']=='glucose') & (data['temp']==37)]
 
 #%% Load the stan model .
-model = mwc.bayes.StanModel('../stan/calibration_factor.stan')
+model = mwc.bayes.StanModel('../stan/calibration_factor.stan', comment='#')
 
 # %%
 # Instantiate storage dataframes for the sampling results. 

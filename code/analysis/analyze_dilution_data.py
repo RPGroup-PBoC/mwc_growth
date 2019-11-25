@@ -1,4 +1,13 @@
-# -*- coding: utf-8 -*-
+# ##############################################################################
+# analyze_dilution_data.py
+# ------------------------------------------------------------------------------
+# Author: Griffin Chure
+# License: MIT
+#
+# Description
+# ------------------------------------------------------------------------------
+# This script iterates through the compiled lineages and snapshots, infers the
+# calibration factor, and computes the number of rrepressors per cell.
 #%%
 import numpy as np
 import pandas as pd
@@ -12,8 +21,8 @@ import tqdm
 bokeh.io.output_notebook()
 
 # Load in the compiled data
-fluct_data = pd.read_csv('../../data/raw_compiled_lineages.csv')
-fc_data = pd.read_csv('../../data/raw_compiled_snaps.csv')
+fluct_data = pd.read_csv('../../data/raw_compiled_lineages.csv', comment='#')
+fc_data = pd.read_csv('../../data/raw_compiled_snaps.csv', comment='#')
 
 # Constants and bounds for size
 IP_DIST = 0.065 # In nm / pix

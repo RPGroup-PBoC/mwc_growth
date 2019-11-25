@@ -1,3 +1,14 @@
+"""
+Author:
+        Griffin Chure
+License: 
+        MIT
+Description:
+        This script generates a figure with three subplots showing several
+        validation statistics of the lineage tracking procedure. 
+Required Datasets:
+        analyzed_fluctuations.csv
+"""
 #%%
 import numpy as np
 import pandas as pd
@@ -10,7 +21,7 @@ colors, _ = mwc.viz.personal_style()
 
 # %%
 # Load data, restrict, and define new constants
-fluct_data = pd.read_csv('../../data/analyzed_fluctuations.csv')
+fluct_data = pd.read_csv('../../data/analyzed_fluctuations.csv', comment='#')
 fluct_data = fluct_data[fluct_data['date']==20181002]
 alpha_range = np.linspace(550, 950, 500)
 

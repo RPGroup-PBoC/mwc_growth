@@ -1,3 +1,15 @@
+"""
+Author: 
+    Griffin Chure   
+License: 
+    MIT
+Description:
+    This script generates a figure showing the outlines of a large number of
+    cells segmented from each condition. Given the average length and width, the
+    spherocylinder approximation is plotted.
+Required Data Sets:
+    example_mats.zip
+"""
 #%%
 import numpy as np
 import pandas as pd

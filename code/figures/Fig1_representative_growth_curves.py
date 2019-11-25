@@ -1,4 +1,16 @@
-#%%
+"""
+Author: 
+    Griffin Chure
+License:
+    MIT
+Description:
+    This script generates both plots seen in figure 1. The first plots
+    representative growth curves of each carbon source and temperature. The
+    second makes a jitter plot of the maximum growth rate for each condition.
+Required Data Sets:
+    compiled_growth_plates.csv
+    compiled_growth_statistics.csv
+"""
 import numpy as np 
 import pandas as pd 
 import mwc.viz
@@ -10,8 +22,8 @@ np.random.seed(666)
 
 #%%
 # Load the plates and statistics
-plates = pd.read_csv('../../data/compiled_growth_plates.csv')
-stats = pd.read_csv('../../data/compiled_growth_statistics.csv')
+plates = pd.read_csv('../../data/compiled_growth_plates.csv', comment='#')
+stats = pd.read_csv('../../data/compiled_growth_statistics.csv', comment="#")
 plates['temp_C'] = np.round(plates['temp_C'])
 plates['time_min'] = np.round(plates['time_min'])
 plates = plates[plates['time_min'] <= 600]

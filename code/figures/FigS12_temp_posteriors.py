@@ -1,4 +1,16 @@
-#%%
+"""
+Author: 
+    Griffin Chure
+License:
+    MIT
+Description:
+    This script produces a "corner plot" of all joint and marginal posterior
+    distributions for the entropic parameter inference.
+Required Data Sets:
+    pooled_entropic_parameter_samples.csv
+    entropic_parameter_samples.csv
+"""
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,8 +22,7 @@ colors, color_list = mwc.viz.personal_style()
 # Load the data sets and restrict
 pooled_entropy = pd.read_csv('../../data/pooled_entropic_parameter_samples.csv')
 entropy = pd.read_csv('../../data/entropic_parameter_samples.csv')
-stats = pd.read_csv('../../data/DNA_binding_energy_summary.csv')
-stats = stats[(stats['carbon']=='glucose')]
+
 
 #%%
 # Set up the figure canvas

@@ -1,4 +1,16 @@
-#%%
+"""
+Author:
+    Griffin Chure   
+License:
+    MIT
+Description:
+    This plot produces a 3 x 3 grid plot where the rows correspond to the
+    fitting condition for the DNA binding energy and the columns correspond to
+    the prediction.
+Required Data Sets:
+    analyzed_foldchange.csv
+    DNA_binding_energy_summary.csv
+"""
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt

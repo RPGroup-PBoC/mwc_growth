@@ -1,5 +1,17 @@
-# -*- coding: utf-8 -*-
-#%%
+"""
+Author: 
+    Griffin Chure
+License:
+    MIT
+Description
+    This script generates a single figure with four subplots. The first row of
+    plots show how cell volume scales with growth rate. The bottom two plots
+    show how expression of the repressor construct scales with growth rate.
+Required Data Sets:
+    analyzed_foldchange.csv
+    analyzed_fluctuations.csv
+    compiled_growth_statistics.csv
+"""
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -9,11 +21,11 @@ import seaborn as sns
 colors, color_list = mwc.viz.personal_style()
 
 # Load the fold-change data and growth rate stats
-foldchange = pd.read_csv('../../data/analyzed_foldchange.csv')
+foldchange = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
 foldchange = foldchange[(foldchange['repressors'] > 0) & (foldchange['fold_change']>=0) &
             (foldchange['strain']=='dilution')]
-_flucts =  pd.read_csv('../../data/analyzed_fluctuations.csv')
-stats = pd.read_csv('../../data/compiled_growth_statistics.csv')
+_flucts =  pd.read_csv('../../data/analyzed_fluctuations.csv', comment='#')
+stats = pd.read_csv('../../data/compiled_growth_statistics.csv', comment='#')
 
 # Reform the  fluctuations df to remove lineages.
 flucts_1 = _flucts[['temp', 'carbon', 'date', 'run_no', 'volume_1_birth']]

@@ -1,3 +1,18 @@
+"""
+Author:
+    Griffin Chure
+License:
+    MIT
+Description:
+    This script generates a single figure with two subplots using a complicated
+    gridspec layout. The plot shows data from the literater as well as from this
+    work with various correction factors applied. 
+Required Data Sets:
+    Garcia2011_Brewster2014.csv
+    RazoMejia_2018.csv
+    analyzed fold-change
+    systematic_error_DNA_binding_energy_summary.csv
+"""
 #%%
 import numpy as np
 import pandas as pd
@@ -34,7 +49,7 @@ large = large.groupby(['atc_ngml']).agg(('mean', 'sem')).reset_index()
 
 
 # Load the parameter estimate summary
-stats = pd.read_csv('../../data/systematic_error_DNA_binding_energy_summary.csv')
+stats = pd.read_csv('../../data/systematic_error_DNA_binding_energy_summary.csv', comment="#")
 
 # %%
 # Set teh expreimental parameters

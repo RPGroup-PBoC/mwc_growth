@@ -1,3 +1,13 @@
+################################################################################
+# empirical_F_inference.py
+# ------------------------------------------------------------------------------
+# Author: Griffin Chure
+# License: MIT
+#
+# Description 
+# ------------------------------------------------------------------------------
+# This script infers the observed free energy given a collection of fold-change
+# measureements. 
 #%%
 import numpy as np
 import pandas as pd
@@ -7,7 +17,7 @@ import mwc.process
 import tqdm
 
 # Load the data
-data = pd.read_csv('../../data/analyzed_foldchange.csv')
+data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
 
 # Isolate the data to the "true" strains and compute the summary statistics
 data['repressors'] = data['repressors'].round()

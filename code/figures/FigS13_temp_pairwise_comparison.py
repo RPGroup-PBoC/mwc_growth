@@ -1,3 +1,16 @@
+"""
+Author: 
+    Griffin Chure
+License:
+    MIT
+Description:
+    Creates a 2 x 2 grid plot where rows are the fitting condition and columns
+    are the comparison condition. 
+Required Data Sets:
+    analyzed_foldchange.csv
+    entropic_parameter_samples.csv
+    pooled_entropic_parameter_samples.csv
+"""
 #%%
 import numpy as np
 import pandas as pd
@@ -11,9 +24,9 @@ colors, _ = mwc.viz.personal_style()
 
 # %%
 # Load the data sets and restrict to the carbon sources
-data = pd.read_csv('../../data/analyzed_foldchange.csv')
-stats = pd.read_csv('../../data/entropic_parameter_samples.csv')
-pooled_stats = pd.read_csv('../../data/pooled_entropic_parameter_samples.csv')
+data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
+stats = pd.read_csv('../../data/entropic_parameter_samples.csv', comment='#')
+pooled_stats = pd.read_csv('../../data/pooled_entropic_parameter_samples.csv', comment='#')
 data = mwc.process.condition_filter(data, carbon='glucose')
 data = data[data['temp'] !=37]
 summary = data.groupby(['temp', 'date', 'run_number', 'atc_ngml']).mean().reset_index()

@@ -1,4 +1,20 @@
-#%%
+"""
+Author: 
+    Griffin Chure
+License: 
+    MIT
+Description:
+    This generates a single plot with data from multiple sources plotted as a
+    function of the free energy. 
+Required Data Sets:
+    analyzed_foldchange.csv
+    RazoMejia_2018.csv
+    Garcia2011_Brewster2014.csv
+    Chure2019_DNA_binding_energy_summary.csv
+    Chure2019_summarized_data.csv
+    Chure2019_KaKi_epAI_summary.csv
+    pooled_entropic_parameter_samples.csv
+"""
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -43,7 +59,7 @@ mutIND_summary = mutIND_summary[(mutIND_summary['operator']=='O2') &
                                 (mutIND_summary['repressors']==260)]
 
 # Load the entropic parameter inference summary. 
-entropy_samps = pd.read_csv('../../data/pooled_entropic_parameter_samples.csv')
+entropy_samps = pd.read_csv('../../data/pooled_entropic_parameter_samples.csv', comment='#')
 
 #%% Define the parameters for the master curve
 bohr_param = np.linspace(-10, 10, 200)

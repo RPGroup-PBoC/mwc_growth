@@ -1,3 +1,14 @@
+################################################################################
+# systematic_error_binding_energy_inference.py
+# ------------------------------------------------------------------------------
+# Author: Griffin Chure
+# License: MIT
+#
+# Description
+# ------------------------------------------------------------------------------
+# This script infers the effective DNA binding energy for a variety of
+# correction factors applied to cell size. 
+# ##############################################################################
 #%%
 import numpy as np 
 import matplotlib.pyplot as plt
@@ -11,7 +22,7 @@ colors, _ = mwc.viz.personal_style()
 
 # %%
 # Load the various data sets. 
-data = pd.read_csv('../../data/analyzed_foldchange.csv')
+data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
 data = data[(data['carbon']=='glucose') & (data['temp']==37) & 
             (data['strain']=='dilution') & (data['repressors'] > 0) & 
             (data['fold_change'] >= 0)]

@@ -1,3 +1,14 @@
+################################################################################
+# DNA_binding_energy_estimation.py
+# ------------------------------------------------------------------------------
+# Author: Griffin Chure
+# License: MIT
+# 
+# Description
+# ------------------------------------------------------------------------------
+# This script infers the effective DNA binding energy "epsilon" given
+# measurements of the fold-change in gene expression. 
+
 # %%
 import numpy as np
 import pandas as pd
@@ -5,7 +16,7 @@ import mwc.bayes
 import tqdm
 
 #  Load the data.
-data = pd.read_csv('../../data/analyzed_foldchange.csv')
+data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
 data = mwc.process.condition_filter(data)
 
 # Group the data by each date, run number, replicate, and ATC to compute the means. 
