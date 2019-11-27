@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-109526846-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', );
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+	<meta charset="utf-8">
+	<title>Code and Data - MWC Growth</title>
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="MWC Growth" property="og:site_name">
+  
+    <meta content="Code and Data" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="Repository for MWC Growth project
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/code" property="og:url">
+  
+  
+  
+    <meta content="http://localhost:4000/assets/img/seg.png" property="og:image">
+  
+  
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@http://twitter.com/gdchure">
+    <meta name="twitter:creator" content="@">
+  
+    <meta name="twitter:title" content="Code and Data">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/code">
+  
+  
+    <meta name="twitter:description" content="Repository for MWC Growth project
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/seg.png">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png">
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/logo.gif" alt=""></a>
+      </div>
+      <div class="author-name"></div>
+      <div class="sidebar-links">
+      <hr>
+      
+       <p><a href="http://localhost:4000/index.html">About</a></p>
+      <hr>
+      
+      
+       <p><a href="http://localhost:4000/people">People</a></p>
+      <hr>
+      
+      
+       <p><a href="http://localhost:4000/code">Code and Data</a></p>
+      <hr>
+      
+      
+      
+      
+      
+      
+      </div>
+    </div>
+  </header> <!-- End Header -->
+
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact</h3>
+      <ul>
+        
+        
+          <li class="github"><a href="http://github.com/RPGroup-PBoC" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+      </ul> 
+    </section> 
+    <div class="copyright">
+      <p>2019 &copy; 
+    </div>
+    <center>
+    </center>
+  </footer> 
+</aside> 
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <figure>
+        <img class="page-image" src=/assets/img/seg.png alt="Code and Data">
+        
+      </figure>
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">Code and Data</h1>
+      </header>
+      <hr />
+
+<h2 id="code">Code</h2>
+
+<ul>
+  <li>
+    <p><a href="http://localhost:4000//software/batch_processing.py"><strong>batch_processing.py</strong></a>
+| Iterates through all preprocessed image data, parses clist.mat data, reconstructs linages from growth series, and computes the fold-change in gene expression. This script is designed to be run from the “processing” root folder directory.</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//software/analyze_dilution_data.py"><strong>analyze_dilution_data.py</strong></a>
+| Given compiled data mapping lineages and fold-change measurements, this script performs statistical inference on the fluctuations to infer the calibration, coupled with calculation of the repressor copy number.</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//software/empirical_F_inference.py"><strong>empirical_F_inference.py</strong></a>
+| Given measurements of the fold-change in gene expression, this script infers the posterior distribution of the observed free energy.</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//software/entropic_parameter_inference.py"><strong>entropic_parameter_inference.py</strong></a>
+| Infers the entropic parameters <script type="math/tex">\Delta S_R</script> and <script type="math/tex">\Delta S_{AI}</script> from a collection of fold-change measurements at different temperatures. This can be run on all data simultaneously or on individual temperatures by toggling the “pooled” variable at the top of the script.</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//software/DNA_binding_energy_estimation.py"><strong>DNA_binding_energy_estimation.py</strong></a>
+| Infers an effective DNA binding energy <script type="math/tex">\epsilon</script> from a collection of fold-change measurements.</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//software/systematic_error_binding_energy_inference.py"><strong>systematic_error_binding_energy_inference.py</strong></a>
+| Infers an effective DNA binding energy <script type="math/tex">\epsilon</script> under a variety of scenarios where cell size is considered.</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//software/calibration_factor.stan"><strong>calibration_factor.stan</strong></a>
+| Inferrential model for estimation of the calibration factor given sibling cell intensities</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//software/DNA_binding_energy.stan"><strong>DNA_binding_energy.stan</strong></a>
+| Inferrential model for the estimation of the DNA binding energy given fold-change measurements</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//software/empirical_F_inference.stan"><strong>empirical_F_inference.stan</strong></a>
+| Inferrential model for the estimation of the free energy from fold-change measurements.</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//software/entropy_estimation.stan"><strong>entropy_estimation.stan</strong></a>
+| Inferrenetial model for inferring the entropic parameters <script type="math/tex">\Delta S_R</script> and <script type="math/tex">\Delta S_{AI}</script> for a single temperature.</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//software/pooled_entropy_estimation.stan"><strong>pooled_entropy_estimation.stan</strong></a>
+| Inferrential model for the estimation of the entropic parameters <script type="math/tex">\Delta S_R</script> and <script type="math/tex">\Delta S_{AI}</script> for multiple temperatures together.</p>
+  </li>
+</ul>
+
+<h2 id="data-sets">Data Sets</h2>
+
+<ul>
+  <li>
+    <p><a href="">Segmented and raw image files</a> | (filetype:
+.zip) DOI:</p>
+  </li>
+  <li>
+    <p><a href="">clist.mat files from segmentation</a> | (filetype:
+.zip)(100 MB) DOI: 10.22002/D1.1315</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//datasets/raw_compiled_lineages.csv">Raw compiled lineage information.</a> | (filetype:
+.csv)</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//datasets/raw_compiled_snaps.csv">Raw compiled snapshots of ATC conditions.</a> | (filetype:
+.csv)</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//datasets/analyzed_fluctuations.csv">Analyzed lineage data with estimated calibration factor.</a> | (filetype:
+.csv)</p>
+  </li>
+  <li>
+    <p><a href="http://localhost:4000//datasets/analyzed_foldchange.csv">Analyzed snapshot data with fold-change and repressor count.</a> | (filetype:
+.csv)</p>
+  </li>
+  <li>
+    <p><a href="">Anonymized data from web scraping</a> | (filetype:
+.zip)(2 gb) DOI: 10.1.1./journal.0000</p>
+  </li>
+</ul>
+
+<h2 id="main-text-figure-generation">Main Text Figure Generation</h2>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig1.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/Fig1_representative_growth_curves.py">Fig. 1: Growth Curves and Growth Rates </a></b>
+<p> Used to generate panels B and C from figure 1 showing representative growth curves and a jitter plot of the growth rate. 
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Compiled growth rate statistics </a><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Compiled growth curve measurements </a><br />
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig2_titration.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/Fig2B_atc_titration_example.py">Fig. 2B: ATC Titraton Curves. </a></b>
+<p> Used to generate Figure 2 panel B, illustrating the anticorrelation between mCherry and YFP channels.</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Compiled fold-change measurements with repressor counts. </a><br />
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig2_dilution.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/script1.py">Fig. 2C: Partitioning Statistics Plot</a></b>
+<p> Generates a representative  plot showing the intensity variance as a function of the summed intensity with the best estimate of the calibration factor.
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Analyzed sibling cell intensities </a><br />
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig3.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/Fig3_scaling.py">Fig. 3: Cell Size and Expression Scaling</a></b>
+<p> Plots the dependence of cell volume and repressor expression as a function of the growth rate. Note that this script generates the plots. The text labels were added after the fact in Adobe Illustrator. 
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Compiled fold-change measurements with repressor counts </a><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Analyzed sibling cell intensities </a><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Compiled growth rate statistics </a><br />
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig4.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/Fig4_carbon_quality.py">Fig. 4: Carbon Source Dependence of the Fold-Change</a></b>
+<p> Plots the summarized fold-change in gene expression against the predictions along with the free energy shift ∆F for conditions with differing carbon sources. Note that the labels ("acetate", "glycerol", "example", etc) along with boxes delinating A, B, and C were added after the fact using Adobe Illustrator.
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Compiled fold-change measurements with repressor counts </a><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Inferred free energies from fold-change data </a><br />
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig5.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/Fig5_temperature.py">Fig. 5: Temperature Dependence of the Fold-Change</a></b>
+<p> Plots the summarized fold-change in gene expression against the predictions along with the free energy shift ∆F for conditions with differing temperatures. 
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Compiled fold-change measurements with repressor counts </a><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Inferred free energies from fold-change data </a><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  MCMC samples from entropic parameter estimation </a><br />
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig6.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/Fig6_adaptive_collapse.py">Fig. 6: Data Collapse</a></b>
+<p> Plots the data collapse of various data sets onto the single master curve.
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Compiled fold-change measurements with repressor counts </a><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Inferred free energies from fold-change data </a><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  MCMC samples from entropic parameter estimation </a><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Fold-change measurements from Garcia and Phillips 2011 and Brewster et al. 2014
+ </a><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Fold-change measuremetns from Razo-Mejia et al. 2018
+ </a><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Fold-change measurements of repressor mutants from Chure et al. 2019
+ </a><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  DNA binding energy estimates for repressor mutants in Chure et al. 2019
+ </a><br />
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}">  Dissociation constant and allosteric energy estimates for mutants in Chure et al. 2019
+ </a><br />
+
+</div>
+</article>
+
+<h2 id="si-text-figure-generation">SI Text Figure Generation</h2>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS2.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/Fig1_representative_growth_curves.py">Fig. S2: Growth Rate Estimation</a></b>
+<p> Plots a representative growth curve for the glycerol condition, the best fit using Gaussian process modeling, and a plot of the maximum growth rate as a function of time.
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Representative data from a 96-well growth experiment </a> <br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Gaussian process modeling output on a glycerol growth curve. </a> <br />
+
+
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS3.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/Fig3_volume_appx.py">Fig. S3: Cell Shape Approximation</a></b>
+<p> This script plots the segmented borders of cells for all conditions overlaid with an approximation of the shape as a spherocylinder projected in two dimensions.
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Example .mat files from segmentation </a> <br />
+
+
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS5.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/FigS5_cal_factor_validation.py">Fig S5: Data Validation Of Lineage Tracking</a></b>
+<p> This script calculates and plots several data validation statistics to ensure that lineage tracking is working as expected.
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Compiled intensity measurements of sibling cells </a> <br />
+
+
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS6.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/FigS6_alpha_posteriors.py">Fig. S6: Posteior Probability Distributions of Calibration Factor</a></b>
+<p> Generates a figure showing histograms and empirical cumulative distributions of the posterior probability density of the calibration factor. 
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Compiled intensities of sibling cells </a> <br />
+
+
+
+
+
+<i> Necessary Stan Models </i><br />
+
+
+• <a style="font-size: 0.9em;" href="http://localhost:4000//software/calibration_factor.stan"> Calibration factor inference model</a><br />
+
+
+
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS8.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/FigS8_snapshot_length_distributions.py">Fig. S8: Cell Length Distributions</a></b>
+<p> This script plots the observed cell length distributions in all conditions from both the snapshots and the newborn cell sizes. 
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Compiled intensities of sibling cells </a> <br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Compiled fold-change in gene expression and repressor counts </a> <br />
+
+
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS9.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/FigS9_correction_factor_application.py">Fig. S9: Cell Size Corrections In Repressor Estimation</a></b>
+<p> This script plots a series of cell size corrections for the repressor counts as well as the estimated DNA binding energy for each. 
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Compiled fold-change in gene expression and repressor counts </a> <br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Estimated DNA binding energies for different correction regimes </a> <br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Fold-change measurements from Garcia and Phillips 2011 and Brewster et al. 2014
+ </a> <br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Fold-change measuremetns from Razo-Mejia et al. 2018
+ </a> <br />
+
+
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS10.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/FigS10_carbon_posteriors.py">Fig. S10: Joint and Marginal Posterior Distributions Of DNA Binding Energy</a></b>
+<p> Creates a "corner plot" showing all joint and marginal posterior distributions from the inference of the effective DNA binding energy
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> MCMC samples of effective DNA binding energy and homoscedastic error </a> <br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Summaries of effective DNA binding energy and homoscedastic error </a> <br />
+
+
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS11.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/FigS11_carbon_pairwise_comparison.py">Fig. S11: Pairwise Prediction of Different Carbon Conditions</a></b>
+<p> Plots the predicted fold-change in gene expression using each individual carbon source along with all possible data sources. 
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Compiled fold-change in gene expression measurements and repressor counts
+ </a> <br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Summaries of effective DNA binding energy and homoscedastic error </a> <br />
+
+
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS12.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/FigS12_temp_posteriors.py">Fig. S12: Joint and Marginal Posterior Distributions of Entropic Parameter Inference</a></b>
+<p> Creates a "corner plot" showing all joint and marginal posterior distributions from the inference of the entropic parameters and homoscedastic error.
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> MCMC samples of entropic parameter inference on single temperatures </a> <br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{ds.link}}"> MCMC samples of entropic parameter inference on all temperatures simultaneously
+ </a> <br />
+
+
+
+</div>
+</article>
+
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS13.png)" href="/figures/"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="http://localhost:4000//software/FigS13_temp_pairwise_comparison.py">Fig. S13: Pairwise Comparison of Entropic Parameter Inference</a></b>
+<p> Plots the predicted fold-change for each individual temperature with all possible combinations of data for comparison. 
+</p>
+
+<i>Necessary Data Sets </i><br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> Compiled fold-change in gene expression and repressor counts </a> <br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}"> MCMC samples of entropic parameter inference on single temperatures </a> <br />
+
+
+
+
+• <a style="font-size: 0.9em;" href="{{ds.link}}"> MCMC samples of entropic parameter inference on all temperatures simultaneously
+ </a> <br />
+
+
+
+</div>
+</article>
+
+
+      <div class="page-footer">
+      </div>
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script> <!-- End Analytics -->
+
+</body>
+</html>

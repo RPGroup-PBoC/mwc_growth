@@ -1,0 +1,47 @@
+- dataset:
+  storage: remote
+  name: Segmented and raw image files
+  filetype: ".zip"
+  DOI:
+  size: 
+  link: 
+
+- dataset:
+  storage: remote
+  name: clist.mat files from segmentation 
+  filetype: ".zip"
+  DOI: 10.22002/D1.1315
+  filesize: "100 MB"
+  link: "https://data.caltech.edu/records/1315"
+
+- dataset:
+  storage: local
+  name: Raw compiled lineage information.
+  filetype: ".csv"
+  link: raw_compiled_lineages.csv
+
+- dataset:
+  storage: local
+  name: Raw compiled snapshots of ATC conditions.
+  filetype: ".csv"
+  link: raw_compiled_snaps.csv
+
+- dataset:
+  storage: local
+  name: Analyzed lineage data with estimated calibration factor.
+  filetype: ".csv"
+  link: analyzed_fluctuations.csv
+
+- dataset:
+  storage: local
+  name: Analyzed snapshot data with fold-change and repressor count.
+  filetype: ".csv"
+  link: analyzed_foldchange.csv
+
+- dataset:
+  storage: remote 
+  link: "https://data.caltech.edu"
+  DOI:  "10.1.1./journal.0000"
+  name: "Anonymized data from web scraping"
+  filetype: .zip 
+  filesize: 2 gb

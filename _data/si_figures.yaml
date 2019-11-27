@@ -1,0 +1,182 @@
+- fig:
+  title: "Fig. S2: Growth Rate Estimation"
+  filename: Fig1_representative_growth_curves.py
+  desc: >
+    Plots a representative growth curve for the glycerol condition, the best
+    fit using Gaussian process modeling, and a plot of the maximum growth rate
+    as a function of time.
+  pic: figS2.png
+  req:
+    - ds: 
+      storage: local
+      title: Representative data from a 96-well growth experiment
+      link: "example_growth_plate.csv"
+    - ds: 
+      storage: local
+      title: Gaussian process modeling output on a glycerol growth curve.
+      link: "glycerol_example_gp_output.csv"
+
+- fig:
+  title: "Fig. S3: Cell Shape Approximation"
+  filename: Fig3_volume_appx.py
+  desc: >
+    This script plots the segmented borders of cells for all conditions overlaid
+    with an approximation of the shape as a spherocylinder projected in two dimensions.
+  pic: figS3.png
+  req:
+    - ds: 
+      storage: local
+      title: Example .mat files from segmentation
+      link: "example_mats.zip"
+
+- fig: 
+  title: "Fig S5: Data Validation Of Lineage Tracking"
+  filename: FigS5_cal_factor_validation.py
+  desc: >
+    This script calculates and plots several data validation statistics to
+    ensure that lineage tracking is working as expected.
+  pic: figS5.png
+  req:
+    - ds:
+      title: Compiled intensity measurements of sibling cells
+      storage: local
+      link: analyzed_fluctuations.csv
+
+- fig: 
+  title: "Fig. S6: Posteior Probability Distributions of Calibration Factor"
+  filename: FigS6_alpha_posteriors.py
+  pic: figS6.png
+  desc: >
+    Generates a figure showing histograms and empirical cumulative distributions
+    of the posterior probability density of the calibration factor. 
+  req:
+    - ds:
+      title: Compiled intensities of sibling cells
+      storage: local
+      link: analyzed_fluctuations.csv
+    - ds:
+      stan: true 
+      title: Calibration factor inference model
+      storage: local
+      link: calibration_factor.stan
+
+- fig: 
+  title: "Fig. S8: Cell Length Distributions"
+  filename: FigS8_snapshot_length_distributions.py
+  pic: figS8.png
+  desc: >
+    This script plots the observed cell length distributions in all conditions
+    from both the snapshots and the newborn cell sizes. 
+  req:
+    - ds:
+      title: Compiled intensities of sibling cells
+      storage: local 
+      link: analyzed_fluctuations.csv
+    - ds:
+      title: Compiled fold-change in gene expression and repressor counts
+      storage: local 
+      link: analyzed_foldchange.csv
+
+- fig: 
+  title: "Fig. S9: Cell Size Corrections In Repressor Estimation"
+  pic: figS9.png
+  filename: FigS9_correction_factor_application.py
+  desc: >
+    This script plots a series of cell size corrections for the repressor counts
+    as well as the estimated DNA binding energy for each. 
+  req:
+    - ds:
+      title: Compiled fold-change in gene expression and repressor counts
+      storage: local 
+      link: analyzed_foldchange.csv
+    - ds:
+      title: Estimated DNA binding energies for different correction regimes
+      storage: local
+      link: systematic_error_DNA_binding_energy_summary.csv
+    - ds:
+      title: >
+        Fold-change measurements from Garcia and Phillips 2011 and Brewster
+        et al. 2014
+      storage: local 
+      link: Garcia2011_Brewster2014.csv
+    - ds: 
+      title: >
+        Fold-change measuremetns from Razo-Mejia et al. 2018
+      storage: local 
+      link: RazoMejia_2018.csv
+
+- fig:
+  title: 'Fig. S10: Joint and Marginal Posterior Distributions Of DNA Binding Energy'
+  pic: figS10.png
+  filename: FigS10_carbon_posteriors.py
+  desc: >
+    Creates a "corner plot" showing all joint and marginal posterior
+    distributions from the inference of the effective DNA binding energy
+  req:
+    - ds: 
+      title: MCMC samples of effective DNA binding energy and homoscedastic error
+      storage: local
+      link: DNA_binding_energy_samples.csv
+    - ds: 
+      title: Summaries of effective DNA binding energy and homoscedastic error
+      storage: local
+      link: DNA_binding_energy_summary.csv
+- fig:
+  title: "Fig. S11: Pairwise Prediction of Different Carbon Conditions"
+  pic: figS11.png
+  filename: FigS11_carbon_pairwise_comparison.py
+  desc: >
+    Plots the predicted fold-change in gene expression using each individual
+    carbon source along with all possible data sources. 
+  req:
+    - ds:
+      title: >
+        Compiled fold-change in gene expression measurements and repressor
+        counts
+      storage: local
+      link: analyzed_foldchange.csv
+    - ds: 
+      title: Summaries of effective DNA binding energy and homoscedastic error
+      storage: local
+      link: DNA_binding_energy_summary.csv
+
+- fig: 
+  title: "Fig. S12: Joint and Marginal Posterior Distributions of Entropic Parameter Inference"
+  pic: figS12.png
+  filename: FigS12_temp_posteriors.py
+  desc: > 
+    Creates a "corner plot" showing all joint and marginal posterior
+    distributions from the inference of the entropic parameters and
+    homoscedastic error.
+  req:
+    - ds:
+      title: MCMC samples of entropic parameter inference on single temperatures
+      storage: local
+      link: entropic_parameter_samples.csv
+    - ds:
+      title: >
+        MCMC samples of entropic parameter inference on all temperatures
+        simultaneously
+      link: pooled_entropic_parameter_samples.csv
+
+- fig: 
+  title: "Fig. S13: Pairwise Comparison of Entropic Parameter Inference"
+  filename: FigS13_temp_pairwise_comparison.py
+  pic: figS13.png
+  desc: > 
+    Plots the predicted fold-change for each individual temperature with all
+    possible combinations of data for comparison. 
+  req:
+    - ds:
+      title: Compiled fold-change in gene expression and repressor counts
+      storage: local
+      link: analyzed_foldchange.csv
+    - ds:
+      title: MCMC samples of entropic parameter inference on single temperatures
+      storage: local
+      link: entropic_parameter_samples.csv
+    - ds:
+      title: >
+        MCMC samples of entropic parameter inference on all temperatures
+        simultaneously
+      link: pooled_entropic_parameter_samples.csv

@@ -1,0 +1,64 @@
+- script:
+  name: batch_processing.py
+  desc: >
+    Iterates through all preprocessed image data, parses clist.mat data,
+    reconstructs linages from growth series, and computes the fold-change in
+    gene expression. This script is designed to be run from the "processing"
+    root folder directory. 
+- script:
+  name: analyze_dilution_data.py 
+  desc: >
+    Given compiled data mapping lineages and fold-change measurements, this
+    script performs statistical inference on the fluctuations to infer the
+    calibration, coupled with calculation of the repressor copy number. 
+- script: 
+  name: empirical_F_inference.py
+  desc: > 
+    Given measurements of the fold-change in gene expression, this script infers
+    the posterior distribution of the observed free energy.
+- script: 
+  name: entropic_parameter_inference.py
+  desc: >
+    Infers the entropic parameters $$\Delta S_R$$ and $$\Delta S_{AI}$$ from a
+    collection of fold-change measurements at different temperatures. This can
+    be run on all data simultaneously or on individual temperatures by toggling
+    the "pooled" variable at the top of the script. 
+- script:
+  name: DNA_binding_energy_estimation.py
+  desc: >
+    Infers an effective DNA binding energy $$\epsilon$$ from a collection of
+    fold-change measurements. 
+- script:
+  name: systematic_error_binding_energy_inference.py
+  desc: 
+    Infers an effective DNA binding energy $$\epsilon$$ under a variety of
+    scenarios where cell size is considered.
+- script:
+  name: calibration_factor.stan
+  desc: >
+    Inferrential model for estimation of the calibration factor given sibling
+    cell intensities
+- script:
+  name: DNA_binding_energy.stan
+  desc: >
+    Inferrential model for the estimation of the DNA binding energy given
+    fold-change measurements
+- script: 
+  name: empirical_F_inference.stan
+  desc: >
+    Inferrential model for the estimation of the free energy from fold-change
+    measurements. 
+- script: 
+  name: entropy_estimation.stan
+  desc: > 
+    Inferrenetial model for inferring the entropic parameters $$\Delta S_R$$ and
+    $$\Delta S_{AI}$$ for a single temperature. 
+- script: 
+  name: pooled_entropy_estimation.stan
+  desc: >
+    Inferrential model for the estimation of the entropic parameters $$\Delta
+    S_R$$ and $$\Delta S_{AI}$$ for multiple temperatures together. 
+  
+
+
+

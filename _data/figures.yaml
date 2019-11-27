@@ -1,0 +1,154 @@
+- fig:
+  title: "Fig. 1: Growth Curves and Growth Rates "
+  filename: Fig1_representative_growth_curves.py
+  desc: >
+    Used to generate panels B and C from figure 1 showing representative
+    growth curves and a jitter plot of the growth rate. 
+  pic: fig1.png
+  req:
+    - ds: 
+      storage: local
+      title: Compiled growth rate statistics
+      link: "compiled_growth_statistics.csv"
+    - ds: 
+      storage: local
+      title: Compiled growth curve measurements
+      link: "compiled_growth_plates.csv"
+
+
+- fig:
+  title: "Fig. 2B: ATC Titraton Curves. "
+  filename: Fig2B_atc_titration_example.py
+  desc: 
+      Used to generate Figure 2 panel B, illustrating the anticorrelation
+      between mCherry and YFP channels. 
+  pic: fig2_titration.png
+  req:
+    - ds:
+      title: Compiled fold-change measurements with repressor counts.
+      storage: local 
+      link: analyzed_foldchange.csv
+
+- fig: 
+  title: "Fig. 2C: Partitioning Statistics Plot"
+  filename: script1.py
+  desc: >
+        Generates a representative  plot showing the intensity variance as a
+        function of the summed intensity with the best estimate of the
+        calibration factor.
+  pic: fig2_dilution.png
+  req:
+    - ds:
+      title: Analyzed sibling cell intensities
+      storage: local
+      link: analyzed_fluctuations.csv
+
+- fig: 
+  title: "Fig. 3: Cell Size and Expression Scaling"
+  filename: Fig3_scaling.py
+  desc: >
+      Plots the dependence of cell volume and repressor expression as a function
+      of the growth rate. Note that this script generates the plots. The text
+      labels were added after the fact in Adobe Illustrator. 
+  pic: fig3.png
+  req:
+    - ds:
+      title: Compiled fold-change measurements with repressor counts
+      storage: local
+      link: analyzed_foldchange.csv
+    - ds:
+      title: Analyzed sibling cell intensities
+      storage: local
+      link: analyzed_fluctuations.csv
+    - ds:
+      title: Compiled growth rate statistics
+      storage: local
+      link: compiled_growth_statistics.csv
+- fig: 
+  title: "Fig. 4: Carbon Source Dependence of the Fold-Change"
+  filename: Fig4_carbon_quality.py
+  desc: >
+      Plots the summarized fold-change in gene expression against the
+      predictions along with the free energy shift ∆F for conditions with
+      differing carbon sources. Note that the labels ("acetate", "glycerol",
+      "example", etc) along with boxes delinating A, B, and C were added after
+      the fact using Adobe Illustrator.
+  pic: fig4.png
+  req:
+    - ds:
+      title: Compiled fold-change measurements with repressor counts 
+      storage: local 
+      link: analyzed_foldchange.csv
+    - ds:
+      title: Inferred free energies from fold-change data
+      storage: local 
+      link: inferred_empirical_F.csv
+- fig: 
+  title: "Fig. 5: Temperature Dependence of the Fold-Change"
+  filename: Fig5_temperature.py
+  desc: >
+      Plots the summarized fold-change in gene expression against the
+      predictions along with the free energy shift ∆F for conditions with
+      differing temperatures. 
+  pic: fig5.png
+  req:
+    - ds:
+      title: Compiled fold-change measurements with repressor counts
+      storage: local
+      link: analyzed_foldchange.csv
+    - ds:
+      title: Inferred free energies from fold-change data
+      storage: local
+      link: inferred_empirical_F.csv
+    - ds: 
+      title: MCMC samples from entropic parameter estimation
+      storage: local 
+      link: pooled_entropic_parameter_samples.csv
+- fig: 
+  title: "Fig. 6: Data Collapse"
+  filename: Fig6_adaptive_collapse.py
+  desc: >
+      Plots the data collapse of various data sets onto the single master curve.
+  pic: fig6.png
+  link: Fig6_adaptive_collapse.py
+  req:
+    - ds: 
+      title: Compiled fold-change measurements with repressor counts
+      storage: local 
+      link: analyzed_foldchange.csv
+    - ds:
+      title: Inferred free energies from fold-change data
+      storage: local
+      link: inferred_empirical_F.csv
+    - ds: 
+      title: MCMC samples from entropic parameter estimation
+      storage: local 
+      link: pooled_entropic_parameter_samples.csv
+    - ds:
+      title: >
+        Fold-change measurements from Garcia and Phillips 2011 and Brewster
+        et al. 2014
+      storage: local 
+      link: Garcia2011_Brewster2014.csv
+    - ds: 
+      title: >
+        Fold-change measuremetns from Razo-Mejia et al. 2018
+      storage: local 
+      link: RazoMejia_2018.csv
+    - ds:
+      title: >
+        Fold-change measurements of repressor mutants from Chure et al.
+        2019
+      storage: local
+      link: Chure2019_summarized_data.csv
+    - ds: 
+      title: > 
+        DNA binding energy estimates for repressor mutants in Chure et al. 2019
+      storage: local
+      link: Chure2019_DNA_binding_energy_summary.csv
+    - ds:
+      title: >
+        Dissociation constant and allosteric energy estimates for mutants in
+        Chure et al. 2019
+      storage: local
+      link: Chure2019_KaKi_epAI_summary.csv
