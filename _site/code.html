@@ -40,7 +40,7 @@
   
   
   
-    <meta content="http://localhost:4000/assets/img/seg.png" property="og:image">
+    <meta content="http://localhost:4000mwc_growth//assets/img/seg.png" property="og:image">
   
   
   
@@ -59,17 +59,17 @@
 ">
   
   
-    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/seg.png">
+    <meta name="twitter:image:src" content="http://localhost:4000mwc_growth//assets/img/seg.png">
   
 
 	<meta name="description" content="">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<meta property="og:image" content="">
-	<link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon">
-	<link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png">
+	<link rel="shortcut icon" href="mwc_growth//assets/img/favicon/favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" href="mwc_growth//assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="mwc_growth//assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="mwc_growth//assets/img/favicon/apple-touch-icon-144x144.png">
 	<!-- Chrome, Firefox OS and Opera -->
 	<meta name="theme-color" content="#263959">
 	<!-- Windows Phone -->
@@ -80,9 +80,9 @@
 	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
 	<!-- Font Awesome -->
-	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="mwc_growth//assets/fonts/font-awesome/css/font-awesome.min.css">
 	<!-- Styles -->
-	<link rel="stylesheet" href="/assets/css/main.css">
+	<link rel="stylesheet" href="mwc_growth//assets/css/main.css">
 </head>
 
 <body>
@@ -92,22 +92,32 @@
   <header>
     <div class="about">
       <div class="cover-author-image">
-        <a href="/"><img src="/assets/img/logo.gif" alt=""></a>
+        <a href="mwc_growth//"><img src="mwc_growth//assets/img/logo.gif" alt=""></a>
       </div>
       <div class="author-name"></div>
       <div class="sidebar-links">
       <hr>
       
-       <p><a href="http://localhost:4000/index.html">About</a></p>
+       <p><a href="http://localhost:4000mwc_growth//index.html">About</a></p>
       <hr>
       
       
-       <p><a href="http://localhost:4000/people">People</a></p>
+       <p><a href="http://localhost:4000mwc_growth//people">People</a></p>
       <hr>
       
       
-       <p><a href="http://localhost:4000/code">Code and Data</a></p>
+       <p><a href="http://localhost:4000mwc_growth//code">Code and Data</a></p>
       <hr>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
       
       
@@ -142,7 +152,7 @@
     
     <div class="page-cover-image">
       <figure>
-        <img class="page-image" src=/assets/img/seg.png alt="Code and Data">
+        <img class="page-image" src=mwc_growth//assets/img/seg.png alt="Code and Data">
         
       </figure>
     </div> <!-- End Page Cover Image -->
@@ -157,47 +167,47 @@
 
 <ul>
   <li>
-    <p><a href="http://localhost:4000//software/batch_processing.py"><strong>batch_processing.py</strong></a>
+    <p><a href="http://localhost:4000/mwc_growth//software/batch_processing.py"><strong>batch_processing.py</strong></a>
 | Iterates through all preprocessed image data, parses clist.mat data, reconstructs linages from growth series, and computes the fold-change in gene expression. This script is designed to be run from the “processing” root folder directory.</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//software/analyze_dilution_data.py"><strong>analyze_dilution_data.py</strong></a>
+    <p><a href="http://localhost:4000/mwc_growth//software/analyze_dilution_data.py"><strong>analyze_dilution_data.py</strong></a>
 | Given compiled data mapping lineages and fold-change measurements, this script performs statistical inference on the fluctuations to infer the calibration, coupled with calculation of the repressor copy number.</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//software/empirical_F_inference.py"><strong>empirical_F_inference.py</strong></a>
+    <p><a href="http://localhost:4000/mwc_growth//software/empirical_F_inference.py"><strong>empirical_F_inference.py</strong></a>
 | Given measurements of the fold-change in gene expression, this script infers the posterior distribution of the observed free energy.</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//software/entropic_parameter_inference.py"><strong>entropic_parameter_inference.py</strong></a>
+    <p><a href="http://localhost:4000/mwc_growth//software/entropic_parameter_inference.py"><strong>entropic_parameter_inference.py</strong></a>
 | Infers the entropic parameters <script type="math/tex">\Delta S_R</script> and <script type="math/tex">\Delta S_{AI}</script> from a collection of fold-change measurements at different temperatures. This can be run on all data simultaneously or on individual temperatures by toggling the “pooled” variable at the top of the script.</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//software/DNA_binding_energy_estimation.py"><strong>DNA_binding_energy_estimation.py</strong></a>
+    <p><a href="http://localhost:4000/mwc_growth//software/DNA_binding_energy_estimation.py"><strong>DNA_binding_energy_estimation.py</strong></a>
 | Infers an effective DNA binding energy <script type="math/tex">\epsilon</script> from a collection of fold-change measurements.</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//software/systematic_error_binding_energy_inference.py"><strong>systematic_error_binding_energy_inference.py</strong></a>
+    <p><a href="http://localhost:4000/mwc_growth//software/systematic_error_binding_energy_inference.py"><strong>systematic_error_binding_energy_inference.py</strong></a>
 | Infers an effective DNA binding energy <script type="math/tex">\epsilon</script> under a variety of scenarios where cell size is considered.</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//software/calibration_factor.stan"><strong>calibration_factor.stan</strong></a>
+    <p><a href="http://localhost:4000/mwc_growth//software/calibration_factor.stan"><strong>calibration_factor.stan</strong></a>
 | Inferrential model for estimation of the calibration factor given sibling cell intensities</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//software/DNA_binding_energy.stan"><strong>DNA_binding_energy.stan</strong></a>
+    <p><a href="http://localhost:4000/mwc_growth//software/DNA_binding_energy.stan"><strong>DNA_binding_energy.stan</strong></a>
 | Inferrential model for the estimation of the DNA binding energy given fold-change measurements</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//software/empirical_F_inference.stan"><strong>empirical_F_inference.stan</strong></a>
+    <p><a href="http://localhost:4000/mwc_growth//software/empirical_F_inference.stan"><strong>empirical_F_inference.stan</strong></a>
 | Inferrential model for the estimation of the free energy from fold-change measurements.</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//software/entropy_estimation.stan"><strong>entropy_estimation.stan</strong></a>
+    <p><a href="http://localhost:4000/mwc_growth//software/entropy_estimation.stan"><strong>entropy_estimation.stan</strong></a>
 | Inferrenetial model for inferring the entropic parameters <script type="math/tex">\Delta S_R</script> and <script type="math/tex">\Delta S_{AI}</script> for a single temperature.</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//software/pooled_entropy_estimation.stan"><strong>pooled_entropy_estimation.stan</strong></a>
+    <p><a href="http://localhost:4000/mwc_growth//software/pooled_entropy_estimation.stan"><strong>pooled_entropy_estimation.stan</strong></a>
 | Inferrential model for the estimation of the entropic parameters <script type="math/tex">\Delta S_R</script> and <script type="math/tex">\Delta S_{AI}</script> for multiple temperatures together.</p>
   </li>
 </ul>
@@ -214,19 +224,19 @@
 .zip)(100 MB) DOI: 10.22002/D1.1315</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//datasets/raw_compiled_lineages.csv">Raw compiled lineage information.</a> | (filetype:
+    <p><a href="http://localhost:4000/mwc_growth//datasets/raw_compiled_lineages.csv">Raw compiled lineage information.</a> | (filetype:
 .csv)</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//datasets/raw_compiled_snaps.csv">Raw compiled snapshots of ATC conditions.</a> | (filetype:
+    <p><a href="http://localhost:4000/mwc_growth//datasets/raw_compiled_snaps.csv">Raw compiled snapshots of ATC conditions.</a> | (filetype:
 .csv)</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//datasets/analyzed_fluctuations.csv">Analyzed lineage data with estimated calibration factor.</a> | (filetype:
+    <p><a href="http://localhost:4000/mwc_growth//datasets/analyzed_fluctuations.csv">Analyzed lineage data with estimated calibration factor.</a> | (filetype:
 .csv)</p>
   </li>
   <li>
-    <p><a href="http://localhost:4000//datasets/analyzed_foldchange.csv">Analyzed snapshot data with fold-change and repressor count.</a> | (filetype:
+    <p><a href="http://localhost:4000/mwc_growth//datasets/analyzed_foldchange.csv">Analyzed snapshot data with fold-change and repressor count.</a> | (filetype:
 .csv)</p>
   </li>
   <li>
@@ -239,10 +249,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig1.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/fig1.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/Fig1_representative_growth_curves.py">Fig. 1: Growth Curves and Growth Rates </a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/Fig1_representative_growth_curves.py">Fig. 1: Growth Curves and Growth Rates </a></b>
 <p> Used to generate panels B and C from figure 1 showing representative growth curves and a jitter plot of the growth rate. 
 </p>
 
@@ -259,10 +269,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig2_titration.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/fig2_titration.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/Fig2B_atc_titration_example.py">Fig. 2B: ATC Titraton Curves. </a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/Fig2B_atc_titration_example.py">Fig. 2B: ATC Titraton Curves. </a></b>
 <p> Used to generate Figure 2 panel B, illustrating the anticorrelation between mCherry and YFP channels.</p>
 
 <i>Necessary Data Sets </i><br />
@@ -275,10 +285,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig2_dilution.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/fig2_dilution.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/script1.py">Fig. 2C: Partitioning Statistics Plot</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/script1.py">Fig. 2C: Partitioning Statistics Plot</a></b>
 <p> Generates a representative  plot showing the intensity variance as a function of the summed intensity with the best estimate of the calibration factor.
 </p>
 
@@ -292,10 +302,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig3.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/fig3.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/Fig3_scaling.py">Fig. 3: Cell Size and Expression Scaling</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/Fig3_scaling.py">Fig. 3: Cell Size and Expression Scaling</a></b>
 <p> Plots the dependence of cell volume and repressor expression as a function of the growth rate. Note that this script generates the plots. The text labels were added after the fact in Adobe Illustrator. 
 </p>
 
@@ -315,10 +325,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig4.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/fig4.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/Fig4_carbon_quality.py">Fig. 4: Carbon Source Dependence of the Fold-Change</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/Fig4_carbon_quality.py">Fig. 4: Carbon Source Dependence of the Fold-Change</a></b>
 <p> Plots the summarized fold-change in gene expression against the predictions along with the free energy shift ∆F for conditions with differing carbon sources. Note that the labels ("acetate", "glycerol", "example", etc) along with boxes delinating A, B, and C were added after the fact using Adobe Illustrator.
 </p>
 
@@ -335,10 +345,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig5.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/fig5.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/Fig5_temperature.py">Fig. 5: Temperature Dependence of the Fold-Change</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/Fig5_temperature.py">Fig. 5: Temperature Dependence of the Fold-Change</a></b>
 <p> Plots the summarized fold-change in gene expression against the predictions along with the free energy shift ∆F for conditions with differing temperatures. 
 </p>
 
@@ -358,10 +368,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/fig6.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/fig6.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/Fig6_adaptive_collapse.py">Fig. 6: Data Collapse</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/Fig6_adaptive_collapse.py">Fig. 6: Data Collapse</a></b>
 <p> Plots the data collapse of various data sets onto the single master curve.
 </p>
 
@@ -403,10 +413,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS2.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/figS2.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/Fig1_representative_growth_curves.py">Fig. S2: Growth Rate Estimation</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/Fig1_representative_growth_curves.py">Fig. S2: Growth Rate Estimation</a></b>
 <p> Plots a representative growth curve for the glycerol condition, the best fit using Gaussian process modeling, and a plot of the maximum growth rate as a function of time.
 </p>
 
@@ -429,10 +439,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS3.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/figS3.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/Fig3_volume_appx.py">Fig. S3: Cell Shape Approximation</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/Fig3_volume_appx.py">Fig. S3: Cell Shape Approximation</a></b>
 <p> This script plots the segmented borders of cells for all conditions overlaid with an approximation of the shape as a spherocylinder projected in two dimensions.
 </p>
 
@@ -450,10 +460,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS5.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/figS5.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/FigS5_cal_factor_validation.py">Fig S5: Data Validation Of Lineage Tracking</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/FigS5_cal_factor_validation.py">Fig S5: Data Validation Of Lineage Tracking</a></b>
 <p> This script calculates and plots several data validation statistics to ensure that lineage tracking is working as expected.
 </p>
 
@@ -471,10 +481,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS6.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/figS6.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/FigS6_alpha_posteriors.py">Fig. S6: Posteior Probability Distributions of Calibration Factor</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/FigS6_alpha_posteriors.py">Fig. S6: Posteior Probability Distributions of Calibration Factor</a></b>
 <p> Generates a figure showing histograms and empirical cumulative distributions of the posterior probability density of the calibration factor. 
 </p>
 
@@ -492,7 +502,7 @@
 <i> Necessary Stan Models </i><br />
 
 
-• <a style="font-size: 0.9em;" href="http://localhost:4000//software/calibration_factor.stan"> Calibration factor inference model</a><br />
+• <a style="font-size: 0.9em;" href="http://localhost:4000/mwc_growth//software/calibration_factor.stan"> Calibration factor inference model</a><br />
 
 
 
@@ -502,10 +512,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS8.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/figS8.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/FigS8_snapshot_length_distributions.py">Fig. S8: Cell Length Distributions</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/FigS8_snapshot_length_distributions.py">Fig. S8: Cell Length Distributions</a></b>
 <p> This script plots the observed cell length distributions in all conditions from both the snapshots and the newborn cell sizes. 
 </p>
 
@@ -528,10 +538,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS9.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/figS9.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/FigS9_correction_factor_application.py">Fig. S9: Cell Size Corrections In Repressor Estimation</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/FigS9_correction_factor_application.py">Fig. S9: Cell Size Corrections In Repressor Estimation</a></b>
 <p> This script plots a series of cell size corrections for the repressor counts as well as the estimated DNA binding energy for each. 
 </p>
 
@@ -566,10 +576,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS10.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/figS10.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/FigS10_carbon_posteriors.py">Fig. S10: Joint and Marginal Posterior Distributions Of DNA Binding Energy</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/FigS10_carbon_posteriors.py">Fig. S10: Joint and Marginal Posterior Distributions Of DNA Binding Energy</a></b>
 <p> Creates a "corner plot" showing all joint and marginal posterior distributions from the inference of the effective DNA binding energy
 </p>
 
@@ -592,10 +602,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS11.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/figS11.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/FigS11_carbon_pairwise_comparison.py">Fig. S11: Pairwise Prediction of Different Carbon Conditions</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/FigS11_carbon_pairwise_comparison.py">Fig. S11: Pairwise Prediction of Different Carbon Conditions</a></b>
 <p> Plots the predicted fold-change in gene expression using each individual carbon source along with all possible data sources. 
 </p>
 
@@ -619,10 +629,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS12.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/figS12.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/FigS12_temp_posteriors.py">Fig. S12: Joint and Marginal Posterior Distributions of Entropic Parameter Inference</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/FigS12_temp_posteriors.py">Fig. S12: Joint and Marginal Posterior Distributions of Entropic Parameter Inference</a></b>
 <p> Creates a "corner plot" showing all joint and marginal posterior distributions from the inference of the entropic parameters and homoscedastic error.
 </p>
 
@@ -646,10 +656,10 @@
 
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url(http://localhost:4000//assets/img/figS13.png)" href="/figures/"> </a>
+<a class="post-thumbnail" style="background-image: url(http://localhost:4000/mwc_growth//assets/img/figS13.png)" href="mwc_growth//figures/"> </a>
 
 <div class="post-content">
-<b class="post-title"><a href="http://localhost:4000//software/FigS13_temp_pairwise_comparison.py">Fig. S13: Pairwise Comparison of Entropic Parameter Inference</a></b>
+<b class="post-title"><a href="http://localhost:4000/mwc_growth//software/FigS13_temp_pairwise_comparison.py">Fig. S13: Pairwise Comparison of Entropic Parameter Inference</a></b>
 <p> Plots the predicted fold-change for each individual temperature with all possible combinations of data for comparison. 
 </p>
 
