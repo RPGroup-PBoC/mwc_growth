@@ -6,13 +6,13 @@ layout: default
   <header>
     <div class="about">
       <div class="cover-author-image">
-        <a href="{{site.baseurl}}/"><img src="{{site.url}}{{site.baseurl}}/assets/img/{% if site.author-img %}{{site.author-img}}{% endif %}" alt="{{site.author}}"></a>
+        <a href="{{site.baseurl}}/"><img src="{{site.url}}/{{site.baseurl}}/assets/img/{% if site.author-img %}{{site.author-img}}{% endif %}" alt="{{site.author}}"></a>
       </div>
       <div class="author-name">{{site.author}}</div>
       <div class="sidebar-links">
       <hr>
       {% for page in site.pages %}
-      {% if page.sidebar %} <p><a href="{{site.url}}{{site.baseurl}}/{{page.permalink}}">{{page.title}}</a></p>
+      {% if page.sidebar %} <p><a href="{{site.url}}/{{site.baseurl}}/{{page.permalink}}">{{page.title}}</a></p>
       <hr>
       {%endif%}
       {% endfor %}
