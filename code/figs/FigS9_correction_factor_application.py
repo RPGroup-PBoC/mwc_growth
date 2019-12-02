@@ -195,7 +195,7 @@ ax[0].spines['right'].set_visible(True)
 ax[0].spines['left'].set_visible(False)
 ax[0].yaxis.tick_right()
 plt.tight_layout()
-plt.savefig('../../figs/FigSX_correction_factor_effect.pdf', bbox_inches='tight',
+plt.savefig('../../figs/FigS9_correction_factor_effect.pdf', bbox_inches='tight',
             facecolor='white')
 
 # %%

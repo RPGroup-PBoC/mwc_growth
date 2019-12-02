@@ -91,6 +91,6 @@ for g, d in _samples.groupby(['date', 'run_no']):
 plt.tight_layout()
 fig.text(0.01, 0.9, '(A)', fontsize=9, fontweight='bold')
 fig.text(0.5, 0.9, '(B)', fontsize=9, fontweight='bold')
-plt.savefig('../../figs/FigSX_cal_factor_posteriors.pdf', bbox_inches='tight',
+plt.savefig('../../figs/FigS6_cal_factor_posteriors.pdf', bbox_inches='tight',
             facecolor='white')
 # %%

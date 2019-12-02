@@ -99,7 +99,7 @@ for i, carb in enumerate(titles):
                         markeredgewidth=0.75, linestyle='none', capsize=1,
                         lw=0.75)
 plt.subplots_adjust(wspace=0.05, hspace=0.05)
-plt.savefig('../../figs/FigS_carbon_binding_energy_pairwise_fc.pdf', 
+plt.savefig('../../figs/FigS11_carbon_binding_energy_pairwise_fc.pdf', 
             bbox_inches='tight', facecolor='white')
 
 # %%

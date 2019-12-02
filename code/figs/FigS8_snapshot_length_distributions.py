@@ -91,7 +91,7 @@ for i in range(5):
             ax[j, i].set_yticklabels([])
 
 plt.subplots_adjust(wspace=0.1, hspace=0.1)
-plt.savefig('../../figs/FigSX_length_distributions.pdf', bbox_inches='tight', 
+plt.savefig('../../figs/FigS10_length_distributions.pdf', bbox_inches='tight', 
         facecolor='white')
 
 # %%

@@ -125,7 +125,7 @@ ax[1].set_xticklabels(['32° C', '37° C', '42° C'], fontsize=8)
 plt.tight_layout()
 fig.text(0, 0.9, '(A)', fontsize=9, fontweight='bold')
 fig.text(0.5, 0.9, '(B)', fontsize=9, fontweight='bold')
-plt.savefig('../../figs/FigSX_cell_shape.pdf', bbox_inches='tight', facecolor='white')
+plt.savefig('../../figs/FigS3_cell_shape.pdf', bbox_inches='tight', facecolor='white')
 
 
 

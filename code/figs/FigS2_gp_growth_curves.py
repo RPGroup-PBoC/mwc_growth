@@ -71,6 +71,6 @@ fig.text(0.35, 0.9, '(B)', fontsize=9, fontweight='bold')
 fig.text(0.67, 0.9, '(C)', fontsize=9, fontweight='bold')
 
 # Add titles
-plt.savefig('../../figs/FigSX_gp_growth_fig.pdf', facecolor='white', dpi=300)
+plt.savefig('../../figs/FigS2_gp_growth_fig.pdf', facecolor='white', dpi=300)
 
 # %%

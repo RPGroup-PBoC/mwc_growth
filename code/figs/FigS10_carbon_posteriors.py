@@ -82,7 +82,7 @@ for g, d in samples.groupby('carbon'):
 # Add a legend
 ax[0, 1].legend(loc='center', fontsize=8)
 plt.subplots_adjust(wspace=0.05, hspace=0.05)
-plt.savefig('../../figs/FigSX_carbon_cornerplot.pdf', bbox_inches='tight', 
+plt.savefig('../../figs/FigS10_carbon_cornerplot.pdf', bbox_inches='tight', 
             facecolor='white')
 # %%
 
