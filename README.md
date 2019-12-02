@@ -1,10 +1,3 @@
-<center>
-
-<img src="https://www.rpgroup.caltech.edu/mwc_growth/assets/img/logo.gif"
-style="width: 50%" >
-
-</center>
-
 
 # Physiological Adaptability and Parametric Versatility in a Simple Genetic Circuit
 [![DOI]()]()
