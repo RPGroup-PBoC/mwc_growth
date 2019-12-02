@@ -1,5 +1,8 @@
 <center>
-<img src="https://www.rpgroup.caltech.edu/mwc_growth/assets/img/logo.gif">
+
+<img src="https://www.rpgroup.caltech.edu/mwc_growth/assets/img/logo.gif"
+style="width: 50%" >
+
 </center>
 
 
