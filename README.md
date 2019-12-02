@@ -1,6 +1,7 @@
 
 # Physiological Adaptability and Parametric Versatility in a Simple Genetic Circuit
-[![DOI]()]()
+
+[![DOI](https://zenodo.org/badge/93970963.svg)](https://zenodo.org/badge/latestdoi/93970963)
 
 Welcome to the GitHub repository for the MWC growth project! This repository
 contains the entire project history as well as curated scripts to make
@@ -48,7 +49,6 @@ analyze data and generate figures. It is broken up into several subdirectories w
 2. **``figures`` \|** Contains all Python scripts which perform data
          *visualization* procedures. This includes generation all main and supplementary
          text figures.
-
 3. **``stan`` \|** Contains all inferential models and associated functions
    written in the [Stan probabilistic programming language](http://mc-stan.org).
 4. **``processing`` \|** This folder contains a single script
