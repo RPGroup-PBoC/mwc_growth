@@ -33,7 +33,7 @@ sidebar: true
 {% for fig in site.data.figures %}
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: '{{site.url}}/{{site.baseurl}}/assets/img/{{fig.pic}}'" href=""> </a>
+<a class="post-thumbnail" style="background-image: url({{site.url}}/{{site.baseurl}}/assets/img/{{fig.pic}})" href=""> </a>
 
 <div class="post-content">
 <b class="post-title"><a href="{{site.url}}/{{site.baseurl}}/software/{{fig.filename}}">{{fig.title}}</a></b>

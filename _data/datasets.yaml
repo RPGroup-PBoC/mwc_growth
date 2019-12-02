@@ -37,11 +37,3 @@
   name: Analyzed snapshot data with fold-change and repressor count.
   filetype: ".csv"
   link: analyzed_foldchange.csv
-
-- dataset:
-  storage: remote 
-  link: "https://data.caltech.edu"
-  DOI:  "10.1.1./journal.0000"
-  name: "Anonymized data from web scraping"
-  filetype: .zip 
-  filesize: 2 gb
