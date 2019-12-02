@@ -3,7 +3,6 @@ layout: page
 title: About
 description: Home
 img: seg.png
-caption: "E. coli microcolony growing on acetate supplemented medium"
 permalink: index.html
 sidebar: true
 ---
