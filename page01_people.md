@@ -39,7 +39,7 @@ you're doing, or it will break the display of the authors.
 
 <!-- Populate the author fields --> 
 
- <a class="post-thumbnail" style="background-image: url({{site.baseurl}}/{{site.url}}/assets/img/people/{{pic}})" href="{{website}}"></a>
+ <a class="post-thumbnail" style="background-image: url({{site.url}}/{{site.baseurl}}/assets/img/people/{{pic}})" href="{{website}}"></a>
 
 <!-- Populate the author environment with the information -->
 <div class="post-content">
