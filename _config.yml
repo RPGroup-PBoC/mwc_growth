@@ -4,7 +4,7 @@ description: > # this means to ignore newlines until "baseurl:"
 
 # permalink: ':title/'
 baseurl:  "mwc_growth/" # the subpath of your site, e.g. /blog
-url: "https://rpgroup.caltech.edu/" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://rpgroup.caltech.edu" # the base hostname & protocol for your site, e.g. http://example.com
 
 # You can include social icons
 site-twitter: "http://twitter.com/gdchure"
