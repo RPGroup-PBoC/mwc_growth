@@ -94,7 +94,8 @@ def personal_style():
     sns.set_palette(palette)
     return colors, color_items     
 
-def titlebox(ax, text, color,  bgcolor=None, size=8, boxsize="10%", pad=0.02, **kwargs):
+def titlebox(ax, text, color,  bgcolor=None, size=8, boxsize="10%", pad=0.02,
+            loc=10, **kwargs):
     """Sets a colored box about the title with the width of the plot"""
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("top", size=boxsize, pad=pad)
@@ -107,7 +108,7 @@ def titlebox(ax, text, color,  bgcolor=None, size=8, boxsize="10%", pad=0.02, **
         cax.set_facecolor(bgcolor) 
     else:
         cax.set_facecolor('white')
-    at = AnchoredText(text, loc=10, frameon=False, prop=dict(size=size, fontweight='bold', color=color))
+    at = AnchoredText(text, loc=loc, frameon=False, prop=dict(size=size, fontweight='bold', color=color))
     cax.add_artist(at)
 
 def ylabelbox(ax, text, color,  bgcolor=None, size=6, boxsize="15%", pad=0.02, **kwargs):
