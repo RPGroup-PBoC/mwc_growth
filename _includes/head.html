@@ -78,9 +78,9 @@
     <meta name="twitter:description" content="{{ site.description }}">
   {% endif %}
   {% if page.img %}
-    <meta name="twitter:image:src" content="{{ site.url }}{{ site.baseurl }}/assets/img/{{ page.img }}">
+    <meta name="twitter:image:src" content="{{ site.url }}/{{ site.baseurl }}/assets/img/{{ page.img }}">
   {% else %}
-    <meta name="twitter:image:src" content="{{ site.url }}{{ site.baseurl }}/assets/img/{{ site.author-img }}">
+    <meta name="twitter:image:src" content="{{ site.url }}/{{ site.baseurl }}/assets/img/{{ site.author-img }}">
   {% endif %}
 
 	<meta name="description" content="{{ page.description }}">
@@ -100,8 +100,8 @@
 	<!-- Google Fonts -->
 	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
-	<!-- Font Awesome -->
-	<link rel="stylesheet" href="{{ "/assets/fonts/font-awesome/css/font-awesome.min.css" | prepend: site.baseurl }}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<!-- Styles -->
 	<link rel="stylesheet" href="{{site.url}}/{{site.baseurl}}/assets/css/main.css">
 </head>
