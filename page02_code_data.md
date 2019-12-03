@@ -33,7 +33,7 @@ sidebar: true
 {% for fig in site.data.figures %}
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url({{site.url}}/{{site.baseurl}}/assets/img/{{fig.pic}})" href=""> </a>
+<a class="post-thumbnail" style="background-image: url({{site.url}}/{{site.baseurl}}/assets/img/{{fig.pic}})" href="{{site.url}}/{{site.baseurl}}/software/{{fig.filename}}"> </a>
 
 <div class="post-content">
 <b class="post-title"><a href="{{site.url}}/{{site.baseurl}}/software/{{fig.filename}}">{{fig.title}}</a></b>
@@ -59,7 +59,7 @@ sidebar: true
 {% for fig in site.data.si_figures %}
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url({{site.url}}/{{site.baseurl}}/assets/img/{{fig.pic}})" href="{{site.baseurl}}/figures/{{fig.pdf}}"> </a>
+<a class="post-thumbnail" style="background-image: url({{site.url}}/{{site.baseurl}}/assets/img/{{fig.pic}})" href="{{site.url}}/{{site.baseurl}}/software/{{fig.filename}}"> </a>
 
 <div class="post-content">
 <b class="post-title"><a href="{{site.url}}/{{site.baseurl}}/software/{{fig.filename}}">{{fig.title}}</a></b>
