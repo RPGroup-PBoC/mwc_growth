@@ -9,7 +9,7 @@ url: "https://rpgroup.caltech.edu" # the base hostname & protocol for your site,
 # You can include social icons
 social-twitter: "http://twitter.com/gdchure"
 social-github: RPGroup-PBoC # add your Github handle here.
-socite-email: gchure@caltech.edu
+social-email: gchure@caltech.edu
 
 # If you are using google analytics to track website traffic, you can insert the
 # tracking key below. It will be automatically inserted into the header of every
