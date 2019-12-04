@@ -167,4 +167,4 @@ for g, d in inferred_F.groupby(['temp']):
 
 plt.subplots_adjust(wspace=0.3, hspace=0.4)
 ax[0, 0].legend(fontsize=6, handlelength=1, ncol=1)
-plt.savefig('../../figs/Fig5_deltaF_temp.pdf', facecolor='white', bbox_inches='tight')
+# plt.savefig('../../figs/Fig5_deltaF_temp.pdf', facecolor='white', bbox_inches='tight')
