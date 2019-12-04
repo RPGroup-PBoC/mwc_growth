@@ -1,13 +1,5 @@
 - dataset:
   storage: remote
-  name: Segmented and raw image files
-  filetype: ".zip"
-  DOI:
-  size: 
-  link: 
-
-- dataset:
-  storage: remote
   name: clist.mat files from segmentation 
   filetype: ".zip"
   DOI: 10.22002/D1.1315
