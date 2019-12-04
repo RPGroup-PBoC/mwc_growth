@@ -2,9 +2,9 @@ title: MWC Growth
 description: > # this means to ignore newlines until "baseurl:"
   Repository for MWC Growth project
 
-# permalink: ':title/'
-baseurl:  "mwc_growth" # the subpath of your site, e.g. /blog
-url: "https://rpgroup.caltech.edu/" # the base hostname & protocol for your site, e.g. http://example.com
+permalink: ':title/'
+baseurl:  "/" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
 # You can include social icons
 social-twitter: "http://twitter.com/gdchure"
