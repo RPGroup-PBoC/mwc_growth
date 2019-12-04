@@ -3,8 +3,8 @@ description: > # this means to ignore newlines until "baseurl:"
   Repository for MWC Growth project
 
 permalink: ':title/'
-baseurl:  "/" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl:  "" # the subpath of your site, e.g. /blog
+url: "https://www.rpgroup.caltech.edu" # the base hostname & protocol for your site, e.g. http://example.com
 
 # You can include social icons
 social-twitter: "http://twitter.com/gdchure"
@@ -14,7 +14,7 @@ social-email: gchure@caltech.edu
 # If you are using google analytics to track website traffic, you can insert the
 # tracking key below. It will be automatically inserted into the header of every
 # website page
-analytics:
+# analytics:
 
 # You can include a logo for your work as a .png that is saved in the folder 
 # 'assets/img/'. If you want a logo to show up, put the filename of the logo here
