@@ -18,7 +18,7 @@ import tqdm
 #  Load the data.
 data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
 data = mwc.process.condition_filter(data)
-
+data['repressors'] *= 1.16
 # Group the data by each date, run number, replicate, and ATC to compute the means. 
 grouped = data.groupby(['carbon', 'temp', 'date', 
                         'run_number', 'atc_ngml']).mean().reset_index()

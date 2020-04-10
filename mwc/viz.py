@@ -21,80 +21,113 @@ from matplotlib.offsetbox import AnchoredText
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
+def despine(ax, offset=2):
+    if (type(ax) != np.ndarray) & (type(ax) != list):
+        ax = [ax]
+    for a in ax:
+         a.spines['bottom'].set_position(('outward', 2))
+         a.spines['left'].set_position(('outward', 2))
 
-def personal_style():
+def color_palette():
+    """ 
+    Returns my preferred color scheme 
+    """
+    colors = {
+        "dark_purple": "#5F2E88",
+        "purple": "#7E59A2",
+        "light_purple": "#A17DB8",
+        "pale_purple": "#dfd6e5",
+        "dark_orange": "#F38227",
+        "orange": "#E39943",
+        "light_orange": "#EEBA7F",
+        "pale_orange": "#f2d4b6",
+        "dark_blue": "#3F60AC",
+        "blue": "#7292C7",
+        "light_blue": "#A5B3CC",
+        "pale_blue": "#dae4f1",
+        "dark_red": "#9C372F",
+        "red": "#C76A6A",
+        "light_red": "#E39C9D",
+        "pale_red": "#edcccc",
+        "dark_green": "#395A34",
+        "green": "#688A2F",
+        "light_green": "#B3CD86",
+        "pale_green": "#d8e2c3",
+        "dark_brown": "#764f2a",
+        "brown": "#c2996c",
+        "light_brown": "#e1bb96",
+        "pale_brown": "#efccaf",
+        "black": "#444147",
+        "grey": "#EFEFEF",
+        "gray": "#EFEFEF",
+        "light_grey": "#6D6F72",
+        "light_gray": "#6D6F72",
+    }
+    palette = [
+        v
+        for k, v in colors.items()
+        if (v not in ["grey", "gray", "dark_purple", "light_grey"])
+        and ("pale" not in [v])
+    ]
+    return colors, palette
+
+
+def plotting_style():
     """
     Sets the plotting style to my preference
-    """   
-    rc = {'axes.facecolor': '#EFEFEF',
-          'font.family': 'Arial',
-          'font.weight': 'regular',
-          'font.style': 'normal',
-          'font.serif': 'Gentium Plus',
-          'axes.edgecolor': '#444147',
-          'axes.labelcolor': '#444147',
-          'axes.labelweight': 400,
-          'axes.spines.right': False,
-          'axes.spines.top': False,
-          'axes.spines.left':True,
-          'axes.spines.bottom': True,
-          'axes.axisbelow': True,
-          'axes.linewidth': 0.45,
-          'axes.titlesize': 8,
-          'text.color': '#444147',
-          'axes.grid': True,
-          'lines.linewidth': 0.75,
-          'lines.dash_capstyle': 'round',
-          'grid.linestyle': '-',
-          'grid.linewidth': 0.75,
-          'grid.color': '#ffffff',
-          'axes.labelsize': 8,
-          'xtick.color': '#444147',
-          'ytick.color': '#444147',
-          'xtick.labelsize': 6,
-          'ytick.labelsize': 6,
-          'xtick.major.size': 0,
-          'ytick.major.size': 0,
-          'xtick.major.pad': 6,
-          'ytick.major.pad': 6,
-          'xtick.minor.size': 0,
-          'ytick.minor.size': 0,
-          'legend.fontsize': 6,
-          'legend.frameon': True,
-          'axes.xmargin': 0.01,
-          'axes.ymargin': 0.01,
-          'figure.facecolor': 'white',
-          'figure.dpi': 300,
-          'errorbar.capsize': 1,
-          'savefig.bbox': 'tight',
-          'mathtext.fontset': 'custom',
-          'mathtext.rm': 'Gentium Plus',
-          'mathtext.it':'Gentium Plus:italic',
-          'mathtext.bf': 'Gentium Plus:bold'}
-    matplotlib.style.use(rc)
-    colors = {'dark_purple': '#5F2E88', 'purple': '#7E59A2', 
-              'light_purple':'#A17DB8', 'pale_purple':'#dfd6e5',
-              'dark_orange':'#F38227', 'orange':'#E39943', 
-              'light_orange':'#EEBA7F', 'pale_orange': '#f2d4b6',
-              'dark_blue': '#3F60AC', 'blue': '#7292C7',
-              'light_blue':'#A5B3CC', 'pale_blue': '#dae4f1',
-              'dark_red':'#9C372F', 'red':'#C76A6A',
-              'light_red':'#E39C9D', 'pale_red':'#edcccc',
-              'dark_green':'#395A34', 'green':'#688A2F', 
-              'light_green':'#B3CD86', 'pale_green':  '#d8e2c3',
-              'dark_brown': '#764f2a', 'brown':'#c2996c', 
-              'light_brown':'#e1bb96', 'pale_brown': '#efccaf',
-              'black':'#444147', 'grey': '#EFEFEF', 'gray': '#EFEFEF', 
-              'light_grey':'#6D6F72', 'light_gray':'#6D6F72'}
-    color_items = [v for v in colors.values()]
-    palette = [v for k, v in colors.items() if (v not in ['grey', 'gray',
-                                                         'dark_purple',
-                                                         'light_grey']) and
-               ('pale' not in [v])]
-    sns.set_palette(palette)
-    return colors, color_items     
+    """
+    rc = {
+        "axes.facecolor": "#EFEFEF",
+        "font.family": "sans-serif",
+        "font.family": "Myriad Pro",
+        "font.style": "normal",
+        "pdf.fonttype": 42,
+        "axes.edgecolor": "#444147",
+        "axes.labelcolor": "#444147",
+        "axes.spines.right": False,
+        "axes.spines.top": False,
+        "axes.spines.left": True,
+        "axes.spines.bottom": True,
+        "axes.axisbelow": True,
+        "axes.linewidth": 0.25,
+        "axes.titlesize": 8,
+        "text.color": "#444147",
+        "axes.grid": False,
+        "lines.linewidth": 0.75,
+        "lines.dash_capstyle": "round",
+        "patch.linewidth": 0.25,
+        "axes.labelsize": 8,
+        "xtick.color": "#444147",
+        "ytick.color": "#444147",
+        "xtick.labelsize": 6,
+        "ytick.labelsize": 6,
+        "xtick.major.size": 3,
+        "ytick.major.size": 3,
+        "xtick.major.width": 0.25,
+        "ytick.major.width": 0.25,
+        "xtick.major.pad": 6,
+        "ytick.major.pad": 6,
+        "xtick.minor.size": 0,
+        "ytick.minor.size": 0,
+        "legend.fontsize": 6,
+        "legend.frameon": True,
+        "legend.edgecolor": "#444147",
+        "axes.xmargin": 0.03,
+        "axes.ymargin": 0.03,
+        "figure.facecolor": "white",
+        "figure.dpi": 300,
+        "errorbar.capsize": 1,
+        "savefig.bbox": "tight",
+    }
 
-def titlebox(ax, text, color,  bgcolor=None, size=8, boxsize="10%", pad=0.02,
+    plt.rc("text.latex", preamble=r"\usepackage{mathpazo}")
+    matplotlib.style.use(rc)
+    colors, palette = color_palette()
+    sns.set_palette(palette)
+    return colors, palette
+
+
+def titlebox(ax, text, color='white',  bgcolor=None, size=8, boxsize="12%", pad=0.05,
             loc=10, **kwargs):
     """Sets a colored box about the title with the width of the plot"""
     divider = make_axes_locatable(ax)
