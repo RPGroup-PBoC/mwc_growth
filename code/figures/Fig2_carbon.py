@@ -175,7 +175,4 @@ for i, a in enumerate(ax.ravel()):
     a.spines['left'].set_visible(False)
 plt.subplots_adjust(hspace=-0.1, wspace=-0.7)
 plt.savefig('../../figs/Fig2_segmentation.svg', bbox_inches='tight')
-
-
-
 # %%
