@@ -24,6 +24,7 @@ data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
 
 # Keep only the dilution strain and the glucose samples as well as >0 reps
 data = mwc.process.condition_filter(data, carbon='glucose')
+data['repressors'] *= 1.16
 data = data[data['temp'] != 37]
 
 # Group by date, run_number, and ATC concentration to compute the mean fc

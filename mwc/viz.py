@@ -141,7 +141,7 @@ def titlebox(ax, text, color='white',  bgcolor=None, size=8, boxsize="12%", pad=
         cax.set_facecolor(bgcolor) 
     else:
         cax.set_facecolor('white')
-    at = AnchoredText(text, loc=loc, frameon=False, prop=dict(size=size, fontweight='bold', color=color))
+    at = AnchoredText(text, loc=loc, frameon=False, prop=dict(size=size, color=color))
     cax.add_artist(at)
 
 def ylabelbox(ax, text, color,  bgcolor=None, size=6, boxsize="15%", pad=0.02, **kwargs):
