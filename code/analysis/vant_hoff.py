@@ -29,7 +29,7 @@ data_dict = {'J': 3,
              'R': data['repressors'].values, 
              'foldchange': data['fold_change'].values,
              'Nns':int(4.6E6)}
-fit, samples = model.sample(data_dict=data_dict)
+fit, samples = model.sample(data_dict)
 
 # %%
 import matplotlib.pyplot as plt
