@@ -11,8 +11,8 @@ parameters {
 }
 
 model {
-    slope ~ normal(0, 10);
-    intercept ~ normal(0, 10);
+    // slope ~ normal(10, 10);
+    // intercept ~ normal(10, 10);
     sigma ~ normal(0, 0.1);
-    mean_vals ~ normal(-(slope ./ temps) + intercept, sigma);
+    mean_vals ~ normal((slope ./ temps) - intercept, sigma);
 }
