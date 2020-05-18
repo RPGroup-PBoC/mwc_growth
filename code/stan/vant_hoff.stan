@@ -24,15 +24,15 @@ parameters {
 transformed parameters {
     vector[J] epsilon;
     for (i in 1:J) {
-        epsilon[i] = (delH / temp_K[i]) - delS;
+        epsilon[i] = -(delH / temp_K[i]) + delS;
      } 
  }
 
 model {
     vector[N] mu;
     fc_sigma ~ normal(0, 0.1);
-    delH ~ normal(2E4, 2E3);
-    delS ~ normal(100, 50);
+    delH ~ normal(1E4, 1E2);
+    delS ~ normal(100, 100);
     mu = -1 * log(1 + (R ./ Nns) .* exp(-epsilon[temp_idx]));
     log_fc ~ normal(mu, fc_sigma);
 }

@@ -53,13 +53,13 @@ temp_range = np.linspace(302, 318, 100)
 
 cred_region = np.zeros((2, len(temp_range)))
 for i, _t in enumerate(temp_range):
-    pred = (delH/ _t) - delS 
+    pred = -(delH/ _t) + delS 
     cred_region[:, i] = mwc.stats.compute_hpd(pred, 0.95)
 plt.fill_between(1000/temp_range, cred_region[0, :], cred_region[1, :], alpha=0.5,
         color=colors['purple'])
 ax.set_xlabel(r'$\frac{1000}{T}$ [K$^{-1}$]')  
 ax.set_ylabel(r'-$\log\frac{K_D}{1\mu\mathrm{M}}$')  
-mwc.viz.titlebox(ax, r'$\Delta H = -16 \pm 2 \, (\times 10^3) k_B$ ; $\Delta S = -38 \pm 6\, k_B$',
+mwc.viz.titlebox(ax, r'$\Delta H = 10.0 \pm 0.1 \, (\times 10^3) k_B$ ; $\Delta S = 17.9 \pm 0.3\, k_B$',
                 color=colors['black'])
 plt.savefig('./vant_hoff_inference.pdf')
 
@@ -95,6 +95,7 @@ for g, d in summarized.groupby(['temp']):
                 markeredgewidth=0.5, label=f'{int(g)}° C')
 
 ax.legend(fontsize=6)
+plt.savefig('./vant_hoff_foldchange.pdf')
 #%%
 # Approach II: Piecewise model
 # Load the stan model
