@@ -18,7 +18,7 @@ import mwc.bayes
 
 # Define whether the analysis should be pooled or not. 
 pooled = 1
-force_compile = False
+force_compile = True
 
 # Load the fluctuation data
 data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')

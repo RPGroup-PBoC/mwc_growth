@@ -149,7 +149,7 @@ for i, _t in enumerate(t_range):
 plt.fill_between(1/t_range, cred_region[0, :], cred_region[1, :], alpha=0.5)
   
 # %%
-samples
+for g, d in zip()
 
 
 # %%

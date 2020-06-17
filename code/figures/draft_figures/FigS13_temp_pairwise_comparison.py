@@ -20,11 +20,12 @@ import mwc.viz
 import mwc.model
 import mwc.process
 import mwc.stats
-colors, _ = mwc.viz.personal_style()
+colors, _ = mwc.viz.plotting_style()
 
 # %%
 # Load the data sets and restrict to the carbon sources
 data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
+data['repressors'] *= 1.16
 stats = pd.read_csv('../../data/entropic_parameter_samples.csv', comment='#')
 pooled_stats = pd.read_csv('../../data/pooled_entropic_parameter_samples.csv', comment='#')
 data = mwc.process.condition_filter(data, carbon='glucose')
@@ -82,7 +83,7 @@ for i, fit_temp in enumerate(titles):
                     (stats['temp']==fit_temp)]['value'].values
     for j, pred_temp in enumerate(titles): 
         pred_temp = int(pred_temp.split('°')[0])
-        
+        print(pred_temp) 
         # Compute the adjusted energies. 
         rel_T = (37 + 273.15) / (pred_temp + 273.15)
         if i == j:
@@ -91,9 +92,9 @@ for i, fit_temp in enumerate(titles):
             epAI_star = stats[(stats['parameter']=='epAI_star') & 
                               (stats['temp']==fit_temp)]['value'].values
         else:
-            epRA_star =  delta_SR * ((37 + 273.15) - (pred_temp + 273.15)) -13.9
-            epAI_star = delta_SAI * ((37 + 273.15) - (pred_temp + 273.15)) + 4.5
-
+            epRA_star =  delta_SR * (37 - pred_temp) - 13.9
+            epAI_star = delta_SAI * (37 - pred_temp) + 4.5
+            print(np.mean(epRA_star))
         p_act = (1 + np.exp(-epAI_star))**-1
 
         # Compute the credible region
@@ -119,10 +120,10 @@ for i, t1 in enumerate([32, 42]):
         cred_region = np.zeros((2, len(rep_range)))
         p_act = (1 + np.exp(-epAI_star))**-1
         for k, r in enumerate(rep_range):
-            theo = (1 + pact * (r / 4.6E6) * np.exp(-epRA_star))**-1
+            theo = (1 + p_act * (r / 4.6E6) * np.exp(-epRA_star))**-1
             cred_region[:, k] = mwc.stats.compute_hpd(theo, 0.95)
 
-        ax[i, j].fill_between(rep_range, cred_region[0, :], cred_region[1, :], color='grey', alpha=0.5) 
+        # ax[i, j].fill_between(rep_range, cred_region[0, :], cred_region[1, :], color='grey', alpha=0.5) 
 
 
 # Plot the data
@@ -141,7 +142,7 @@ for i, temp in enumerate(titles):
                         markeredgewidth=0.75, linestyle='none', capsize=1,
                         lw=0.75)
 plt.subplots_adjust(wspace=0.05, hspace=0.05)
-plt.savefig('../../figs/FigS13_temperature_pairwise_predictions.pdf', 
-            bbox_inches='tight', facecolor='white')
+# plt.savefig('../../figs/FigS13_temperature_pairwise_predictions.pdf', 
+#             bbox_inches='tight', facecolor='white')
 
 # %%

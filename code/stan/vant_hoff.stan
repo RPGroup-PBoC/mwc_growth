@@ -31,8 +31,8 @@ transformed parameters {
 model {
     vector[N] mu;
     fc_sigma ~ normal(0, 0.1);
-    delH ~ normal(1E4, 1E2);
+    delH ~ normal(2E4, 2E4);
     delS ~ normal(100, 100);
     mu = -1 * log(1 + (R ./ Nns) .* exp(-epsilon[temp_idx]));
-    log_fc ~ normal(mu, fc_sigma);
+    log_fc ~ cauchy(mu, fc_sigma);
 }

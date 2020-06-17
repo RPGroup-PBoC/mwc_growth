@@ -142,5 +142,5 @@ for a in ax.ravel():
 fig.text(0.015, 0.99, '(A)', fontsize=8)
 fig.text(0.515, 0.99, '(B)', fontsize=8)
 plt.tight_layout()
-plt.savefig('../../figs/Fig3_temperature.pdf', bbox_inches='tight')
+# plt.savefig('../../figs/Fig3_temperature.pdf', bbox_inches='tight')
 # %%
