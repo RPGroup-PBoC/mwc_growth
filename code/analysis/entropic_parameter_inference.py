@@ -26,7 +26,7 @@ data = pd.read_csv('../../data/analyzed_foldchange.csv', comment='#')
 # Keep only the dilution strain and the glucose samples as well as >0 reps
 data = mwc.process.condition_filter(data, carbon='glucose')
 data['repressors'] *= 1.16
-data = data[data['temp'] != 37]
+# data = data[data['temp'] != 37]
 
 # Group by date, run_number, and ATC concentration to compute the mean fc
 grouped = data.groupby(['date', 'run_number', 'atc_ngml', 'temp']).mean().reset_index()
@@ -37,7 +37,7 @@ grouped['idx'] = grouped.groupby('temp').ngroup() + 1
 #%%
 # Load the inferential model. 
 if pooled == 1:
-    model = mwc.bayes.StanModel('../stan/pooled_entropy_estimation.stan', force_compile=force_compile)
+    model = mwc.bayes.StanModel('../stan/constrained_entropy_estimation.stan', force_compile=force_compile)
 else:
     model = mwc.bayes.StanModel('../stan/entropy_estimation.stan', force_compile=force_compile)
 #%%
@@ -46,8 +46,9 @@ data_dict = {'ref_temp':37 + 273.15, 'ref_epRA': -13.9, 'ref_epAI':4.5, 'Nns':4.
 if pooled == 1:
     data_dict['J'] =  grouped['idx'].max()
     data_dict['N'] = len(grouped) 
+    data_dict['J_REF'] = 2
     data_dict['idx'] = grouped['idx']
-    data_dict['temp'] = np.array([32, 42]) + 273.15
+    data_dict['temp'] = np.array([32, 37, 42]) + 273.15
     data_dict['repressors'] = grouped['repressors']
     data_dict['foldchange'] = grouped['fold_change']
 
@@ -85,7 +86,8 @@ for dim, temp in zip(grouped['idx'].unique(), grouped['temp'].unique()):
     keymap[dim] = temp
     keymap[temp] = dim
 
-renamed_params = ['epRA_star', 'epAI_star', 'delta_SR', 'delta_SAI', 'sigma']
+# renamed_params = ['epRA_star', 'epAI_star', 'delta_SR', 'delta_SAI', 'sigma']
+renamed_params = ['epRA_star', 'delta_SR', 'ref_epRA', 'sigma']
 samples_dfs = []
 if pooled == 1:
     for g, d in params.groupby(['temp']):

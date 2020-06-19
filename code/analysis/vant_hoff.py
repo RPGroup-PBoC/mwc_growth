@@ -99,7 +99,7 @@ plt.savefig('./vant_hoff_foldchange.pdf')
 #%%
 # Approach II: Piecewise model
 # Load the stan model
-epsilon_model = mwc.bayes.StanModel('../stan/DNA_binding_energy.stan')
+epsilon_model = mwc.bayes.StanModel('../stan/DNA_binding_energy.stan', force_compile=True)
 # linreg_model = mwc.bayes.StanModel('../stan/lin_reg.stan', force_compile=True)
 
 # %%
@@ -119,37 +119,32 @@ epsilon_samples = pd.concat(dfs, sort=False)
 # %%
 # Infer the slope
 epsilon_means = epsilon_samples.groupby(['temp'])['epRA'].mean().reset_index()
-_out = scipy.stats.linregress(1 / (epsilon_means['temp'] + 273.15),
-                                                epsilon_means['epRA'])
-delH = _out[0]
-delS = _out[1]
+epsilon_hpds = {}
+for g, d in epsilon_samples.groupby(['temp']):
+    low, high = mwc.stats.compute_hpd(d['epRA'], 0.95)
+    epsilon_hpds[g] = {'low':low, 'high':high}
+
 
 # %%
 import matplotlib.pyplot as plt
+stats = pd.read_csv('../../data/pooled_entropic_parameter_samples.csv', comment='#')
+delta_SR = stats[stats['parameter']=='delta_SR']['value'].unique()
+ref_epRA = stats[stats['parameter']=='ref_epRA']['value'].unique()
+
 fig, ax = plt.subplots(1, 1, figsize=(3,3))
 t_range = np.linspace(300, 330, 200)
+cred_region = np.zeros((2, len(t_range)))
+for i, t in enumerate(t_range):
+    ep = delta_SR * ((37 + 273.15) - t) + ref_epRA 
+    cred_region[:, i] = mwc.stats.compute_hpd(ep, 0.95) 
+
 ax.plot(1000 *(epsilon_means['temp'] + 273.15)**-1, epsilon_means['epRA'], 'o',
         markeredgecolor=colors['grey'], markeredgewidth=0.75, zorder=1000)
-ax.plot(1000/t_range, (delH / t_range) + delS, '-', color=colors['purple'])
+for t, v in epsilon_hpds.items():
+    ax.vlines(1000 / (t + 273.15), v['low'], v['high'], lw=1, color=colors['purple'])
+ax.fill_between(1000/t_range, cred_region[0, :], cred_region[1, :], color=colors['purple'],  alpha=0.5)
 ax.set_xlabel('1000 / T [K$^{-1}$]')
 ax.set_ylabel('$\epsilon / k_BT$')
 ax.set_xlim([3.15, 3.30])
 # ax.set_xlim([0])
-
-#%%
-# ax.errorbar(t, np.array([ep1['mean'], ep2['mean'], ep3['mean']]), 
-            #    np.array([ep1['std'], ep2['std'], ep3['std']]), color=colors['black'],
-            #    fmt='o', markeredgecolor=colors['grey'], markeredgewidth=0.5, lw=0.74)
-# slope = samples['slope']
-# intercept = samples['intercept']
-cred_region = np.zeros((2, len(t_range)))
-for i, _t in enumerate(t_range):
-    pred = -(samples['slope'] / _t) + samples['intercept']
-    cred_region[:, i] = mwc.stats.compute_hpd(pred, 0.95)
-plt.fill_between(1/t_range, cred_region[0, :], cred_region[1, :], alpha=0.5)
-  
-# %%
-for g, d in zip()
-
-
 # %%

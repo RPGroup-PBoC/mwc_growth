@@ -16,13 +16,13 @@ transformed data {
 
 parameters { 
     real<lower=0> fc_sigma; // Homoscedastic error of fold-change
-    // vector[J] epsilon;
-    real delH; // Slope of line on Van't Hoff plot, proportional  to del H 
+    vector epsilon_37;
     real delS; // Intercept of line on Van't off plot, proportional to del S
 }
 
 transformed parameters {
     vector[J] epsilon;
+
     for (i in 1:J) {
         epsilon[i] = -(delH / temp_K[i]) + delS;
      } 
@@ -30,9 +30,10 @@ transformed parameters {
 
 model {
     vector[N] mu;
+    epsilon_37 ~ normal(-12, 6);
     fc_sigma ~ normal(0, 0.1);
-    delH ~ normal(2E4, 2E4);
-    delS ~ normal(100, 100);
+    delH ~ lognormal(0, 10);
+    delS ~ lognormal(0, 1);
     mu = -1 * log(1 + (R ./ Nns) .* exp(-epsilon[temp_idx]));
-    log_fc ~ cauchy(mu, fc_sigma);
+    log_fc ~ normal(mu, fc_sigma);
 }

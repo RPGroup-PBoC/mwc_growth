@@ -54,8 +54,8 @@ model {
      vector[N] mu = -1 * log(1 + pact .* (repressors ./ Nns) .* exp(-epRA_star[idx])); 
 
      // Define the priors
-     delta_SR ~ normal(0, 10);
-     delta_SAI ~ normal(0, 10);
+     delta_SR ~ normal(0, 100);
+     delta_SAI ~ normal(0, 100);
      sigma ~ normal(0, 0.1);
 
      // Evaluate the likelihood
