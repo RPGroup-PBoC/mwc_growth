@@ -147,4 +147,21 @@ ax.set_xlabel('1000 / T [K$^{-1}$]')
 ax.set_ylabel('$\epsilon / k_BT$')
 ax.set_xlim([3.15, 3.30])
 # ax.set_xlim([0])
+
+#%%
+# ax.errorbar(t, np.array([ep1['mean'], ep2['mean'], ep3['mean']]), 
+            #    np.array([ep1['std'], ep2['std'], ep3['std']]), color=colors['black'],
+            #    fmt='o', markeredgecolor=colors['grey'], markeredgewidth=0.5, lw=0.74)
+# slope = samples['slope']
+# intercept = samples['intercept']
+cred_region = np.zeros((2, len(t_range)))
+for i, _t in enumerate(t_range):
+    pred = -(samples['slope'] / _t) + samples['intercept']
+    cred_region[:, i] = mwc.stats.compute_hpd(pred, 0.95)
+plt.fill_between(1/t_range, cred_region[0, :], cred_region[1, :], alpha=0.5)
+  
+# %%
+for g, d in zip()
+
+
 # %%
