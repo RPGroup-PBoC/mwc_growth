@@ -28,7 +28,7 @@ transformed parameters {
     // Compute the modified binding energies;
     vector[J] epRA_star;
     for (i in 1:J) {
-        if (i == J)
+        if (i == J_REF)
             epRA_star[i] = ref_epRA;
         else 
             epRA_star[i] = delta_SR * (temp[J_REF] - temp[i]) + ref_epRA; 
@@ -42,11 +42,11 @@ model {
      vector[N] mu = -1 * log(1 + (repressors ./ Nns) .* exp(-epRA_star[idx])); 
 
      // Define the priors
-     ref_epRA ~ normal(-12, 10);
-     delta_SR ~ normal(0, 10);
+     ref_epRA ~ normal(-12, 6);
+     delta_SR ~ normal(0, 100);
      sigma ~ normal(0, 0.1);
 
      // Evaluate the likelihood
-     log_fc ~ cauchy(mu, sigma);
+     log_fc ~ normal(mu, sigma);
 
  }

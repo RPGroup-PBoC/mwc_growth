@@ -38,9 +38,9 @@ model {
     vector[N] mu = -1 * log(1 + (repressors ./ Nns) * exp(-epRA));
 
     // Define the priors. 
-    epRA ~ normal(-12, 10); // Same prior as used in Chure et al 2019 PNAS 
+    epRA ~ normal(-12, 6); // Same prior as used in Chure et al 2019 PNAS 
     sigma ~ normal(0, 0.1); // Sampe prior as used in Chure et al 2019 PNAS
 
     // Evaluate the likelihood. 
-    log_fc ~ cauchy(mu, sigma);
+    log_fc ~ normal(mu, sigma);
 }
