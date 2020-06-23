@@ -1,3 +1,18 @@
+/* *****************************************************************************
+* Constrained Estimation of Temperature Dependent Entropic Change
+* ------------------------------------------------------------------------------- 
+* Author: Griffin Chure
+* Last Modified: June 22, 2020 
+* License: MIT
+*
+* Description
+* ------------------------------------------------------------------------------- 
+* This model infers a temperature dependent entropic term for the effective 
+*  DNA binding  energy , given measurements of the fold-change in 
+* gene expression. It does so using all supplied data, yet uses measurements at 
+* one temperature as the referense state such that the standard enthalpic 
+* difference (Delta H) can be directly calculated in lieu of inferred.
+* *****************************************************************************/
 data {
     // Define dimensional parameters
     int<lower=1> J; // Number of unique conditions
