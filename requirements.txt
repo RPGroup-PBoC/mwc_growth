@@ -5,7 +5,7 @@ seaborn==0.8.1
 statsmodels==0.8.0
 numpy==1.12.1
 pandas==0.20.3
-paramiko==2.4.2
+paramiko==2.10.1
 scikit_image==0.13.0
 tqdm==4.19.4
 scp==0.10.2
