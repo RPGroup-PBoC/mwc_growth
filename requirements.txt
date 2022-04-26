@@ -3,7 +3,7 @@ bokeh==0.12.14
 holoviews==1.10.7
 seaborn==0.8.1
 statsmodels==0.8.0
-numpy==1.12.1
+numpy==1.21.0
 pandas==0.20.3
 paramiko==2.10.1
 scikit_image==0.13.0
